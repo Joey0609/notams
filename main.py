@@ -57,9 +57,9 @@ def fetch():
         "reportType": "Report", 
         "actionType": "notamRetrievalByICAOs",
     }
-    # 3. 提交表单
+    
     response = requests.post(form_url, headers=headers, data=data)
-    response.raise_for_status()  # 检查请求是否成功
+    response.raise_for_status() 
     #print(response.text)
 
     html_file = "submitted_page.html"
