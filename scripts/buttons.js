@@ -2,8 +2,6 @@ const helpButton = document.getElementById('helpButton');
 const expandableArea = document.getElementById('expandableArea');
 const customButton = document.getElementById('customButton');
 let isExpanded = false;
-
-// 点击帮助按钮展开或收起区域
 helpButton.addEventListener('click', () => {
     isExpanded = !isExpanded;
 
