@@ -1,11 +1,13 @@
 import requests
-import webbrowser
 from bs4 import BeautifulSoup
 import re
 import os
+import webbrowser
 import numpy as np
 import pandas as pd
 from flask import Flask, render_template, jsonify, send_from_directory
+webbrowser.open("http://127.0.0.1:5000")
+print("使用时请不要关闭控制台，在浏览器中访问http://127.0.0.1:5000以开始使用")
 app=Flask(__name__)
 app.template_folder = 'templates'
 app.static_folder = 'static'
