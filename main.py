@@ -27,8 +27,9 @@ def fetch():
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
     def removeC(text):
-        return re.sub(r'[\r\n\[\]...]+', '', text)
-
+        return re.sub(r'[\r\n\[\]...]+', ' ', text)
+    def removeC2(text):
+        return re.sub(r'[\s+\r\n\[\]...]+', '', text)
     form_url = "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do" 
     headers = {
         "authority": "www.notams.faa.gov",
@@ -55,11 +56,17 @@ def fetch():
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
     }
     data = {
-        "retrieveLocId": "ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH", 
+        "retrieveLocId": "ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH RPHI VVHM WSJC", 
         "reportType": "Report", 
         "actionType": "notamRetrievalByICAOs",
     }
     
+    data2 = {
+        "retrieveLocId": "RPHI VVHM WSJC", 
+        "reportType": "Report",     
+        "actionType": "notamRetrievalByICAOs",
+    }
+
     response = requests.post(form_url, headers=headers, data=data)
     response.raise_for_status() 
     #print(response.text)
@@ -79,15 +86,27 @@ def fetch():
         if pre_tag:
             text_content = pre_tag.get_text(strip=True) 
             text_content = removeC(text_content)
+            textCforCoor = removeC2(text_content)
             #print(text_content)
-            if "A TEMPORARY" in text_content:
+            if "A TEMPORARY" in text_content or "AEROSPACE" in text_content:
+                # print(text_content)
                 coordinates_pattern = r"N\d{4,6}E\d{5,7}(?:-N\d{4,6}E\d{5,7})*"
-                coordinates = re.search(coordinates_pattern, text_content)
-                coordinates_result = coordinates.group() if coordinates else None
+                coordinates = re.search(coordinates_pattern, textCforCoor)
+                fuck="N000000E0000000"
+                if not coordinates:
+                    subPattern = r'(\d{6}N\d{7}E)'
+                    tmp = re.findall(subPattern, textCforCoor, flags=re.DOTALL)
+                    if tmp and len(tmp)>2:
+                        # print(tmp)
+                        fuck = '-'.join(f"N{m[:6]}E{m[7:-1]}" for m in tmp)
+                coordinates_result = coordinates.group() if coordinates else fuck
                 time_pattern = r"\d{2} [A-Z]{3} \d{2}:\d{2} \d{4} UNTIL \d{2} [A-Z]{3} \d{2}:\d{2} \d{4}"
                 time_info = re.search(time_pattern, text_content)
-                time_result = time_info.group() if time_info else None
+                # print(text_content)
+                time_result = time_info.group() if time_info else "00 JAN 00:00 0000 UNTIL 00 JAN 00:00 0000"
                 currentText=text_content.split('-',1)
+                # if "B5341/24" in currentText:
+                    # print(coordinates)
                 data1=np.vstack([data1,np.array([currentText[0],coordinates_result,time_result])]) 
         
     #print(data1)
@@ -96,13 +115,13 @@ def fetch():
     data1 = df_unique.to_numpy()
     #txt_file    = 'output.txt'
     #np.savetxt(os.path.join(current_dir, txt_file), data1, fmt='%s', delimiter='\t')
-    #print(data1)
     dataDict = {
         "CODE": data1[:, 0].tolist(),
         "COORDINATES": data1[:, 1].tolist(),
         "TIME": data1[:, 2].tolist()
     }
     dataDict["NUM"] = len(data1)
-    #print(dataDict)
+    print(dataDict)
+    print("使用时请不要关闭控制台，在浏览器中访问http://127.0.0.1:5000以开始使用")
     return jsonify(dataDict)
 app.run()
