@@ -60,6 +60,12 @@ function siteInit(){
         title: "西昌卫星发射中心"  // 信息窗口标题
     }
     var iW2 = new BMap.InfoWindow("坐标: 东经102.02667°    北纬28.24556°", opts2);
+    var opts5 = {
+        width: 100,     // 信息窗口宽度
+        height: 140,    // 信息窗口高度
+        title: "海阳东方航天港"  // 信息窗口标题
+    }
+    var iW5 = new BMap.InfoWindow("坐标: 东经121.247675°    北纬36.690209°<br>该位置为海上发射船所在的港口，一般在附近海域执行发射任务", opts5);
     var opts1 = {
         width: 100,     // 信息窗口宽度
         height: 70,    // 信息窗口高度
@@ -71,10 +77,21 @@ function siteInit(){
     drawLaunchsite(102.02667,28.24556,iW2);//西昌
     drawLaunchsite(111.60778,38.84861,iW3);//太原
     drawLaunchsite(110.956571,19.637836,iW4);//文昌
+    drawLaunchsite1(121.259377,36.688761,iW5);//海阳
 }
 function drawLaunchsite(siteX,siteY,iW){
     var point=new BMap.Point(siteX,siteY);
     var myIcon = new BMap.Icon("/statics/launch.png",new BMap.Size(33,40),{anchor:new BMap.Size(0,0),imageOffset:new BMap.Size(0, 0)});     
+    var marker = new BMap.Marker(point, {icon: myIcon});   
+    map.addOverlay(marker); 
+    marker.addEventListener("click", 
+    function(){          
+        map.openInfoWindow(iW, point); //开启信息窗口
+    }); 
+}
+function drawLaunchsite1(siteX,siteY,iW){
+    var point=new BMap.Point(siteX,siteY);
+    var myIcon = new BMap.Icon("/statics/launch1.png",new BMap.Size(28,28),{anchor:new BMap.Size(0,0),imageOffset:new BMap.Size(0, 0)});     
     var marker = new BMap.Marker(point, {icon: myIcon});   
     map.addOverlay(marker); 
     marker.addEventListener("click", 
@@ -94,7 +111,7 @@ const monthMap = {
     JUL: "7", AUG: "8", SEP: "9", OCT: "10", NOV: "11", DEC: "12"
 };
 function toLocalTime(day, month, time, year) {
-    const utcDate = new Date(`${year}-${monthMap[month]}-${day}T${time}:00Z`);
+    const utcDate = new Date(`${year}-${monthMap[month]}-${day} ${time}:00Z`);
     const btcDate = new Date(utcDate.getTime() + 8 * 60 * 60 * 1000);
     return {
         year: btcDate.getUTCFullYear(),

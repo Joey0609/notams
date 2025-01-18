@@ -62,7 +62,7 @@ def fetch():
     }
     
     data2 = {
-        "retrieveLocId": "RPHI VVHM WSJC", 
+        "retrieveLocId": "RPHI VVHM WSJC YMMM WIIF RJJJ", 
         "reportType": "Report",     
         "actionType": "notamRetrievalByICAOs",
     }

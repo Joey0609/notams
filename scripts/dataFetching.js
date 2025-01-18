@@ -18,6 +18,7 @@ return response.json();
 })
 .catch(error => {
     console.error('Error fetching data:', error);
+    alert("可能由于以下原因未获取到航警!\n1、当前时间无中国航天相关航警（如有疏漏请反馈）。\n2、您的网络连接存在问题。\n您可以继续使用手动输入功能。");
 });
 function fetchInit(){
     for(let i = 0; i < dict.NUM; i++){
@@ -46,6 +47,7 @@ function fetchData(selectedColor) {
         })
         .catch(error => {
             console.error('Error fetching data:', error);
+            alert("可能由于以下原因未获取到航警!\n1、当前时间无中国航天相关航警（如有疏漏请反馈）。\n2、您的网络连接存在问题。\n您可以继续使用手动输入功能。");
         });
 }
 const fetchButton = document.getElementById('fetchButton');
