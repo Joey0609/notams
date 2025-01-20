@@ -56,7 +56,7 @@ def fetch():
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
     }
     data = {
-        "retrieveLocId": "ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH RPHI VVHM WSJC", 
+        "retrieveLocId": "ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH RPHI VVHM WSJC RPHI VVHM WSJC YMMM WIIF RJJJ", 
         "reportType": "Report", 
         "actionType": "notamRetrievalByICAOs",
     }
@@ -99,6 +99,12 @@ def fetch():
                     if tmp and len(tmp)>2:
                         # print(tmp)
                         fuck = '-'.join(f"N{m[:6]}E{m[7:-1]}" for m in tmp)
+                if not coordinates and fuck == "N000000E0000000":
+                    subPattern = r'(\d{4}N\d{5}E)'
+                    tmp = re.findall(subPattern, textCforCoor, flags=re.DOTALL)
+                    if tmp and len(tmp)>2:
+                        # print(tmp)
+                        fuck = '-'.join(f"N{m[:4]}E{m[5:-1]}" for m in tmp)
                 coordinates_result = coordinates.group() if coordinates else fuck
                 time_pattern = r"\d{2} [A-Z]{3} \d{2}:\d{2} \d{4} UNTIL \d{2} [A-Z]{3} \d{2}:\d{2} \d{4}"
                 time_info = re.search(time_pattern, text_content)
