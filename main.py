@@ -90,21 +90,21 @@ def fetch():
             #print(text_content)
             if "A TEMPORARY" in text_content or "AEROSPACE" in text_content:
                 # print(text_content)
-                coordinates_pattern = r"N\d{4,6}E\d{5,7}(?:-N\d{4,6}E\d{5,7})*"
+                coordinates_pattern = r"[NS]\d{4,6}[WE]\d{5,7}(?:-[NS]\d{4,6}[WE]\d{5,7})*"
                 coordinates = re.search(coordinates_pattern, textCforCoor)
                 fuck="N000000E0000000"
                 if not coordinates:
-                    subPattern = r'(\d{6}N\d{7}E)'
+                    subPattern = r'(\d{6}[NS]\d{7}[WE])'
                     tmp = re.findall(subPattern, textCforCoor, flags=re.DOTALL)
                     if tmp and len(tmp)>2:
                         # print(tmp)
-                        fuck = '-'.join(f"N{m[:6]}E{m[7:-1]}" for m in tmp)
+                        fuck = '-'.join(f"{m[6]}{m[:6]}{m[-1]}{m[7:-1]}" for m in tmp)
                 if not coordinates and fuck == "N000000E0000000":
-                    subPattern = r'(\d{4}N\d{5}E)'
+                    subPattern = r'(\d{4}[NS]\d{5}[WE])'
                     tmp = re.findall(subPattern, textCforCoor, flags=re.DOTALL)
                     if tmp and len(tmp)>2:
                         # print(tmp)
-                        fuck = '-'.join(f"N{m[:4]}E{m[5:-1]}" for m in tmp)
+                        fuck = '-'.join(f"{m[4]}{m[:4]}{m[-1]}{m[5:-1]}" for m in tmp)
                 coordinates_result = coordinates.group() if coordinates else fuck
                 time_pattern = r"\d{2} [A-Z]{3} \d{2}:\d{2} \d{4} UNTIL \d{2} [A-Z]{3} \d{2}:\d{2} \d{4}"
                 time_info = re.search(time_pattern, text_content)

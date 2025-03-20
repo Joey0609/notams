@@ -1,4 +1,21 @@
 var map = new BMap.Map("allmap");
+
+function handleCopy(text){
+    // alert(text);
+    navigator.clipboard.writeText(text).then(() => {
+        // alert('复制成功: ' + text);
+    }).catch(err => {
+      // 降级方案
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        // alert(document.queryCommandSupported('copy') ? '复制成功' : '复制失败');
+    });
+}
+
 makeMap();
 function makeMap(){
     map.centerAndZoom(new BMap.Point(103,36),6);
@@ -30,12 +47,17 @@ function makeMap(){
         title: "酒泉卫星发射中心"  // 信息窗口标题
     }
     var iW1 = new BMap.InfoWindow("坐标: 东经100.27806°    北纬40.96806°", opts1);
-    
+    var opts5 = {
+        width: 100,     // 信息窗口宽度
+        height: 140,    // 信息窗口高度
+        title: "海阳东方航天港"  // 信息窗口标题
+    }
+    var iW5 = new BMap.InfoWindow("坐标: 东经121.247675°    北纬36.690209°<br>该位置为海上发射船所在的港口，一般在附近海域执行发射任务", opts5);
     drawLaunchsite(100.27806,40.96806,iW1);//酒泉
     drawLaunchsite(102.02667,28.24556,iW2);//西昌
     drawLaunchsite(111.60778,38.84861,iW3);//太原
     drawLaunchsite(110.956571,19.637836,iW4);//文昌
-    
+    drawLaunchsite1(121.259377,36.688761,iW5);//海阳
     var scaleCtrl = new BMap.ScaleControl();
     map.addControl(scaleCtrl);
     // var zoomCtrl = new BMap.ZoomControl();
@@ -163,15 +185,22 @@ function drawNot(COORstrin,timee,codee,numm,col,is_self){
     var tmpPolygon
     tmpPolygon = new BMap.Polygon(apt,{strokeColor:col, strokeWeight:1,strokeOpacity:1,fillColor:col,fillOpacity:0.3});
     map.addOverlay(tmpPolygon);
-    var plo = {
-        width: 70,     // 信息窗口宽度
-        height: 170,    // 信息窗口高度
-        title: "落区航警信息"  // 信息窗口标题
+    if(!is_self){
+        var plo = {
+            width: 70,     // 信息窗口宽度
+            height: 190,    // 信息窗口高度
+            title: "NOTAM信息"  // 信息窗口标题
+        }
+        // handleCopy('fuckyou');
+        var pl = new BMap.InfoWindow("持续时间:<br>"+timestr+"<br>航警编号:<br>"+codee+"<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button class=\"copy\" onclick=\"handleCopy('"+COORstrin+"')\">复制坐标</button>", plo);
+    }else{
+        var plo = {
+            width: 30,     // 信息窗口宽度
+            height: 80,    // 信息窗口高度
+            title: "用户绘制落区"  // 信息窗口标题
+        }
+        var pl = new BMap.InfoWindow("航警"+numm+"<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button class=\"copy\" onclick=\"handleCopy('"+COORstrin+"')\">复制坐标</button>", plo);
     }
-    if(!is_self)
-        var pl = new BMap.InfoWindow("持续时间:<br>"+timestr+"<br>航警编号:<br>"+codee, plo);
-    else
-        var pl = new BMap.InfoWindow("持续时间:<br>"+"null"+"<br>航警编号:<br>"+codee, plo);
     tmpPolygon.addEventListener("click", 
     function(){          
         map.openInfoWindow(pl,new BMap.Point(_TheArray[0][0],_TheArray[0][1])); //开启信息窗口
@@ -191,7 +220,7 @@ function pullOut(stri){
     var a,b;
     var c,d;
     for(var i=1;i<stri.length;i++){
-        if(stri[i]=="E"){
+        if(stri[i]=="E" || stri[i]=="W"){
             stPos=i+1;
         }
     }
@@ -204,7 +233,16 @@ function pullOut(stri){
     c=(a-(a%10000))/10000+((a%10000)-(a%100))/6000+(a%100)/3600;
     d=(b-(b%10000))/10000+((b%10000)-(b%100))/6000+(b%100)/3600;
     }
-    tmpp.push(d);
-    tmpp.push(c);
+    if(stri[stPos-1]=="E"){
+        tmpp.push(d);
+    }else{
+        tmpp.push(0-d);
+    }
+    if(stri[0]=="N"){
+        tmpp.push(c);
+    }else{
+        tmpp.push(0-c);
+    }
+    
     return tmpp;
 }   
