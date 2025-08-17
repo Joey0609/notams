@@ -11,18 +11,25 @@ return response.json();
     dict = fetch;
     map.clearOverlays();
     siteInit();
-    for(var i=1;i<dict.NUM;i++){
+    for(var i=0;i<dict.NUM;i++){
         // alert(i);
-        drawNot(dict.COORDINATES[i],dict.TIME[i],dict.CODE[i],i-1,"blue",0);
+        drawNot(dict.COORDINATES[i],dict.TIME[i],dict.CODE[i],i,"blue",0);
+    }
+    if (autoListExpanded) {
+        updateAutoListContent();
     }
 })
 .catch(error => {
     console.error('Error fetching data:', error);
-    alert("可能由于以下原因未获取到航警!\n1、当前时间无中国航天相关航警（如有疏漏请反馈）。\n2、您的网络连接存在问题。\n您可以继续使用手动输入功能。");
+    alert("可能由于以下原因未获取到航警!\n1、当前时间无中国航天相关航警（如有疏漏请反馈）。\n2、您的网络连接存在问题。\n3、用于爬取航警信息的dinsQueryWeb炸了\n您可以继续使用手动输入功能。");
 });
 function fetchInit(){
     for(let i = 0; i < dict.NUM; i++){
         map.removeOverlay(polygonAuto[i]);
+    }
+    removeHighlight();
+    if (autoListExpanded) {
+        updateAutoListContent();
     }
 }
 let dict;
@@ -41,8 +48,11 @@ function fetchData(selectedColor) {
             // siteInit();
             console.log(selectedColor);
             // alert(dict.TIME[1]);
-            for (let i = 1; i < dict.NUM; i++) {
-                drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], i - 1, selectedColor, 0);
+            for (let i = 0; i < dict.NUM; i++) {
+                drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], i, selectedColor, 0);
+            }
+            if (autoListExpanded) {
+                updateAutoListContent();
             }
         })
         .catch(error => {

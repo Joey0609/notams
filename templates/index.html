@@ -53,6 +53,26 @@
             </div>
             <script src="/scripts/notamsDrawer.js"></script>
         </div>
+
+        <div class="auto-list-btn" id="autoListBtn" onclick="toggleAutoList()">
+            <span>自</span>
+            <span>动</span>
+            <span>获</span>
+            <span>取</span>
+            <span>落</span>
+            <span>区</span>
+            <span>列</span>
+            <span>表</span>
+        </div>
+        <div class="auto-list-panel" id="autoListPanel">
+            <div class="auto-list-header">
+                <span>自动获取落区列表</span>
+                <button class="close-btn" onclick="toggleAutoList()">×</button>
+            </div>
+            <div class="auto-list-content" id="autoListContent">
+            </div>
+        </div>
+
         <div class="help-btn" id="helpButton">帮助</div>
         <div class="custom-btn" id="customButton" onclick="fetchInit()">移除自动绘制落区</div>
         <div class="expandable-area" id="expandableArea">
