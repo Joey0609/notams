@@ -91,7 +91,7 @@ def process_notam_data(data):
         for notam in data['notamList']:
             results.append({
                 'Number': notam.get('notamNumber'),
-                'Message': notam.get('traditionalMessageFrom4thWord'),
+                'Message': notam.get('icaoMessage'),
                 'startDate': notam.get('startDate'),
                 'endDate': notam.get('endDate')
             })
