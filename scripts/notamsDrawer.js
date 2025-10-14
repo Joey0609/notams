@@ -26,11 +26,12 @@ function drawWarning() {
     const coordPattern = /[NS]\d{4,6}[WE]\d{5,7}/;
     const coordPattern2= /\d{4,6}[NS]\d{5,7}[WE]/;
     const coordPattern3= /\d{1,3}-\d{1,2}\.\d{1,2}[NS]\/\d{1,3}-\d{1,2}\.\d{1,2}[WE]/;
+    const coordPattern4= /\d{1,3}-\d{1,2}\.\d{1,2}[NS]\d{1,3}-\d{1,2}\.\d{1,2}[WE]/;
     let targ=text.replace(/{[^}]+}/g, '');
     targ = targ.replace(/%[^%]+%/g, ''); 
     targ = targ.replace(/[\r\n]+/g, '');
     targ = targ.replace(/\s+/g, '');
-    if (!coordPattern.test(targ)&&!coordPattern2.test(targ)&&!coordPattern3.test(targ)) {
+    if (!coordPattern.test(targ)&&!coordPattern2.test(targ)&&!coordPattern3.test(targ)&&!coordPattern4.test(targ)) {
         alert("请输入正确的航警，格式应包含有效的坐标\n（如：N394838E1005637-N391617E1005933-N392001E1021555-N395223E1021334\n或：074700N1200200E-081000N1203300E-081300N1203800E-071800N1212200E\n或：19-14.25N/112-28.12E、19-15.43N/112-56.63E、18-21.26N/112-59.02E和18-20.09N/112-30.66E）");
         return;
     }
@@ -135,6 +136,43 @@ function processCoordinates3(textCforCoor) {
     }
     return null;
 }
+function processCoordinates4(textCforCoor) {
+    // 支持无分隔符的坐标格式，如19-14.25N112-28.12E
+    const subPattern = /\d{1,3}-\d{1,2}\.\d{1,2}[NS]\d{1,3}-\d{1,2}\.\d{1,2}[WE]/g;
+    const tmp = textCforCoor.match(subPattern) || [];
+    if (tmp.length >= 1) {
+        const result = tmp.map(coord => {
+            const parts = coord.match(/(\d{1,3}-\d{1,2}\.\d{1,2}[NS])(\d{1,3}-\d{1,2}\.\d{1,2}[WE])/);
+            const latPart = parts[1];
+            const lonPart = parts[2];
+            const latMatch = latPart.match(/(\d{1,3})-(\d{1,2})\.(\d{1,2})([NS])/);
+            const latDeg = parseInt(latMatch[1]);
+            const latMinInt = parseInt(latMatch[2]);
+            const latMinDec = parseInt(latMatch[3]);
+            const latDir = latMatch[4];
+            const latSec = Math.round(latMinDec * 60 / 100);
+            const lonMatch = lonPart.match(/(\d{1,3})-(\d{1,2})\.(\d{1,2})([WE])/);
+            const lonDeg = parseInt(lonMatch[1]);
+            const lonMinInt = parseInt(lonMatch[2]);
+            const lonMinDec = parseInt(lonMatch[3]);
+            const lonDir = lonMatch[4];
+            const lonSec = Math.round(lonMinDec * 60 / 100);
+            const formattedLat = latDir + 
+                latDeg.toString().padStart(2, '0') + 
+                latMinInt.toString().padStart(2, '0') + 
+                latSec.toString().padStart(2, '0');
+            const formattedLon = lonDir + 
+                lonDeg.toString().padStart(3, '0') + 
+                lonMinInt.toString().padStart(2, '0') + 
+                lonSec.toString().padStart(2, '0');
+            return formattedLat + formattedLon;
+        }).join('-');
+        let st = [];
+        st[0] = result;
+        return st;
+    }
+    return null;
+}
 function selfDrawNot(text, color, num) {
     text = text.replace(/{[^}]+}/g, ''); 
     text = text.replace(/%[^%]+%/g, ''); 
@@ -152,6 +190,9 @@ function selfDrawNot(text, color, num) {
     }
     if(coor==null){
         coor=processCoordinates3(text);
+    }
+    if(coor==null){
+        coor=processCoordinates4(text);
     }
     // alert(coor);
     // const time = text.match(timeRegex);
