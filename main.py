@@ -5,6 +5,10 @@ import pandas as pd
 from flask import Flask, render_template, jsonify, send_from_directory
 import configparser
 from fetch.dinsQueryWeb import dinsQueryWeb
+from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
+
+dins = False
+FNSs = True
 
 def load_config():
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -36,7 +40,7 @@ if AUTO_OPEN:
     webbrowser.open(f"http://{HOST}:{PORT}")
 
 print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
-print(f"当前使用的ICAO码: {ICAO_CODES}")
+# print(f"当前使用的ICAO码: {ICAO_CODES}")
 
 app = Flask(__name__)
 app.template_folder = 'templates'
@@ -79,12 +83,28 @@ def fetch():
         "TIME": [],
         "NUM": 0,
     }
-    dins_data = dinsQueryWeb(current_icao_codes)
-    if dins_data.get("CODE"):
-        dataDict["CODE"].extend(dins_data["CODE"])
-        dataDict["COORDINATES"].extend(dins_data["COORDINATES"])
-        dataDict["TIME"].extend(dins_data["TIME"])
+    source_num = 0
+    
+    if dins:
+        dins_data = dinsQueryWeb(current_icao_codes)
+        if dins_data.get("CODE"):
+            source_num += 1
+            dataDict["CODE"].extend(dins_data["CODE"])
+            dataDict["COORDINATES"].extend(dins_data["COORDINATES"])
+            dataDict["TIME"].extend(dins_data["TIME"])
+            print(f"爬取来源{source_num}: dinsQueryWeb, 获取 {len(dins_data['CODE'])} 条航警")
+    
+    if FNSs:
+        FNS_data = FNS_NOTAM_SEARCH()
+        if FNS_data.get("CODE"):
+            source_num += 1
+            dataDict["CODE"].extend(FNS_data["CODE"])
+            dataDict["COORDINATES"].extend(FNS_data["COORDINATES"])
+            dataDict["TIME"].extend(FNS_data["TIME"])
+            print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(FNS_data['CODE'])} 条航警")
+
     dataDict["NUM"] = len(dataDict["CODE"])
+
     print(dataDict)
     print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
     return jsonify(dataDict)
