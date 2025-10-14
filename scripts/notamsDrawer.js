@@ -137,7 +137,6 @@ function processCoordinates3(textCforCoor) {
     return null;
 }
 function processCoordinates4(textCforCoor) {
-    // 支持无分隔符的坐标格式，如19-14.25N112-28.12E
     const subPattern = /\d{1,3}-\d{1,2}\.\d{1,2}[NS]\d{1,3}-\d{1,2}\.\d{1,2}[WE]/g;
     const tmp = textCforCoor.match(subPattern) || [];
     if (tmp.length >= 1) {
