@@ -23,4 +23,4 @@ jobs:
           pip install -r requirements.txt
       - name: Update NOTAM list
         run: |
-          python fetch/FNS_NOTAM_SEARCH.pyame: Python Package using Conda
+          python fetch/FNS_NOTAM_SEARCH.py: Python Package using Conda
