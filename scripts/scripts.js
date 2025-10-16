@@ -106,7 +106,7 @@ function siteInit() {
 }
 function drawLaunchsite(siteX, siteY, iW) {
     var point = new BMap.Point(siteX, siteY);
-    var myIcon = new BMap.Icon("/statics/launch.png", new BMap.Size(33, 40), { anchor: new BMap.Size(0, 0), imageOffset: new BMap.Size(0, 0) });
+    var myIcon = new BMap.Icon("statics/launch.png", new BMap.Size(33, 40), { anchor: new BMap.Size(0, 0), imageOffset: new BMap.Size(0, 0) });
     var marker = new BMap.Marker(point, { icon: myIcon });
     map.addOverlay(marker);
     marker.addEventListener("click",
@@ -116,7 +116,7 @@ function drawLaunchsite(siteX, siteY, iW) {
 }
 function drawLaunchsite1(siteX, siteY, iW) {
     var point = new BMap.Point(siteX, siteY);
-    var myIcon = new BMap.Icon("/statics/launch1.png", new BMap.Size(28, 28), { anchor: new BMap.Size(0, 0), imageOffset: new BMap.Size(0, 0) });
+    var myIcon = new BMap.Icon("statics/launch1.png", new BMap.Size(28, 28), { anchor: new BMap.Size(0, 0), imageOffset: new BMap.Size(0, 0) });
     var marker = new BMap.Marker(point, { icon: myIcon });
     map.addOverlay(marker);
     marker.addEventListener("click",
