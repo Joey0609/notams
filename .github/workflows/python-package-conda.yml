@@ -1,26 +1,70 @@
-name: Update NOTAM List
+name: Update NOTAM and Deploy to Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/30 * * * *" # 每 30 分钟运行一次
+  workflow_dispatch:
+
+permissions:
+  contents: write # 允许 Python 脚本修改并 push 文件
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   update-notam:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true # 允许推送变更
+          fetch-depth: 0
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
           python-version: "3.10"
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
       - name: Update NOTAM list
         run: |
           python3 fetch/FNS_NOTAM_SEARCH.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Auto update NOTAM list" || echo "No changes to commit"
+          git push
+
+  deploy:
+    needs: update-notam
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

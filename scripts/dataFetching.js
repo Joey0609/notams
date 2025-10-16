@@ -1,7 +1,7 @@
 const loadingModal = document.getElementById('loadingModal');
 loadingModal.style.display = 'block';
 
-    // fetch('/fetch')
+// fetch('/fetch')
 fetch('/data_dict.json')
     .then(response => {
         if (!response.ok) {
@@ -43,7 +43,7 @@ let dict;
 function fetchData(selectedColor) {
     loadingModal.style.display = 'block';
     // fetch('/fetch')
-    fetch('/data_dict.json')
+    fetch('data_dict.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
