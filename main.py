@@ -43,7 +43,7 @@ print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{
 # print(f"当前使用的ICAO码: {ICAO_CODES}")
 
 app = Flask(__name__)
-app.template_folder = 'templates'
+app.template_folder = '.'
 app.static_folder = 'static'
 
 @app.route('/')
