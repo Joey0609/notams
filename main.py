@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import configparser
-from dinsQueryWeb import dinsQueryWeb
+from fetch.dinsQueryWeb import dinsQueryWeb
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
 import json
 
