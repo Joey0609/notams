@@ -37,7 +37,7 @@ jobs:
 
       - name: Update NOTAM list
         run: |
-          python3 fetch/FNS_NOTAM_SEARCH.py
+          python3 fetch/main.py
 
       - name: Commit and push changes
         run: |
