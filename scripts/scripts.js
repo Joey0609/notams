@@ -60,7 +60,7 @@ function makeMap() {
     drawLaunchsite(102.02667, 28.24556, iW2);//西昌
     drawLaunchsite(111.60778, 38.84861, iW3);//太原
     drawLaunchsite(110.956571, 19.637836, iW4);//文昌
-    drawLaunchsite1(121.259377, 36., iW5);//海阳
+    drawLaunchsite1(121.259377, 36.688761, iW5);//海阳
     var scaleCtrl = new BMap.ScaleControl();
     map.addControl(scaleCtrl);
     // var zoomCtrl = new BMap.ZoomControl();
