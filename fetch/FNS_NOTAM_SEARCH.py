@@ -80,8 +80,10 @@ def fetch_one(icao):
                 rslt.extend(process_notam_data(data))
             else:
                 print(f"[{icao}]-{page} 请求失败，状态码: {response.status_code}")
+                raise
         except Exception as e:
             print(f"[{icao}]-{page} 请求错误: {e}")
+            raise
         page += 1
     return icao, rslt
 
@@ -97,20 +99,67 @@ def process_notam_data(data):
             })
     return results
 
+
+def fetch_one_with_retry(icao, max_retries=2):
+    """
+    带有重试机制的 fetch_one 函数。
+    返回 (icao, data, success_status)
+    """
+    for attempt in range(max_retries):
+        try:
+            # 直接调用原始的 fetch_one 函数
+            icao_code, data = fetch_one(icao)
+            # 如果 fetch_one 内部没有抛出异常，我们就认为成功
+            return icao_code, data, True
+        except Exception as e:
+            print(f"[{icao}] 第 {attempt + 1} 次尝试失败: {e}")
+            # 等待3s
+            time.sleep(3)
+            if attempt == max_retries - 1:
+                # 最后一次尝试也失败了
+                print(f"[{icao}] 在 {max_retries} 次尝试后最终失败。")
+                return icao, [], False
+
+
 def fetch():
     start = time.time()
     results = {}
+    success_cnt = 0
+    fail_cnt = 0
     with ThreadPoolExecutor(max_workers=8) as executor:
-        future_to_icao = {executor.submit(fetch_one, icao): icao for icao in ICAO_CODES}
+        future_to_icao = {executor.submit(fetch_one_with_retry, icao): icao for icao in ICAO_CODES}
         for future in as_completed(future_to_icao):
             icao = future_to_icao[future]
-            icao, data = future.result()
-            results[icao] = data
-            print(f"[{icao}] 完成，获取 {len(data)} 条 NOTAM")
+            try:
+                # 获取结果，包含成功状态
+                icao_code, data, was_successful = future.result()
+
+                results[icao_code] = data
+                if was_successful:
+                    success_cnt += 1
+                    print(f"[{icao_code}] 完成，获取 {len(data)} 条 NOTAM")
+                else:
+                    fail_cnt += 1
+                    print(f"[{icao_code}] 最终失败。")
+
+            except Exception as e:
+                # 这里的异常捕获是预防 future.result() 本身出错
+                # (例如，worker线程崩溃了)
+                fail_cnt += 1
+                print(f"处理 [{icao}] 的 future 时发生意外错误: {e}")
+                results[icao] = []  # 确保即使出错，结果字典中也有这个键
 
     with open("notam_results.json", "w", encoding="utf-8") as f:
-        json.dump({"timestamp": start, "results": results}, f, indent=2, ensure_ascii=False)
-    print("全部 ICAO 和 自由文字 (FUCK) 检索完成。")
+        json.dump({
+            "timestamp": start,
+            "results": results,
+            "stats": {
+                "total": len(ICAO_CODES),
+                "success": success_cnt,
+                "fail": fail_cnt
+            }}, f, indent=2, ensure_ascii=False)
+    print(f"全部 ICAO 和 自由文字 (FUCK) 检索完成")
+    print(f"成功: {success_cnt} / 失败: {fail_cnt}")
     print(f"总耗时：{time.time() - start:.1f} 秒")
     return results
 
@@ -123,7 +172,9 @@ def FNS_NOTAM_SEARCH():
             try:
                 data = json.load(f)
                 ts = data.get("timestamp", 0)
-                if now - ts < 600 and "results" in data:
+                stats_obj = data.get('stats', {})  # 如果 'stats' 不存在，返回一个空字典 {}
+                failed_cnt = stats_obj.get('fail', 0)
+                if now - ts < 600 and "results" in data and failed_cnt == 0:
                     results = data["results"]
                     print("10分钟内爬取过航警，使用已有数据。")
                 else:
