@@ -109,57 +109,57 @@ if dins:
         # dataDict["TIME"].extend(dins_data["TIME"])
         # print(f"爬取来源{source_num}: dinsQueryWeb, 获取 {len(dins_data['CODE'])} 条航警")
         fns_code = []
-            fns_coord = []
-            fns_time = []
+        fns_coord = []
+        fns_time = []
 
-            for code, coords_str, t in zip(FNS_data['CODE'], FNS_data['COORDINATES'], FNS_data['TIME']):
-                pts = []
-                for part in coords_str.split('-'):
-                    p = parse_point(part.strip())
-                    if p:
-                        pts.append(p)
-                excluded = False
-                for rect in EXCLUDE_RECTS:
-                    #1检查落区顶点是否在矩形内
-                    if any(point_in_rect(p, rect) for p in pts):
-                        excluded = True
-                        break
-                    #2检查矩形顶点是否在落区内
-                    corners = [(rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max']),
-                             (rect['lat_max'], rect['lon_min']), (rect['lat_max'], rect['lon_max'])]
-                    if any(point_in_poly(c[0], c[1], pts) for c in corners):
-                        excluded = True
-                        break
-                    #3检查边是否相交
-                    rect_edges = [
-                        ((rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max'])),
-                        ((rect['lat_min'], rect['lon_max']), (rect['lat_max'], rect['lon_max'])),
-                        ((rect['lat_max'], rect['lon_max']), (rect['lat_max'], rect['lon_min'])),
-                        ((rect['lat_max'], rect['lon_min']), (rect['lat_min'], rect['lon_min'])),
-                    ]
-                    found_intersect = False
-                    for i in range(len(pts)):
-                        a = pts[i]; b = pts[(i+1)%len(pts)]
-                        for edge in rect_edges:
-                            if seg_intersect(a, b, edge[0], edge[1]):
-                                excluded = True
-                                found_intersect = True
-                                break
-                        if found_intersect:
+        for code, coords_str, t in zip(FNS_data['CODE'], FNS_data['COORDINATES'], FNS_data['TIME']):
+            pts = []
+            for part in coords_str.split('-'):
+                p = parse_point(part.strip())
+                if p:
+                    pts.append(p)
+            excluded = False
+            for rect in EXCLUDE_RECTS:
+                #1检查落区顶点是否在矩形内
+                if any(point_in_rect(p, rect) for p in pts):
+                    excluded = True
+                    break
+                #2检查矩形顶点是否在落区内
+                corners = [(rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max']),
+                            (rect['lat_max'], rect['lon_min']), (rect['lat_max'], rect['lon_max'])]
+                if any(point_in_poly(c[0], c[1], pts) for c in corners):
+                    excluded = True
+                    break
+                #3检查边是否相交
+                rect_edges = [
+                    ((rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max'])),
+                    ((rect['lat_min'], rect['lon_max']), (rect['lat_max'], rect['lon_max'])),
+                    ((rect['lat_max'], rect['lon_max']), (rect['lat_max'], rect['lon_min'])),
+                    ((rect['lat_max'], rect['lon_min']), (rect['lat_min'], rect['lon_min'])),
+                ]
+                found_intersect = False
+                for i in range(len(pts)):
+                    a = pts[i]; b = pts[(i+1)%len(pts)]
+                    for edge in rect_edges:
+                        if seg_intersect(a, b, edge[0], edge[1]):
+                            excluded = True
+                            found_intersect = True
                             break
-                    if excluded:
+                    if found_intersect:
                         break
-                            
-                if not excluded:
-                    fns_code.append(code)
-                    fns_coord.append(coords_str)
-                    fns_time.append(t)
+                if excluded:
+                    break
+                        
+            if not excluded:
+                fns_code.append(code)
+                fns_coord.append(coords_str)
+                fns_time.append(t)
 
-            if fns_code:
-                dataDict["CODE"].extend(fns_code)
-                dataDict["COORDINATES"].extend(fns_coord)
-                dataDict["TIME"].extend(fns_time)
-            print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(fns_code)} 条航警")
+        if fns_code:
+            dataDict["CODE"].extend(fns_code)
+            dataDict["COORDINATES"].extend(fns_coord)
+            dataDict["TIME"].extend(fns_time)
+        print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(fns_code)} 条航警")
 
 if FNSs:
     FNS_data = FNS_NOTAM_SEARCH()
