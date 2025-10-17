@@ -97,6 +97,7 @@ def process_notam_data(data):
                 'startDate': notam.get('startDate'),
                 'endDate': notam.get('endDate')
             })
+    results.sort(key=lambda r: (r.get('Number') is None, str(r.get('Number') or '').upper()))
     return results
 
 
