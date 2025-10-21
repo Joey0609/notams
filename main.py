@@ -169,7 +169,8 @@ if FNSs:
         dataDict["COORDINATES"].extend(FNS_data["COORDINATES"])
         dataDict["TIME"].extend(FNS_data["TIME"])
         print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(FNS_data['CODE'])} 条航警")
-
+sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"]), key=lambda x: x[0])
+dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"] = zip(*sorted_data)
 dataDict["NUM"] = len(dataDict["CODE"])
 
 print(dataDict)
