@@ -20,7 +20,14 @@ function toggleDrawer() {
     expanded = !expanded;
 }
 
-function drawWarning() {
+async function drawWarning() {
+    const SECRET_KEY = "'Why reinvent the wheel?'";
+    const THREE_MINUTES_IN_SECONDS = 3 * 60;
+    const verificationResult = await verifyUrl(SECRET_KEY, THREE_MINUTES_IN_SECONDS);
+    if (!verificationResult.valid) {
+        alert(`无法绘制航警：${verificationResult.reason}`);
+        return;
+    }
     const text = document.getElementById('inputText').value.trim();
     const color = document.getElementById('colorSelect').value;
     const coordPattern = /[NS]\d{4,6}[WE]\d{5,7}/;
