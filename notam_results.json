@@ -378,6 +378,18 @@
         "Message": "A4016/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/187/256/\nA) ZLHW B) 2511031040 C) 2511031415 \nE) FLW SEGMENT OF ATS RTE CLSD BTN 5,700M(INCLUSIVE) AND \n7,800M(INCLUSIVE):\n1.W213 : URBEB - OVTIB.\n2.W214 :JINGNING VOR&apos;JIG&apos;- XOGAB.\n3.W93  :JINGNING VOR&apos;JIG&apos;- URKIB.\nF) FL187 G) FL256",
         "startDate": "11/03/2025 1040",
         "endDate": "11/03/2025 1415"
+      },
+      {
+        "Number": "A4019/25",
+        "Message": "A4019/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511030400 C) 2511030525 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
+        "startDate": "11/03/2025 0400",
+        "endDate": "11/03/2025 0525"
+      },
+      {
+        "Number": "A4020/25",
+        "Message": "A4020/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511030650 C) 2511030815 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
+        "startDate": "11/03/2025 0650",
+        "endDate": "11/03/2025 0815"
       }
     ],
     "ZPKM": [
@@ -488,6 +500,18 @@
         "Message": "A3980/25 NOTAMR A3413/25\nQ) ZXXX/QARLC/IV/NBO/E/000/999/\nA) ZPKM ZWUQ B) 2510310144 C) 2602221559 EST\nE) SEGMENT DONGDINGRI VOR &apos;DRD&apos; - SHIQUANHE VOR &apos;SQH&apos; OF ATS RTE \nY3 CLSD.",
         "startDate": "10/31/2025 0144",
         "endDate": "02/22/2026 1559EST"
+      },
+      {
+        "Number": "A4019/25",
+        "Message": "A4019/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511030400 C) 2511030525 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
+        "startDate": "11/03/2025 0400",
+        "endDate": "11/03/2025 0525"
+      },
+      {
+        "Number": "A4020/25",
+        "Message": "A4020/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511030650 C) 2511030815 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
+        "startDate": "11/03/2025 0650",
+        "endDate": "11/03/2025 0815"
       },
       {
         "Number": "A4272/20",
