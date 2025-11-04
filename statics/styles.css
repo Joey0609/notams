@@ -262,7 +262,6 @@ textarea {
 .auto-list-panel {
     position: fixed;
     right: -350px;
-    /* 初始隐藏在右侧 */
     top: 50%;
     transform: translateY(-50%);
     width: 320px;
@@ -278,7 +277,6 @@ textarea {
 
 .auto-list-panel.show {
     right: 80px;
-    /* 展开时的位置 */
 }
 
 .auto-list-header {
@@ -389,29 +387,21 @@ textarea {
     font-size: 14px;
 }
 
-/* 加载提示的背景遮罩 */
 .loading-modal {
     display: none;
-    /* 默认隐藏 */
     position: fixed;
-    /* 固定在屏幕上 */
     z-index: 1000;
-    /* 确保在最上层 */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    /* 允许滚动 */
     background-color: rgba(0, 0, 0, 0.5);
-    /* 半透明黑色背景 */
 }
 
-/* 加载提示的内容框 */
 .loading-content {
     background-color: #fefefe;
     margin: 15% auto;
-    /* 垂直居中 */
     padding: 20px;
     border: 1px solid #888;
     width: 200px;
@@ -420,7 +410,6 @@ textarea {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* 旋转的加载动画 */
 .spinner {
     border: 4px solid #f3f3f3;
     border-top: 4px solid #3498db;
@@ -429,7 +418,6 @@ textarea {
     height: 30px;
     animation: spin 1s linear infinite;
     margin: 0 auto 10px auto;
-    /* 水平居中，并增加下边距 */
 }
 
 @keyframes spin {

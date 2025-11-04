@@ -10,12 +10,12 @@ helpButton.addEventListener('click', () => {
         expandableArea.style.bottom = '10px';
         helpButton.style.transform = 'translateY(-180px)';
         customButton.style.transform = 'translateY(-180px)';
-        helpButton.textContent = '收起';
+        helpButton.textContent = 'Collapse';
     } else {
         expandableArea.style.height = '0';
         expandableArea.style.bottom = '0';
         helpButton.style.transform = 'translateY(0)';
         customButton.style.transform = 'translateY(0)';
-        helpButton.textContent = '帮助';
+        helpButton.textContent = 'Help';
     }
 });

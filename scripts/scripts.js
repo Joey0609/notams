@@ -4,18 +4,14 @@ var highlightPolygon = null;
 var autoListExpanded = false;
 
 function handleCopy(text) {
-    // alert(text);
     navigator.clipboard.writeText(text).then(() => {
-        // alert('复制成功: ' + text);
     }).catch(err => {
-        // 降级方案
         const textarea = document.createElement('textarea');
         textarea.value = text;
         document.body.appendChild(textarea);
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        // alert(document.queryCommandSupported('copy') ? '复制成功' : '复制失败');
     });
 }
 
@@ -27,40 +23,40 @@ function makeMap() {
     map.enableScrollWheelZoom(true);
 
     var opts4 = {
-        width: 100,     // 信息窗口宽度
-        height: 70,    // 信息窗口高度
-        title: "文昌航天发射场"  // 信息窗口标题
+        width: 100,
+        height: 70,
+        title: "文昌航天发射场"
     }
     var iW4 = new BMap.InfoWindow("坐标: 东经110.95657°    北纬19.63784°", opts4);
     var opts3 = {
-        width: 100,     // 信息窗口宽度
-        height: 70,    // 信息窗口高度
-        title: "太原卫星发射中心"  // 信息窗口标题
+        width: 100,
+        height: 70,
+        title: "太原卫星发射中心"
     }
     var iW3 = new BMap.InfoWindow("坐标: 东经111.60778°    北纬38.84861°", opts3);
     var opts2 = {
-        width: 100,     // 信息窗口宽度
-        height: 70,    // 信息窗口高度
-        title: "西昌卫星发射中心"  // 信息窗口标题
+        width: 100,
+        height: 70,
+        title: "西昌卫星发射中心"
     }
     var iW2 = new BMap.InfoWindow("坐标: 东经102.02667°    北纬28.24556°", opts2);
     var opts1 = {
-        width: 100,     // 信息窗口宽度
-        height: 70,    // 信息窗口高度
-        title: "酒泉卫星发射中心"  // 信息窗口标题
+        width: 100,
+        height: 70,
+        title: "酒泉卫星发射中心"
     }
     var iW1 = new BMap.InfoWindow("坐标: 东经100.27806°    北纬40.96806°", opts1);
     var opts5 = {
-        width: 100,     // 信息窗口宽度
-        height: 140,    // 信息窗口高度
-        title: '海阳东方航天港'  // 信息窗口标题
+        width: 100,
+        height: 140,
+        title: '海阳东方航天港'
     }
     var iW5 = new BMap.InfoWindow("坐标: 东经121.247675°    北纬36.690209°<br>该位置为海上发射船所在的港口，一般在附近海域执行发射任务", opts5);
-    drawLaunchsite(100.27806, 40.96806, iW1);//酒泉
-    drawLaunchsite(102.02667, 28.24556, iW2);//西昌
-    drawLaunchsite(111.60778, 38.84861, iW3);//太原
-    drawLaunchsite(110.956571, 19.637836, iW4);//文昌
-    drawLaunchsite1(121.259377, 36.688761, iW5);//海阳
+    drawLaunchsite(100.27806, 40.96806, iW1);
+    drawLaunchsite(102.02667, 28.24556, iW2);
+    drawLaunchsite(111.60778, 38.84861, iW3);
+    drawLaunchsite(110.956571, 19.637836, iW4);
+    drawLaunchsite1(121.259377, 36.688761, iW5);
     var scaleCtrl = new BMap.ScaleControl();
     map.addControl(scaleCtrl);
     // var zoomCtrl = new BMap.ZoomControl();
@@ -71,44 +67,39 @@ function siteInit() {
     if (screen_width > 1000) screen_width = 1000;
     var opt_width = screen_width / 3 < 100 ? 100 : screen_width / 3
     var opts4 = {
-        width: opt_width,     // 信息窗口宽度
-        // height: 70,    // 信息窗口高度
-        title: "<b><large>海南文昌</large></b>"  // 信息窗口标题
+        width: opt_width,
+        title: "<b><large>海南文昌</large></b>"
     }
     var iW4 = new BMap.InfoWindow("<b><a href='https://sat.huijiwiki.com/wiki/文昌航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>文昌航天发射场</a>" +
         "（Wenchang Spacecraft Launch Site, WSLS）</b>位于中国海南省文昌市，是中国首座滨海航天发射场，也是世界现有的少数低纬度航天发射场之一。<br>" +
         "<b><a href='https://sat.huijiwiki.com/wiki/海南商业航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>海南商业航天发射场</a>（Hainan Commercial Spacecraft Launch Site）</b>，是我国首个开工建设的商业航天发射场，由海南国际商业航天发射有限公司投建，致力于打造国际一流、市场化运营的航天发射场，进一步提升我国民商运载火箭发射能力。", opts4);
     var opts3 = {
-        width: opt_width,     // 信息窗口宽度
-        // height: 70,    // 信息窗口高度
-        title: "<b><large>山西太原</large></b>"  // 信息窗口标题
+        width: opt_width,
+        title: "<b><large>山西太原</large></b>"
     }
     var iW3 = new BMap.InfoWindow("<b><a href='https://sat.huijiwiki.com/wiki/太原卫星发射中心' target='_blank' style='text-decoration: none; font-weight: bold;'>太原卫星发射中心</a>（Taiyuan Satellite Launch Center, TSLC）</b>，位于山西省忻州市岢岚县北18公里处，地处温带，海拔1500米左右，与芦芽山风景区毗邻，是中国试验卫星、应用卫星和运载火箭发射试验基地之一。发射中心拥有火箭和卫星测试厂房、设备处理间、发射操作设施、飞行跟踪及安全控制设施。", opts3);
     var opts2 = {
-        width: opt_width,     // 信息窗口宽度
-        // height: 70,    // 信息窗口高度
-        title: "<b><large>四川西昌</large></b>"  // 信息窗口标题
+        width: opt_width,
+        title: "<b><large>四川西昌</large></b>"
     }
     var iW2 = new BMap.InfoWindow("<b><a href='https://sat.huijiwiki.com/wiki/西昌卫星发射中心' target='_blank' style='text-decoration: none; font-weight: bold;'>西昌卫星发射中心</a>（Xichang Satellite Launch Center，XSLC）</b>始建于1970年，于1982年交付使用，自1984年1月发射中国第一颗通信卫星以来，到如今已进行国内外卫星发射超过百次，为祖国争得了荣誉。<br>" +
         "发射场主要担负广播、通信和气象等地球同步轨道（GEO）卫星发射的组织指挥、测试发射、主动段测量、安全控制、数据处理、信息传递、气象保障、残骸回收、试验技术研究等任务。", opts2);
     var opts5 = {
-        width: opt_width,     // 信息窗口宽度
-        // height: 140,    // 信息窗口高度
-        title: "<b><large>山东海阳</large></b>"  // 信息窗口标题
+        width: opt_width,
+        title: "<b><large>山东海阳</large></b>"
     }
     var iW5 = new BMap.InfoWindow("<b><a href='https://sat.huijiwiki.com/wiki/海阳东方航天港' target='_blank' style='text-decoration: none; font-weight: bold;'>海阳东方航天港</a>（Haiyang Oriental Spaceport）</b>又称<b>东方航天港（Oriental Maritime Space Port，简称OMSP）</b>，是中国唯一一个运载火箭海上发射母港。项目依托烟台优越的地理位置和港口条件，发挥航天、海工等工业制造基础雄厚的独特优势，打造航天海上发射母港，以及火箭研发制造中心、卫星载荷研发制造中心、海上发射平台研发制造中心和卫星数据应用开发中心，辐射带动智能制造装备、物流装备、能源装备、航天新材料、航天旅游等相关产业。未来，一个百亿级商业航天高科技产业集群将全面崛起，中国将实现海上常态化发射。", opts5);
     var opts1 = {
-        width: opt_width,     // 信息窗口宽度
-        // height: 70,    // 信息窗口高度
-        title: "<b><large>甘肃酒泉</large></b>"  // 信息窗口标题
+        width: opt_width,
+        title: "<b><large>甘肃酒泉</large></b>"
     }
     var iW1 = new BMap.InfoWindow("<b><a href='https://sat.huijiwiki.com/wiki/酒泉卫星发射中心' target='_blank' style='text-decoration: none; font-weight: bold;'>酒泉卫星发射中心</a>（Jiuquan Satellite Launch Center，JSLC，又称东风航天城）</b>，是中国创建最早、规模最大的综合型导弹、卫星发射中心，也是中国目前唯一的载人航天发射场。它曾隶属于中国人民解放军总装备部、中国人民解放军战略支援部队航天系统部，现隶属于中国人民解放军军事航天部队。酒泉卫星发射中心处在酒泉市金塔县与内蒙古额济纳旗交界处。除了常规的发射任务，基地还负有残骸回收、航天员应急救生等任务。", opts1);
 
-    drawLaunchsite(100.27806, 40.96806, iW1);//酒泉
-    drawLaunchsite(102.02667, 28.24556, iW2);//西昌
-    drawLaunchsite(111.60778, 38.84861, iW3);//太原
-    drawLaunchsite(110.956571, 19.637836, iW4);//文昌
-    drawLaunchsite1(121.259377, 36.688761, iW5);//海阳
+    drawLaunchsite(100.27806, 40.96806, iW1);
+    drawLaunchsite(102.02667, 28.24556, iW2);/
+    drawLaunchsite(111.60778, 38.84861, iW3);
+    drawLaunchsite(110.956571, 19.637836, iW4);
+    drawLaunchsite1(121.259377, 36.688761, iW5);
 }
 function drawLaunchsite(siteX, siteY, iW) {
     var point = new BMap.Point(siteX, siteY);
@@ -117,7 +108,7 @@ function drawLaunchsite(siteX, siteY, iW) {
     map.addOverlay(marker);
     marker.addEventListener("click",
         function () {
-            map.openInfoWindow(iW, point); //开启信息窗口
+            map.openInfoWindow(iW, point);
         });
 }
 function drawLaunchsite1(siteX, siteY, iW) {
@@ -127,7 +118,7 @@ function drawLaunchsite1(siteX, siteY, iW) {
     map.addOverlay(marker);
     marker.addEventListener("click",
         function () {
-            map.openInfoWindow(iW, point); //开启信息窗口
+            map.openInfoWindow(iW, point);
         });
 }
 function convertTime(utcTimeStr) {
@@ -168,7 +159,6 @@ function toggleAutoList() {
         updateAutoListContent();
     } else {
         panel.classList.remove('show');
-        // 移除任何高亮
         removeHighlight();
     }
 }

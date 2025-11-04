@@ -77,7 +77,7 @@ def load_config():
             'codes': 'ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH VVTS WSJC WIIF YMMM WMFC RPHI AYPM AGGG ANAU NFFF KZAK VYYF VCCF VOMF WAAF RJJJ RCAA YBBB VVGL VVHN VVHM RCSP VVHM WIIF ',
         }     
         with open(config_file, 'w', encoding='utf-8') as f:
-            f.write('# FIR/ICAO配置，填写你需要获取的航警所在的飞行情报区（FIR）代码或机场ICAO代码\n')
+            f.write('# FIR/ICAO configuration, specify the FIR codes or airport ICAO codes for which you want to retrieve NOTAMs\n')
             config.write(f)
     config.read(config_file, encoding='utf-8')
     return config
@@ -107,7 +107,7 @@ if dins:
         # dataDict["CODE"].extend(dins_data["CODE"])
         # dataDict["COORDINATES"].extend(dins_data["COORDINATES"])
         # dataDict["TIME"].extend(dins_data["TIME"])
-        # print(f"爬取来源{source_num}: dinsQueryWeb, 获取 {len(dins_data['CODE'])} 条航警")
+        # print(f"Source {source_num}: dinsQueryWeb, retrieved {len(dins_data['CODE'])} NOTAMs")
         fns_code = []
         fns_coord = []
         fns_time = []
@@ -120,17 +120,17 @@ if dins:
                     pts.append(p)
             excluded = False
             for rect in EXCLUDE_RECTS:
-                #1检查落区顶点是否在矩形内
+                #1 Check if any vertex of the area is inside the rectangle
                 if any(point_in_rect(p, rect) for p in pts):
                     excluded = True
                     break
-                #2检查矩形顶点是否在落区内
+                #2 Check if any corner of the rectangle is inside the area
                 corners = [(rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max']),
                             (rect['lat_max'], rect['lon_min']), (rect['lat_max'], rect['lon_max'])]
                 if any(point_in_poly(c[0], c[1], pts) for c in corners):
                     excluded = True
                     break
-                #3检查边是否相交
+                #3 Check if edges intersect
                 rect_edges = [
                     ((rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max'])),
                     ((rect['lat_min'], rect['lon_max']), (rect['lat_max'], rect['lon_max'])),
@@ -159,7 +159,7 @@ if dins:
             dataDict["CODE"].extend(fns_code)
             dataDict["COORDINATES"].extend(fns_coord)
             dataDict["TIME"].extend(fns_time)
-        print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(fns_code)} 条航警")
+        print(f"Source {source_num}: FNS_NOTAM_SEARCH, retrieved {len(fns_code)} NOTAMs")
 
 if FNSs:
     FNS_data = FNS_NOTAM_SEARCH()
@@ -168,7 +168,7 @@ if FNSs:
         dataDict["CODE"].extend(FNS_data["CODE"])
         dataDict["COORDINATES"].extend(FNS_data["COORDINATES"])
         dataDict["TIME"].extend(FNS_data["TIME"])
-        print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(FNS_data['CODE'])} 条航警")
+        print(f"Source {source_num}: FNS_NOTAM_SEARCH, retrieved {len(FNS_data['CODE'])} NOTAMs")
 sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"]), key=lambda x: x[0])
 dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"] = zip(*sorted_data)
 dataDict["NUM"] = len(dataDict["CODE"])

@@ -1,23 +1,21 @@
 # notams
 
-通过NOTAMS获取并绘制火箭发射落区<br>
-**注意！该工具能自动获取的仅有航空警告！部分发射可以通过航行警告获知，航行警告暂时不能自动获取，如有需要请自行获取并手动输入坐标**<br>
-**已打包好的程序下载链接**<br>
-[蓝奏云](https://wwpj.lanzoul.com/notams)<br>
-**该项目fork自FallingFengre/notams:main。**<br>
+Obtain and plot rocket launch debris zones via NOTAMs<br>
+**Warning! This tool can automatically retrieve aviation warnings only. Some launches can be identified through navigational warnings, which cannot be automatically retrieved at this time. Please obtain and manually input coordinates if needed.**<br>
+**Download link for the packaged program**<br>
 
-## <span style="font-weight:bold;">该项目和网址严禁外传！</span>
+**This project is forked from FallingFengre/notams:main.**<br>
 
-**一、关于NOTAM和火箭发射落区**<br>
+## <span style="font-weight:bold;">This project and its URL are strictly prohibited from being shared externally!</span>
 
-- &ensp;&ensp;&ensp;&ensp;随着我国航天技术的不断发展进步，航天发射频率正在不断增加。我们常常能看见一些对某次发射型号、时间以及轨道等信息的预测。除根据目标轨道计算发射窗口、通过内部或公开信息渠道获取发射规划安排等方式，普通人提前获知火箭发射信息的重要方法之一就是分析相关NOTAM中包含的落区信息。NOTAM（飞行航行通告，飞行航警）是为通知飞行员相关空域或机场的特别安排、临时规定及运作程序的改变而发出的通告。火箭发射常常有残骸（一级、二级等）掉落，为了保障飞行安全，相关部门会在残骸预计会掉落的位置附近提前划出一个区域，禁止飞机飞入，这片区域就是火箭残骸落区。通过分析落区，我们可以获取包括火箭发射时间地点、大致轨道等信息，甚至能根据落区形状分布分析出火箭型号。  <br>
-- 火箭发射相关的NOTAM常常如下所示：  <br>
+**I. About NOTAMs and Rocket Launch Debris Zones**<br>
+
+- &ensp;&ensp;&ensp;&ensp;With the continuous development and advancement of China's space technology, the frequency of space launches is constantly increasing. We often see predictions about the model, time, and orbit of a certain launch. In addition to calculating launch windows based on target orbits or obtaining launch plans through internal or public information channels, one important way for ordinary people to learn about rocket launches in advance is by analyzing the debris zone information contained in relevant NOTAMs. A NOTAM (Notice to Airmen) is a notice filed with an aviation authority to alert aircraft pilots of potential hazards along a flight route or at a location that could affect the safety of the flight. Rocket launches often involve debris (first stage, second stage, etc.) falling back to Earth. To ensure flight safety, relevant authorities will designate an area near the predicted debris impact location in advance, prohibiting aircraft from entering. This area is known as a rocket debris zone. By analyzing these debris zones, we can obtain information such as the launch time and location, general trajectory, and even deduce the rocket model based on the shape and distribution of the zone.  <br>
+- Rocket launch-related NOTAMs often appear as follows:  <br>
 
 > A1690/23 - A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: N392852E0955438-N385637E0955854-N390118E0970056-N393335E0965708 BACK TO START. VERTICAL LIMITS:SFC-UNL. SFC - UNL, 06 JUL 03:18 2023 UNTIL 06 JUL 04:45 2023. CREATED: 05 JUL 07:40 2023
 
-- &ensp;&ensp;&ensp;&ensp;其中，形如“A1690/23”的是航警编号，“N392852E0955438-N385637E0955854-N390118E0970056-N393335E0965708”是四个坐标，这四个坐标点圈出的矩形区域就是残骸落区， “06 JUL 03:18 2023 UNTIL 06 JUL 04:45 2023”是航警生效时间，可以判断发射时间所在区间。国内空域的发射落区航警常以“A TEMPORARY DANGER AREA”开头，在其它国家领空以及一些海域上空航警格式会有所不同，这导致获取文昌的发射落区航警往往会略微麻烦一些。但所有的发射落区航警包含的信息基本一致。  <br>
-- &ensp;&ensp;&ensp;&ensp;获取NOTAM的方法请移步小工具的帮助。
-
-**其它页面**
-
-[百度贴吧](https://tieba.baidu.com/p/9298301903)
+- &ensp;&ensp;&ensp;&ensp;Among this, something like "A1690/23" is the NOTAM serial number, "N392852E0955438-N385637E0955854-N390118E0970056-N393335E0965708" are four coordinates. The rectangular area enclosed by these four coordinate points is the debris zone. "06 JUL 03:18 2023 UNTIL 06 JUL 04:45 2023" is the effective time of the NOTAM, which can be used to determine the launch window. Debris zone NOTAMs for launches in domestic airspace often begin with "A TEMPORARY DANGER AREA". In other countries' airspace and over some sea areas, the NOTAM format may differ, which can make obtaining debris zone NOTAMs for Wenchang launches slightly more troublesome. However, the information contained in all launch debris zone NOTAMs is essentially the same.  <br>
+- &ensp;&ensp;&ensp;&ensp;For methods on obtaining NOTAMs, please refer to the tool's help section.
+**Other Pages**
+[Baidu Tieba](https://tieba.baidu.com/p/9298301903)

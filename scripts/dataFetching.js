@@ -5,11 +5,10 @@ const DRAW_NEED_VERIFY = 0;
     const THREE_MINUTES_IN_SECONDS = 3 * 60;
     const verificationResult = await verifyUrl(SECRET_KEY, THREE_MINUTES_IN_SECONDS);
     if (!verificationResult.valid && DRAW_NEED_VERIFY) {
-        alert(`无法绘制航警：${verificationResult.reason}`);
+        alert(`Unable to draw NOTAM: ${verificationResult.reason}`);
     }
     else {
         loadingModal.style.display = 'block';
-        // fetch('/fetch')
         fetch('data_dict.json')
             .then(response => {
                 if (!response.ok) {
@@ -33,7 +32,7 @@ const DRAW_NEED_VERIFY = 0;
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-                alert("可能由于以下原因未获取到航警!\n1、当前时间无中国航天相关航警（如有疏漏请反馈）。\n2、您的网络连接存在问题。\n3、用于爬取航警信息的dinsQueryWeb炸了\n您可以继续使用手动输入功能。");
+                alert("The NOTAMs could not be fetched due to the following reasons:\n1. There are no current NOTAMs related to Chinese aerospace activities (please report if there are omissions).\n2. There is an issue with your network connection.\n3. The service used to fetch NOTAM information (dinsQueryWeb) is down.\nYou can continue using the manual input feature.");
             })
             .finally(() => {
                 loadingModal.style.display = 'none';
@@ -58,11 +57,11 @@ async function fetchData(selectedColor) {
     const THREE_MINUTES_IN_SECONDS = 3 * 60;
     const verificationResult = await verifyUrl(SECRET_KEY, THREE_MINUTES_IN_SECONDS);
     if (!verificationResult.valid && DRAW_NEED_VERIFY) {
-        alert(`无法绘制航警：${verificationResult.reason}`);
+        alert(`Unable to draw NOTAM: ${verificationResult.reason}`);
         return;
     }
     else {
-        console.log("验证通过，开始获取数据");
+        console.log("Verification successful, starting data fetch");
     }
     loadingModal.style.display = 'block';
     // fetch('/fetch')
@@ -89,7 +88,7 @@ async function fetchData(selectedColor) {
         })
         .catch(error => {
             console.error('Error fetching data:', error);
-            alert("可能由于以下原因未获取到航警!\n1、当前时间无中国航天相关航警（如有疏漏请反馈）。\n2、您的网络连接存在问题。\n您可以继续使用手动输入功能。");
+            alert("The NOTAMs could not be fetched due to the following reasons:\n1. There are no current NOTAMs related to Chinese aerospace activities (please report if there are omissions).\n2. There is an issue with your network connection.\nYou can continue using the manual input feature.");
         }).finally(() => {
             loadingModal.style.display = 'none';
         });

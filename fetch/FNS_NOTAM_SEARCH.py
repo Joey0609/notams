@@ -102,22 +102,14 @@ def process_notam_data(data):
 
 
 def fetch_one_with_retry(icao, max_retries=2):
-    """
-    带有重试机制的 fetch_one 函数。
-    返回 (icao, data, success_status)
-    """
     for attempt in range(max_retries):
         try:
-            # 直接调用原始的 fetch_one 函数
             icao_code, data = fetch_one(icao)
-            # 如果 fetch_one 内部没有抛出异常，我们就认为成功
             return icao_code, data, True
         except Exception as e:
             print(f"[{icao}] 第 {attempt + 1} 次尝试失败: {e}")
-            # 等待3s
             time.sleep(3)
             if attempt == max_retries - 1:
-                # 最后一次尝试也失败了
                 print(f"[{icao}] 在 {max_retries} 次尝试后最终失败。")
                 return icao, [], False
 
@@ -132,7 +124,6 @@ def fetch():
         for future in as_completed(future_to_icao):
             icao = future_to_icao[future]
             try:
-                # 获取结果，包含成功状态
                 icao_code, data, was_successful = future.result()
 
                 results[icao_code] = data
@@ -144,8 +135,6 @@ def fetch():
                     print(f"[{icao_code}] 最终失败。")
 
             except Exception as e:
-                # 这里的异常捕获是预防 future.result() 本身出错
-                # (例如，worker线程崩溃了)
                 fail_cnt += 1
                 print(f"处理 [{icao}] 的 future 时发生意外错误: {e}")
                 results[icao] = []  # 确保即使出错，结果字典中也有这个键
@@ -159,7 +148,6 @@ def fetch():
         }
     }
     output_data["results"] = dict(sorted(results.items()))
-    # print(json.dumps(output_data, indent=2, ensure_ascii=False))
     with open("notam_results.json", "w", encoding="utf-8") as f:
         json.dump(output_data, f, indent=2, ensure_ascii=False)
     print(f"全部 ICAO 和 自由文字 (FUCK) 检索完成")
