@@ -4,11 +4,11 @@ on:
   push:
     branches: ["main"]
   schedule:
-    - cron: "*/30 * * * *" # 每 30 分钟运行一次
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 permissions:
-  contents: write # 允许 Python 脚本修改并 push 文件
+  contents: write
   pages: write
   id-token: write
 
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: true # 允许推送变更
+          persist-credentials: true
           fetch-depth: 0
 
       - name: Set up Python 3.10
