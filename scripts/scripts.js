@@ -96,7 +96,7 @@ function siteInit() {
     var iW1 = new BMap.InfoWindow("<b><a href='https://sat.huijiwiki.com/wiki/酒泉卫星发射中心' target='_blank' style='text-decoration: none; font-weight: bold;'>酒泉卫星发射中心</a>（Jiuquan Satellite Launch Center，JSLC，又称东风航天城）</b>，是中国创建最早、规模最大的综合型导弹、卫星发射中心，也是中国目前唯一的载人航天发射场。它曾隶属于中国人民解放军总装备部、中国人民解放军战略支援部队航天系统部，现隶属于中国人民解放军军事航天部队。酒泉卫星发射中心处在酒泉市金塔县与内蒙古额济纳旗交界处。除了常规的发射任务，基地还负有残骸回收、航天员应急救生等任务。", opts1);
 
     drawLaunchsite(100.27806, 40.96806, iW1);
-    drawLaunchsite(102.02667, 28.24556, iW2);/
+    drawLaunchsite(102.02667, 28.24556, iW2);
     drawLaunchsite(111.60778, 38.84861, iW3);
     drawLaunchsite(110.956571, 19.637836, iW4);
     drawLaunchsite1(121.259377, 36.688761, iW5);
