@@ -156,8 +156,8 @@
         "endDate": "12/10/2025 1559"
       },
       {
-        "Number": "A4122/25",
-        "Message": "A4122/25 NOTAMN\nQ) ZXXX/QARLC/IV/NBO/E/000/999/\nA) ZLHW ZBPE ZWUQ B) 2511080320 C) 2511080440 \nE) FLW SEGMENT OF ATS RTE CLSD :\n1. W66  : DENGKOU VOR&apos;DKO&apos; - BUVTA \n2. B330 : MORIT - DAMRO  \n3. W195 : ALGOT - MORIT  \n4. W28  : KEVOB - ATBUG  \n5. Y1   : DUMIN - LUSMA \n6. L888 : LEBAK - BEVTA",
+        "Number": "A4132/25",
+        "Message": "A4132/25 NOTAMN\nQ) ZXXX/QARLC/IV/NBO/E/000/999/\nA) ZLHW ZBPE ZWUQ B) 2511080320 C) 2511080440 \nE) FLW SEGMENT OF ATS RTE CLSD :\n1. W66  : DENGKOU VOR&apos;DKO&apos; - BUVTA.\n2. B330 : MORIT - DAMRO.\n3. W195 : ALGOT - MORIT.\n7. W28  : KEVOB - ATBUG.\n8. Y1   : MAGOD - LUSMA.\n9. W192 : KIDIV - DUMIN.\n12. L888 : LEBAK - BEVTA.",
         "startDate": "11/08/2025 0320",
         "endDate": "11/08/2025 0440"
       }
@@ -398,12 +398,6 @@
         "endDate": "11/08/2025 0440"
       },
       {
-        "Number": "A4122/25",
-        "Message": "A4122/25 NOTAMN\nQ) ZXXX/QARLC/IV/NBO/E/000/999/\nA) ZLHW ZBPE ZWUQ B) 2511080320 C) 2511080440 \nE) FLW SEGMENT OF ATS RTE CLSD :\n1. W66  : DENGKOU VOR&apos;DKO&apos; - BUVTA \n2. B330 : MORIT - DAMRO  \n3. W195 : ALGOT - MORIT  \n4. W28  : KEVOB - ATBUG  \n5. Y1   : DUMIN - LUSMA \n6. L888 : LEBAK - BEVTA",
-        "startDate": "11/08/2025 0320",
-        "endDate": "11/08/2025 0440"
-      },
-      {
         "Number": "A4123/25",
         "Message": "A4123/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/301/\nA) ZLHW B) 2511080150 C) 2511080320 \nE) FLW SEGMENT OF ATS RTE CLSD AT 9,200M AND BELOW:\n1.W66  :POTOT - ATBUG  \n2.B330 : MORIT - DAMRO  \n3.W195 : ALGOT - MORIT\nF) FL000 G) FL301",
         "startDate": "11/08/2025 0150",
@@ -450,6 +444,12 @@
         "Message": "A4130/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511080945 C) 2511081110 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
         "startDate": "11/08/2025 0945",
         "endDate": "11/08/2025 1110"
+      },
+      {
+        "Number": "A4132/25",
+        "Message": "A4132/25 NOTAMN\nQ) ZXXX/QARLC/IV/NBO/E/000/999/\nA) ZLHW ZBPE ZWUQ B) 2511080320 C) 2511080440 \nE) FLW SEGMENT OF ATS RTE CLSD :\n1. W66  : DENGKOU VOR&apos;DKO&apos; - BUVTA.\n2. B330 : MORIT - DAMRO.\n3. W195 : ALGOT - MORIT.\n7. W28  : KEVOB - ATBUG.\n8. Y1   : MAGOD - LUSMA.\n9. W192 : KIDIV - DUMIN.\n12. L888 : LEBAK - BEVTA.",
+        "startDate": "11/08/2025 0320",
+        "endDate": "11/08/2025 0440"
       }
     ],
     "ZPKM": [
@@ -716,8 +716,8 @@
         "endDate": "11/10/2025 1300EST"
       },
       {
-        "Number": "A4122/25",
-        "Message": "A4122/25 NOTAMN\nQ) ZXXX/QARLC/IV/NBO/E/000/999/\nA) ZLHW ZBPE ZWUQ B) 2511080320 C) 2511080440 \nE) FLW SEGMENT OF ATS RTE CLSD :\n1. W66  : DENGKOU VOR&apos;DKO&apos; - BUVTA \n2. B330 : MORIT - DAMRO  \n3. W195 : ALGOT - MORIT  \n4. W28  : KEVOB - ATBUG  \n5. Y1   : DUMIN - LUSMA \n6. L888 : LEBAK - BEVTA",
+        "Number": "A4132/25",
+        "Message": "A4132/25 NOTAMN\nQ) ZXXX/QARLC/IV/NBO/E/000/999/\nA) ZLHW ZBPE ZWUQ B) 2511080320 C) 2511080440 \nE) FLW SEGMENT OF ATS RTE CLSD :\n1. W66  : DENGKOU VOR&apos;DKO&apos; - BUVTA.\n2. B330 : MORIT - DAMRO.\n3. W195 : ALGOT - MORIT.\n7. W28  : KEVOB - ATBUG.\n8. Y1   : MAGOD - LUSMA.\n9. W192 : KIDIV - DUMIN.\n12. L888 : LEBAK - BEVTA.",
         "startDate": "11/08/2025 0320",
         "endDate": "11/08/2025 0440"
       }
