@@ -270,13 +270,13 @@ textarea {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transition: right 0.3s ease;
-    z-index: 99;
+    z-index: 110;
     display: flex;
     flex-direction: column;
 }
 
 .auto-list-panel.show {
-    right: 80px;
+    right: 20px;
 }
 
 .auto-list-header {
