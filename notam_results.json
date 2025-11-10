@@ -516,6 +516,24 @@
         "Message": "A4183/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/246/\nA) ZLHW B) 2511110802 C) 2511110930 \nE) FLW SEGMENT OF ATS RTE CLSD AT 7,500M AND BELOW:\n1.W66  : POTOT - ATBUG .\n2.B330 : MORIT - ELRUB .\n3.V67  : ALGOT - N393931E1003646 .\n4.A596 : KASTI - YABRAI VOR&apos;YBL&apos;.\n5.W195 : ALGOT - MORIT .\nF) FL000 G) FL246",
         "startDate": "11/11/2025 0802",
         "endDate": "11/11/2025 0930"
+      },
+      {
+        "Number": "A4185/25",
+        "Message": "A4185/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/266/\nA) ZLHW B) 2511102345 C) 2511111300 \nE) FLW SEGMENT OF ATS RTE CLSD AT 8,100M AND BELOW:\n1.Y1   :MAGOD - LUSMA.\n2.L888 :TONAX - LEBAK.\nF) FL000 G) FL266",
+        "startDate": "11/10/2025 2345",
+        "endDate": "11/11/2025 1300"
+      },
+      {
+        "Number": "A4186/25",
+        "Message": "A4186/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511110200 C) 2511110320 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
+        "startDate": "11/11/2025 0200",
+        "endDate": "11/11/2025 0320"
+      },
+      {
+        "Number": "A4187/25",
+        "Message": "A4187/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511110450 C) 2511110610 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
+        "startDate": "11/11/2025 0450",
+        "endDate": "11/11/2025 0610"
       }
     ],
     "ZPKM": [
@@ -632,6 +650,18 @@
         "Message": "A4159/25 NOTAMN\nQ) ZPKM/QNMAS/IV/BO/E/000/999/2539N10019E025\nA) ZPKM B) 2511111600 C) 2604151559 \nE) DALI VOR/DME &apos;DAL&apos; 112.6MHZ/CH73X U/S DUE TO WIP.",
         "startDate": "11/11/2025 1600",
         "endDate": "04/15/2026 1559"
+      },
+      {
+        "Number": "A4186/25",
+        "Message": "A4186/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511110200 C) 2511110320 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
+        "startDate": "11/11/2025 0200",
+        "endDate": "11/11/2025 0320"
+      },
+      {
+        "Number": "A4187/25",
+        "Message": "A4187/25 NOTAMN\nQ) ZXXX/QARLT/IV/NBO/E/000/341/\nA) ZLHW ZPKM B) 2511110450 C) 2511110610 \nE) SEGMENT OMBON - N350737E1000535 OF ATS RTE Y1 CLSD AT 10,400M \nAND BELOW.\nF) FL000 G) FL341",
+        "startDate": "11/11/2025 0450",
+        "endDate": "11/11/2025 0610"
       },
       {
         "Number": "A4272/20",
