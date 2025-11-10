@@ -154,6 +154,12 @@
         "Message": "A4164/25 NOTAMN\nQ) ZBPE/QARLT/IV/NBO/E/000/197/\nA) ZBPE B) 2511111520 C) 2511112300 \nE) FLW SEGMENT OF ATS RTE CLSD BELOW 6,000M:\n1.W64 :VALNI-UBRAG.\n2.W69 :DUDIL-TOREL.\nF) FL000 G) FL197",
         "startDate": "11/11/2025 1520",
         "endDate": "11/11/2025 2300"
+      },
+      {
+        "Number": "A4165/25",
+        "Message": "A4165/25 NOTAMN\nQ) ZBPE/QNMCT/IV/BO/E/000/999/3806N11635E025\nA) ZBPE B) 2511102100 C) 2511110100 \nE) POTOU VOR/DME &apos;BTO&apos; 115.9MHZ/CH106X U/S DUE TO FLTCK.",
+        "startDate": "11/10/2025 2100",
+        "endDate": "11/11/2025 0100"
       }
     ],
     "ZGZU": [
@@ -630,12 +636,6 @@
         "Message": "A3980/25 NOTAMR A3413/25\nQ) ZXXX/QARLC/IV/NBO/E/000/999/\nA) ZPKM ZWUQ B) 2510310144 C) 2602221559 EST\nE) SEGMENT DONGDINGRI VOR &apos;DRD&apos; - SHIQUANHE VOR &apos;SQH&apos; OF ATS RTE \nY3 CLSD.",
         "startDate": "10/31/2025 0144",
         "endDate": "02/22/2026 1559EST"
-      },
-      {
-        "Number": "A4093/25",
-        "Message": "A4093/25 NOTAMN\nQ) ZWUQ/QNMAS/IV/BO/E/000/999/4640N08321E025\nA) ZWUQ B) 2511100700 C) 2511101300 EST\nE) TACHENG VOR/DME &apos;TCH&apos; 113.1MHZ/CH78X U/S DUE TO MAINT.",
-        "startDate": "11/10/2025 0700",
-        "endDate": "11/10/2025 1300EST"
       },
       {
         "Number": "A4154/25",
