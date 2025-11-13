@@ -434,12 +434,6 @@
         "endDate": "11/13/2025 1055"
       },
       {
-        "Number": "A4248/25",
-        "Message": "A4248/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/197/\nA) ZLHW B) 2511122030 C) 2511130210 \nE) FLW SEGMENT OF ATS RTE CLSD AT 6,000M AND BELOW:\n1.B215 :TODOD - NIXUK.\n2.W191 :MOVBI - VIKUP.\n3.W187 :OBDEG - KARVI.\n4.W112 :TUSLI - VIKUP.\nF) FL000 G) FL197",
-        "startDate": "11/12/2025 2030",
-        "endDate": "11/13/2025 0210"
-      },
-      {
         "Number": "A4249/25",
         "Message": "A4249/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/197/\nA) ZLHW B) 2511130310 C) 2511130830 \nE) FLW SEGMENT OF ATS RTE CLSD AT 6,000M AND BELOW:\n1.B215 :TODOD - NIXUK.\n2.W191 :MOVBI - VIKUP.\n3.W187 :OBDEG - KARVI.\n4.W112 :TUSLI - VIKUP.\nF) FL000 G) FL197",
         "startDate": "11/13/2025 0310",
@@ -752,10 +746,10 @@
         "endDate": "11/13/2025 1300"
       },
       {
-        "Number": "A4244/25",
-        "Message": "A4244/25 NOTAMN\nQ) ZWUQ/QARLC/IV/NBO/E/000/999/\nA) ZWUQ B) 2511130050 C) 2511130200 \nE) SEGMENT RUSDI-100KM NORTH OF RUSDI OF ATS RTE W192 CLSD.\nF) GND G) UNL",
-        "startDate": "11/13/2025 0050",
-        "endDate": "11/13/2025 0200"
+        "Number": "A4250/25",
+        "Message": "A4250/25 NOTAMN\nQ) ZWUQ/QARLC/IV/NBO/E/000/999/\nA) ZWUQ B) 2511131150 C) 2511131300 \nE) FLW SEGMENT OF ATS RTE CLSD:\n1.W112 :VIDUT-ADMUX \n2.W192 :ESDEX-RUSDI \n4.W187 :OBDEG-SADAN \n5.Y1   :SADAN-MAGOD \n6.L888 :SADAN-BEVTA\nF) GND G) UNL",
+        "startDate": "11/13/2025 1150",
+        "endDate": "11/13/2025 1300"
       }
     ],
     "ZYSH": [
