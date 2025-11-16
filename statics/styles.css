@@ -176,7 +176,7 @@ textarea {
     box-sizing: border-box;
 }
 
-.help-btn,
+.hide-btn,
 .custom-btn {
     position: absolute;
     bottom: 40px;
@@ -192,7 +192,7 @@ textarea {
     z-index: 2;
 }
 
-.help-btn {
+.hide-btn {
     width: 42px;
     left: 20px;
     border-radius: 10px;
