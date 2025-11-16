@@ -24,7 +24,11 @@ const DRAW_NEED_VERIFY = 0;
                 siteInit();
                 for (var i = 0; i < dict.NUM; i++) {
                     // alert(i);
+                    try {
                     drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], i, "blue", 0);
+                    } catch (e) {
+                        console.error(`Error drawing NOTAM index ${i}:`, e);
+                    }
                 }
                 if (autoListExpanded) {
                     updateAutoListContent();

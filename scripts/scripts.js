@@ -291,6 +291,7 @@ function locateToNotam(index) {
 
 function drawNot(COORstrin, timee, codee, numm, col, is_self) {
     var pos = COORstrin;
+    console.log(timee);
     if (!is_self)
         var timestr = convertTime(timee)
     var stPos = 0;
