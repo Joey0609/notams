@@ -19,7 +19,7 @@ hideButton.addEventListener('click', () => {
     confirmationDialog.appendChild(message);
 
     const image = document.createElement('img');
-    image.src = '/assets/showAllHelp.png';
+    image.src = 'assets/showAllHelp.png';
     image.alt = 'Help Image';
     image.style.maxWidth = '100%';
     image.style.marginTop = '10px';
