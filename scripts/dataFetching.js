@@ -9,7 +9,7 @@ const DRAW_NEED_VERIFY = 0;
     }
     else {
         loadingModal.style.display = 'block';
-        fetch('data_dict.json')
+        fetch('data_dict.json', { cache: 'no-cache' })
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -69,7 +69,7 @@ async function fetchData(selectedColor) {
     }
     loadingModal.style.display = 'block';
     // fetch('/fetch')
-    fetch('data_dict.json')
+    fetch('data_dict.json', { cache: 'no-cache' })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

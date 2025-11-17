@@ -176,8 +176,7 @@ textarea {
 }
 
 .hide-btn,
-.custom-btn,
-.clearcache-btn {
+.custom-btn {
     position: absolute;
     bottom: 40px;
     height: 42px;
@@ -207,14 +206,7 @@ textarea {
     background-color: #d6d6d6;
     padding: 0 20px;
 }
-.clearcache-btn {
-    bottom: 40px;
-    left: 340px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    background-color: #d6d6d6;
-    color: #333;
-}
+
 .expandable-area {
     position: absolute;
     left: 12px;

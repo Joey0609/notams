@@ -1,7 +1,6 @@
 const hideButton = document.getElementById('hideButton');
 const expandableArea = document.getElementById('expandableArea');
 const customButton = document.getElementById('customButton');
-const clearcacheButton = document.getElementById('clearCacheButton');
 let isExpanded = false;
 hideButton.addEventListener('click', () => {
     const confirmationDialog = document.createElement('div');
@@ -52,9 +51,6 @@ hideButton.addEventListener('click', () => {
         if (customButton) {
             customButton.style.display = 'none';
         }
-        if (clearcacheButton) {
-            clearcacheButton.style.display = 'none';
-        }
         const fourthChild = document.querySelector('#allmap > div:nth-child(4)');
         if (fourthChild) {
             fourthChild.style.display = 'none';
@@ -87,9 +83,6 @@ hideButton.addEventListener('click', () => {
 
     
 });
-clearcacheButton.addEventListener('click', () => {
-    window.location.reload(true);
-}); 
  function showAll()
 {
     const controls = document.getElementById('controls');
@@ -108,8 +101,5 @@ clearcacheButton.addEventListener('click', () => {
     }
     if (customButton) {
         customButton.style.display = 'flex';
-    }
-    if (clearcacheButton) {
-        clearcacheButton.style.display = 'flex';
     }
 }
