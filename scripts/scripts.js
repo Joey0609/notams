@@ -134,7 +134,8 @@ function convertTime(utcTimeStr) {
     const regex = /(\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/;
     const match = utcTimeStr.match(regex);
     if (!match) {
-        throw new Error("Invalid time format");
+        // throw new Error("Invalid time format");
+        return utcTimeStr
     }
     const [, startDay, startMonth, startTime, startYear, endDay, endMonth, endTime, endYear] = match;
     const monthMap = {
