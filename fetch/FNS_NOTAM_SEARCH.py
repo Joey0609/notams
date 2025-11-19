@@ -267,7 +267,7 @@ def FNS_NOTAM_SEARCH():
     for icao, notams in results.items():
         for notam in notams:
             message = notam.get('Message', '')
-            if ("BOUNDED BY" in message or "AEROSPACE" in message) and "-" in message:
+            if ("A TEMPORARY" in message and "-" in message) or "AEROSPACE" in message:
                 message = message.replace(" ", "")
                 coordinate_groups = extract_coordinate_groups(message)
                 time_result = parse_time(notam.get('startDate'), notam.get('endDate'))

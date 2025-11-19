@@ -36,7 +36,7 @@ const DRAW_NEED_VERIFY = 0;
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-                alert("The NOTAMs could not be fetched due to the following reasons:\n1. There are no current NOTAMs related to Chinese aerospace activities (please report if there are omissions).\n2. There is an issue with your network connection.\n3. The service used to fetch NOTAM information (dinsQueryWeb) is down.\nYou can continue using the manual input feature.");
+                alert("The NOTAMs could not be fetched due to the following reasons:\n1. There are no current NOTAMs related to Chinese aerospace activities (please report if there are omissions).\n2. There is an issue with your network connection.\n3. The service used to fetch NOTAM information is down.\nYou can continue using the manual input feature.");
             })
             .finally(() => {
                 loadingModal.style.display = 'none';
