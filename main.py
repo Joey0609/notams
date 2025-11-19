@@ -170,13 +170,13 @@ def fetch():
                 for rect in EXCLUDE_RECTS:
                     #1检查落区顶点是否在矩形内
                     if any(point_in_rect(p, rect) for p in pts):
-                        excluded = True
+                        excluded = False #True
                         break
                     #2检查矩形顶点是否在落区内
                     corners = [(rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max']),
                              (rect['lat_max'], rect['lon_min']), (rect['lat_max'], rect['lon_max'])]
                     if any(point_in_poly(c[0], c[1], pts) for c in corners):
-                        excluded = True
+                        excluded = False #True
                         break
                     #3检查边是否相交
                     rect_edges = [
@@ -190,7 +190,7 @@ def fetch():
                         a = pts[i]; b = pts[(i+1)%len(pts)]
                         for edge in rect_edges:
                             if seg_intersect(a, b, edge[0], edge[1]):
-                                excluded = True
+                                excluded = False #True
                                 found_intersect = True
                                 break
                         if found_intersect:

@@ -4,7 +4,14 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="statics/styles.css">
-	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FVRWQc7Klepa1IS96IIwUB5CklfAFe5j"></script>
+	<!-- Leaflet CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+	      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+	      crossorigin="" />
+	<!-- Leaflet JS -->
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+	        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+	        crossorigin=""></script>
 	<title>NOTAM落区查阅绘制工具</title>
 </head>
 <body>
@@ -77,25 +84,32 @@
         <div class="custom-btn" id="customButton" onclick="fetchInit()">移除自动绘制落区</div>
         <div class="expandable-area" id="expandableArea">
             <div class="expandable-content">
-                <a href="https://tieba.baidu.com/p/5492230455" target="_blank">获取NOTAMS的方式</a><br>
-                NOTAMS网址:<br>
-                <a href="https://www.notams.faa.gov" target="_blank">www.notams.faa.gov</a><br>
-                <a href="https://pilotweb.nas.faa.gov" target="_blank">pilotweb.nas.faa.gov</a><br>
-                这个项目:<br>
-                <a href="https://github.com/FallingFengre/notams" target="_blank">github</a><br>
-                <a href="https://www.bilibili.com/opus/1005673245294198789" target="_blank">b站专栏</a><br>
-                <a href="https://tieba.baidu.com/p/9298301903" target="_blank">百度贴吧</a><br>
+                <div class="help-section">
+                    <h4>关于NOTAMS</h4>
+                    <a href="https://tieba.baidu.com/p/5492230455" target="_blank">获取NOTAMS的方式</a>
+                </div>
+                <div class="help-section">
+                    <h4>获取NOTAMS的网站</h4>
+                    <a href="https://pilotweb.nas.faa.gov" target="_blank">pilotweb.nas.faa.gov</a>
+                </div>
+                <div class="help-section">
+                    <h4>关于本项目</h4>
+                    <a href="https://github.com/FallingFengre/notams" target="_blank">GitHub仓库</a>
+                    <a href="https://www.bilibili.com/opus/1005673245294198789" target="_blank">B站专栏</a>
+                    <a href="https://tieba.baidu.com/p/9298301903" target="_blank">百度贴吧</a>
+                </div>
             </div>
         </div>
         <div id="loadingModal" class="loading-modal">
             <div class="loading-content">
+                <button class="loading-close-btn" onclick="closeLoadingModal()">×</button>
                 <div class="spinner"></div>
-                <p>正在获取中...</p>
+                <p>正在获取中...<br><br>你可以关闭该窗口<br>这不会影响自动获取</p>
             </div>
         </div>
         <script src="/scripts/buttons.js"></script>
     </div>
-    <script src="/scripts/dataFetching.js"></script>
     <script src="/scripts/scripts.js"></script>
+    <script src="/scripts/dataFetching.js"></script>
 </body>
 </html>

@@ -273,15 +273,15 @@ def FNS_NOTAM_SEARCH():
     data_array = np.array(["CODE", "COORDINATES", "TIME"])
     
     # 处理每个NOTAM
+    debug=False
     for icao, notams in results.items():
         for notam in notams:
             message = notam.get('Message', '')
-            if ("BOUNDED BY" in message or "AEROSPACE" in message) and "-" in message:
+            if ("A TEMPORARY" in message and "-" in message) or "AEROSPACE" in message:
                 message = message.replace(" ", "")
                 coordinate_groups = extract_coordinate_groups(message)
                 time_result = parse_time(notam.get('startDate'), notam.get('endDate'))
                 code = notam.get('Number', 'UNKNOWN')
-                
                 for i, group in enumerate(coordinate_groups):
                     coordinates_result = '-'.join(group)
                     if len(coordinate_groups) > 1:
@@ -307,6 +307,5 @@ def FNS_NOTAM_SEARCH():
             "COORDINATES": [],
             "TIME": [],
         }
-
     return result
 # print(FNS_NOTAM_SEARCH())

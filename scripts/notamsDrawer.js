@@ -201,10 +201,13 @@ function selfDrawNot(text, color, num) {
 }
 
 function notRemove(num) {
-    map.removeOverlay(polygon[num]);
+    if (polygon[num]) {
+        map.removeLayer(polygon[num]);
+        polygon[num] = null;
+    }
 }
 
 function modeInitial(){
-    map.clearOverlays();
+    clearAllPolygons();
     siteInit();
 }

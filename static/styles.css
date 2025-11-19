@@ -1,22 +1,75 @@
-/* body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    height: 100vh;
+/* Leaflet地图样式 */
+body,html,#allmap {
+    width: 100%;
+    height: 100%;
     overflow: hidden;
+    margin:0;
+    font-family:"微软雅黑";
+    z-index:1;
+}
+
+/* Leaflet popup自定义样式 */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+}
+
+.notam-popup h4 {
+    margin: 0 0 10px 0;
+    padding: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.launch-site-popup {
+    max-width: 350px !important;
+}
+
+.notam-info-popup .leaflet-popup-content {
+    margin: 10px;
+}
+
+/* Leaflet控件样式调整 */
+.leaflet-control-layers {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+}
+
+.leaflet-bar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 隐藏Leaflet版权标识中的国旗图标 */
+.leaflet-attribution-flag {
+    display: none !important;
+}
+
+/* 右下角缩放控件位置调整 */
+.leaflet-bottom.leaflet-right {
     display: flex;
-    justify-content: center;
+    flex-direction: column-reverse;  /* 反转顺序，版权栏在下 */
     align-items: flex-end;
-    background-color: rgba(255, 255, 255, 0.0);
-} */
-body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";z-index:1;},
+    gap: 10px;
+}
+
+/* 展开的图层控件样式优化 */
+.leaflet-control-layers-expanded {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.95);
+}
+
 .smoke{
     position:relative;
     z-index:1;
+    width: 100%;
+    height: 100%;
 }
 .div1{
     position:absolute;
     z-index:2;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }
 .div2{
     position:absolute;
@@ -182,20 +235,55 @@ textarea {
     position: absolute;
     left: 12px;
     bottom: 40px;
-    width: 250px;
-    height: 0;
-    background-color: rgba(255, 255, 255, 0.6);
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    transition: height 0.3s ease, bottom 0.3s ease;
+    width: 280px;
+    max-height: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: max-height 0.3s ease, bottom 0.3s ease;
     z-index: 2;
 }
 
 .expandable-content {
-    padding: 10px;
-    font-size: 14px;
+    padding: 12px;
+    font-size: 13px;
     color: #333;
+    line-height: 1.5;
+}
+
+.help-section {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.help-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.help-section h4 {
+    margin: 0 0 6px 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.help-section a {
+    color: #3498db;
+    text-decoration: none;
+    display: block;
+    margin: 3px 0;
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+.help-section a:hover {
+    color: #2980b9;
+    text-decoration: underline;
 }
 
 .auto-list-btn {
@@ -380,6 +468,28 @@ textarea {
     text-align: center;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+/* 加载窗口关闭按钮 */
+.loading-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    transition: color 0.2s ease;
+}
+
+.loading-close-btn:hover {
+    color: #333;
 }
 
 /* 旋转的加载动画 */

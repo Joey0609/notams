@@ -6,13 +6,13 @@ helpButton.addEventListener('click', () => {
     isExpanded = !isExpanded;
 
     if (isExpanded) {
-        expandableArea.style.height = '180px';
+        expandableArea.style.maxHeight = '300px';
         expandableArea.style.bottom = '10px';
-        helpButton.style.transform = 'translateY(-180px)';
-        customButton.style.transform = 'translateY(-180px)';
+        helpButton.style.transform = 'translateY(-240px)';
+        customButton.style.transform = 'translateY(-240px)';
         helpButton.textContent = '收起';
     } else {
-        expandableArea.style.height = '0';
+        expandableArea.style.maxHeight = '0';
         expandableArea.style.bottom = '0';
         helpButton.style.transform = 'translateY(0)';
         customButton.style.transform = 'translateY(0)';
