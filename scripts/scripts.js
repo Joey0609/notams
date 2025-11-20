@@ -243,8 +243,8 @@ function siteInit() {
 function drawLaunchsite(lat, lng, title, content, iconUrl) {
     var icon = L.icon({
         iconUrl: iconUrl,
-        iconSize: iconUrl.includes('launch1') ? [28, 28] : [22, 26],
-        iconAnchor: iconUrl.includes('launch1') ? [14, 14] : [11, 13],
+        iconSize: iconUrl.includes('launch1') ? [28, 28] : [18, 20],
+        iconAnchor: iconUrl.includes('launch1') ? [14, 14] : [9, 10],
         popupAnchor: [0, -40]
     });
 
