@@ -419,7 +419,7 @@ function locateToNotam(index) {
 }
 
 // 绘制NOTAM多边形
-function drawNot(COORstrin, timee, codee, numm, col, is_self) {
+function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
     var pos = COORstrin;
     var timestr = is_self ? null : convertTime(timee);
     var stPos = 0;
@@ -461,21 +461,42 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self) {
     var popupContent;
     if (!is_self) {
         popupContent = "<div class='notam-popup'>" +
+            "<div class='notam-popup-header'>" +
             "<h4>NOTAM信息</h4>" +
-            "持续时间:<br>" + timestr + "<br>" +
-            "航警编号:<br>" + codee + "<br>" +
-            "<button class='copy' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
+            "</div>" +
+            "<div class='notam-popup-body'>" +
+            "<div class='popup-info-row'>" +
+            "<span class='popup-label'>持续时间:</span>" +
+            "<span class='popup-value'>" + timestr + "</span>" +
+            "</div>" +
+            "<div class='popup-info-row'>" +
+            "<span class='popup-label'>航警编号:</span>" +
+            "<span class='popup-value'>" + codee + "</span>" +
+            "</div>" +
+            "</div>" +
+            "<div class='notam-popup-buttons'>" +
+            "<button class='copy copy-coord' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
+            "<button class='copy copy-raw' onclick=\"handleCopy('" + (rawmessage || '').replace(/'/g, "\\'").replace(/\n/g, '\\n') + "')\">复制原始航警</button>" +
+            "</div>" +
             "</div>";
     } else {
         popupContent = "<div class='notam-popup'>" +
+            "<div class='notam-popup-header'>" +
             "<h4>用户绘制落区</h4>" +
-            "航警" + numm + "<br>" +
+            "</div>" +
+            "<div class='notam-popup-body'>" +
+            "<div class='popup-info-row'>" +
+            "<span class='popup-value'>航警" + numm + "</span>" +
+            "</div>" +
+            "</div>" +
+            "<div class='notam-popup-buttons'>" +
             "<button class='copy' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
+            "</div>" +
             "</div>";
     }
 
     tmpPolygon.bindPopup(popupContent, {
-        maxWidth: 250,
+        maxWidth: 300,
         className: 'notam-info-popup'
     });
 

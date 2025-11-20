@@ -139,6 +139,8 @@ def fetch():
         "CODE": [],
         "COORDINATES": [],
         "TIME": [],
+        "PLATID": [],
+        "RAWMESSAGE": [],
         "NUM": 0,
     }
     source_num = 0
@@ -150,6 +152,8 @@ def fetch():
             dataDict["CODE"].extend(dins_data["CODE"])
             dataDict["COORDINATES"].extend(dins_data["COORDINATES"])
             dataDict["TIME"].extend(dins_data["TIME"])
+            dataDict["PLATID"].extend(dins_data["TRANSID"])
+            dataDict["RAWMESSAGE"].extend(dins_data["RAWMESSAGE"])
             print(f"爬取来源{source_num}: dinsQueryWeb, 获取 {len(dins_data['CODE'])} 条航警")
     
     if FNSs:
@@ -159,8 +163,10 @@ def fetch():
             fns_code = []
             fns_coord = []
             fns_time = []
+            fns_id = []
+            fns_raw = []
 
-            for code, coords_str, t in zip(FNS_data['CODE'], FNS_data['COORDINATES'], FNS_data['TIME']):
+            for code, coords_str, t, id, raw in zip(FNS_data['CODE'], FNS_data['COORDINATES'], FNS_data['TIME'], FNS_data['TRANSID'], FNS_data['RAWMESSAGE']):
                 pts = []
                 for part in coords_str.split('-'):
                     p = parse_point(part.strip())
@@ -202,11 +208,15 @@ def fetch():
                     fns_code.append(code)
                     fns_coord.append(coords_str)
                     fns_time.append(t)
+                    fns_id.append(id)
+                    fns_raw.append(raw)
 
             if fns_code:
                 dataDict["CODE"].extend(fns_code)
                 dataDict["COORDINATES"].extend(fns_coord)
                 dataDict["TIME"].extend(fns_time)
+                dataDict["PLATID"].extend(fns_id)
+                dataDict["RAWMESSAGE"].extend(fns_raw)
             print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(fns_code)} 条航警")
 
     dataDict["NUM"] = len(dataDict["CODE"])

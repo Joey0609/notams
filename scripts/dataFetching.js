@@ -20,7 +20,7 @@ return response.json();
     clearAllPolygons();
     // siteInit();
     for(var i=0;i<dict.NUM;i++){
-        drawNot(dict.COORDINATES[i],dict.TIME[i],dict.CODE[i],i,"blue",0);
+        drawNot(dict.COORDINATES[i],dict.TIME[i],dict.CODE[i],i,"blue",0,dict.RAWMESSAGE[i]);
     }
     if (autoListExpanded) {
         updateAutoListContent();
@@ -80,7 +80,7 @@ function fetchData(selectedColor) {
             dict = fetch;
             console.log(selectedColor);
             for (let i = 0; i < dict.NUM; i++) {
-                drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], i, selectedColor, 0);
+                drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], i, selectedColor, 0, dict.RAWMESSAGE[i]);
             }
             if (autoListExpanded) {
                 updateAutoListContent();

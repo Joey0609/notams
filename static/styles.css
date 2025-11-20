@@ -13,11 +13,85 @@ body,html,#allmap {
     border-radius: 8px;
 }
 
-.notam-popup h4 {
-    margin: 0 0 10px 0;
+/* NOTAM弹出窗口样式 */
+.notam-popup {
+    font-family: "微软雅黑", Arial, sans-serif;
+    min-width: 240px;
+}
+
+.notam-popup-header {
+    background: linear-gradient(135deg, #243064 0%, #381d57 100%);
+    margin: -12px -12px 8px -12px;
+    padding: 8px 12px;
+    border-radius: 6px 6px 0 0;
+}
+
+.notam-popup-header h4 {
+    margin: 0;
     padding: 0;
-    font-size: 16px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.notam-popup-body {
+    margin-bottom: 8px;
+}
+
+.popup-info-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 6px;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.popup-info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.popup-label {
+    font-size: 11px;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.popup-value {
+    font-size: 12px;
     color: #333;
+    line-height: 1.4;
+}
+
+.notam-popup-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.notam-popup-buttons .copy {
+    flex: 1;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.copy-coord {
+    background: #007906 !important;
+}
+
+.copy-raw {
+    background: #0056b3 !important;
+}
+
+.copy-coord:hover {
+    background: #005a04 !important;
+}
+
+.copy-raw:hover {
+    background: #004494 !important;
 }
 
 .launch-site-popup {
@@ -25,7 +99,13 @@ body,html,#allmap {
 }
 
 .notam-info-popup .leaflet-popup-content {
-    margin: 10px;
+    margin: 12px;
+    width: auto !important;
+}
+
+.notam-info-popup .leaflet-popup-content-wrapper {
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 /* Leaflet控件样式调整 */

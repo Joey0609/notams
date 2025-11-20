@@ -95,7 +95,8 @@ def process_notam_data(data):
                 'Number': notam.get('notamNumber'),
                 'Message': notam.get('icaoMessage'),
                 'startDate': notam.get('startDate'),
-                'endDate': notam.get('endDate')
+                'endDate': notam.get('endDate'),
+                'transactionID': notam.get('transactionID')
             })
     results.sort(key=lambda r: (r.get('Number') is None, str(r.get('Number') or '').upper()))
     return results
@@ -270,7 +271,7 @@ def FNS_NOTAM_SEARCH():
 
         return f"{convert_date(start_date)} UNTIL {convert_date(end_date)}"
 
-    data_array = np.array(["CODE", "COORDINATES", "TIME"])
+    data_array = np.array(["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE"])
     
     # 处理每个NOTAM
     debug=False
@@ -278,17 +279,19 @@ def FNS_NOTAM_SEARCH():
         for notam in notams:
             message = notam.get('Message', '')
             if ("A TEMPORARY" in message and "-" in message) or "AEROSPACE" in message:
+                raw_message = message
                 message = message.replace(" ", "")
                 coordinate_groups = extract_coordinate_groups(message)
                 time_result = parse_time(notam.get('startDate'), notam.get('endDate'))
                 code = notam.get('Number', 'UNKNOWN')
+                trans_id = notam.get('transactionID', 'UNKNOWN')   
                 for i, group in enumerate(coordinate_groups):
                     coordinates_result = '-'.join(group)
                     if len(coordinate_groups) > 1:
                         area_code = f"{code}_AREA{i+1}"
                     else:
                         area_code = code
-                    data_array = np.vstack([data_array, np.array([area_code, coordinates_result, time_result])])
+                    data_array = np.vstack([data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message])])
 
     if len(data_array) > 1:
         df = pd.DataFrame(data_array)
@@ -300,12 +303,16 @@ def FNS_NOTAM_SEARCH():
             "CODE": data_array[:, 0].tolist() if len(data_array) > 0 else [],
             "COORDINATES": data_array[:, 1].tolist() if len(data_array) > 0 else [],
             "TIME": data_array[:, 2].tolist() if len(data_array) > 0 else [],
+            "TRANSID": data_array[:, 3].tolist() if len(data_array) > 0 else [],
+            "RAWMESSAGE": data_array[:, 4].tolist() if len(data_array) > 0 else [],
         }
     else:
         result = {
             "CODE": [],
             "COORDINATES": [],
             "TIME": [],
+            "TRANSID": [],
+            "RAWMESSAGE": [],
         }
     return result
 # print(FNS_NOTAM_SEARCH())
