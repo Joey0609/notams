@@ -281,6 +281,7 @@ def FNS_NOTAM_SEARCH():
             if ("A TEMPORARY" in message and "-" in message) or "AEROSPACE" in message:
                 raw_message = message
                 message = message.replace(" ", "")
+                message = message.replace("\n", "")
                 coordinate_groups = extract_coordinate_groups(message)
                 time_result = parse_time(notam.get('startDate'), notam.get('endDate'))
                 code = notam.get('Number', 'UNKNOWN')
