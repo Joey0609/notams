@@ -114,7 +114,7 @@ function makeMap() {
     // 添加自定义版权信息
     L.control.attribution({
         position: 'bottomright',
-        prefix: 'NOTAM落区绘制工具 by 叁点壹肆壹伍 | <a href="https://leafletjs.com" target="_blank">Leaflet</a>'  // 只保留Leaflet链接
+        prefix: 'NOTAM落区绘制工具 by 叁点壹肆壹伍 | <a href="https://leafletjs.cn" target="_blank">Leaflet</a>'
     }).addTo(map);
 
     // 添加基础图层
