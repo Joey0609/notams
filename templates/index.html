@@ -98,6 +98,22 @@
                     <a href="https://www.bilibili.com/opus/1005673245294198789" target="_blank">B站专栏</a>
                     <a href="https://tieba.baidu.com/p/9298301903" target="_blank">百度贴吧</a>
                 </div>
+                <div class="help-section">
+                    <h4>调试工具</h4>
+                    <a href="#" onclick="toggleLogPanel(); return false;">查看终端日志</a>
+                </div>
+            </div>
+        </div>
+        <div class="log-panel" id="logPanel">
+            <div class="log-header">
+                <span>查看终端日志</span>
+                <div>
+                    <button class="log-clear-btn" onclick="clearLogs()">清空</button>
+                    <button class="log-close-btn" onclick="toggleLogPanel()">×</button>
+                </div>
+            </div>
+            <div class="log-content" id="logContent">
+                <div class="log-empty">暂无日志</div>
             </div>
         </div>
         <div id="loadingModal" class="loading-modal">
