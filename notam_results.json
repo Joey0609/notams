@@ -1,5 +1,5 @@
 {
-  "timestamp": 1763970112.7250154,
+  "timestamp": 1763990570.5193243,
   "results": {
     "FUCK": [
       {
@@ -115,13 +115,6 @@
         "startDate": "11/01/2025 0000",
         "endDate": "12/01/2025 0000EST",
         "transactionID": 78434283
-      },
-      {
-        "Number": "A2672/25",
-        "Message": "A2672/25 NOTAMN\nQ) VHHK/QPFCA/IV/NBO/E /000/999/2003N11500E214\nA) VHHK B) 2511240639 C) 2511241230\nE) DUE TO RESTRICTIONS IMPOSED BY XIAMEN ACC, TRAFFIC TRANSITING \nHONG \nKONG FIR DESTINATIONS ZSAM, ZSQZ, ZSFZ, TREATED AS ONE STREAM VIA \nTHE FOLLOWING ROUTES ARE SUBJECT TO FLOW CONTROL RESTRICTIONS:\n\n1. A1 IKELA - DOTMI A470, 10 MINUTES\n2. M771 DOSUT - DOTMI A470, 10 MINUTES\n3. A461 NOMAN - DOTMI A470, 10 MINUTES\n\nRMK: FLOW CONTROL MAY BE ADJUSTED SUBJECT TO SITUATION AND \nDISCRETION OF HONG KONG ATS WATCH SUPERVISOR.",
-        "startDate": "11/24/2025 0639",
-        "endDate": "11/24/2025 1230",
-        "transactionID": 78697550
       }
     ],
     "ZBPE": [
@@ -147,18 +140,18 @@
         "transactionID": 78614161
       },
       {
-        "Number": "A4382/25",
-        "Message": "A4382/25 NOTAMN\nQ) ZBPE/QARLT/IV/NBO/E/000/256/\nA) ZBPE B) 2511240300 C) 2511240800 \nE) FLW SEGMENT OF ATS RTE CLSD AT 7,800M AND BELOW:\n1.B208: HOHHOT VOR &apos;HET&apos; - NIXAL.\n2.G343: TUMURTAI VOR &apos;TMR&apos; - NIXAL.\n3.W32 : HOHHOT VOR &apos;HET&apos; - INTIK.\n4.W28 : RURNU - KEVOB.\nF) FL000 G) FL256",
-        "startDate": "11/24/2025 0300",
-        "endDate": "11/24/2025 0800",
-        "transactionID": 78691516
+        "Number": "A4398/25",
+        "Message": "A4398/25 NOTAMN\nQ) ZBPE/QARLT/IV/NBO/E/000/256/\nA) ZBPE B) 2511250000 C) 2511250620 \nE) FLW SEGMENT OF ATS RTE CLSD AT 7,800M AND BELOW:\n1.B208: HOHHOT VOR &apos;HET&apos; - NIXAL.\n2.G343: TUMURTAI VOR &apos;TMR&apos; - NIXAL.\n3.W32 : HOHHOT VOR &apos;HET&apos; - INTIK.\n4.W28 : RURNU - KEVOB.\nF) FL000 G) FL256",
+        "startDate": "11/25/2025 0000",
+        "endDate": "11/25/2025 0620",
+        "transactionID": 78699407
       },
       {
-        "Number": "A4383/25",
-        "Message": "A4383/25 NOTAMN\nQ) ZBPE/QARLT/IV/NBO/E/000/197/\nA) ZBPE B) 2511240300 C) 2511240800 \nE) FLW SEGMENT OF ATS RTE CLSD BELOW 6,000M:\n1.W64 :VALNI-UBRAG.\n2.W69 :DUDIL-TOREL.\nF) FL000 G) FL197",
-        "startDate": "11/24/2025 0300",
-        "endDate": "11/24/2025 0800",
-        "transactionID": 78691518
+        "Number": "A4399/25",
+        "Message": "A4399/25 NOTAMN\nQ) ZBPE/QARLT/IV/NBO/E/000/197/\nA) ZBPE B) 2511250000 C) 2511250620 \nE) FLW SEGMENT OF ATS RTE CLSD BELOW 6,000M:\n1.W64 :VALNI-UBRAG.\n2.W69 :DUDIL-TOREL.\nF) FL000 G) FL197",
+        "startDate": "11/25/2025 0000",
+        "endDate": "11/25/2025 0620",
+        "transactionID": 78699413
       }
     ],
     "ZGZU": [
@@ -273,6 +266,13 @@
         "startDate": "11/24/2025 0137",
         "endDate": "05/31/2026 1559",
         "transactionID": 78696318
+      },
+      {
+        "Number": "A4397/25",
+        "Message": "A4397/25 NOTAMN\nQ) ZGZU/QARLC/IV/NBO/E/000/999/\nA) ZGZU B) 2511250100 C) 2511250830 \nE) SEGMENT NANNING VOR &apos;WUY&apos;-RUNEG OF ATS RTE W169 CLSD.",
+        "startDate": "11/25/2025 0100",
+        "endDate": "11/25/2025 0830",
+        "transactionID": 78699127
       },
       {
         "Number": "A6528/19",
@@ -414,18 +414,11 @@
         "transactionID": 78614163
       },
       {
-        "Number": "A4386/25",
-        "Message": "A4386/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/331/\nA) ZLHW B) 2511240720 C) 2511240940 \nE) FLW SEGMENT OF ATS RTE CLSD AT 10,100M AND BELOW:\n1. B330 : MORIT - DAMRO .\n2. W195 : ALGOT - MORIT .\nF) FL000 G) FL331",
-        "startDate": "11/24/2025 0720",
-        "endDate": "11/24/2025 0940",
-        "transactionID": 78692235
-      },
-      {
-        "Number": "A4387/25",
-        "Message": "A4387/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/301/\nA) ZLHW B) 2511240030 C) 2511241050 \nE) SEGMENT NIRUV - YABRAI VOR &apos;YBL&apos; OF ATS RTE W199 CLSD AT 9,200M \nAND BELOW.\nF) FL000 G) FL301",
-        "startDate": "11/24/2025 0030",
-        "endDate": "11/24/2025 1050",
-        "transactionID": 78692585
+        "Number": "A4401/25",
+        "Message": "A4401/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/301/\nA) ZLHW B) 2511250100 C) 2511250750 \nE) SEGMENT NIRUV - YABRAI VOR &apos;YBL&apos; OF ATS RTE W199 CLSD AT 9,200M \nAND BELOW.\nF) FL000 G) FL301",
+        "startDate": "11/25/2025 0100",
+        "endDate": "11/25/2025 0750",
+        "transactionID": 78700375
       }
     ],
     "ZPKM": [
@@ -691,6 +684,13 @@
         "startDate": "10/31/2025 0144",
         "endDate": "02/22/2026 1559EST",
         "transactionID": 78421774
+      },
+      {
+        "Number": "A4400/25",
+        "Message": "A4400/25 NOTAMN\nQ) ZWUQ/QRTCA/IV/BO/W/000/999/4005N08600E054\nA) ZWUQ B) 2511241720 C) 2511241800 \nE) ALL ACFT ARE FORBIDDEN TO FLY INTO THE AREA:WITHIN A CIRCLE \nCENTERED AT SADAN WITH RADIUS OF 100KM.\nF) GND G) UNL",
+        "startDate": "11/24/2025 1720",
+        "endDate": "11/24/2025 1800",
+        "transactionID": 78699951
       }
     ],
     "ZYSH": [

@@ -62,6 +62,38 @@ var tileLayers = {
     },
 };
 
+// 矢量图层颜色池
+const colorPoolVector = [
+    "#9e0b0b", "#1a2cd1", "#006e1b", "#6d5b0d", "#4d0070",
+    "#416400", "#883f00", "#313131", "#6b005d", "#005763"
+];
+
+// 卫星图层颜色池
+const colorPoolSatellite = [
+    "#ff3b3b", "#00d9ff", "#00ff41", "#ffea00", "#c300ffff",
+    "#7dff00", "#ff8c00", "#ffffff", "#ff1493", "#00ffff"
+];
+
+// 当前使用的颜色池
+let currentColorPool = colorPoolVector;
+let currentColor_idx = 0;
+
+function randomColor() {
+    return currentColorPool[currentColor_idx++ % currentColorPool.length];
+}
+
+// 根据地图类型切换颜色池
+function switchColorPool(isVectorMap) {
+    currentColorPool = isVectorMap ? colorPoolVector : colorPoolSatellite;
+    currentColor_idx = 0; // 重置索引
+}
+
+// 检查当前地图是否为矢量图层
+function isVectorMap() {
+    return currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec';
+}
+// ==================== 颜色系统结束 ====================
+
 function getRandomTileLayer() {
     var providers = [
         'gaode_vec',     // 高德矢量
@@ -80,6 +112,8 @@ function getRandomTileLayer() {
 var currentMapProvider = getRandomTileLayer();
 var currentBaseLayer = null;
 var currentAnnoLayer = null;
+
+switchColorPool(currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec');
 
 
 function handleCopy(text) {
@@ -118,9 +152,6 @@ function makeMap() {
         prefix: 'NOTAM落区绘制工具 by 叁点壹肆壹伍 | <a href="https://leafletjs.cn" target="_blank">Leaflet</a>'
     }).addTo(map);
 
-    // 添加基础图层
-    addMapLayers(currentMapProvider);
-
     // 添加比例尺
     L.control.scale({
         metric: true,
@@ -130,6 +161,10 @@ function makeMap() {
 
     // 添加图层切换控件
     addLayerControl();
+
+    if (!currentBaseLayer) {
+        addMapLayers(currentMapProvider);
+    }
 
     // 初始化发射场标记
     siteInit();
@@ -155,7 +190,7 @@ function addMapLayers(provider) {
             tileUrl += randomKey;
         }
 
-        currentBaseLayer = L.tileLayer(tileUrl, baseConfig.options).addTo(map);
+        currentBaseLayer = L.tileLayer(tileUrl, baseConfig.options);
         if (provider === 'tianditu_vec') {
             var annoConfig = tileLayers.tianditu_vec_anno;
             currentAnnoLayer = L.tileLayer(annoConfig.url + randomKey, annoConfig.options).addTo(map);
@@ -171,17 +206,71 @@ function addMapLayers(provider) {
 
 // 添加图层切换控件
 function addLayerControl() {
+    var gaodeVecLayer = L.tileLayer(tileLayers.gaode_vec.url, tileLayers.gaode_vec.options);
+    var gaodeImgLayer = L.tileLayer(tileLayers.gaode_img.url, tileLayers.gaode_img.options);
+    
     var baseMaps = {
-        "矢量图层": L.tileLayer(tileLayers.gaode_vec.url, tileLayers.gaode_vec.options),
-        "卫星图层": L.tileLayer(tileLayers.gaode_img.url, tileLayers.gaode_img.options),
+        "矢量图层": gaodeVecLayer,
+        "卫星图层": gaodeImgLayer,
     };
     // baseMaps["天地图"] = L.tileLayer(tileLayers.tianditu_vec.url + 'ad322867b18949f56e94e4fca2cfdfa2', tileLayers.tianditu_vec.options);
     // baseMaps["天地图卫星"] = L.tileLayer(tileLayers.tianditu_img.url + 'ad322867b18949f56e94e4fca2cfdfa2', tileLayers.tianditu_img.options);
+
+    if (currentMapProvider === 'gaode_vec') {
+        currentBaseLayer = gaodeVecLayer;
+    } else if (currentMapProvider === 'gaode_img') {
+        currentBaseLayer = gaodeImgLayer;
+    }
+    if (currentBaseLayer) {
+        currentBaseLayer.addTo(map);
+    }
 
     L.control.layers(baseMaps, null, {
         position: 'topright',
         collapsed: false  // 默认展开图层控件
     }).addTo(map);
+
+
+    map.on('baselayerchange', function(e) {
+        // 判断切换到了哪个图层
+        var isVector = (e.name === "矢量图层");
+        currentMapProvider = isVector ? 'gaode_vec' : 'gaode_img';
+        
+        // 切换颜色池
+        switchColorPool(isVector);
+        
+        // 重新分配颜色并重绘航警
+        if (dict && dict.CLASSIFY) {
+            assignGroupColors(dict.CLASSIFY);
+            redrawAllNotams();
+        }
+        
+        console.log('切换到:', e.name, '使用颜色池:', isVector ? '深色系' : '鲜艳系');
+    });
+}
+
+function redrawAllNotams() {
+    if (!dict || dict.NUM === 0) return;
+    
+    var currentVisibleState = Object.assign({}, visibleState);
+    
+    for (let i = 0; i < polygonAuto.length; i++) {
+        if (polygonAuto[i]) {
+            map.removeLayer(polygonAuto[i]);
+        }
+    }
+    polygonAuto = [];
+    
+    for (var i = 0; i < dict.NUM; i++) {
+        var color = getColorForCode(dict.CODE[i]);
+        drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], i, color, 0, dict.RAWMESSAGE[i]);
+        
+        if (currentVisibleState[i] === false && polygonAuto[i]) {
+            map.removeLayer(polygonAuto[i]);
+        }
+    }
+    
+    visibleState = currentVisibleState;
 }
 
 // 初始化发射场标记
@@ -438,17 +527,6 @@ var polygonAuto = [];           // 自动获取的多边形
 var groupColors = {};           // CLASSIFY → color
 var visibleState = {};          // index → true/false
 
-// 随机颜色池（明亮且对比度好）
-const colorPool = [
-    "#e74c3c", "#3498db", "#2ecc71", "#f1c40f", "#9b59b6",
-    "#1abc9c", "#e67e22", "#34495e", "#e84393", "#00b894"
-];
-let currentColor_idx = 0;
-function randomColor() {
-    return colorPool[currentColor_idx++ % colorPool.length];
-    // return colorPool[Math.floor(Math.random() * colorPool.length)];
-}
-
 function assignGroupColors(classify) {
     groupColors = {};
     Object.keys(classify).forEach(key => {
@@ -457,11 +535,11 @@ function assignGroupColors(classify) {
 }
 
 function getColorForCode(code) {
-    if (!dict || !dict.CLASSIFY) return "#3498db";
+    if (!dict || !dict.CLASSIFY) return currentColorPool[0];
     for (const [group, codes] of Object.entries(dict.CLASSIFY)) {
         if (codes.includes(code)) {
-            return groupColors[group] || "#3498db";
+            return groupColors[group] || currentColorPool[0];
         }
     }
-    return "#3498db";
+    return currentColorPool[0];
 }
