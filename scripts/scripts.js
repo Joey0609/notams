@@ -84,7 +84,7 @@ var currentAnnoLayer = null;
 
 function handleCopy(text) {
     navigator.clipboard.writeText(text).then(() => {
-        // alert('复制成功: ' + text);
+        showNotification("成功复制到剪贴板");
     }).catch(err => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
@@ -102,6 +102,7 @@ function makeMap() {
     map = L.map('allmap', {
         center: [36, 103],
         zoom: 6,
+        minZoom: 3,
         zoomControl: false,  // 关闭默认缩放控件，稍后添加到右下角
         attributionControl: false  // 关闭默认版权控件
     });
@@ -258,101 +259,6 @@ function drawLaunchsite(lat, lng, title, content, iconUrl) {
     launchSiteMarkers.push(marker);
 }
 
-// 时间转换函数
-function convertTime(utcTimeStr) {
-    const regex = /(\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/;
-    const match = utcTimeStr.match(regex);
-    if (!match) {
-        return utcTimeStr;
-    }
-    const [, startDay, startMonth, startTime, startYear, endDay, endMonth, endTime, endYear] = match;
-    const monthMap = {
-        JAN: "1", FEB: "2", MAR: "3", APR: "4", MAY: "5", JUN: "6",
-        JUL: "7", AUG: "8", SEP: "9", OCT: "10", NOV: "11", DEC: "12"
-    };
-    function toLocalTime(day, month, time, year) {
-        const utcDate = new Date(`${year}-${monthMap[month]}-${day} ${time}:00Z`);
-        const btcDate = new Date(utcDate.getTime() + 8 * 60 * 60 * 1000);
-        return {
-            year: btcDate.getUTCFullYear(),
-            month: btcDate.getUTCMonth() + 1,
-            day: btcDate.getUTCDate(),
-            hours: String(btcDate.getUTCHours()).padStart(2, "0"),
-            minutes: String(btcDate.getUTCMinutes()).padStart(2, "0"),
-        };
-    }
-    const startLocal = toLocalTime(startDay, startMonth, startTime, startYear);
-    const endLocal = toLocalTime(endDay, endMonth, endTime, endYear);
-    return `${startLocal.year}年${startLocal.month}月${startLocal.day}日${startLocal.hours}:${startLocal.minutes} 到<br>${endLocal.year}年${endLocal.month}月${endLocal.day}日${endLocal.hours}:${endLocal.minutes} (UTC+8)`;
-}
-
-// 切换自动列表
-function toggleAutoList() {
-    const panel = document.getElementById('autoListPanel');
-    autoListExpanded = !autoListExpanded;
-
-    if (autoListExpanded) {
-        panel.classList.add('show');
-        updateAutoListContent();
-    } else {
-        panel.classList.remove('show');
-        removeHighlight();
-    }
-}
-
-// 更新自动列表内容
-function updateAutoListContent() {
-    const content = document.getElementById('autoListContent');
-    content.innerHTML = '';
-
-    if (!dict || dict.NUM === 0) {
-        content.innerHTML = '<div class="empty-list-message">暂无自动获取的落区</div>';
-        return;
-    }
-
-    const currentColor = document.getElementById('color1').value;
-
-    for (let i = 0; i < dict.NUM; i++) {
-        const item = document.createElement('div');
-        item.className = 'auto-notam-item';
-        item.setAttribute('data-index', i);
-
-        let timeDisplay = '';
-        try {
-            timeDisplay = convertTime(dict.TIME[i]).replace('<br>', ' ');
-        } catch (e) {
-            timeDisplay = dict.TIME[i];
-        }
-
-        item.innerHTML = `
-            <div class="notam-header">
-                <span class="notam-code">航警${i + 1}: ${dict.CODE[i] || '未知'}</span>
-                <div class="notam-color-indicator" style="background-color: ${currentColor}"></div>
-            </div>
-            <div class="notam-info">
-                <div class="notam-time">时间: ${timeDisplay}</div>
-                <div class="notam-coords">坐标: ${dict.COORDINATES[i]}</div>
-            </div>
-        `;
-
-        item.addEventListener('mouseenter', function () {
-            highlightNotam(i, currentColor);
-            this.classList.add('highlighted');
-        });
-
-        item.addEventListener('mouseleave', function () {
-            removeHighlight();
-            this.classList.remove('highlighted');
-        });
-
-        item.addEventListener('click', function () {
-            locateToNotam(i);
-        });
-
-        content.appendChild(item);
-    }
-}
-
 // 高亮NOTAM
 function highlightNotam(index, color) {
     removeHighlight();
@@ -398,24 +304,6 @@ function parseCoordinatesToPoints(coordStr) {
     }
 
     return points;
-}
-
-// 定位到NOTAM
-function locateToNotam(index) {
-    if (!dict || index >= dict.NUM) return;
-
-    try {
-        const coordinates = dict.COORDINATES[index];
-        const points = parseCoordinatesToPoints(coordinates);
-
-        if (points && points.length > 0) {
-            // 计算边界
-            var bounds = L.latLngBounds(points);
-            map.fitBounds(bounds, {padding: [50, 50]});
-        }
-    } catch (e) {
-        console.error('定位失败:', e);
-    }
 }
 
 // 绘制NOTAM多边形
@@ -545,4 +433,35 @@ function pullOut(stri) {
     }
 
     return tmpp;
+}
+var polygonAuto = [];           // 自动获取的多边形
+var groupColors = {};           // CLASSIFY → color
+var visibleState = {};          // index → true/false
+
+// 随机颜色池（明亮且对比度好）
+const colorPool = [
+    "#e74c3c", "#3498db", "#2ecc71", "#f1c40f", "#9b59b6",
+    "#1abc9c", "#e67e22", "#34495e", "#e84393", "#00b894"
+];
+let currentColor_idx = 0;
+function randomColor() {
+    return colorPool[currentColor_idx++ % colorPool.length];
+    // return colorPool[Math.floor(Math.random() * colorPool.length)];
+}
+
+function assignGroupColors(classify) {
+    groupColors = {};
+    Object.keys(classify).forEach(key => {
+        groupColors[key] = randomColor();
+    });
+}
+
+function getColorForCode(code) {
+    if (!dict || !dict.CLASSIFY) return "#3498db";
+    for (const [group, codes] of Object.entries(dict.CLASSIFY)) {
+        if (codes.includes(code)) {
+            return groupColors[group] || "#3498db";
+        }
+    }
+    return "#3498db";
 }

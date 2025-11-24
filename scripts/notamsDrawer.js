@@ -9,7 +9,7 @@ function toggleDrawer() {
     if (expanded) {
         drawer.classList.remove('expanded');
         content.style.display = 'none';
-        arrow.textContent = ' '; 
+        arrow.textContent = '展开'; 
     } else {
         drawer.classList.add('expanded');
         content.style.display = 'block';
