@@ -9,7 +9,7 @@ from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
 import re
 import webview
 import threading
-
+from datetime import datetime
 dins = False
 FNSs = True
 
@@ -64,6 +64,82 @@ def seg_intersect(a, b, c, d):
     if o3 == 0 and on_seg(c,a,d): return True
     if o4 == 0 and on_seg(c,b,d): return True
     return False
+
+def classify_data(data):
+    codes = data.get("CODE", [])
+    times = data.get("TIME", [])
+
+    # 解析时间区间
+    def parse_time(t):
+        """
+        例子: '25 NOV 04:01 2025 UNTIL 25 NOV 04:41 2025'
+        """
+        try:
+            parts = t.split(" UNTIL ")
+            start = datetime.strptime(parts[0], "%d %b %H:%M %Y").timestamp()
+            end = datetime.strptime(parts[1], "%d %b %H:%M %Y").timestamp()
+            return start, end
+        except:
+            return None, None
+
+    items = []  # (idx, start_ts, end_ts)
+    for i, t in enumerate(times):
+        s, e = parse_time(t)
+        if s and e:
+            items.append((i, s, e))
+
+    if not items:
+        return {}
+
+    # 并查集
+    parent = {}
+
+    def find(x):
+        parent.setdefault(x, x)
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(a, b):
+        pa, pb = find(a), find(b)
+        if pa != pb:
+            parent[pb] = pa
+
+    # 判断重叠并归类
+    for i in range(len(items)):
+        idx1, s1, e1 = items[i]
+        d1 = e1 - s1
+        if d1 <= 0:
+            continue
+
+        for j in range(i + 1, len(items)):
+            idx2, s2, e2 = items[j]
+            d2 = e2 - s2
+            if d2 <= 0:
+                continue
+
+            overlap = max(0, min(e1, e2) - max(s1, s2))
+            if overlap <= 0:
+                continue
+
+            r1 = overlap / d1
+            r2 = overlap / d2
+
+            # 时间几乎相同 → 同一类
+            if 0.8 <= r1 <= 1.2 and 0.8 <= r2 <= 1.2:
+                union(idx1, idx2)
+
+    # 输出分组
+    groups = {}
+    for idx, _, _ in items:
+        root = find(idx)
+        groups.setdefault(root, []).append(idx)
+
+    classify = {}
+    for n, (_, members) in enumerate(groups.items(), 1):
+        classify[f"c{n}"] = [codes[m] for m in members]
+
+    return classify
 
 EXCLUDE_RECTS = [
     {'lat_min': 39.303183, 'lat_max': 40.856476, 'lon_min': 101.300003, 'lon_max': 105.242712},
@@ -209,6 +285,7 @@ def fetch():
         "TIME": [],
         "PLATID": [],
         "RAWMESSAGE": [],
+        "CLASSIFY": {},
         "NUM": 0,
     }
     source_num = 0
@@ -288,7 +365,7 @@ def fetch():
             print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(fns_code)} 条航警")
 
     dataDict["NUM"] = len(dataDict["CODE"])
-
+    dataDict["CLASSIFY"] = classify_data(dataDict)
     print(dataDict)
     print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
     return jsonify(dataDict)

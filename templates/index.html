@@ -1,92 +1,67 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="statics/styles.css">
-	<!-- Leaflet CSS (本地资源) -->
-	<link rel="stylesheet" href="statics/leaflet/leaflet.css" />
-	<!-- Leaflet JS (本地资源) -->
-	<script src="statics/leaflet/leaflet.js"></script>
-	<title>NOTAM落区查阅绘制工具</title>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="statics/leaflet/leaflet.css" />
+    <script src="statics/leaflet/leaflet.js"></script>
+    <title>NOTAM落区查阅绘制工具</title>
 </head>
+
 <body>
-	<div class=smoke>
-		<div id="allmap" class=div1></div>
-		<!-- <div class=div2>
-			<canvas width="300" height="1000" style="background-color:white"> 
-			您的浏览器不支持canvas元素，请升级您的浏览器
-			</canvas>
-		</div> -->
-        <div id="controls" class="div2">
-            <!-- 选择颜色 -->
-            <label for="color1">自动获取绘制落区:</label>
-            <select id="color1">
-                <option value="blue">蓝色</option>
-                <option value="green">绿色</option>
-                <option value="orange">橙色</option>
-                <option value="red">红色</option>
-                <option value="yellow">黄色</option>
-                <option value="black">黑色</option>
-                <option value="white">白色</option>
-            </select>
-            <button id="fetchButton">确定</button>
-            <div id="drawer" class="div2">
-                <div id="drawerHeader" onclick="toggleDrawer()">
-                    <span>手动输入航警</span>
-                    <i id="toggleArrow"> </i>
-                </div>
-                <div id="drawerContent" style="display: none;">
-                    <textarea id="inputText" rows="3" placeholder="输入航警内容"></textarea>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <select id="colorSelect" style="flex: 1;">
-                            <option value="blue">蓝色</option>
-                            <option value="orange">橙色</option>
-                            <option value="red">红色</option>
-                            <option value="yellow">黄色</option>
-                            <option value="green">绿色</option>
-                            <option value="black">黑色</option>
-                            <option value="white">白色</option>
-                        </select>
-                        <button onclick="drawWarning()">绘制</button>
-                    </div>
-        
-                    <div id="warningList"></div>
-                </div>
+    <div class="smoke">
+        <div id="allmap" class="div1"></div>
+        <div id="drawer" class="div2">
+            <div id="drawerHeader" onclick="toggleDrawer()">
+                <span>手动输入航警</span>
+                <i id="toggleArrow">展开</i>
             </div>
-            <script src="/scripts/notamsDrawer.js"></script>
+            <div id="drawerContent" style="display: none;">
+                <textarea id="inputText" rows="3" placeholder="输入航警内容"></textarea>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <select id="colorSelect" style="flex: 1;">
+                        <option value="blue">蓝色</option>
+                        <option value="orange">橙色</option>
+                        <option value="red">红色</option>
+                        <option value="yellow">黄色</option>
+                        <option value="green">绿色</option>
+                        <option value="black">黑色</option>
+                        <option value="white">白色</option>
+                    </select>
+                    <button onclick="drawWarning()">绘制</button>
+                </div>
+                <div id="warningList"></div>
+            </div>
         </div>
 
-        <div class="auto-list-btn" id="autoListBtn" onclick="toggleAutoList()">
-            <span>自</span>
-            <span>动</span>
-            <span>获</span>
-            <span>取</span>
-            <span>落</span>
-            <span>区</span>
-            <span>列</span>
-            <span>表</span>
-        </div>
-        <div class="auto-list-panel" id="autoListPanel">
-            <div class="auto-list-header">
-                <span>自动获取落区列表</span>
-                <button class="close-btn" onclick="toggleAutoList()">×</button>
+        <div id="sidebarToggle" onclick="toggleSidebar()">航警列表</div>
+
+        <div id="notamSidebar" class="notam-sidebar">
+            <div id="notamSidebarHeader" class="sidebar-header">
+                <div class="sidebar-title">航警列表 <span id="notamCount">0</span> 条</div>
+                <div>
+                    <button id="btnRefresh" title="刷新航警">刷新</button>
+                    <button id="btnShowAll" title="全部显示">全部显示</button>
+                    <button id="btnHideAll" title="全部隐藏">全部隐藏</button>
+                    <button class="sidebar-close" onclick="toggleSidebar()">×</button>
+                </div>
             </div>
-            <div class="auto-list-content" id="autoListContent">
-            </div>
+            <div id="notamList" class="sidebar-content"></div>
         </div>
 
         <div class="help-btn" id="helpButton">帮助</div>
-        <div class="custom-btn" id="customButton" onclick="fetchInit()">移除自动绘制落区</div>
+        <!-- <div class="custom-btn" id="customButton" onclick="fetchInit()">移除自动绘制落区</div> -->
+
         <div class="expandable-area" id="expandableArea">
             <div class="expandable-content">
                 <div class="help-section">
-                    <h4>关于NOTAMS</h4>
-                    <a href="https://tieba.baidu.com/p/5492230455" target="_blank">获取NOTAMS的方式</a>
+                    <h4>关于NOTAMS</h4><a href="https://tieba.baidu.com/p/5492230455" target="_blank">获取NOTAMS的方式</a>
                 </div>
                 <div class="help-section">
-                    <h4>获取NOTAMS的网站</h4>
-                    <a href="https://pilotweb.nas.faa.gov" target="_blank">pilotweb.nas.faa.gov</a>
+                    <h4>获取NOTAMS的网站</h4><a href="https://pilotweb.nas.faa.gov" target="_blank">pilotweb.nas.faa.gov</a>
                 </div>
                 <div class="help-section">
                     <h4>关于本项目/获取帮助</h4>
@@ -95,11 +70,11 @@
                     <a href="https://tieba.baidu.com/p/9298301903" target="_blank">百度贴吧</a>
                 </div>
                 <div class="help-section">
-                    <h4>调试工具</h4>
-                    <a href="#" onclick="toggleLogPanel(); return false;">查看终端日志</a>
+                    <h4>调试工具</h4><a href="#" onclick="toggleLogPanel(); return false;">查看终端日志</a>
                 </div>
             </div>
         </div>
+
         <div class="log-panel" id="logPanel">
             <div class="log-header">
                 <span>查看终端日志</span>
@@ -112,6 +87,7 @@
                 <div class="log-empty">暂无日志</div>
             </div>
         </div>
+
         <div id="loadingModal" class="loading-modal">
             <div class="loading-content">
                 <button class="loading-close-btn" onclick="closeLoadingModal()">×</button>
@@ -119,9 +95,14 @@
                 <p>正在获取中...<br><br>你可以关闭该窗口<br>这不会影响自动获取</p>
             </div>
         </div>
-        <script src="/scripts/buttons.js"></script>
     </div>
+
+    <script src="/scripts/notamsDrawer.js"></script>
+    <script src="/scripts/buttons.js"></script>
     <script src="/scripts/scripts.js"></script>
     <script src="/scripts/dataFetching.js"></script>
+    <script src="/scripts/sidebar.js"></script>
+    <script src="/scripts/notification.js"></script>
 </body>
+
 </html>
