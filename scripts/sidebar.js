@@ -8,33 +8,38 @@ function toggleSidebar() {
 // 可拖拽侧边栏头部以调整高度（仅窄屏时启用）
 const sidebarHeader = document.getElementById('notamSidebarHeader');
 let startY, startTop, isDragging = false;
-if (window.innerWidth <= 768) { // Narrow screen condition
-    sidebarHeader.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startY = e.clientY;
+function handleStartDrag(e) {
+    isDragging = true;
+    startY = e.clientY;
+    const sidebar = document.getElementById('notamSidebar');
+    startTop = parseInt(window.getComputedStyle(sidebar).height, 10);
+    document.body.style.userSelect = 'none'; // Prevent text selection
+};
+function handleDrag(e) {
+    if (isDragging) {
         const sidebar = document.getElementById('notamSidebar');
-        startTop = parseInt(window.getComputedStyle(sidebar).height, 10);
-        document.body.style.userSelect = 'none'; // Prevent text selection
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            const sidebar = document.getElementById('notamSidebar');
-            const newTop = Math.min(startTop - (e.clientY - startY), window.innerHeight * 0.9);
-            if (newTop < 10) {
-                sidebar.classList.toggle('open');
-                isDragging = false;
-                document.body.style.userSelect = ''; 
-                return;
-            }
-            sidebar.style.height = `${Math.max(0, newTop)}px`; // Prevent moving out of view
+        const newTop = Math.min(startTop - (e.clientY - startY), window.innerHeight * 0.9);
+        if (newTop < 10) {
+            sidebar.classList.toggle('open');
+            isDragging = false;
+            document.body.style.userSelect = '';
+            return;
         }
-    });
+        sidebar.style.height = `${Math.max(0, newTop)}px`; // Prevent moving out of view
+    }
+}
+function handleEndDrag(e) {
+    isDragging = false;
+    document.body.style.userSelect = ''; // Restore text selection
+}
 
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-        document.body.style.userSelect = ''; // Restore text selection
-    });
+if (window.innerWidth <= 768) { // Narrow screen condition
+    sidebarHeader.addEventListener('mousedown', (e) => handleStartDrag(e));
+    sidebarHeader.addEventListener('touchstart', (e) => handleStartDrag(e.touches[0]));
+    document.addEventListener('mousemove', (e) => handleDrag(e));
+    document.addEventListener('touchmove', (e) => handleDrag(e.touches[0]));
+    document.addEventListener('mouseup', (e) => handleEndDrag(e));
+    document.addEventListener('touchend', (e) => handleEndDrag(e.changedTouches[0]));
 }
 
 
