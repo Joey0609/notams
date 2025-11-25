@@ -1,13 +1,8 @@
 import os
-import webbrowser
-import numpy as np
-import pandas as pd
 import configparser
 from fetch.dinsQueryWeb import dinsQueryWeb
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
 import re
-import webview
-import threading
 import json
 from datetime import datetime
 dins = False
