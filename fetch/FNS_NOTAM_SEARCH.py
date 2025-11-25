@@ -152,7 +152,7 @@ def fetch():
                 results[icao] = []  # 确保即使出错，结果字典中也有这个键
 
     output_data = {
-        "timestamp": start,
+        # "timestamp": start,
         "results": results,
         "stats": {
             "total": len(ICAO_CODES),
