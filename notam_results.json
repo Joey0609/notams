@@ -753,6 +753,34 @@
         "startDate": "11/27/2025 0054",
         "endDate": "11/27/2025 0204",
         "transactionID": 78711555
+      },
+      {
+        "Number": "A4427/25",
+        "Message": "A4427/25 NOTAMN\nQ) ZWUQ/QARLC/IV/NBO/E/000/999/\nA) ZWUQ B) 2511260950 C) 2511261030 \nE) SEGMENT NOLEP-YUDU VOR/DME &apos;DJQ&apos; OF ATS RTE W112 CLSD.\nF) GND G) UNL",
+        "startDate": "11/26/2025 0950",
+        "endDate": "11/26/2025 1030",
+        "transactionID": 78719047
+      },
+      {
+        "Number": "A4428/25",
+        "Message": "A4428/25 NOTAMN\nQ) ZWUQ/QARLC/IV/NBO/E/000/999/\nA) ZWUQ B) 2511260354 C) 2511260512 \nE) FLW SEGMENT OF ATS RTE CLSD:\n1.W112 :NOLEP-ADMUX \n2.Y1   :210KM EAST OF SADAN -MAGOD\nF) GND G) UNL",
+        "startDate": "11/26/2025 0354",
+        "endDate": "11/26/2025 0512",
+        "transactionID": 78719072
+      },
+      {
+        "Number": "A4429/25",
+        "Message": "A4429/25 NOTAMN\nQ) ZWUQ/QARLT/IV/NBO/E/000/311/\nA) ZWUQ B) 2511260230 C) 2511260930 \nE) FLW SEGMENT OF ATS RTE CLSD AT 9,500M AND BELOW:\n1.W186 :SADAN-ISBEB \n2.W187 :SADAN-KANPI \n3.L888 :KAGSO-SADAN\nF) GND G) 9500M AMSL",
+        "startDate": "11/26/2025 0230",
+        "endDate": "11/26/2025 0930",
+        "transactionID": 78719103
+      },
+      {
+        "Number": "A4430/25",
+        "Message": "A4430/25 NOTAMN\nQ) ZWUQ/QARLC/IV/NBO/E/000/999/\nA) ZWUQ B) 2511260050 C) 2511260131 \nE) FLW SEGMENT OF ATS RTE CLSD:\n1.L888 : 60KM WEST OF SADAN  -60KM EAST OF SADAN  \n2.W187 : 60KM WEST OF SADAN  -60KM EAST OF SADAN  \n3.W186 : 60KM WEST OF SADAN -SADAN \n4.Y1  : SADAN- 60KM EAST OF SADAN \nF) GND G) UNL",
+        "startDate": "11/26/2025 0050",
+        "endDate": "11/26/2025 0131",
+        "transactionID": 78719134
       }
     ],
     "ZYSH": [
