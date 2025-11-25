@@ -6,7 +6,7 @@ function closeLoadingModal() {
 
 // 页面加载即获取一次
 loadingModal.style.display = 'block';
-fetch('/fetch')
+fetch('data_dict.json', { cache: 'no-cache' })
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(data => {
         dict = data;

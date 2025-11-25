@@ -284,7 +284,7 @@ function siteInit() {
             name: '酒泉卫星发射中心',
             lat: 40.96806,
             lng: 100.27806,
-            icon: '/statics/launch.png',
+            icon: 'statics/launch.png',
             content: "<b><large>甘肃酒泉</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/酒泉卫星发射中心' target='_blank' style='text-decoration: none; font-weight: bold;'>酒泉卫星发射中心</a>（Jiuquan Satellite Launch Center，JSLC，又称东风航天城）</b>，是中国创建最早、规模最大的综合型导弹、卫星发射中心，也是中国目前唯一的载人航天发射场。"
         },
@@ -292,7 +292,7 @@ function siteInit() {
             name: '西昌卫星发射中心',
             lat: 28.24556,
             lng: 102.02667,
-            icon: '/statics/launch.png',
+            icon: 'statics/launch.png',
             content: "<b><large>四川西昌</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/西昌卫星发射中心' target='_blank' style='text-decoration: none; font-weight: bold;'>西昌卫星发射中心</a>（Xichang Satellite Launch Center，XSLC）</b>始建于1970年，于1982年交付使用，自1984年1月发射中国第一颗通信卫星以来，到如今已进行国内外卫星发射超过百次。"
         },
@@ -300,7 +300,7 @@ function siteInit() {
             name: '太原卫星发射中心',
             lat: 38.84861,
             lng: 111.60778,
-            icon: '/statics/launch.png',
+            icon: 'statics/launch.png',
             content: "<b><large>山西太原</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/太原卫星发射中心' target='_blank' style='text-decoration: none; font-weight: bold;'>太原卫星发射中心</a>（Taiyuan Satellite Launch Center, TSLC）</b>，位于山西省忻州市岢岚县北18公里处，是中国试验卫星、应用卫星和运载火箭发射试验基地之一。"
         },
@@ -308,7 +308,7 @@ function siteInit() {
             name: '文昌航天发射场',
             lat: 19.637836,
             lng: 110.956571,
-            icon: '/statics/launch.png',
+            icon: 'statics/launch.png',
             content: "<b><large>海南文昌</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/文昌航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>文昌航天发射场</a>" +
                 "（Wenchang Spacecraft Launch Site, WSLS）</b>位于中国海南省文昌市，是中国首座滨海航天发射场，也是世界现有的少数低纬度航天发射场之一。" +
@@ -318,7 +318,7 @@ function siteInit() {
             name: '海阳东方航天港',
             lat: 36.688761,
             lng: 121.259377,
-            icon: '/statics/launch1.png',
+            icon: 'statics/launch1.png',
             content: "<b><large>山东海阳</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/海阳东方航天港' target='_blank' style='text-decoration: none; font-weight: bold;'>海阳东方航天港</a>（Haiyang Oriental Spaceport）</b>是中国唯一一个运载火箭海上发射母港。"
         }

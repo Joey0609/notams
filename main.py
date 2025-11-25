@@ -9,6 +9,7 @@ from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
 import re
 import webview
 import threading
+import json
 from datetime import datetime
 dins = False
 FNSs = True
@@ -172,8 +173,6 @@ HOST = config.get('SERVER', 'host', fallback='127.0.0.1')
 PORT = config.getint('SERVER', 'port', fallback=5005)
 AUTO_OPEN = config.getboolean('SERVER', 'auto_open_browser', fallback=True)
 
-if AUTO_OPEN:
-    webbrowser.open(f"http://{HOST}:{PORT}")
 
 print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
 # print(f"当前使用的ICAO码: {ICAO_CODES}")
@@ -237,30 +236,24 @@ class FlaskLogHandler(logging.Handler):
         if 'GET /logs' not in message and 'POST /logs/clear' not in message:
             log_capture.add_log(message)
 
-@app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/logs')
 def get_logs():
     """获取日志的API端点"""
     return jsonify(log_capture.get_logs())
 
-@app.route('/logs/clear', methods=['POST'])
 def clear_logs():
     """清空日志的API端点"""
     log_capture.logs = []
     return jsonify({'status': 'ok'})
 
-@app.route('/statics/<path:filename>')
 def load_stat(filename):
     return send_from_directory(app.static_folder, filename)
 
-@app.route('/scripts/<path:filename>')
 def load_scripts(filename):
     return send_from_directory('scripts', filename)
 
-@app.route('/config')
 def get_config():
     """获取当前配置信息的API端点"""
     return jsonify({
@@ -271,7 +264,6 @@ def get_config():
         }
     })
 
-@app.route('/fetch')
 def fetch():
     try:
         current_config = load_config()
@@ -368,121 +360,12 @@ def fetch():
     dataDict["CLASSIFY"] = classify_data(dataDict)
     print(dataDict)
     print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
+    sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"]), key=lambda x: x[0])
+    dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"] = zip(*sorted_data)
+    dataDict["NUM"] = len(dataDict["CODE"])
+    print(dataDict)
+    with open('data_dict.json', 'w', encoding='utf-8') as json_file:
+        json.dump(dataDict, json_file, ensure_ascii=False, indent=4)
+
     return jsonify(dataDict)
-def start_flask():
-    # 添加Flask日志处理器
-    flask_handler = FlaskLogHandler()
-    flask_handler.setFormatter(logging.Formatter('%(message)s'))
-    log.addHandler(flask_handler)
-    
-    app.run(host=HOST, port=PORT, debug=False, use_reloader=False, threaded=True)
 
-if __name__ == '__main__':
-    import time
-    import socket
-
-    flask_thread = threading.Thread(target=start_flask, daemon=True)
-    flask_thread.start()
-
-    def wait_for_server(host, port, timeout=5):
-        start_time = time.time()
-        while time.time() - start_time < timeout:
-            try:
-                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                sock.settimeout(0.1)
-                result = sock.connect_ex((host, port))
-                sock.close()
-                if result == 0:
-                    return True
-                time.sleep(0.05)
-            except:
-                time.sleep(0.05)
-        return False
-    
-    print("正在启动服务器...")
-    if wait_for_server(HOST, PORT):
-        print(f"服务器已就绪，启动窗口...")
-    else:
-        print("服务器启动超时，仍然尝试打开窗口...")
-        time.sleep(0.5)
-    
-    # 创建窗口，使用简单的HTML避免黑屏
-    loading_html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-                font-family: "微软雅黑", Arial, sans-serif;
-                color: white;
-            }
-            .container {
-                text-align: center;
-            }
-            .logo {
-                font-size: 64px;
-                margin-bottom: 20px;
-                animation: bounce 1s infinite;
-            }
-            .title {
-                font-size: 28px;
-                font-weight: bold;
-                margin-bottom: 10px;
-            }
-            .spinner {
-                width: 50px;
-                height: 50px;
-                margin: 30px auto;
-                border: 4px solid rgba(255,255,255,0.3);
-                border-top: 4px solid white;
-                border-right: 4px solid white;
-                border-radius: 50%;
-                animation: spin 1.2s linear infinite;
-            }
-            .text {
-                font-size: 14px;
-                opacity: 0.9;
-            }
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            @keyframes bounce {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-15px); }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="title">NOTAM落区绘制工具</div>
-            <div class="spinner"></div>
-            <div class="text">正在加载...</div>
-        </div>
-        <script>
-            // 立即跳转到主页面
-            setTimeout(function() {
-                window.location.href = 'http://""" + HOST + ":" + str(PORT) + """';
-            }, 500);
-        </script>
-    </body>
-    </html>
-    """
-    
-    window = webview.create_window(
-        'NOTAM落区绘制工具',
-        html=loading_html,
-        width=1400,
-        height=900,
-        min_size=(800, 600)
-    )
-    
-    webview.start()
