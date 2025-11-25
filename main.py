@@ -322,8 +322,8 @@ def fetch():
     dataDict["CLASSIFY"] = classify_data(dataDict)
     print(dataDict)
     print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
-    sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"]), key=lambda x: x[0])
-    dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"] = zip(*sorted_data)
+    sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"]), key=lambda x: x[0])
+    dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"] = zip(*sorted_data)
     dataDict["NUM"] = len(dataDict["CODE"])
     print(dataDict)
     with open('data_dict.json', 'w', encoding='utf-8') as json_file:
