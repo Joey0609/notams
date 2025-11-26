@@ -35,11 +35,11 @@ function handleEndDrag(e) {
 
 if (window.innerWidth <= 768) { // Narrow screen condition
     sidebarHeader.addEventListener('mousedown', (e) => handleStartDrag(e));
-    sidebarHeader.addEventListener('touchstart', (e) => handleStartDrag(e.touches[0]));
+    sidebarHeader.addEventListener('touchstart', (e) => handleStartDrag(e.touches[0]),{ passive: false});
     document.addEventListener('mousemove', (e) => handleDrag(e));
-    document.addEventListener('touchmove', (e) => handleDrag(e.touches[0]));
+    document.addEventListener('touchmove', (e) => handleDrag(e.touches[0]),{ passive: false});
     document.addEventListener('mouseup', (e) => handleEndDrag(e));
-    document.addEventListener('touchend', (e) => handleEndDrag(e.changedTouches[0]));
+    document.addEventListener('touchend', (e) => handleEndDrag(e.changedTouches[0]),{ passive: false});
 }
 
 
