@@ -133,7 +133,7 @@ def classify_data(data):
 
     classify = {}
     for n, (_, members) in enumerate(groups.items(), 1):
-        combined_str = "".join(codes[m] for m in sorted(members))
+        combined_str = "".join(sorted(codes[m] for m in sorted(members)))
         key = int.from_bytes(combined_str.encode('utf-8'), 'big') % 998244353
         classify[f"c{key}"] = [codes[m] for m in members]
         classify[f"c{key}"].sort()
