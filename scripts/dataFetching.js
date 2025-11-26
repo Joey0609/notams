@@ -50,7 +50,7 @@ function clearAllPolygons() {
 // 重新获取（按钮已移除，这里保留函数供以后可能使用）
 function refetchData() {
     loadingModal.style.display = 'block';
-    fetch('/fetch')
+    fetch('data_dict.json', { cache: 'no-cache' })
         .then(r => r.json())
         .then(data => {
             dict = data;
