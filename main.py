@@ -4,6 +4,7 @@ from fetch.dinsQueryWeb import dinsQueryWeb
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
 import re
 import json
+from fetch.visits import update_visits
 from datetime import datetime
 dins = False
 FNSs = True
@@ -335,3 +336,4 @@ def fetch():
 
 if __name__ == '__main__':
     fetch()
+    update_visits()
