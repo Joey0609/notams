@@ -6,6 +6,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/Joey0609/notams?style=social)
 ![GitHub issues](https://img.shields.io/github/issues/Joey0609/notams)
 [![Website](https://img.shields.io/badge/website-online-brightgreen)](https://joey0609.github.io/notams/)
+[![Website Visits](https://img.shields.io/badge/dynamic/json?color=blue&label=Visits&query=data&url=https://joey0609.github.io/notams/visits.json)](https://counter.dev/dashboard.html?user=Starsky69&token=Beb6_vARt7c%3D)
 </div>
 
 
@@ -29,5 +30,7 @@ Obtain and plot rocket launch debris zones via NOTAMs<br>
 
 - &ensp;&ensp;&ensp;&ensp;Among this, something like "A1690/23" is the NOTAM serial number, "N392852E0955438-N385637E0955854-N390118E0970056-N393335E0965708" are four coordinates. The rectangular area enclosed by these four coordinate points is the debris zone. "06 JUL 03:18 2023 UNTIL 06 JUL 04:45 2023" is the effective time of the NOTAM, which can be used to determine the launch window. Debris zone NOTAMs for launches in domestic airspace often begin with "A TEMPORARY DANGER AREA". In other countries' airspace and over some sea areas, the NOTAM format may differ, which can make obtaining debris zone NOTAMs for Wenchang launches slightly more troublesome. However, the information contained in all launch debris zone NOTAMs is essentially the same.  <br>
 - &ensp;&ensp;&ensp;&ensp;For methods on obtaining NOTAMs, please refer to the tool's help section.
+
 **Other Pages**
 [Baidu Tieba](https://tieba.baidu.com/p/9298301903)
+
