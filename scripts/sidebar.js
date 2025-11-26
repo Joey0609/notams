@@ -9,7 +9,6 @@ function toggleSidebar() {
 const sidebarHeader = document.getElementById('notamSidebarHeader');
 let startY, startTop, isDragging = false;
 function handleStartDrag(e) {
-    e.preventDefault();
     isDragging = true;
     startY = e.clientY;
     const sidebar = document.getElementById('notamSidebar');

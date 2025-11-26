@@ -161,8 +161,8 @@ def fetch():
         }
     }
     output_data["results"] = dict(sorted(results.items()))
-    with open("notam_results.json", "w", encoding="utf-8") as f:
-        json.dump(output_data, f, indent=2, ensure_ascii=False)
+    # with open("notam_results.json", "w", encoding="utf-8") as f:
+    #     json.dump(output_data, f, indent=2, ensure_ascii=False)
     print(f"全部 ICAO 和 自由文字 (FUCK) 检索完成")
     print(f"成功: {success_cnt} / 失败: {fail_cnt}")
     print(f"总耗时：{time.time() - start:.1f} 秒")

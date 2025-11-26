@@ -111,7 +111,7 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .notam-sidebar {top: auto;width: 100%;height: 50vh;bottom: -100%;right: auto;left: 0;transition: bottom 0.35s ease;}
 .notam-sidebar.open {bottom: 0;}}
 /* 侧边栏内部 */
-.sidebar-header {padding: 12px 15px;background: linear-gradient(135deg, #2c3e50, #34495e);color: white;display: flex;justify-content: space-between;align-items: center;font-weight: bold;user-select: none;}
+.sidebar-header {padding: 12px 15px;background: linear-gradient(135deg, #2c3e50, #34495e);color: white;display: flex;justify-content: space-between;align-items: center;font-weight: bold;user-select: none;touch-action: pan-y;}
 .sidebar-title {font-size: 16px;}
 .sidebar-close {background: none;border: none;color: white;font-size: 28px;cursor: pointer;}
 .sidebar-content {flex: 1;overflow-y: auto;padding: 10px;}
