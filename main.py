@@ -133,7 +133,8 @@ def classify_data(data):
     classify = {}
     for n, (_, members) in enumerate(groups.items(), 1):
         classify[f"c{n}"] = [codes[m] for m in members]
-
+    for key in classify:
+        classify[key].sort()
     return classify
 
 EXCLUDE_RECTS = [
