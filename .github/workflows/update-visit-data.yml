@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: gh-pages  # ← 替换为你的 GitHub Pages 分支名（如 main）
+          ref: main
 
       - name: Fetch counter.dev data
         run: |
