@@ -6,7 +6,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/Joey0609/notams?style=social)
 ![GitHub issues](https://img.shields.io/github/issues/Joey0609/notams)
 [![Website](https://img.shields.io/badge/website-online-brightgreen)](https://joey0609.github.io/notams/)
-[![Website Visits](https://img.shields.io/badge/dynamic/json?color=blue&label=Visits&query=data&url=https://joey0609.github.io/notams/visits.json)](https://counter.dev/dashboard.html?user=Starsky69&token=Beb6_vARt7c%3D)
+[![Website Visits](https://img.shields.io/badge/dynamic/json?color=blue&label=Visits&query=value&url=https://joey0609.github.io/notams/visits.json)](https://counter.dev/dashboard.html?user=Starsky69&token=Beb6_vARt7c%3D)
 </div>
 
 
