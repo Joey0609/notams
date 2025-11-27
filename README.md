@@ -12,10 +12,7 @@
 - &ensp;&ensp;&ensp;&ensp;获取NOTAM的方法请移步小工具的帮助。
  
 **二、关于这个小工具**<br>
-- &ensp;&ensp;&ensp;&ensp;这个小工具原理相当简单，通过爬取NOTAM查询网站，分析并获取与发射相关的航警，将NOTAM内容解析并调用Leafletjs api并加载高德地图瓦片源将其绘制在地图上，以便更直观方便的进行查询。 <br>
-- &ensp;&ensp;&ensp;&ensp;这个小工具的主体部分于2022年年底开发，当时我苦恼于手动在地图上标点的麻烦，同时考虑到我还没有任何开发实用项目的经验，于是就编写了一个输入NOTAM后将其在地图上标出的工具来练手，并在之后将它作为个人辅助分析落区的工具。但是因为对字符串的处理不够完善，数据的存储方式不合理，且需要自己手动去网站上搜索NOTAM，这个工具使用起来相当令人脑淤血。
-- &ensp;&ensp;&ensp;&ensp;于是最近，我将小工具进行了重新开发，优化了操作逻辑和字符串处理、图形绘制代码，在原有功能的基础上增加了自动爬取NOTAM的脚本部分，并将界面优化到能用的程度。
-- &ensp;&ensp;&ensp;&ensp;为了编写方便，我选择了本地服务器+web界面的模式作为这个小工具的基础，小工具主要由flask框架的后端和h5/css+js的前端组成，后端包括一个python爬虫脚本、对发射落区NOTAM的筛选以及初步的字符串处理，前端则以进一步的字符串处理、UI界面和地图、图形的绘制为主。
+- &ensp;&ensp;&ensp;&ensp;该工具通过爬取NOTAM查询网站，分析并获取与发射相关的航警，将NOTAM内容解析并调用Leafletjs api并加载高德地图瓦片源将其绘制在地图上，以便更直观方便的进行查询。 <br>
 
 **三、工具使用方法与功能介绍**<br>
 - &ensp;&ensp;&ensp;&ensp;解压完成后，运行目录中的notamChecker.exe  <br>
@@ -28,3 +25,13 @@
 [b站专栏](https://www.bilibili.com/opus/1005673245294198789)
 
 [百度贴吧](https://tieba.baidu.com/p/9298301903)
+
+**开源许可与第三方库**
+
+本项目使用了以下第三方开源软件:
+
+Leaflet v1.9.4
+版权所有 (c) 2010-2025, Volodymyr Agafonkin
+许可证: BSD 2-Clause License
+网站: https://leafletjs.cn/
+许可证文件: static/leaflet/LICENSE
