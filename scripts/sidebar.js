@@ -74,15 +74,11 @@ function convertTime(utcTimeStr) {
 
 function updateSidebar() {
     const container = document.getElementById('notamList');
-    const countEl = document.getElementById('notamCount');
 
     if (!dict || dict.NUM === 0) {
         container.innerHTML = '<div style="text-align:center;color:#999;padding:30px;">暂无航警</div>';
-        countEl.textContent = '0';
         return;
     }
-
-    countEl.textContent = dict.NUM;
 
     let html = '';
     for (let i = 0; i < dict.NUM; i++) {

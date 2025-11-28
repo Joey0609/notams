@@ -9,11 +9,7 @@
 [![Website Visits](https://img.shields.io/badge/dynamic/json?color=blue&label=Visits&query=value&url=https://joey0609.github.io/notams/visits.json)](https://counter.dev/dashboard.html?user=Starsky69&token=Beb6_vARt7c%3D)
 </div>
 
-
-
 Obtain and plot rocket launch debris zones via NOTAMs<br>
-
-**<span style="color:orange;">Warning! This tool can automatically retrieve aviation warnings only. Some launches can be identified through navigational warnings, which cannot be automatically retrieved at this time. Please obtain and manually input coordinates if needed.</span>**<br>
 
 **If you find this project helpful, please consider giving it a ⭐ on GitHub! Your support motivates us to keep improving and adding new features. Thank you! 😊**
 
@@ -32,5 +28,15 @@ Obtain and plot rocket launch debris zones via NOTAMs<br>
 - &ensp;&ensp;&ensp;&ensp;For methods on obtaining NOTAMs, please refer to the tool's help section.
 
 **Other Pages**
+
 [Baidu Tieba](https://tieba.baidu.com/p/9298301903)
 
+**Open Source License and Third-Party Libraries**
+
+This project uses the following third-party open-source software:
+
+Leaflet v1.9.4  
+Copyright (c) 2010-2025, Volodymyr Agafonkin  
+License: BSD 2-Clause License  
+Website: <https://leafletjs.cn/>  
+License file: static/leaflet/LICENSE
