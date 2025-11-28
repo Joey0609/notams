@@ -172,10 +172,6 @@ HOST = config.get('SERVER', 'host', fallback='127.0.0.1')
 PORT = config.getint('SERVER', 'port', fallback=5005)
 AUTO_OPEN = config.getboolean('SERVER', 'auto_open_browser', fallback=True)
 
-
-print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
-# print(f"当前使用的ICAO码: {ICAO_CODES}")
-
 import logging
 from io import StringIO
 import sys
@@ -326,14 +322,23 @@ def fetch():
     dataDict["NUM"] = len(dataDict["CODE"])
     dataDict["CLASSIFY"] = classify_data(dataDict)
     print(dataDict)
-    print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
     sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"]), key=lambda x: x[0])
     dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"] = zip(*sorted_data)
     dataDict["NUM"] = len(dataDict["CODE"])
+    dataDict["HASH"] = sum(int(platid) % 998244353 for platid in dataDict["PLATID"]) % 998244353
     print(dataDict)
     with open('data_dict.json', 'w', encoding='utf-8') as json_file:
         json.dump(dataDict, json_file, ensure_ascii=False, indent=4)
+    return dataDict
 
 if __name__ == '__main__':
-    fetch()
-    update_visits()
+    try:
+        with open('data_dict.json', 'r', encoding='utf-8') as json_file:
+            previous_data = json.load(json_file)
+            before_hash = previous_data.get("HASH", None)
+    except FileNotFoundError:
+        before_hash = None
+    dataDict = fetch()
+    after_hash = dataDict.get("HASH", None)
+    if before_hash != after_hash:
+        update_visits()

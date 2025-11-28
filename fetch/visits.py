@@ -25,15 +25,15 @@ def update_visits():
     today = datetime.date.today().isoformat()  # e.g. "2025-11-26"
 
     # 检查是否今天已更新
-    if os.path.exists(OUTPUT_FILE):
-        try:
-            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-                existing = json.load(f)
-                if existing.get("updated_at") == today:
-                    print(f"✅ {OUTPUT_FILE} 已是今日最新，跳过更新。")
-                    return
-        except Exception:
-            pass  # 文件损坏，重新生成
+    # if os.path.exists(OUTPUT_FILE):
+    #     try:
+    #         with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+    #             existing = json.load(f)
+    #             if existing.get("updated_at") == today:
+    #                 print(f"✅ {OUTPUT_FILE} 已是今日最新，跳过更新。")
+    #                 return
+    #     except Exception:
+    #         pass  # 文件损坏，重新生成
 
     print("📡 正在获取最新访问数据...")
     try:
@@ -64,8 +64,6 @@ def update_visits():
 
     except Exception as e:
         print(f"💥 获取数据失败: {e}")
-        # fallback: 保留旧文件，或生成带 today 的 0 值（可选）
-        # 此处选择不覆盖，避免误清数据
         sys.exit(1)
 
 if __name__ == "__main__":
