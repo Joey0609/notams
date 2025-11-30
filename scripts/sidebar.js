@@ -1,41 +1,113 @@
 function toggleSidebar() {
     const sidebar = document.getElementById('notamSidebar');
     if (!sidebar.classList.contains('open') && window.innerWidth <= 768) {
-        sidebar.style.height = '50vh'; // Reset height when closing
+        sidebar.style.height = '35vh'; // Reset height when opening
     }
     sidebar.classList.toggle('open');
 }
-// 可拖拽侧边栏头部以调整高度（仅窄屏时启用）
-const sidebarHeader = document.getElementById('notamSidebarHeader');
-let startY, startTop, isDragging = false;
-if (window.innerWidth <= 768) { // Narrow screen condition
-    sidebarHeader.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startY = e.clientY;
-        const sidebar = document.getElementById('notamSidebar');
-        startTop = parseInt(window.getComputedStyle(sidebar).height, 10);
-        document.body.style.userSelect = 'none'; // Prevent text selection
-    });
 
-    document.addEventListener('mousemove', (e) => {
+(function initDraggableSidebar() {
+    const sidebarHeader = document.getElementById('notamSidebarHeader');
+    const sidebar = document.getElementById('notamSidebar');
+    
+    let startY = 0;
+    let startHeight = 0;
+    let isDragging = false;
+    const MIN_HEIGHT = 60;  // 最小高度（只露出标题栏）
+    const CLOSE_THRESHOLD = 80; // 拖到这个高度以下自动收起
+
+    function isNarrowScreen() {
+        return window.innerWidth <= 768;
+    }
+
+    function getClientY(e) {
+        if (e.touches && e.touches.length > 0) {
+            return e.touches[0].clientY;
+        }
+        return e.clientY;
+    }
+
+    function onDragStart(e) {
+        if (!isNarrowScreen()) return;
+        
+        isDragging = true;
+        startY = getClientY(e);
+        startHeight = sidebar.offsetHeight;
+        
+        // 防止文本选择
+        document.body.style.userSelect = 'none';
+        document.body.style.webkitUserSelect = 'none';
+        
+        // 添加拖拽中的样式
+        sidebarHeader.style.cursor = 'grabbing';
+        sidebar.style.transition = 'none'; // 拖拽时禁用过渡动画
+    }
+
+    function onDragMove(e) {
+        if (!isDragging || !isNarrowScreen()) return;
+        
+        // 阻止默认行为，防止触发下拉刷新
+        e.preventDefault();
+        
+        const currentY = getClientY(e);
+        const deltaY = currentY - startY; // 正值 = 向下拖动
+        let newHeight = startHeight - deltaY;
+        
+        // 限制高度范围
+        const maxHeight = window.innerHeight * 0.9;
+        newHeight = Math.max(MIN_HEIGHT, Math.min(newHeight, maxHeight));
+        
+        sidebar.style.height = `${newHeight}px`;
+    }
+
+    function onDragEnd(e) {
+        if (!isDragging) return;
+        
+        isDragging = false;
+        
+        // 恢复样式
+        document.body.style.userSelect = '';
+        document.body.style.webkitUserSelect = '';
+        sidebarHeader.style.cursor = '';
+        sidebar.style.transition = ''; // 恢复过渡动画
+        
+        // 检查是否需要自动收起
+        const currentHeight = sidebar.offsetHeight;
+        if (currentHeight <= CLOSE_THRESHOLD) {
+            // 先移除 open 类触发收起动画，保持当前高度不变
+            sidebar.classList.remove('open');
+            // 等收起动画完成后再重置高度
+            setTimeout(() => {
+                sidebar.style.height = '35vh';
+            }, 350); // 与 CSS transition 时间一致
+        }
+    }
+
+    // 鼠标事件
+    sidebarHeader.addEventListener('mousedown', onDragStart);
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', onDragEnd);
+
+    // 触摸事件（移动端）
+    sidebarHeader.addEventListener('touchstart', onDragStart, { passive: true });
+    document.addEventListener('touchmove', onDragMove, { passive: false }); // passive: false 允许 preventDefault
+    document.addEventListener('touchend', onDragEnd);
+    document.addEventListener('touchcancel', onDragEnd);
+
+    // 防止在拖拽标题栏时触发页面的下拉刷新
+    sidebarHeader.addEventListener('touchmove', function(e) {
         if (isDragging) {
-            const sidebar = document.getElementById('notamSidebar');
-            const newTop = Math.min(startTop - (e.clientY - startY), window.innerHeight * 0.9);
-            if (newTop < 10) {
-                sidebar.classList.toggle('open');
-                isDragging = false;
-                document.body.style.userSelect = ''; 
-                return;
-            }
-            sidebar.style.height = `${Math.max(0, newTop)}px`; // Prevent moving out of view
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // 窗口大小改变时重置
+    window.addEventListener('resize', function() {
+        if (!isNarrowScreen() && sidebar.classList.contains('open')) {
+            sidebar.style.height = ''; // 宽屏模式清除高度设置
         }
     });
-
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-        document.body.style.userSelect = ''; // Restore text selection
-    });
-}
+})();
 
 
 // 北京时间转换（放在这里或 scripts.js 均可）
@@ -89,8 +161,10 @@ function updateSidebar() {
         const visible = visibleState[i] !== false;
         html += `
         <div class="notam-item" style="--group-color:${col}; cursor:pointer;"
-            onmouseover="this.style.background='rgba(0,0,0,0.06)'"
-            onmouseout="this.style.background=''"
+            onmouseenter="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightNotam(${i});"
+            onmouseleave="this.style.background=''; hoverUnhighlightNotam(${i});"
+            ontouchstart="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightNotam(${i});"
+            ontouchend="this.style.background=''; hoverUnhighlightNotam(${i});"
             onclick="locateToNotam(${i})">
             <div class="notam-content">
                 <div class="notam-header">
@@ -154,11 +228,45 @@ function changeGroupColor(code, newColor, exampleIdx) {
 /* 复制原始航警 → 美观通知 */
 function copyRaw(idx) {
     const raw = dict.RAWMESSAGE?.[idx] || '';
-    navigator.clipboard.writeText(raw).then(() => {
+    // 使用 scripts.js 中定义的通用复制函数
+    if (typeof handleCopy === 'function') {
+        handleCopy(raw);
+    } else {
+        // 回退方案
+        fallbackCopyText(raw);
+    }
+}
+
+/* 回退复制方案（兼容安卓 WebView） */
+function fallbackCopyText(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '0';
+    textarea.setAttribute('readonly', '');
+    document.body.appendChild(textarea);
+    
+    const range = document.createRange();
+    range.selectNodeContents(textarea);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    textarea.setSelectionRange(0, text.length);
+    
+    let success = false;
+    try {
+        success = document.execCommand('copy');
+    } catch (e) {
+        console.error('Copy failed:', e);
+    }
+    document.body.removeChild(textarea);
+    
+    if (success) {
         showNotification('已复制原始航警到剪贴板');
-    }).catch(() => {
-        showNotification('复制失败');
-    });
+    } else {
+        showNotification('复制失败，请长按手动复制');
+    }
 }
 
 /* 显示/隐藏单条 */

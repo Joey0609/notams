@@ -7,6 +7,59 @@ var polygon = [];
 var polygonAuto = [];
 var launchSiteMarkers = [];
 
+// 存储原始样式以便恢复
+var originalPolygonStyles = {};
+
+/* 航警列表 hover 高亮指定多边形 */
+function hoverHighlightNotam(idx) {
+    const poly = polygonAuto[idx];
+    if (!poly) return;
+    
+    // 第一次高亮时保存原始样式
+    if (!originalPolygonStyles[idx]) {
+        originalPolygonStyles[idx] = {
+            weight: poly.options.weight || 1,
+            fillOpacity: poly.options.fillOpacity || 0.3,
+            opacity: poly.options.opacity || 1,
+            color: poly.options.color,
+            fillColor: poly.options.fillColor
+        };
+    }
+    
+    const saved = originalPolygonStyles[idx];
+    
+    // 应用高亮样式：边框加粗 + 填充透明度提高（使用保存的原色）
+    poly.setStyle({
+        weight: 4,
+        fillOpacity: 0.6,
+        opacity: 1,
+        color: saved.color,
+        fillColor: saved.fillColor
+    });
+    
+    // 将该多边形置于顶层
+    if (poly.bringToFront) {
+        poly.bringToFront();
+    }
+}
+
+/* 列表 hover 取消高亮 */
+function hoverUnhighlightNotam(idx) {
+    const poly = polygonAuto[idx];
+    if (!poly) return;
+    
+    const saved = originalPolygonStyles[idx];
+    if (saved) {
+        poly.setStyle({
+            weight: saved.weight,
+            fillOpacity: saved.fillOpacity,
+            opacity: saved.opacity,
+            color: saved.color,
+            fillColor: saved.fillColor
+        });
+    }
+}
+
 var tileLayers = {
     //天地图矢量图层
     tianditu_vec: {
@@ -117,16 +170,54 @@ switchColorPool(currentMapProvider === 'gaode_vec' || currentMapProvider === 'ti
 
 
 function handleCopy(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showNotification("成功复制到剪贴板");
-    }).catch(err => {
+    // 通用复制函数，兼容安卓 WebView
+    function fallbackCopy(str) {
         const textarea = document.createElement('textarea');
-        textarea.value = text;
+        textarea.value = str;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        textarea.setAttribute('readonly', ''); // 防止移动端弹出键盘
         document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
+        
+        // 针对 iOS 的特殊处理
+        const range = document.createRange();
+        range.selectNodeContents(textarea);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        textarea.setSelectionRange(0, str.length); // 安卓需要这个
+        
+        let success = false;
+        try {
+            success = document.execCommand('copy');
+        } catch (e) {
+            console.error('execCommand copy failed:', e);
+        }
         document.body.removeChild(textarea);
-    });
+        return success;
+    }
+    
+    // 优先使用现代 Clipboard API
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification("成功复制到剪贴板");
+        }).catch(err => {
+            // Clipboard API 失败，使用回退方案
+            if (fallbackCopy(text)) {
+                showNotification("成功复制到剪贴板");
+            } else {
+                showNotification("复制失败，请手动复制");
+            }
+        });
+    } else {
+        // 不支持 Clipboard API，直接使用回退方案
+        if (fallbackCopy(text)) {
+            showNotification("成功复制到剪贴板");
+        } else {
+            showNotification("复制失败，请手动复制");
+        }
+    }
 }
 
 // 初始化地图
@@ -260,6 +351,7 @@ function redrawAllNotams() {
         }
     }
     polygonAuto = [];
+    originalPolygonStyles = {};  // 清除缓存的样式
     
     for (var i = 0; i < dict.NUM; i++) {
         var color = getColorForCode(dict.CODE[i]);

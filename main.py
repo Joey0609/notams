@@ -157,7 +157,11 @@ def load_config():
         config['SERVER'] = {
             'host': '127.0.0.1',
             'port': '5000',
-            'auto_open_browser': 'true'
+            'auto_open_browser': 'false'
+        }
+        config['WEBVIEW'] = {
+            'host': '127.0.0.1',
+            'port': '5000'
         }
         
         with open(config_file, 'w', encoding='utf-8') as f:
@@ -168,14 +172,18 @@ def load_config():
 
 config = load_config()
 ICAO_CODES = config.get('ICAO', 'codes', fallback='ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH VVTS WSJC WIIF YMMM WMFC RPHI AYPM AGGG ANAU NFFF KZAK VYYF VCCF VOMF WAAF RJJJ RCAA YBBB VVGL VVHN VVHM RCSP VVHM WIIF')
+# Flask 服务器绑定配置
 HOST = config.get('SERVER', 'host', fallback='127.0.0.1')
-PORT = config.getint('SERVER', 'port', fallback=5005)
+PORT = config.getint('SERVER', 'port', fallback=5000)
 AUTO_OPEN = config.getboolean('SERVER', 'auto_open_browser', fallback=True)
+# pywebview 窗口连接配置（可以与服务器绑定地址不同）
+WEBVIEW_HOST = config.get('WEBVIEW', 'host', fallback=HOST)
+WEBVIEW_PORT = config.getint('WEBVIEW', 'port', fallback=PORT)
 
 if AUTO_OPEN:
-    webbrowser.open(f"http://{HOST}:{PORT}")
+    webbrowser.open(f"http://{WEBVIEW_HOST}:{WEBVIEW_PORT}")
 
-print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
+print(f"使用时请不要关闭控制台，在浏览器中访问 http://{WEBVIEW_HOST}:{WEBVIEW_PORT} 以开始使用")
 # print(f"当前使用的ICAO码: {ICAO_CODES}")
 
 app = Flask(__name__)
@@ -367,7 +375,7 @@ def fetch():
     dataDict["NUM"] = len(dataDict["CODE"])
     dataDict["CLASSIFY"] = classify_data(dataDict)
     print(dataDict)
-    print(f"使用时请不要关闭控制台，在浏览器中访问http://{HOST}:{PORT}以开始使用")
+    print(f"使用时请不要关闭控制台，在浏览器中访问 http://{WEBVIEW_HOST}:{WEBVIEW_PORT} 以开始使用")
     return jsonify(dataDict)
 def start_flask():
     # 添加Flask日志处理器
@@ -470,7 +478,7 @@ if __name__ == '__main__':
         <script>
             // 立即跳转到主页面
             setTimeout(function() {
-                window.location.href = 'http://""" + HOST + ":" + str(PORT) + """';
+                window.location.href = 'http://""" + WEBVIEW_HOST + ":" + str(WEBVIEW_PORT) + """';
             }, 500);
         </script>
     </body>
