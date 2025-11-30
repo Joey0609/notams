@@ -1,5 +1,5 @@
 {
-  "timestamp": 1764485991.4928417,
+  "timestamp": 1764514960.558982,
   "results": {
     "FUCK": [
       {
@@ -57,34 +57,6 @@
         "startDate": "12/20/2025 1100",
         "endDate": "12/22/2025 1500",
         "transactionID": 78750551
-      },
-      {
-        "Number": "B6046/25",
-        "Message": "B6046/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11926E047\nA) RPHI B) 2511301212 C) 2511301330\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n194300N 1184400E -\n193800N 1201100E -\n190000N 1200800E -\n190400N 1184200E -\n194300N 1184400E\n(55NM NORTHWEST OF LAOAG AP).\nF) SFC G) UNL",
-        "startDate": "11/30/2025 1212",
-        "endDate": "11/30/2025 1330",
-        "transactionID": 78750664
-      },
-      {
-        "Number": "B6048/25",
-        "Message": "B6048/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1901N12357E035\nA) RPHI B) 2511301214 C) 2511301334\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n192000N 1232800E - \n191600N 1242900E -\n184200N 1242600E -\n184700N 1232500E - \n192000N 1232800E\n(102NM NORTHEAST OF LALLO AP).\nF) SFC G) UNL",
-        "startDate": "11/30/2025 1214",
-        "endDate": "11/30/2025 1334",
-        "transactionID": 78750787
-      },
-      {
-        "Number": "B6065/25",
-        "Message": "B6065/25 NOTAMN\nQ) RPHI/QANXX/I /NBO/E /000/999/1923N11922E073\nA) RPHI B) 2511301140 C) 2511301345\nE) RNAV RTE AFFECTED DUE SPECIAL OPS (AEROSPACE FLT ACT AT 55NM \nNORTHWEST OF LAOAG AP):\nM501 - (MIKIN - ALDIS)\nL625 - (ALDIS - ABVAR)\n\nALTN RTE:\n- NOMAN A461 MUMOT DCT ALDIS VICE VERSA\n- ALDIS DCT 185500N 1202000E DCT ABVAR.",
-        "startDate": "11/30/2025 1140",
-        "endDate": "11/30/2025 1345",
-        "transactionID": 78763344
-      },
-      {
-        "Number": "B6067/25",
-        "Message": "B6067/25 NOTAMN\nQ) RPHI/QANXX/I /NBO/E /000/999/1918N12417E118\nA) RPHI B) 2511301140 C) 2511301345\nE) RNAV RTE AFFECTED DUE SPECIAL OPS (AEROSPACE FLT ACT AT 102NM \nNORTHEAST OF LALLO AP):\nA582 - (BISIG - EXOMI)\n\nALTN RTE:\n- ARRIVING MANILA FIR: MEVIN B462 LAO M646 SANRO DCT NABAL DCT CIA  \n                       DCT MIA\n- OVERFLY MANILA FIR: MEVIN B462 CAB DCT MIA.",
-        "startDate": "11/30/2025 1140",
-        "endDate": "11/30/2025 1345",
-        "transactionID": 78763429
       },
       {
         "Number": "M0259/25",
@@ -164,13 +136,6 @@
         "startDate": "12/25/2025 0000",
         "endDate": "01/08/2026 0000",
         "transactionID": 78736869
-      },
-      {
-        "Number": "A2715/25",
-        "Message": "A2715/25 NOTAMN\nQ) VHHK/QPFCA/IV/NBO/E /000/999/2003N11500E214\nA) VHHK B) 2511300530 C) 2511301200\nE) DUE TO ZSAM RESTRICTION, FLIGHTS TRANSITING HONG \nKONG FIR, DESTINATIONS ZSAM, ZSQZ, ZSFZ, ZSWZ: TREATED AS ONE \nSTREAM, VIA \nTHE FOLLOWING ROUTE ARE SUBJECT TO FLOW CONTROL:\n\nA. A1 IKELA - DOTMI A470, 10 MINUTES\nB. M771 DOSUT - DOTMI A470, 10 MINUTES\nC. A461 NOMAN - DOTMI A470, 10 MINUTES\n\nRMK: FLOW CONTROL MAY BE ADJUSTED SUBJECT TO SITUATION AND \nDISCRETION OF HONG KONG ATS WATCH SUPERVISOR.",
-        "startDate": "11/30/2025 0530",
-        "endDate": "11/30/2025 1200",
-        "transactionID": 78777992
       }
     ],
     "ZBPE": [
@@ -315,6 +280,13 @@
         "startDate": "12/24/2025 1600",
         "endDate": "01/07/2026 1559",
         "transactionID": 78710345
+      },
+      {
+        "Number": "A4488/25",
+        "Message": "A4488/25 NOTAMN\nQ) ZGZU/QARLC/IV/NBO/E/000/999/\nA) ZGZU B) 2512010200 C) 2512010545 \nE) SEGMENT NANNING VOR &apos;WUY&apos;-RUNEG OF ATS RTE W169 CLSD.",
+        "startDate": "12/01/2025 0200",
+        "endDate": "12/01/2025 0545",
+        "transactionID": 78781615
       },
       {
         "Number": "A6528/19",
@@ -484,11 +456,25 @@
         "transactionID": 78752334
       },
       {
-        "Number": "A4487/25",
-        "Message": "A4487/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/167/\nA) ZLHW B) 2511300300 C) 2511300900 \nE) SEGMENT N393931E1003646 - ALGOT OF ATS RTE V67 CLSD AT 5,100M \nAND BELOW.\nF) FL000 G) FL167",
-        "startDate": "11/30/2025 0300",
-        "endDate": "11/30/2025 0900",
-        "transactionID": 78767153
+        "Number": "A4489/25",
+        "Message": "A4489/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/167/217/\nA) ZLHW B) 2512010610 C) 2512011222 \nE) FLW SEGMENT OF ATS RTE CLSD BTN 5,100M(INCLUSIVE) AND \n6,600M(INCLUSIVE):\n1. W216: ALGAK - IDGOB.\n2. W215: DOMVA - VIRIK.\nF) FL167 G) FL217",
+        "startDate": "12/01/2025 0610",
+        "endDate": "12/01/2025 1222",
+        "transactionID": 78784817
+      },
+      {
+        "Number": "A4490/25",
+        "Message": "A4490/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/187/256/\nA) ZLHW B) 2512010610 C) 2512011222 \nE) FLW SEGMENT OF ATS RTE CLSD BTN 5,700M(INCLUSIVE) AND \n7,800M(INCLUSIVE):\n1. W214 :JINGNING VOR&apos;JIG&apos;- XOGAB.\n2. W93  :JINGNING VOR&apos;JIG&apos;- URKIB.\n3. SEGMENT WITHIN A CIRCLE CENTERED AT GUYUAN VOR&apos;GUY&apos; WITH RADIUS \nOF 50KM.\nF) FL187 G) FL256",
+        "startDate": "12/01/2025 0610",
+        "endDate": "12/01/2025 1222",
+        "transactionID": 78784861
+      },
+      {
+        "Number": "A4492/25",
+        "Message": "A4492/25 NOTAMN\nQ) ZLHW/QARLT/IV/NBO/E/000/226/\nA) ZLHW B) 2512010100 C) 2512011000 \nE) SEGMENT TUSLI - VIKUP OF ATS RTE W112 CLSD AT 6,900M AND BELOW.\nF) FL000 G) FL226",
+        "startDate": "12/01/2025 0100",
+        "endDate": "12/01/2025 1000",
+        "transactionID": 78784979
       }
     ],
     "ZPKM": [
@@ -777,11 +763,11 @@
         "transactionID": 78710358
       },
       {
-        "Number": "A4486/25",
-        "Message": "A4486/25 NOTAMN\nQ) ZWUQ/QARLT/IV/NBO/E/000/321/\nA) ZWUQ B) 2511300430 C) 2511300800 \nE) SEGMENT 70KM WEST OF OBDEG - 240KM WEST OF OBDEG OF ATS RTE \nW187 CLSD AT 9,800M AND BELOW.\nF) GND G) 9800M AMSL",
-        "startDate": "11/30/2025 0430",
-        "endDate": "11/30/2025 0800",
-        "transactionID": 78766793
+        "Number": "A4491/25",
+        "Message": "A4491/25 NOTAMN\nQ) ZWUQ/QARLT/IV/NBO/E/000/321/\nA) ZWUQ B) 2512010230 C) 2512010600 \nE) SEGMENT 70KM WEST OF OBDEG - 240KM WEST OF OBDEG OF ATS RTE \nW187 CLSD AT 9,800M AND BELOW.\nF) GND G) 9800M AMSL",
+        "startDate": "12/01/2025 0230",
+        "endDate": "12/01/2025 0600",
+        "transactionID": 78784941
       }
     ],
     "ZYSH": [

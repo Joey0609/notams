@@ -103,13 +103,25 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .log-timestamp, .log-level, .log-message {user-select: text;-webkit-user-select: text;}
 /* ────────────────────── 响应式航警侧边栏 ────────────────────── */
 #sidebarToggle {position: absolute;top: 10px;right: 10px;writing-mode: vertical-lr;text-orientation: upright;background: rgba(255, 255, 255, 0.8);padding: 8px 12px;border-radius: 6px;cursor: pointer;z-index: 400;font-weight: bold;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);top: 50%;transform: translateY(-50%);letter-spacing: 10px;padding-top: 18px;user-select: none;}
+
+/* 历史检索按钮 */
+#archiveToggle {position: absolute;top: 10px;left: 10px;writing-mode: vertical-lr;text-orientation: upright;background: rgba(255, 255, 255, 0.8);padding: 8px 12px;border-radius: 6px;cursor: pointer;z-index: 400;font-weight: bold;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);top: 50%;transform: translateY(-50%);letter-spacing: 10px;padding-top: 18px;user-select: none;}
+
 /* 宽屏：右侧弹出 */
 .notam-sidebar {position: fixed;top: 0;right: -380px;width: 360px;height: 100%;background: rgba(255, 255, 255, 0.97);box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);transition: right 0.35s ease;z-index: 400;display: flex;flex-direction: column;}
 .notam-sidebar.open {right: 0;}
+
+/* 历史检索侧边栏 - 左侧弹出 */
+.archive-sidebar {position: fixed;top: 0;left: -380px;width: 360px;height: 100%;background: rgba(255, 255, 255, 0.97);box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);transition: left 0.35s ease;z-index: 400;display: flex;flex-direction: column;}
+.archive-sidebar.open {left: 0;}
+
 /* 窄屏（<768px）：底部弹出 */
 @media (max-width: 768px) {#sidebarToggle {bottom: 20px;top: auto;left: 50%;writing-mode: horizontal-tb;text-align: center;transform: translateX(-50%);padding: 10px 20px;border-radius: 10px;width: 150px;line-height: normal;}
+#archiveToggle {bottom: 80px;top: auto;left: 50%;writing-mode: horizontal-tb;text-align: center;transform: translateX(-50%);padding: 10px 20px;border-radius: 10px;width: 150px;line-height: normal;}
 .notam-sidebar {top: auto;width: 100%;height: 35vh;bottom: -100%;right: auto;left: 0;transition: bottom 0.35s ease;border-radius: 16px 16px 0 0;}
 .notam-sidebar.open {bottom: 0;}
+.archive-sidebar {top: auto;width: 100%;height: 50vh;bottom: -100%;left: 0;right: auto;transition: bottom 0.35s ease;border-radius: 16px 16px 0 0;}
+.archive-sidebar.open {bottom: 0;}
 /* 窄屏下标题栏可拖动样式 */
 .sidebar-header {cursor: grab;border-radius: 16px 16px 0 0;position: relative;touch-action: none;}
 .sidebar-header:active {cursor: grabbing;}
@@ -152,3 +164,25 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 /* 通知 */
 .notification {position: fixed;top: 20px;left: 50%;transform: translateX(-50%);background: rgba(0, 0, 0, 0.85);color: white;padding: 12px 24px;border-radius: 8px;font-size: 14px;z-index: 2000;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);opacity: 0;transition: opacity 0.4s, transform 0.4s;}
 .notification.show {opacity: 1;transform: translateX(-50%) translateY(0);}
+
+/* ────────────────────── 历史检索表单样式 ────────────────────── */
+.archive-form {display: flex;flex-direction: column;gap: 15px;margin-bottom: 20px;}
+.form-group {display: flex;flex-direction: column;gap: 6px;}
+.form-group label {font-size: 13px;font-weight: bold;color: #2c3e50;}
+.archive-input {padding: 8px 12px;border: 1px solid #ddd;border-radius: 5px;font-size: 14px;transition: border-color 0.2s;}
+.archive-input:focus {outline: none;border-color: #3498db;}
+.archive-search-btn, .archive-clear-btn {padding: 10px 20px;border: none;border-radius: 5px;font-size: 14px;font-weight: bold;cursor: pointer;transition: background 0.2s, transform 0.1s;}
+.archive-search-btn {background: linear-gradient(135deg, #3498db, #2980b9);color: white;}
+.archive-search-btn:hover {background: linear-gradient(135deg, #2980b9, #21618c);transform: scale(1.02);}
+.archive-search-btn:active {transform: scale(0.98);}
+.archive-clear-btn {background: #e74c3c;color: white;margin-top: 5px;}
+.archive-clear-btn:hover {background: #c0392b;}
+.archive-status {padding: 10px;background: #ecf0f1;border-radius: 5px;font-size: 13px;color: #7f8c8d;text-align: center;display: none;}
+.archive-status.show {display: block;}
+.archive-status.loading {background: #d6eaf8;color: #2980b9;}
+.archive-status.success {background: #d5f4e6;color: #27ae60;}
+.archive-status.error {background: #fadbd8;color: #e74c3c;}
+.archive-notam-list {margin-top: 15px;max-height: calc(100vh - 450px);overflow-y: auto;}
+.archive-notam-item {margin-bottom: 10px;padding: 10px;background: #fff3cd;border-left: 4px solid #ffc107;border-radius: 5px;font-size: 12px;}
+.archive-notam-item .notam-code {font-weight: bold;color: #856404;}
+.archive-notam-item .notam-time {font-size: 11px;color: #856404;margin-top: 4px;}

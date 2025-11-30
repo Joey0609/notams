@@ -143,71 +143,111 @@ function updateSidebar() {
     const container = document.getElementById('notamList');
     const countEl = document.getElementById('notamCount');
 
-    if (!dict || dict.NUM === 0) {
+    // 计算总数（自动航警 + 历史航警）
+    const autoCount = dict ? dict.NUM : 0;
+    const archiveCount = archiveDict ? archiveDict.NUM : 0;
+    const totalCount = autoCount + archiveCount;
+
+    if (totalCount === 0) {
         container.innerHTML = '<div style="text-align:center;color:#999;padding:30px;">暂无航警</div>';
         countEl.textContent = '0';
         return;
     }
 
-    countEl.textContent = dict.NUM;
+    countEl.textContent = totalCount;
 
     let html = '';
-    for (let i = 0; i < dict.NUM; i++) {
-        const code = dict.CODE[i];
-        const rawTime = dict.TIME[i] || '';
-        const prettyTime = convertTime(rawTime);
-        const rawMessage = dict.RAWMESSAGE?.[i] || '';
-        const col = getColorForCode(code);
-        const visible = visibleState[i] !== false;
-        html += `
-        <div class="notam-item" style="--group-color:${col}; cursor:pointer;"
-            onmouseenter="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightNotam(${i});"
-            onmouseleave="this.style.background=''; hoverUnhighlightNotam(${i});"
-            ontouchstart="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightNotam(${i});"
-            ontouchend="this.style.background=''; hoverUnhighlightNotam(${i});"
-            onclick="locateToNotam(${i})">
-            <div class="notam-content">
-                <div class="notam-header">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <div class="color-picker-wrapper" onclick="event.stopPropagation();">
-                            <div class="color-preview" style="background:${col}">
-                            <input type="color" class="color-picker" value="${col}"
-                                onchange="event.stopPropagation(); changeGroupColor('${code}', this.value, ${i})">
+    
+    // 显示自动获取的航警
+    if (dict && dict.NUM > 0) {
+        html += '<div style="font-weight: bold; padding: 10px; background: #ecf0f1; margin: -10px -10px 10px -10px;">自动获取航警 (' + dict.NUM + ')</div>';
+        
+        for (let i = 0; i < dict.NUM; i++) {
+            const code = dict.CODE[i];
+            const rawTime = dict.TIME[i] || '';
+            const prettyTime = convertTime(rawTime);
+            const rawMessage = dict.RAWMESSAGE?.[i] || '';
+            const col = getColorForCode(code);
+            const visible = visibleState[i] !== false;
+            html += `
+            <div class="notam-item" style="--group-color:${col}; cursor:pointer;"
+                onmouseenter="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightNotam(${i});"
+                onmouseleave="this.style.background=''; hoverUnhighlightNotam(${i});"
+                ontouchstart="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightNotam(${i});"
+                ontouchend="this.style.background=''; hoverUnhighlightNotam(${i});"
+                onclick="locateToNotam(${i})">
+                <div class="notam-content">
+                    <div class="notam-header">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="color-picker-wrapper" onclick="event.stopPropagation();">
+                                <div class="color-preview" style="background:${col}">
+                                <input type="color" class="color-picker" value="${col}"
+                                    onchange="event.stopPropagation(); changeGroupColor('${code}', this.value, ${i})">
+                                </div>
+                                
                             </div>
-                            
+
+                            <span class="notam-code">${code}</span>
                         </div>
 
-                        <span class="notam-code">${code}</span>
+                        
                     </div>
-
-                    
+                    <div class="notam-time">
+                        ${prettyTime}
+                    </div>
                 </div>
-                <div class="notam-time">
-                    ${prettyTime}
-                </div>
-            </div>
-            <div class="notam-actions">
-                    <button class="icon-btn"
-                        onclick="event.stopPropagation(); copyRaw(${i})"
-                        title="复制原始航警">
-                        <!-- Copy Icon -->
-                        <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 12.4316V7.8125C13 6.2592 14.2592 5 15.8125 5H40.1875C41.7408 5 43 6.2592 43 7.8125V32.1875C43 33.7408 41.7408 35 40.1875 35H35.5163" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32.1875 13H7.8125C6.2592 13 5 14.2592 5 15.8125V40.1875C5 41.7408 6.2592 43 7.8125 43H32.1875C33.7408 43 35 41.7408 35 40.1875V15.8125C35 14.2592 33.7408 13 32.1875 13Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>
-                    </button>
+                <div class="notam-actions">
+                        <button class="icon-btn"
+                            onclick="event.stopPropagation(); copyRaw(${i})"
+                            title="复制原始航警">
+                            <!-- Copy Icon -->
+                            <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 12.4316V7.8125C13 6.2592 14.2592 5 15.8125 5H40.1875C41.7408 5 43 6.2592 43 7.8125V32.1875C43 33.7408 41.7408 35 40.1875 35H35.5163" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32.1875 13H7.8125C6.2592 13 5 14.2592 5 15.8125V40.1875C5 41.7408 6.2592 43 7.8125 43H32.1875C33.7408 43 35 41.7408 35 40.1875V15.8125C35 14.2592 33.7408 13 32.1875 13Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>
+                        </button>
 
-                    <button class="icon-btn"
-                        onclick="event.stopPropagation(); toggleVisibility(${i})"
-                        title="${visible ? '隐藏' : '显示'}">
-                        <!-- Dynamic visibility icon -->
-                        ${visible
-                ? `<svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.85786 18C6.23858 21 4 24 4 24C4 24 12.9543 36 24 36C25.3699 36 26.7076 35.8154 28 35.4921M20.0318 12.5C21.3144 12.1816 22.6414 12 24 12C35.0457 12 44 24 44 24C44 24 41.7614 27 38.1421 30" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.3142 20.6211C19.4981 21.5109 19 22.6972 19 23.9998C19 26.7612 21.2386 28.9998 24 28.9998C25.3627 28.9998 26.5981 28.4546 27.5 27.5705" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 42L6 6" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-                : `<svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 36C35.0457 36 44 24 44 24C44 24 35.0457 12 24 12C12.9543 12 4 24 4 24C4 24 12.9543 36 24 36Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/><path d="M24 29C26.7614 29 29 26.7614 29 24C29 21.2386 26.7614 19 24 19C21.2386 19 19 21.2386 19 24C19 26.7614 21.2386 29 24 29Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>`
+                        <button class="icon-btn"
+                            onclick="event.stopPropagation(); toggleVisibility(${i})"
+                            title="${visible ? '隐藏' : '显示'}">
+                            <!-- Dynamic visibility icon -->
+                            ${visible
+                    ? `<svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.85786 18C6.23858 21 4 24 4 24C4 24 12.9543 36 24 36C25.3699 36 26.7076 35.8154 28 35.4921M20.0318 12.5C21.3144 12.1816 22.6414 12 24 12C35.0457 12 44 24 44 24C44 24 41.7614 27 38.1421 30" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.3142 20.6211C19.4981 21.5109 19 22.6972 19 23.9998C19 26.7612 21.2386 28.9998 24 28.9998C25.3627 28.9998 26.5981 28.4546 27.5 27.5705" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 42L6 6" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                    : `<svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 36C35.0457 36 44 24 44 24C44 24 35.0457 12 24 12C12.9543 12 4 24 4 24C4 24 12.9543 36 24 36Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/><path d="M24 29C26.7614 29 29 26.7614 29 24C29 21.2386 26.7614 19 24 19C21.2386 19 19 21.2386 19 24C19 26.7614 21.2386 29 24 29Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>`
 
-                         }
-                    </button>
-                </div>
-            
-        </div>`;
+                            }
+                        </button>
+                    </div>
+                
+            </div>`;
+        }
     }
+
+    // 显示历史航警
+    if (archiveDict && archiveDict.NUM > 0) {
+        html += '<div style="font-weight: bold; padding: 10px; background: #fff3cd; margin: 10px -10px 10px -10px; border-top: 2px solid #ffc107;">历史检索航警 (' + archiveDict.NUM + ')</div>';
+        
+        for (let i = 0; i < archiveDict.NUM; i++) {
+            const code = archiveDict.CODE[i];
+            const rawTime = archiveDict.TIME[i] || '';
+            const prettyTime = convertTime(rawTime);
+            const col = getColorForArchiveCode(code);
+            
+            html += `
+            <div class="notam-item" style="--group-color:${col}; cursor:pointer; background: #fffbf0;"
+                onclick="locateToArchiveNotam(${i})">
+                <div class="notam-content">
+                    <div class="notam-header">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="color-preview" style="background:${col}; width:16px; height:16px; border-radius:50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+                            <span class="notam-code" style="color: #856404;">${code}</span>
+                        </div>
+                    </div>
+                    <div class="notam-time" style="color: #856404;">
+                        ${prettyTime}
+                    </div>
+                </div>
+            </div>`;
+        }
+    }
+
     container.innerHTML = html;
 }
 

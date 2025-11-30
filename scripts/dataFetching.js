@@ -42,6 +42,7 @@ function drawAllAutoNotams() {
 }
 
 function clearAllPolygons() {
+    // 只清除自动获取的航警，不清除历史航警
     polygonAuto.forEach(p => p && map.removeLayer(p));
     polygonAuto = [];
     visibleState = {};

@@ -39,6 +39,8 @@
 
         <div id="sidebarToggle" onclick="toggleSidebar()">航警列表</div>
 
+        <div id="archiveToggle" onclick="toggleArchiveSidebar()">历史检索</div>
+
         <div id="notamSidebar" class="notam-sidebar">
             <div id="notamSidebarHeader" class="sidebar-header">
                 <div class="sidebar-title">航警列表 <span id="notamCount">0</span> 条</div>
@@ -50,6 +52,36 @@
                 </div>
             </div>
             <div id="notamList" class="sidebar-content"></div>
+        </div>
+
+        <div id="archiveSidebar" class="archive-sidebar">
+            <div id="archiveSidebarHeader" class="sidebar-header">
+                <div class="sidebar-title">历史航警检索</div>
+                <button class="sidebar-close" onclick="toggleArchiveSidebar()">×</button>
+            </div>
+            <div class="sidebar-content" style="padding: 15px;">
+                <div class="archive-form">
+                    <div class="form-group">
+                        <label>选择日期</label>
+                        <input type="date" id="archiveDate" class="archive-input" />
+                    </div>
+                    <div class="form-group">
+                        <label>选择区域</label>
+                        <select id="archiveRegion" class="archive-input">
+                            <option value="internal">内陆及近海区域</option>
+                            <option value="VVTS">VVTS</option>
+                            <option value="RPHI">RPHI</option>
+                            <option value="RJJJ">RJJJ</option>
+                            <option value="KZAK">KZAK</option>
+                            <option value="VCCF">VCCF</option>
+                        </select>
+                    </div>
+                    <button id="btnSearchArchive" class="archive-search-btn">开始检索</button>
+                    <button id="btnClearArchive" class="archive-clear-btn">清除历史航警</button>
+                </div>
+                <div id="archiveStatus" class="archive-status"></div>
+                <div id="archiveNotamList" class="archive-notam-list"></div>
+            </div>
         </div>
 
         <div class="help-btn" id="helpButton">帮助</div>
@@ -102,6 +134,7 @@
     <script src="/scripts/scripts.js"></script>
     <script src="/scripts/dataFetching.js"></script>
     <script src="/scripts/sidebar.js"></script>
+    <script src="/scripts/archiveSearch.js"></script>
     <script src="/scripts/notification.js"></script>
 </body>
 

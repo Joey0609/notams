@@ -6,10 +6,12 @@ from flask import Flask, render_template, jsonify, send_from_directory
 import configparser
 from fetch.dinsQueryWeb import dinsQueryWeb
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
+from fetch.FNS_NOTAM_ARCHIVE_SEARCH import FNS_NOTAM_ARCHIVE_SEARCH
 import re
 import webview
 import threading
 from datetime import datetime
+from flask import request  # 添加request导入
 dins = False
 FNSs = True
 
@@ -142,7 +144,7 @@ def classify_data(data):
     return classify
 
 EXCLUDE_RECTS = [
-    {'lat_min': 39.303183, 'lat_max': 40.856476, 'lon_min': 101.300003, 'lon_max': 105.242712},
+    # {'lat_min': 39.303183, 'lat_max': 40.856476, 'lon_min': 101.300003, 'lon_max': 105.242712},
     {'lat_min': 36.263957, 'lat_max': 45.841384, 'lon_min': 73.570446,  'lon_max': 90.944820},
 ]
 
@@ -279,6 +281,53 @@ def get_config():
         }
     })
 
+@app.route('/fetch_archive', methods=['POST'])
+def fetch_archive():
+    """历史航警检索接口"""
+    try:
+        data = request.get_json()
+        date = data.get('date')  # 格式: "2024-06-01"
+        region = data.get('region')  # "internal", "VVTS", "RPHI", etc.
+        
+        if not date or not region:
+            return jsonify({"error": "缺少日期或区域参数"}), 400
+        
+        # 根据区域确定mode和icao
+        if region == "internal":
+            mode = 0
+            icao = None  # mode=0时使用内置的ICAO_CODES列表
+        else:
+            mode = 1
+            icao = region
+        
+        print(f"开始检索历史航警: 日期={date}, 区域={region}, mode={mode}")
+        
+        # 调用历史航警检索函数
+        archive_data = FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode)
+        
+        # 处理数据格式，添加分类
+        dataDict = {
+            "CODE": archive_data.get("CODE", []),
+            "COORDINATES": archive_data.get("COORDINATES", []),
+            "TIME": archive_data.get("TIME", []),
+            "PLATID": archive_data.get("TRANSID", []),
+            "RAWMESSAGE": archive_data.get("RAWMESSAGE", []),
+            "CLASSIFY": {},
+            "NUM": len(archive_data.get("CODE", [])),
+        }
+        
+        # 应用相同的分类逻辑
+        dataDict["CLASSIFY"] = classify_data(dataDict)
+        
+        print(f"历史航警检索完成: 获取 {dataDict['NUM']} 条航警")
+        return jsonify(dataDict)
+        
+    except Exception as e:
+        print(f"历史航警检索错误: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/fetch')
 def fetch():
     try:
@@ -329,13 +378,13 @@ def fetch():
                 for rect in EXCLUDE_RECTS:
                     #1检查落区顶点是否在矩形内
                     if any(point_in_rect(p, rect) for p in pts):
-                        excluded = False #True
+                        excluded = True #True
                         break
                     #2检查矩形顶点是否在落区内
                     corners = [(rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max']),
                              (rect['lat_max'], rect['lon_min']), (rect['lat_max'], rect['lon_max'])]
                     if any(point_in_poly(c[0], c[1], pts) for c in corners):
-                        excluded = False #True
+                        excluded = True #True
                         break
                     #3检查边是否相交
                     rect_edges = [

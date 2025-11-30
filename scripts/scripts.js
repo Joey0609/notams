@@ -345,6 +345,7 @@ function redrawAllNotams() {
     
     var currentVisibleState = Object.assign({}, visibleState);
     
+    // 只重绘自动航警，不影响历史航警
     for (let i = 0; i < polygonAuto.length; i++) {
         if (polygonAuto[i]) {
             map.removeLayer(polygonAuto[i]);

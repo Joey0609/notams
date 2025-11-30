@@ -7,12 +7,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
 import numpy as np
 import pandas as pd
-
 ICAO_CODES = [
     "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
-    "VHHK", "FUCK",
+    "VHHK", "RCAA"
 ]
-
 def make_headers():
     user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
@@ -49,22 +47,15 @@ def make_headers():
     }
     return headers
 
-def fetch_one(icao):
+def fetch_one(icao, date):
     url = "https://notams.aim.faa.gov/notamSearch/search"
     payload = {
-        "searchType": "0",
-        "designatorsForLocation": icao,
+        "searchType": "5",
+        "archiveDate": date,
+        "archiveDesignator": icao,
         "offset": "0",
         "notamsOnly": "false"
     }
-    payload1 = {
-        "searchType": "4",
-        "offset": "0",
-        "freeFormText": "AEROSPACE",
-        "notamsOnly": "false"
-    }
-    if icao == "FUCK":
-        payload = payload1
     session = requests.Session()
     session.headers.update(make_headers())
     num = 30
@@ -79,10 +70,10 @@ def fetch_one(icao):
                 num=len(data.get('notamList', []))
                 rslt.extend(process_notam_data(data))
             else:
-                print(f"[{icao}]-{page} 请求失败，状态码: {response.status_code}")
+                print(f"[{icao}, {date}]-{page} 请求失败，状态码: {response.status_code}")
                 raise
         except Exception as e:
-            print(f"[{icao}]-{page} 请求错误: {e}")
+            print(f"[{icao}, {date}]-{page} 请求错误: {e}")
             raise
         page += 1
     return icao, rslt
@@ -102,7 +93,7 @@ def process_notam_data(data):
     return results
 
 
-def fetch_one_with_retry(icao, max_retries=2):
+def fetch_one_with_retry(icao, date, max_retries=2):
     """
     带有重试机制的 fetch_one 函数。
     返回 (icao, data, success_status)
@@ -110,7 +101,7 @@ def fetch_one_with_retry(icao, max_retries=2):
     for attempt in range(max_retries):
         try:
             # 直接调用原始的 fetch_one 函数
-            icao_code, data = fetch_one(icao)
+            icao_code, data = fetch_one(icao, date)
             # 如果 fetch_one 内部没有抛出异常，我们就认为成功
             return icao_code, data, True
         except Exception as e:
@@ -123,74 +114,48 @@ def fetch_one_with_retry(icao, max_retries=2):
                 return icao, [], False
 
 
-def fetch():
+def fetch(icao, date, mode=0):
     start = time.time()
     results = {}
-    success_cnt = 0
-    fail_cnt = 0
-    with ThreadPoolExecutor(max_workers=8) as executor:
-        future_to_icao = {executor.submit(fetch_one_with_retry, icao): icao for icao in ICAO_CODES}
-        for future in as_completed(future_to_icao):
-            icao = future_to_icao[future]
-            try:
-                # 获取结果，包含成功状态
-                icao_code, data, was_successful = future.result()
-
-                results[icao_code] = data
-                if was_successful:
-                    success_cnt += 1
-                    print(f"[{icao_code}] 完成，获取 {len(data)} 条 NOTAM")
-                else:
-                    fail_cnt += 1
-                    print(f"[{icao_code}] 最终失败。")
-
-            except Exception as e:
-                # 这里的异常捕获是预防 future.result() 本身出错
-                # (例如，worker线程崩溃了)
-                fail_cnt += 1
-                print(f"处理 [{icao}] 的 future 时发生意外错误: {e}")
-                results[icao] = []  # 确保即使出错，结果字典中也有这个键
-
-    output_data = {
-        "timestamp": start,
-        "results": results,
-        "stats": {
-            "total": len(ICAO_CODES),
-            "success": success_cnt,
-            "fail": fail_cnt
-        }
-    }
-    output_data["results"] = dict(sorted(results.items()))
-    with open("notam_results.json", "w", encoding="utf-8") as f:
-        json.dump(output_data, f, indent=2, ensure_ascii=False)
-    print(f"全部 ICAO 和 自由文字 (FUCK) 检索完成")
-    print(f"成功: {success_cnt} / 失败: {fail_cnt}")
+    if mode == 0:
+        with ThreadPoolExecutor(max_workers=8) as executor:
+            sNum = 0
+            fNum = 0
+            future_to_icao = {executor.submit(fetch_one_with_retry, code, date): code for code in ICAO_CODES}
+            for future in as_completed(future_to_icao):
+                code = future_to_icao[future]
+                try:
+                    icao_code, data, was_successful = future.result()
+                    results[icao_code] = data
+                    if was_successful:
+                        sNum += 1
+                        print(f"{date} 时 {icao_code} 的航警爬取完成，获取 {len(data)} 条 NOTAM")
+                    else:
+                        fNum += 1
+                        print(f"{date} 时 {icao_code} 的航警爬取失败。")
+                except Exception as e:
+                    print(f"{date} 时 {code} 的航警爬取出现异常: {e}")
+    if mode == 1:
+        icao_code, data, was_successful = fetch_one_with_retry(icao, date)
+        results[icao_code] = data
+        if was_successful:
+            print(f"{date} 时 {icao} 的航警爬取完成，获取 {len(data)} 条 NOTAM")
+        else:
+            print(f"{date} 时 {icao} 的航警爬取失败。")
+        # output_data = {
+        #     "timestamp": start,
+        #     "code": icao,
+        #     "date": date,
+        #     "results": results,
+        # }
+        # output_data["results"] = dict(sorted(results.items()))
+        # with open("archive_results.json", "w", encoding="utf-8") as f:
+        #     json.dump(output_data, f, indent=2, ensure_ascii=False)
     print(f"总耗时：{time.time() - start:.1f} 秒")
     return results
 
-def FNS_NOTAM_SEARCH():
-    json_path = "notam_results.json"
-    now = time.time()
-    results = {}
-    if os.path.exists(json_path):
-        with open(json_path, "r", encoding="utf-8") as f:
-            try:
-                data = json.load(f)
-                ts = data.get("timestamp", 0)
-                stats_obj = data.get('stats', {})  # 如果 'stats' 不存在，返回一个空字典 {}
-                failed_cnt = stats_obj.get('fail', 0)
-                if now - ts < 600 and "results" in data and failed_cnt == 0:
-                    results = data["results"]
-                    print("10分钟内爬取过航警，使用已有数据。")
-                else:
-                    raise Exception("已有数据过期或格式不正确，尝试重新爬取航警。")
-            except Exception as e:
-                print(e)
-                results = fetch()
-    else:
-        print("未找到已有数据，尝试爬取航警。")
-        results = fetch()
-
+def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
+    results = fetch(icao, date, mode)
     def standardize_coordinate(coord):
         coord = coord.replace(' ', '')
         match1 = re.match(r'^([NS])(\d{4,6})([WE])(\d{5,7})$', coord)
@@ -319,4 +284,4 @@ def FNS_NOTAM_SEARCH():
             "RAWMESSAGE": [],
         }
     return result
-# print(FNS_NOTAM_SEARCH())
+# print(FNS_NOTAM_ARCHIVE_SEARCH("ZPKM", "2024-06-01", 0))
