@@ -19,7 +19,7 @@ function hoverHighlightNotam(idx) {
     if (!originalPolygonStyles[idx]) {
         originalPolygonStyles[idx] = {
             weight: poly.options.weight || 1,
-            fillOpacity: poly.options.fillOpacity || 0.3,
+            fillOpacity: poly.options.fillOpacity || 0.5,
             opacity: poly.options.opacity || 1,
             color: poly.options.color,
             fillColor: poly.options.fillColor
@@ -31,7 +31,7 @@ function hoverHighlightNotam(idx) {
     // 应用高亮样式：边框加粗 + 填充透明度提高（使用保存的原色）
     poly.setStyle({
         weight: 4,
-        fillOpacity: 0.6,
+        fillOpacity: 0.7,
         opacity: 1,
         color: saved.color,
         fillColor: saved.fillColor
@@ -117,8 +117,8 @@ var tileLayers = {
 
 // 矢量图层颜色池
 const colorPoolVector = [
-    "#9e0b0b", "#1a2cd1", "#006e1b", "#6d5b0d", "#4d0070",
-    "#416400", "#883f00", "#313131", "#6b005d", "#005763"
+    "#a70000ff", "#1a2cd1", "#006d1bff", "#806800ff", "#6a009bff",
+    "#548100ff", "#a74e00ff", "#313131", "#a0008bff", "#006b79ff"
 ];
 
 // 卫星图层颜色池
@@ -524,7 +524,7 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
         weight: 1,
         opacity: 1,
         fillColor: col,
-        fillOpacity: 0.3
+        fillOpacity: 0.5
     }).addTo(map);
 
     // 创建弹出窗口内容

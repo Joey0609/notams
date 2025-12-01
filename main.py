@@ -127,8 +127,16 @@ def classify_data(data):
             r1 = overlap / d1
             r2 = overlap / d2
 
-            # 时间几乎相同 → 同一类
-            if 0.8 <= r1 <= 1.2 and 0.8 <= r2 <= 1.2:
+            #根据窗口长度调整阈值
+            max_duration = max(d1, d2)
+            if max_duration <= 10800: 
+                min_threshold = 0.65
+                max_threshold = 1.45
+            else: 
+                min_threshold = 0.8
+                max_threshold = 1.2
+            
+            if min_threshold <= r1 <= max_threshold and min_threshold <= r2 <= max_threshold:
                 union(idx1, idx2)
 
     # 输出分组
@@ -283,29 +291,25 @@ def get_config():
 
 @app.route('/fetch_archive', methods=['POST'])
 def fetch_archive():
-    """历史航警检索接口"""
     try:
         data = request.get_json()
-        date = data.get('date')  # 格式: "2024-06-01"
-        region = data.get('region')  # "internal", "VVTS", "RPHI", etc.
+        date = data.get('date') 
+        region = data.get('region') 
         
         if not date or not region:
             return jsonify({"error": "缺少日期或区域参数"}), 400
-        
-        # 根据区域确定mode和icao
+
         if region == "internal":
             mode = 0
-            icao = None  # mode=0时使用内置的ICAO_CODES列表
+            icao = None 
         else:
             mode = 1
             icao = region
         
         print(f"开始检索历史航警: 日期={date}, 区域={region}, mode={mode}")
-        
-        # 调用历史航警检索函数
+
         archive_data = FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode)
-        
-        # 处理数据格式，添加分类
+        print(archive_data)
         dataDict = {
             "CODE": archive_data.get("CODE", []),
             "COORDINATES": archive_data.get("COORDINATES", []),
@@ -316,9 +320,9 @@ def fetch_archive():
             "NUM": len(archive_data.get("CODE", [])),
         }
         
-        # 应用相同的分类逻辑
         dataDict["CLASSIFY"] = classify_data(dataDict)
-        
+        print(dataDict)
+
         print(f"历史航警检索完成: 获取 {dataDict['NUM']} 条航警")
         return jsonify(dataDict)
         
