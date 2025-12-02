@@ -10,6 +10,17 @@ function toggleManualDrawer() {
     const listPage = document.getElementById('notamListPage');
     const manualPage = document.getElementById('manualDrawPage');
     
+    // 根据屏幕宽度设置或清除高度
+    if (window.innerWidth <= 768) {
+        // 窄屏模式：设置高度
+        if (!sidebar.classList.contains('open')) {
+            sidebar.style.height = '35vh';
+        }
+    } else {
+        // 宽屏模式：清除高度设置
+        sidebar.style.height = '';
+    }
+    
     if (sidebar.classList.contains('open') && manualPage.style.display === 'block') {
         // 如果手动绘制页面已打开，则关闭侧边栏
         sidebar.classList.remove('open');

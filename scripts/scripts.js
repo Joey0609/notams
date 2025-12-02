@@ -546,7 +546,7 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
             "</div>" +
             "<div class='notam-popup-buttons'>" +
             "<button class='copy copy-coord' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
-            "<button class='copy copy-raw' onclick=\"handleCopy('" + (rawmessage || '').replace(/'/g, "\\'").replace(/\n/g, '\\n') + "')\">复制原始航警</button>" +
+            "<button class='copy copy-raw' data-raw-index='" + numm + "'>复制原始航警</button>" +
             "</div>" +
             "</div>";
     } else {
@@ -568,6 +568,23 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
     tmpPolygon.bindPopup(popupContent, {
         maxWidth: 300,
         className: 'notam-info-popup'
+    });
+    
+    // 为弹出窗口添加打开事件监听器，处理复制原始航警按钮
+    tmpPolygon.on('popupopen', function(e) {
+        const popup = e.popup;
+        const popupElement = popup.getElement();
+        if (popupElement) {
+            const rawBtn = popupElement.querySelector('.copy-raw[data-raw-index]');
+            if (rawBtn) {
+                const idx = parseInt(rawBtn.getAttribute('data-raw-index'));
+                rawBtn.onclick = function(event) {
+                    event.stopPropagation();
+                    const raw = dict?.RAWMESSAGE?.[idx] || '';
+                    handleCopy(raw);
+                };
+            }
+        }
     });
 
     // 存储多边形引用

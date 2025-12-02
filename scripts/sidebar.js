@@ -3,8 +3,12 @@ function toggleSidebar() {
     const listPage = document.getElementById('notamListPage');
     const manualPage = document.getElementById('manualDrawPage');
     
-    if (!sidebar.classList.contains('open') && window.innerWidth <= 768) {
-        sidebar.style.height = '35vh'; // Reset height when opening
+    if (window.innerWidth <= 768) {
+        if (!sidebar.classList.contains('open')) {
+            sidebar.style.height = '35vh';
+        }
+    } else {
+        sidebar.style.height = '';
     }
     
     // 打开时确保显示航警列表页
@@ -124,10 +128,13 @@ function toggleSidebar() {
     document.addEventListener('touchend', onDragEnd);
     document.addEventListener('touchcancel', onDragEnd);
 
-    // 窗口大小改变时重置
     window.addEventListener('resize', function() {
-        if (!isNarrowScreen() && sidebar.classList.contains('open')) {
-            sidebar.style.height = ''; // 宽屏模式清除高度设置
+        if (!isNarrowScreen()) {
+            sidebar.style.height = '';
+        } else if (sidebar.classList.contains('open')) {
+            if (!sidebar.style.height) {
+                sidebar.style.height = '35vh';
+            }
         }
     });
 })();
@@ -433,6 +440,10 @@ function changeGroupColor(code, newColor, exampleIdx) {
             groupColors[group] = newColor;
             break;
         }
+    }
+    // 清除样式缓存，避免悬停时使用旧颜色
+    if (typeof originalPolygonStyles !== 'undefined') {
+        originalPolygonStyles = {};
     }
     // 重新绘制该组所有航警
     drawAllAutoNotams();
