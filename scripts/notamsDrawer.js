@@ -122,6 +122,7 @@ function drawWarning() {
     manualNotams.push({
         id: notamId,
         coords: parsedCoords,
+        originalText: text,  // 保存原始输入文本
         color: color,
         polygon: polygon
     });
@@ -491,13 +492,19 @@ function toggleManualVisibility(notamId) {
 function copyManualCoords(notamId) {
     const notam = manualNotams.find(n => n.id === notamId);
     if (notam) {
-        const coordsStr = notam.coords.map(c => `${c[0]}, ${c[1]}`).join('\n');
-        navigator.clipboard.writeText(coordsStr).then(() => {
-            showNotification('坐标已复制到剪贴板', 'success');
-        }).catch(err => {
-            console.error('复制失败:', err);
-            showNotification('复制失败', 'error');
-        });
+        // 使用原始输入文本（如果有），否则回退到格式化坐标
+        const coordsStr = notam.originalText || notam.coords.map(c => `${c[0]}, ${c[1]}`).join('\n');
+        
+        if (typeof handleCopy === 'function') {
+            handleCopy(coordsStr);
+        } else {
+            navigator.clipboard.writeText(coordsStr).then(() => {
+                showNotification('已复制到剪贴板', 'success');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                showNotification('复制失败', 'error');
+            });
+        }
     }
 }
 

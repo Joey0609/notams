@@ -10,7 +10,7 @@ import pandas as pd
 
 ICAO_CODES = [
     "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
-    "VHHK", "FUCK",
+    "VHHK", "FUCK", "双曲线你为什么要特立独行",
 ]
 
 def make_headers():
@@ -63,8 +63,22 @@ def fetch_one(icao):
         "freeFormText": "AEROSPACE",
         "notamsOnly": "false"
     }
+    payload1 = {
+        "searchType": "4",
+        "offset": "0",
+        "freeFormText": "AEROSPACE",
+        "notamsOnly": "false"
+    }
+    payload2 = {
+        "searchType": "4",
+        "offset": "0",
+        "freeFormText": "DNG ZONE",
+        "notamsOnly": "false"
+    }
     if icao == "FUCK":
         payload = payload1
+    if icao == "双曲线你为什么要特立独行":
+        payload = payload2
     session = requests.Session()
     session.headers.update(make_headers())
     num = 30
@@ -281,7 +295,7 @@ def FNS_NOTAM_SEARCH():
     for icao, notams in results.items():
         for notam in notams:
             message = notam.get('Message', '')
-            if ("A TEMPORARY" in message and "-" in message) or "AEROSPACE" in message:
+            if ("A TEMPORARY" in message and "-" in message) or ("AEROSPACE" in message) or ("CHINA" in message and "DNG ZONE" in message and "AERIAL" in message):
                 raw_message = message
                 message = message.replace(" ", "")
                 message = message.replace("\n", "")
