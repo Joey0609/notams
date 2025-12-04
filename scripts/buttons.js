@@ -14,13 +14,13 @@ helpButton.addEventListener('click', () => {
         expandableArea.style.maxHeight = '300px';
         expandableArea.style.bottom = '10px';
         helpButton.style.transform = 'translateY(-300px)';
-        customButton.style.transform = 'translateY(-300px)';
+        if (customButton) customButton.style.transform = 'translateY(-300px)';
         helpButton.textContent = '收起';
     } else {
         expandableArea.style.maxHeight = '0';
         expandableArea.style.bottom = '0';
         helpButton.style.transform = 'translateY(0)';
-        customButton.style.transform = 'translateY(0)';
+        if (customButton) customButton.style.transform = 'translateY(0)';
         helpButton.textContent = '帮助';
     }
 });

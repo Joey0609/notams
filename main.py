@@ -2,10 +2,12 @@ import os
 import configparser
 from fetch.dinsQueryWeb import dinsQueryWeb
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
+from fetch.FNS_NOTAM_ARCHIVE_SEARCH import FNS_NOTAM_ARCHIVE_SEARCH
 import re
 import json
 from fetch.visits import update_visits
 from datetime import datetime
+from flask import request  # 添加request导入
 dins = False
 FNSs = True
 
@@ -121,8 +123,18 @@ def classify_data(data):
             r1 = overlap / d1
             r2 = overlap / d2
 
-            # 时间几乎相同 → 同一类
-            if 0.8 <= r1 <= 1.2 and 0.8 <= r2 <= 1.2:
+            #根据窗口长度调整阈值
+            max_duration = max(d1, d2)
+            if max_duration <= 10800: 
+                if abs(s2-s1)>15*60:
+                    continue
+                min_threshold = 0.4
+                max_threshold = 1.6
+            else: 
+                min_threshold = 0.8
+                max_threshold = 1.2
+            
+            if min_threshold <= r1 <= max_threshold and min_threshold <= r2 <= max_threshold:
                 union(idx1, idx2)
 
     # 输出分组
@@ -142,7 +154,7 @@ def classify_data(data):
     return classify
 
 EXCLUDE_RECTS = [
-    {'lat_min': 39.303183, 'lat_max': 40.856476, 'lon_min': 101.300003, 'lon_max': 105.242712},
+    # {'lat_min': 39.303183, 'lat_max': 40.856476, 'lon_min': 101.300003, 'lon_max': 105.242712},
     {'lat_min': 36.263957, 'lat_max': 45.841384, 'lon_min': 73.570446,  'lon_max': 90.944820},
 ]
 
@@ -276,13 +288,13 @@ def fetch():
                 for rect in EXCLUDE_RECTS:
                     #1检查落区顶点是否在矩形内
                     if any(point_in_rect(p, rect) for p in pts):
-                        excluded = False #True
+                        excluded = True #True
                         break
                     #2检查矩形顶点是否在落区内
                     corners = [(rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max']),
                              (rect['lat_max'], rect['lon_min']), (rect['lat_max'], rect['lon_max'])]
                     if any(point_in_poly(c[0], c[1], pts) for c in corners):
-                        excluded = False #True
+                        excluded = True #True
                         break
                     #3检查边是否相交
                     rect_edges = [

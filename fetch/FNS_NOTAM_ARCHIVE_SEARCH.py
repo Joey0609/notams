@@ -7,12 +7,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
 import numpy as np
 import pandas as pd
-
 ICAO_CODES = [
     "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
-    "VHHK", "FUCK", "双曲线你为什么要特立独行",
+    "VHHK",
 ]
-
 def make_headers():
     user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
@@ -49,56 +47,52 @@ def make_headers():
     }
     return headers
 
-def fetch_one(icao):
+def fetch_one(icao, date):
     url = "https://notams.aim.faa.gov/notamSearch/search"
     payload = {
-        "searchType": "0",
-        "designatorsForLocation": icao,
+        "searchType": "5",
+        "archiveDate": date,
+        "archiveDesignator": icao,
         "offset": "0",
         "notamsOnly": "false"
     }
-    payload1 = {
-        "searchType": "4",
-        "offset": "0",
-        "freeFormText": "AEROSPACE",
-        "notamsOnly": "false"
-    }
-    payload1 = {
-        "searchType": "4",
-        "offset": "0",
-        "freeFormText": "AEROSPACE",
-        "notamsOnly": "false"
-    }
-    payload2 = {
-        "searchType": "4",
-        "offset": "0",
-        "freeFormText": "DNG ZONE",
-        "notamsOnly": "false"
-    }
-    if icao == "FUCK":
-        payload = payload1
-    if icao == "双曲线你为什么要特立独行":
-        payload = payload2
     session = requests.Session()
     session.headers.update(make_headers())
     num = 30
     page = 0
     rslt = []
+    print(f"[进度] 开始检索 {icao} 区域的历史航警...")
+    
     while num == 30 and page < 100:
-        try: 
-            payload["offset"] = str(page * 30)
-            response = session.post(url, data=payload, timeout=7)
-            if response.status_code == 200:
-                data = response.json()
-                num=len(data.get('notamList', []))
-                rslt.extend(process_notam_data(data))
-            else:
-                print(f"[{icao}]-{page} 请求失败，状态码: {response.status_code}")
-                raise
-        except Exception as e:
-            print(f"[{icao}]-{page} 请求错误: {e}")
-            raise
+        page_attempts = 0
+        max_page_retries = 2
+        page_success = False
+        
+        while page_attempts <= max_page_retries and not page_success:
+            try: 
+                payload["offset"] = str(page * 30)
+                response = session.post(url, data=payload, timeout=7)
+                if response.status_code == 200:
+                    data = response.json()
+                    num = len(data.get('notamList', []))
+                    rslt.extend(process_notam_data(data))
+                    print(f"[进度] {icao} - 第{page+1}页: 获取 {num} 条 NOTAM")
+                    page_success = True
+                else:
+                    print(f"[进度] {icao} - 第{page+1}页: 请求失败，状态码 {response.status_code}")
+                    raise
+            except Exception as e:
+                page_attempts += 1
+                if page_attempts <= max_page_retries:
+                    print(f"[进度] {icao} - 第{page+1}页: 第{page_attempts}次尝试失败 ({e})，等待2秒后重试...")
+                    time.sleep(2)
+                else:
+                    print(f"[进度] {icao} - 第{page+1}页: 请求错误，已重试{max_page_retries}次 - {e}")
+                    raise
+        
         page += 1
+    
+    print(f"[进度] {icao} 检索完成，共获取 {len(rslt)} 条 NOTAM")
     return icao, rslt
 
 def process_notam_data(data):
@@ -116,7 +110,7 @@ def process_notam_data(data):
     return results
 
 
-def fetch_one_with_retry(icao, max_retries=2):
+def fetch_one_with_retry(icao, date, max_retries=2):
     """
     带有重试机制的 fetch_one 函数。
     返回 (icao, data, success_status)
@@ -124,87 +118,60 @@ def fetch_one_with_retry(icao, max_retries=2):
     for attempt in range(max_retries):
         try:
             # 直接调用原始的 fetch_one 函数
-            icao_code, data = fetch_one(icao)
+            icao_code, data = fetch_one(icao, date)
             # 如果 fetch_one 内部没有抛出异常，我们就认为成功
             return icao_code, data, True
         except Exception as e:
-            print(f"[{icao}] 第 {attempt + 1} 次尝试失败: {e}")
+            print(f"[进度] {icao} 第 {attempt + 1} 次尝试失败: {e}")
             # 等待3s
-            time.sleep(3)
+            time.sleep(2)
             if attempt == max_retries - 1:
                 # 最后一次尝试也失败了
-                print(f"[{icao}] 在 {max_retries} 次尝试后最终失败。")
+                print(f"[进度] {icao} 在 {max_retries} 次尝试后最终失败")
                 return icao, [], False
 
 
-def fetch():
+def fetch(icao, date, mode=0):
     start = time.time()
     results = {}
-    success_cnt = 0
-    fail_cnt = 0
-    with ThreadPoolExecutor(max_workers=8) as executor:
-        future_to_icao = {executor.submit(fetch_one_with_retry, icao): icao for icao in ICAO_CODES}
-        for future in as_completed(future_to_icao):
-            icao = future_to_icao[future]
-            try:
-                # 获取结果，包含成功状态
-                icao_code, data, was_successful = future.result()
-
-                results[icao_code] = data
-                if was_successful:
-                    success_cnt += 1
-                    print(f"[{icao_code}] 完成，获取 {len(data)} 条 NOTAM")
-                else:
-                    fail_cnt += 1
-                    print(f"[{icao_code}] 最终失败。")
-
-            except Exception as e:
-                # 这里的异常捕获是预防 future.result() 本身出错
-                # (例如，worker线程崩溃了)
-                fail_cnt += 1
-                print(f"处理 [{icao}] 的 future 时发生意外错误: {e}")
-                results[icao] = []  # 确保即使出错，结果字典中也有这个键
-
-    output_data = {
-        # "timestamp": start,
-        "results": results,
-        "stats": {
-            "total": len(ICAO_CODES),
-            "success": success_cnt,
-            "fail": fail_cnt
-        }
-    }
-    output_data["results"] = dict(sorted(results.items()))
-    # with open("notam_results.json", "w", encoding="utf-8") as f:
-    #     json.dump(output_data, f, indent=2, ensure_ascii=False)
-    print(f"全部 ICAO 和 自由文字 (FUCK) 检索完成")
-    print(f"成功: {success_cnt} / 失败: {fail_cnt}")
-    print(f"总耗时：{time.time() - start:.1f} 秒")
+    if mode == 0:
+        print(f"[进度] 开始并行检索 {len(ICAO_CODES)} 个区域的历史航警...")
+        with ThreadPoolExecutor(max_workers=8) as executor:
+            sNum = 0
+            fNum = 0
+            future_to_icao = {executor.submit(fetch_one_with_retry, code, date): code for code in ICAO_CODES}
+            completed = 0
+            total = len(ICAO_CODES)
+            for future in as_completed(future_to_icao):
+                code = future_to_icao[future]
+                completed += 1
+                try:
+                    icao_code, data, was_successful = future.result()
+                    results[icao_code] = data
+                    if was_successful:
+                        sNum += 1
+                        print(f"[进度] ({completed}/{total}) {icao_code} 检索完成，获取 {len(data)} 条 NOTAM")
+                    else:
+                        fNum += 1
+                        print(f"[进度] ({completed}/{total}) {icao_code} 检索失败")
+                except Exception as e:
+                    print(f"[进度] ({completed}/{total}) {code} 检索出现异常: {e}")
+        print(f"[进度] 所有区域检索完成！成功: {sNum}, 失败: {fNum}")
+    if mode == 1:
+        icao_code, data, was_successful = fetch_one_with_retry(icao, date)
+        results[icao_code] = data
+        if was_successful:
+            print(f"[进度] {icao} 检索完成，获取 {len(data)} 条 NOTAM")
+        else:
+            print(f"[进度] {icao} 检索失败")
+    print(f"[进度] 总耗时：{time.time() - start:.1f} 秒")
     return results
 
-def FNS_NOTAM_SEARCH():
-    json_path = "notam_results.json"
-    now = time.time()
-    results = {}
-    if os.path.exists(json_path):
-        with open(json_path, "r", encoding="utf-8") as f:
-            try:
-                data = json.load(f)
-                ts = data.get("timestamp", 0)
-                stats_obj = data.get('stats', {})  # 如果 'stats' 不存在，返回一个空字典 {}
-                failed_cnt = stats_obj.get('fail', 0)
-                if now - ts < 600 and "results" in data and failed_cnt == 0:
-                    results = data["results"]
-                    print("10分钟内爬取过航警，使用已有数据。")
-                else:
-                    raise Exception("已有数据过期或格式不正确，尝试重新爬取航警。")
-            except Exception as e:
-                print(e)
-                results = fetch()
-    else:
-        print("未找到已有数据，尝试爬取航警。")
-        results = fetch()
-
+def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
+    print(f"[进度] ========== 开始历史航警检索 ==========")
+    print(f"[进度] 日期: {date}, 区域: {icao if mode == 1 else '内陆及近海'}, 模式: {'single' if mode == 1 else 'multi'}")
+    results = fetch(icao, date, mode)
+    print(f"[进度] 开始解析航警数据...")
     def standardize_coordinate(coord):
         coord = coord.replace(' ', '')
         match1 = re.match(r'^([NS])(\d{4,6})([WE])(\d{5,7})$', coord)
@@ -288,14 +255,14 @@ def FNS_NOTAM_SEARCH():
 
         return f"{convert_date(start_date)} UNTIL {convert_date(end_date)}"
 
-    data_array = np.array(["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE"])
+    data_array = np.array([["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE"]])
     
     # 处理每个NOTAM
     debug=False
     for icao, notams in results.items():
         for notam in notams:
             message = notam.get('Message', '')
-            if ("A TEMPORARY" in message and "-" in message) or ("AEROSPACE" in message) or ("CHINA" in message and "DNG ZONE" in message and "AERIAL" in message):
+            if ("A TEMPORARY" in message and "-" in message) or "AEROSPACE" in message or ("CHINA" in message and "AERIAL" in message and "DNG ZONE" in message):   
                 raw_message = message
                 message = message.replace(" ", "")
                 message = message.replace("\n", "")
@@ -312,17 +279,17 @@ def FNS_NOTAM_SEARCH():
                     data_array = np.vstack([data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message])])
 
     if len(data_array) > 1:
-        df = pd.DataFrame(data_array)
-        df_unique = df.drop_duplicates(subset=1)
-        data_array = df_unique.to_numpy()
-        if len(data_array) > 1 and data_array[0, 0] == "CODE":
-            data_array = data_array[1:]
+        df = pd.DataFrame(data_array[1:], columns=data_array[0])
+        df_unique = df.drop_duplicates(subset='COORDINATES')
+        data_array_unique = np.vstack([data_array[0], df_unique.to_numpy()])
+        if len(data_array_unique) > 1 and data_array_unique[0, 0] == "CODE":
+            data_array_unique = data_array_unique[1:]
         result = {
-            "CODE": data_array[:, 0].tolist() if len(data_array) > 0 else [],
-            "COORDINATES": data_array[:, 1].tolist() if len(data_array) > 0 else [],
-            "TIME": data_array[:, 2].tolist() if len(data_array) > 0 else [],
-            "TRANSID": data_array[:, 3].tolist() if len(data_array) > 0 else [],
-            "RAWMESSAGE": data_array[:, 4].tolist() if len(data_array) > 0 else [],
+            "CODE": data_array_unique[:, 0].tolist() if len(data_array_unique) > 0 else [],
+            "COORDINATES": data_array_unique[:, 1].tolist() if len(data_array_unique) > 0 else [],
+            "TIME": data_array_unique[:, 2].tolist() if len(data_array_unique) > 0 else [],
+            "TRANSID": data_array_unique[:, 3].tolist() if len(data_array_unique) > 0 else [],
+            "RAWMESSAGE": data_array_unique[:, 4].tolist() if len(data_array_unique) > 0 else [],
         }
     else:
         result = {
@@ -332,5 +299,7 @@ def FNS_NOTAM_SEARCH():
             "TRANSID": [],
             "RAWMESSAGE": [],
         }
+    print(f"[进度] 解析完成，共获取 {len(result['CODE'])} 条有效航警")
+    print(f"[进度] ========== 检索完成 ==========\n")
     return result
-# print(FNS_NOTAM_SEARCH())
+# print(FNS_NOTAM_ARCHIVE_SEARCH("ZPKM", "2024-06-01", 0))

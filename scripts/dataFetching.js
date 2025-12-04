@@ -42,9 +42,14 @@ function drawAllAutoNotams() {
 }
 
 function clearAllPolygons() {
+    // 只清除自动获取的航警，不清除历史航警
     polygonAuto.forEach(p => p && map.removeLayer(p));
     polygonAuto = [];
     visibleState = {};
+    // 清除样式缓存，避免悬停时使用旧颜色
+    if (typeof originalPolygonStyles !== 'undefined') {
+        originalPolygonStyles = {};
+    }
 }
 
 // 重新获取（按钮已移除，这里保留函数供以后可能使用）

@@ -7,6 +7,59 @@ var polygon = [];
 var polygonAuto = [];
 var launchSiteMarkers = [];
 
+// 存储原始样式以便恢复
+var originalPolygonStyles = {};
+
+/* 航警列表 hover 高亮指定多边形 */
+function hoverHighlightNotam(idx) {
+    const poly = polygonAuto[idx];
+    if (!poly) return;
+    
+    // 第一次高亮时保存原始样式
+    if (!originalPolygonStyles[idx]) {
+        originalPolygonStyles[idx] = {
+            weight: poly.options.weight || 1,
+            fillOpacity: poly.options.fillOpacity || 0.5,
+            opacity: poly.options.opacity || 1,
+            color: poly.options.color,
+            fillColor: poly.options.fillColor
+        };
+    }
+    
+    const saved = originalPolygonStyles[idx];
+    
+    // 应用高亮样式：边框加粗 + 填充透明度提高（使用保存的原色）
+    poly.setStyle({
+        weight: 4,
+        fillOpacity: 0.7,
+        opacity: 1,
+        color: saved.color,
+        fillColor: saved.fillColor
+    });
+    
+    // 将该多边形置于顶层
+    if (poly.bringToFront) {
+        poly.bringToFront();
+    }
+}
+
+/* 列表 hover 取消高亮 */
+function hoverUnhighlightNotam(idx) {
+    const poly = polygonAuto[idx];
+    if (!poly) return;
+    
+    const saved = originalPolygonStyles[idx];
+    if (saved) {
+        poly.setStyle({
+            weight: saved.weight,
+            fillOpacity: saved.fillOpacity,
+            opacity: saved.opacity,
+            color: saved.color,
+            fillColor: saved.fillColor
+        });
+    }
+}
+
 var tileLayers = {
     //天地图矢量图层
     tianditu_vec: {
@@ -64,8 +117,8 @@ var tileLayers = {
 
 // 矢量图层颜色池
 const colorPoolVector = [
-    "#9e0b0b", "#1a2cd1", "#006e1b", "#6d5b0d", "#4d0070",
-    "#416400", "#883f00", "#313131", "#6b005d", "#005763"
+    "#a70000ff", "#1a2cd1", "#006d1bff", "#806800ff", "#6a009bff",
+    "#548100ff", "#a74e00ff", "#313131", "#a0008bff", "#006b79ff"
 ];
 
 // 卫星图层颜色池
@@ -117,16 +170,54 @@ switchColorPool(currentMapProvider === 'gaode_vec' || currentMapProvider === 'ti
 
 
 function handleCopy(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showNotification("成功复制到剪贴板");
-    }).catch(err => {
+    // 通用复制函数，兼容安卓 WebView
+    function fallbackCopy(str) {
         const textarea = document.createElement('textarea');
-        textarea.value = text;
+        textarea.value = str;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        textarea.setAttribute('readonly', ''); // 防止移动端弹出键盘
         document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
+        
+        // 针对 iOS 的特殊处理
+        const range = document.createRange();
+        range.selectNodeContents(textarea);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        textarea.setSelectionRange(0, str.length); // 安卓需要这个
+        
+        let success = false;
+        try {
+            success = document.execCommand('copy');
+        } catch (e) {
+            console.error('execCommand copy failed:', e);
+        }
         document.body.removeChild(textarea);
-    });
+        return success;
+    }
+    
+    // 优先使用现代 Clipboard API
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification("成功复制到剪贴板");
+        }).catch(err => {
+            // Clipboard API 失败，使用回退方案
+            if (fallbackCopy(text)) {
+                showNotification("成功复制到剪贴板");
+            } else {
+                showNotification("复制失败，请手动复制");
+            }
+        });
+    } else {
+        // 不支持 Clipboard API，直接使用回退方案
+        if (fallbackCopy(text)) {
+            showNotification("成功复制到剪贴板");
+        } else {
+            showNotification("复制失败，请手动复制");
+        }
+    }
 }
 
 // 初始化地图
@@ -254,12 +345,14 @@ function redrawAllNotams() {
     
     var currentVisibleState = Object.assign({}, visibleState);
     
+    // 只重绘自动航警，不影响历史航警
     for (let i = 0; i < polygonAuto.length; i++) {
         if (polygonAuto[i]) {
             map.removeLayer(polygonAuto[i]);
         }
     }
     polygonAuto = [];
+    originalPolygonStyles = {};  // 清除缓存的样式
     
     for (var i = 0; i < dict.NUM; i++) {
         var color = getColorForCode(dict.CODE[i]);
@@ -395,6 +488,27 @@ function parseCoordinatesToPoints(coordStr) {
     return points;
 }
 
+function sortPolygonPoints(latlngs) {
+    if (latlngs.length < 3) return latlngs;
+    
+    let centerLat = 0, centerLng = 0;
+    for (let i = 0; i < latlngs.length; i++) {
+        centerLat += latlngs[i][0];
+        centerLng += latlngs[i][1];
+    }
+    centerLat /= latlngs.length;
+    centerLng /= latlngs.length;
+    
+    //极角排序
+    const sortedPoints = latlngs.slice().sort((a, b) => {
+        const angleA = Math.atan2(a[0] - centerLat, a[1] - centerLng);
+        const angleB = Math.atan2(b[0] - centerLat, b[1] - centerLng);
+        return angleA - angleB;
+    });
+    
+    return sortedPoints;
+}
+
 // 绘制NOTAM多边形
 function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
     var pos = COORstrin;
@@ -425,13 +539,16 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
 
     if (latlngs.length < 3) return; // 至少需要3个点才能绘制多边形
 
+    // 对坐标点排序，确保多边形是凸的或至少是合理的形状
+    latlngs = sortPolygonPoints(latlngs);
+
     // 创建多边形
     var tmpPolygon = L.polygon(latlngs, {
         color: col,
         weight: 1,
         opacity: 1,
         fillColor: col,
-        fillOpacity: 0.3
+        fillOpacity: 0.5
     }).addTo(map);
 
     // 创建弹出窗口内容
@@ -453,7 +570,7 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
             "</div>" +
             "<div class='notam-popup-buttons'>" +
             "<button class='copy copy-coord' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
-            "<button class='copy copy-raw' onclick=\"handleCopy('" + (rawmessage || '').replace(/'/g, "\\'").replace(/\n/g, '\\n') + "')\">复制原始航警</button>" +
+            "<button class='copy copy-raw' data-raw-index='" + numm + "'>复制原始航警</button>" +
             "</div>" +
             "</div>";
     } else {
@@ -475,6 +592,23 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
     tmpPolygon.bindPopup(popupContent, {
         maxWidth: 300,
         className: 'notam-info-popup'
+    });
+    
+    // 为弹出窗口添加打开事件监听器，处理复制原始航警按钮
+    tmpPolygon.on('popupopen', function(e) {
+        const popup = e.popup;
+        const popupElement = popup.getElement();
+        if (popupElement) {
+            const rawBtn = popupElement.querySelector('.copy-raw[data-raw-index]');
+            if (rawBtn) {
+                const idx = parseInt(rawBtn.getAttribute('data-raw-index'));
+                rawBtn.onclick = function(event) {
+                    event.stopPropagation();
+                    const raw = dict?.RAWMESSAGE?.[idx] || '';
+                    handleCopy(raw);
+                };
+            }
+        }
     });
 
     // 存储多边形引用
