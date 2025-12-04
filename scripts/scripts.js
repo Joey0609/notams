@@ -488,6 +488,27 @@ function parseCoordinatesToPoints(coordStr) {
     return points;
 }
 
+function sortPolygonPoints(latlngs) {
+    if (latlngs.length < 3) return latlngs;
+    
+    let centerLat = 0, centerLng = 0;
+    for (let i = 0; i < latlngs.length; i++) {
+        centerLat += latlngs[i][0];
+        centerLng += latlngs[i][1];
+    }
+    centerLat /= latlngs.length;
+    centerLng /= latlngs.length;
+    
+    //极角排序
+    const sortedPoints = latlngs.slice().sort((a, b) => {
+        const angleA = Math.atan2(a[0] - centerLat, a[1] - centerLng);
+        const angleB = Math.atan2(b[0] - centerLat, b[1] - centerLng);
+        return angleA - angleB;
+    });
+    
+    return sortedPoints;
+}
+
 // 绘制NOTAM多边形
 function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
     var pos = COORstrin;
@@ -517,6 +538,9 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
     }
 
     if (latlngs.length < 3) return; // 至少需要3个点才能绘制多边形
+
+    // 对坐标点排序，确保多边形是凸的或至少是合理的形状
+    latlngs = sortPolygonPoints(latlngs);
 
     // 创建多边形
     var tmpPolygon = L.polygon(latlngs, {

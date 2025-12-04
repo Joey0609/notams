@@ -142,6 +142,29 @@ function drawWarning() {
     showNotification(`已添加手动航警 ${notamId}`, 'success');
 }
 
+// 对多边形坐标点进行排序（与scripts.js中的函数相同）
+function sortPolygonPointsManual(latlngs) {
+    if (latlngs.length < 3) return latlngs;
+    
+    // 计算中心点（质心）
+    let centerLat = 0, centerLng = 0;
+    for (let i = 0; i < latlngs.length; i++) {
+        centerLat += latlngs[i][0];
+        centerLng += latlngs[i][1];
+    }
+    centerLat /= latlngs.length;
+    centerLng /= latlngs.length;
+    
+    // 按照相对于中心点的极角排序
+    const sortedPoints = latlngs.slice().sort((a, b) => {
+        const angleA = Math.atan2(a[0] - centerLat, a[1] - centerLng);
+        const angleB = Math.atan2(b[0] - centerLat, b[1] - centerLng);
+        return angleA - angleB;
+    });
+    
+    return sortedPoints;
+}
+
 // 解析NOTAM坐标的辅助函数
 function parseNotamCoordinates(text) {
     text = text.replace(/{[^}]+}/g, ''); 
@@ -177,6 +200,11 @@ function parseNotamCoordinates(text) {
         if (latLng) {
             latLngs.push(latLng);
         }
+    }
+    
+    // 对坐标点排序，确保多边形是凸的或至少是合理的形状
+    if (latLngs.length >= 3) {
+        return sortPolygonPointsManual(latLngs);
     }
     
     return latLngs;

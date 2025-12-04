@@ -130,8 +130,10 @@ def classify_data(data):
             #根据窗口长度调整阈值
             max_duration = max(d1, d2)
             if max_duration <= 10800: 
-                min_threshold = 0.65
-                max_threshold = 1.45
+                if abs(s2-s1)>15*60:
+                    continue
+                min_threshold = 0.4
+                max_threshold = 1.6
             else: 
                 min_threshold = 0.8
                 max_threshold = 1.2
