@@ -7,7 +7,6 @@ import re
 import json
 from fetch.visits import update_visits
 from datetime import datetime
-from flask import request  # 添加request导入
 dins = False
 FNSs = True
 
