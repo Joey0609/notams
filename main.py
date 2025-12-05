@@ -156,6 +156,8 @@ def classify_data(data):
 EXCLUDE_RECTS = [
     # {'lat_min': 39.303183, 'lat_max': 40.856476, 'lon_min': 101.300003, 'lon_max': 105.242712},
     {'lat_min': 36.263957, 'lat_max': 45.841384, 'lon_min': 73.570446,  'lon_max': 90.944820},
+    {'lat_min': 34.90,     'lat_max': 43.76,      'lon_min': 79.93,     'lon_max': 90.70},
+    {'lat_min': 40.12,     'lat_max': 42.09,      'lon_min': 89.95,    'lon_max': 96.50},
 ]
 
 def load_config():
