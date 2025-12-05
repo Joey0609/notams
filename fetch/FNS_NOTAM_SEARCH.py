@@ -313,7 +313,15 @@ def FNS_NOTAM_SEARCH():
 
     if len(data_array) > 1:
         df = pd.DataFrame(data_array)
-        df_unique = df.drop_duplicates(subset=1)
+        
+        #按TRANSID排序
+        if len(df) > 1 and df.iloc[0, 0] == "CODE":
+            header = df.iloc[0]
+            data_df = df.iloc[1:]
+            data_df_sorted = data_df.sort_values(by=3, ascending=True)
+            df = pd.concat([header.to_frame().T, data_df_sorted], ignore_index=True)
+        
+        df_unique = df.drop_duplicates(subset=0)
         data_array = df_unique.to_numpy()
         if len(data_array) > 1 and data_array[0, 0] == "CODE":
             data_array = data_array[1:]
