@@ -1,29 +1,101 @@
 const helpButton = document.getElementById('helpButton');
+const exportButton = document.getElementById('exportButton');
 const expandableArea = document.getElementById('expandableArea');
+const exportArea = document.getElementById('exportArea');
 const logPanel = document.getElementById('logPanel');
 let logPanelExpanded = false;
 let logUpdateInterval = null;
 let userScrolledUp = false;
 let lastLogCount = 0;
 const customButton = document.getElementById('customButton');
-let isExpanded = false;
-helpButton.addEventListener('click', () => {
-    isExpanded = !isExpanded;
+let isHelpExpanded = false;
+let isExportExpanded = false;
 
-    if (isExpanded) {
-        expandableArea.style.maxHeight = '300px';
-        expandableArea.style.bottom = '10px';
-        helpButton.style.transform = 'translateY(-300px)';
-        if (customButton) customButton.style.transform = 'translateY(-300px)';
-        helpButton.textContent = '收起';
+// 可调试的高度变量
+const HELP_AREA_HEIGHT = 300;  // 帮助区域高度
+const EXPORT_AREA_HEIGHT = 200; // 导出区域高度
+
+helpButton.addEventListener('click', () => {
+    if (isExportExpanded) {
+        // 先收起导出页
+        closeExportArea();
+        // 稍微延迟后展开帮助页
+        setTimeout(() => {
+            openHelpArea();
+        }, 100);
     } else {
-        expandableArea.style.maxHeight = '0';
-        expandableArea.style.bottom = '0';
-        helpButton.style.transform = 'translateY(0)';
-        if (customButton) customButton.style.transform = 'translateY(0)';
-        helpButton.textContent = '帮助';
+        // 切换帮助页状态
+        if (isHelpExpanded) {
+            closeHelpArea();
+        } else {
+            openHelpArea();
+        }
     }
 });
+
+exportButton.addEventListener('click', () => {
+    if (isHelpExpanded) {
+        // 先收起帮助页
+        closeHelpArea();
+        // 稍微延迟后展开导出页
+        setTimeout(() => {
+            openExportArea();
+        }, 100);
+    } else {
+        // 切换导出页状态
+        if (isExportExpanded) {
+            closeExportArea();
+        } else {
+            openExportArea();
+        }
+    }
+});
+
+function openHelpArea() {
+    isHelpExpanded = true;
+    expandableArea.style.maxHeight = HELP_AREA_HEIGHT + 'px';
+    expandableArea.style.bottom = '10px';
+    // 等待 DOM 更新后获取实际高度
+    setTimeout(() => {
+        helpButton.style.transform = `translateY(-${HELP_AREA_HEIGHT + 10}px)`;
+        exportButton.style.transform = `translateY(-${HELP_AREA_HEIGHT + 10}px)`;
+        if (customButton) customButton.style.transform = `translateY(-${HELP_AREA_HEIGHT + 10}px)`;
+    }, 10);
+    helpButton.textContent = '收起';
+}
+
+function closeHelpArea() {
+    isHelpExpanded = false;
+    expandableArea.style.maxHeight = '0';
+    expandableArea.style.bottom = '40px';
+    helpButton.style.transform = 'translateY(0)';
+    exportButton.style.transform = 'translateY(0)';
+    if (customButton) customButton.style.transform = 'translateY(0)';
+    helpButton.textContent = '帮助';
+}
+
+function openExportArea() {
+    isExportExpanded = true;
+    exportArea.style.maxHeight = EXPORT_AREA_HEIGHT + 'px';
+    exportArea.style.bottom = '10px';
+    // 等待 DOM 更新后获取实际高度
+    setTimeout(() => {
+        helpButton.style.transform = `translateY(-${EXPORT_AREA_HEIGHT + 10}px)`;
+        exportButton.style.transform = `translateY(-${EXPORT_AREA_HEIGHT + 10}px)`;
+        if (customButton) customButton.style.transform = `translateY(-${EXPORT_AREA_HEIGHT + 10}px)`;
+    }, 10);
+    exportButton.textContent = '收起';
+}
+
+function closeExportArea() {
+    isExportExpanded = false;
+    exportArea.style.maxHeight = '0';
+    exportArea.style.bottom = '40px';
+    helpButton.style.transform = 'translateY(0)';
+    exportButton.style.transform = 'translateY(0)';
+    if (customButton) customButton.style.transform = 'translateY(0)';
+    exportButton.textContent = '导出';
+}
 
 // 日志面板功能
 function toggleLogPanel() {

@@ -6,6 +6,11 @@ var autoListExpanded = false;
 var polygon = [];
 var polygonAuto = [];
 var launchSiteMarkers = [];
+var landingZoneMarkers = [];
+
+// 海南发射场相关标记（用于缩放级别切换）
+var hainanMergedMarker = null;
+var hainanSeparateMarkers = [];
 
 // 存储原始样式以便恢复
 var originalPolygonStyles = {};
@@ -232,6 +237,10 @@ function makeMap() {
         attributionControl: false  // 关闭默认版权控件
     });
 
+    // 位于航警下方的图层
+    map.createPane('sitesPane');
+    map.getPane('sitesPane').style.zIndex = 350; 
+
     // 添加缩放控件到右下角
     L.control.zoom({
         position: 'bottomright'
@@ -399,14 +408,21 @@ function siteInit() {
         },
         {
             name: '文昌航天发射场',
-            lat: 19.637836,
-            lng: 110.956571,
+            lat: 19.614379-0.004,
+            lng: 110.950996+0.004,
             icon: 'statics/launch.png',
             content: "<b><large>海南文昌</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/文昌航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>文昌航天发射场</a>" +
-                "（Wenchang Spacecraft Launch Site, WSLS）</b>位于中国海南省文昌市，是中国首座滨海航天发射场，也是世界现有的少数低纬度航天发射场之一。" +
-                "<b><a href='https://sat.huijiwiki.com/wiki/海南商业航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>海南商业航天发射场</a>（Hainan Commercial Spacecraft Launch Site）</b>，是我国首个开工建设的商业航天发射场，由海南国际商业航天发射有限公司投建，致力于打造国际一流、市场化运营的航天发射场，进一步提升我国民商运载火箭发射能力。"       
+                "（Wenchang Spacecraft Launch Site, WSLS）</b>位于中国海南省文昌市，是中国首座滨海航天发射场，也是世界现有的少数低纬度航天发射场之一。"
         }, 
+        {
+            name: '海南商业航天发射场',
+            lat: 19.596983-0.004,
+            lng: 110.930836+0.004,
+            icon: '/statics/launch.png',
+            content: "<b><large>海南文昌</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/海南商业航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>海南商业航天发射场</a>（Hainan Commercial Spacecraft Launch Site）</b>，是我国首个开工建设的商业航天发射场，由海南国际商业航天发射有限公司投建，致力于打造国际一流、市场化运营的航天发射场，进一步提升我国民商运载火箭发射能力。"
+        },
         {
             name: '海阳东方航天港',
             lat: 36.688761,
@@ -418,7 +434,44 @@ function siteInit() {
     ];
 
     sites.forEach(function(site) {
+        // 跳过海南的两个发射场，单独处理
+        if (site.name === '文昌航天发射场' || site.name === '海南商业航天发射场') {
+            return;
+        }
         drawLaunchsite(site.lat, site.lng, site.name, site.content, site.icon);
+    });
+
+    // 初始化海南发射场标记（根据缩放级别决定合并或分离）
+    initHainanSites(sites);
+    
+    // 监听地图缩放事件，动态切换海南发射场显示模式
+    map.on('zoomend', function() {
+        updateHainanSitesDisplay(sites);
+    });
+
+    var landingZones = [
+        {
+            name: '蓝箭航天火箭回收着陆场',
+            //38.445084, 103.480743
+            lat: 38.445084,
+            lng: 103.480743,
+            icon: '/statics/land1.png',
+            content: "<b><large>甘肃民勤</large></b><br>" +
+                "<b>蓝箭航天火箭回收着陆场</b>，位于甘肃武威市民勤县境内，是蓝箭航天用于其可回收运载火箭朱雀三号的着陆场。"
+        },
+        {
+            name: 'CZ-12A火箭回收着陆场',
+            //39°02'38.4"N 101°55'22.8"E
+            lat: 39.043999,
+            lng: 101.922999,
+            icon: '/statics/land2.png',
+            content: "<b><large>甘肃民勤</large></b><br>" +
+                "<b>CZ-12A火箭回收着陆场</b>，位于甘肃武威市民勤县境内，是用于CZ-12A运载火箭一级回收的着陆场。"
+        }
+    ];
+
+    landingZones.forEach(function(landingZone) {
+        drawLandingZone(landingZone.lat, landingZone.lng, landingZone.name, landingZone.content, landingZone.icon);
     });
 }
 
@@ -426,12 +479,15 @@ function siteInit() {
 function drawLaunchsite(lat, lng, title, content, iconUrl) {
     var icon = L.icon({
         iconUrl: iconUrl,
-        iconSize: iconUrl.includes('launch1') ? [28, 28] : [18, 20],
-        iconAnchor: iconUrl.includes('launch1') ? [14, 14] : [9, 10],
+        iconSize: iconUrl.includes('launch1') ? [22, 22] : [22, 22],
+        iconAnchor: iconUrl.includes('launch1') ? [11, 11] : [11, 11],
         popupAnchor: [0, -40]
     });
 
-    var marker = L.marker([lat, lng], {icon: icon}).addTo(map);
+    var marker = L.marker([lat, lng], {
+        icon: icon,
+        pane: 'sitesPane'  // 使用自定义 pane
+    }).addTo(map);
     
     marker.bindPopup(content, {
         maxWidth: 300,
@@ -439,6 +495,139 @@ function drawLaunchsite(lat, lng, title, content, iconUrl) {
     });
 
     launchSiteMarkers.push(marker);
+}
+
+function drawLandingZone(lat, lng, title, content, iconUrl){
+    var icon = L.icon({
+        iconUrl: iconUrl,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+        popupAnchor: [0, -40]
+    });
+    var marker = L.marker([lat, lng], {
+        icon: icon,
+        pane: 'sitesPane'  // 使用自定义 pane
+    }).addTo(map);
+    
+    marker.bindPopup(content, {
+        maxWidth: 300,
+        className: 'launch-site-popup'
+    });
+
+    landingZoneMarkers.push(marker);
+}
+
+// 初始化海南发射场标记
+function initHainanSites(sites) {
+    const wenchang = sites.find(s => s.name === '文昌航天发射场');
+    const commercial = sites.find(s => s.name === '海南商业航天发射场');
+    
+    if (!wenchang || !commercial) return;
+    
+    // 计算两个发射场的中心点
+    const centerLat = (wenchang.lat + commercial.lat) / 2;
+    const centerLng = (wenchang.lng + commercial.lng) / 2;
+    
+    // 创建合并后的标记（低缩放级别显示）
+    const mergedIcon = L.icon({
+        iconUrl: '/statics/launch.png',
+        iconSize: [22, 22],
+        iconAnchor: [11, 11],
+        popupAnchor: [0, -40]
+    });
+    
+    const mergedContent = "<b><large>海南文昌</large></b><br>" +
+        "<b><a href='https://sat.huijiwiki.com/wiki/文昌航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>文昌航天发射场</a>" +
+        "（Wenchang Spacecraft Launch Site, WSLS）</b>位于中国海南省文昌市，是中国首座滨海航天发射场，也是世界现有的少数低纬度航天发射场之一。<br><br>" +
+        "<b><a href='https://sat.huijiwiki.com/wiki/海南商业航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>海南商业航天发射场</a>（Hainan Commercial Spacecraft Launch Site）</b>，" +
+        "是我国首个开工建设的商业航天发射场，由海南国际商业航天发射有限公司投建，致力于打造国际一流、市场化运营的航天发射场，进一步提升我国民商运载火箭发射能力。";
+    
+    hainanMergedMarker = L.marker([centerLat, centerLng], {
+        icon: mergedIcon,
+        pane: 'sitesPane'
+    });
+    
+    hainanMergedMarker.bindPopup(mergedContent, {
+        maxWidth: 300,
+        className: 'launch-site-popup'
+    });
+    
+    // 创建分离的标记（高缩放级别显示）
+    const wenchangIcon = L.icon({
+        iconUrl: '/statics/launch.png',
+        iconSize: [22, 22],
+        iconAnchor: [11, 11],
+        popupAnchor: [0, -40]
+    });
+    
+    const wenchangMarker = L.marker([wenchang.lat, wenchang.lng], {
+        icon: wenchangIcon,
+        pane: 'sitesPane'
+    });
+    
+    wenchangMarker.bindPopup(wenchang.content, {
+        maxWidth: 300,
+        className: 'launch-site-popup'
+    });
+    
+    const commercialIcon = L.icon({
+        iconUrl: '/statics/launch.png',
+        iconSize: [22, 22],
+        iconAnchor: [11, 11],
+        popupAnchor: [0, -40]
+    });
+    
+    const commercialMarker = L.marker([commercial.lat, commercial.lng], {
+        icon: commercialIcon,
+        pane: 'sitesPane'
+    });
+    
+    commercialMarker.bindPopup(commercial.content, {
+        maxWidth: 300,
+        className: 'launch-site-popup'
+    });
+    
+    hainanSeparateMarkers = [wenchangMarker, commercialMarker];
+    
+    // 根据当前缩放级别决定显示哪个
+    updateHainanSitesDisplay(sites);
+}
+
+// 根据缩放级别更新海南发射场的显示状态
+function updateHainanSitesDisplay(sites) {
+    const currentZoom = map.getZoom();
+    const ZOOM_THRESHOLD = 10; // 缩放级别阈值，大于等于此值时分开显示
+    
+    if (currentZoom >= ZOOM_THRESHOLD) {
+        // 高缩放级别：分开显示
+        if (hainanMergedMarker && map.hasLayer(hainanMergedMarker)) {
+            map.removeLayer(hainanMergedMarker);
+        }
+        hainanSeparateMarkers.forEach(marker => {
+            if (!map.hasLayer(marker)) {
+                marker.addTo(map);
+                launchSiteMarkers.push(marker);
+            }
+        });
+    } else {
+        // 低缩放级别：合并显示
+        hainanSeparateMarkers.forEach(marker => {
+            if (map.hasLayer(marker)) {
+                map.removeLayer(marker);
+                // 从 launchSiteMarkers 中移除
+                const idx = launchSiteMarkers.indexOf(marker);
+                if (idx > -1) {
+                    launchSiteMarkers.splice(idx, 1);
+                }
+            }
+        });
+        if (hainanMergedMarker && !map.hasLayer(hainanMergedMarker)) {
+            hainanMergedMarker.addTo(map);
+            if (!launchSiteMarkers.includes(hainanMergedMarker)) {
+                launchSiteMarkers.push(hainanMergedMarker);
+            }
+        }
+    }
 }
 
 // 高亮NOTAM
