@@ -1,17 +1,19 @@
-import os
-import requests
 import json
-import time
+import os
 import random
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 import numpy as np
 import pandas as pd
+import requests
 
 ICAO_CODES = [
     "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
     "VHHK", "FUCK", "双曲线你为什么要特立独行",
 ]
+
 
 def make_headers():
     user_agents = [
@@ -49,6 +51,7 @@ def make_headers():
     }
     return headers
 
+
 def fetch_one(icao):
     url = "https://notams.aim.faa.gov/notamSearch/search"
     payload = {
@@ -85,12 +88,12 @@ def fetch_one(icao):
     page = 0
     rslt = []
     while num == 30 and page < 100:
-        try: 
+        try:
             payload["offset"] = str(page * 30)
             response = session.post(url, data=payload, timeout=7)
             if response.status_code == 200:
                 data = response.json()
-                num=len(data.get('notamList', []))
+                num = len(data.get('notamList', []))
                 rslt.extend(process_notam_data(data))
             else:
                 print(f"[{icao}]-{page} 请求失败，状态码: {response.status_code}")
@@ -100,6 +103,7 @@ def fetch_one(icao):
             raise
         page += 1
     return icao, rslt
+
 
 def process_notam_data(data):
     results = []
@@ -182,6 +186,7 @@ def fetch():
     print(f"总耗时：{time.time() - start:.1f} 秒")
     return results
 
+
 def FNS_NOTAM_SEARCH():
     json_path = "notam_results.json"
     now = time.time()
@@ -227,8 +232,7 @@ def FNS_NOTAM_SEARCH():
         ]
         combined_pattern = '|'.join(f'({p})' for p in patterns)
         coordinates_with_positions = []
-        
-        
+
         for match in re.finditer(combined_pattern, text):
             coord = match.group()
             coord = re.sub(r'\s+', '', coord)
@@ -243,16 +247,16 @@ def FNS_NOTAM_SEARCH():
         groups = []
         current_group = []
         max_gap = 20
-        
+
         # 处理分组坐标
         for i, coord_info in enumerate(coordinates_with_positions):
             if not current_group:
                 current_group.append(coord_info['coord'])
             else:
-                prev_end = coordinates_with_positions[i-1]['end']
+                prev_end = coordinates_with_positions[i - 1]['end']
                 curr_start = coord_info['start']
                 gap = curr_start - prev_end
-                
+
                 if gap <= max_gap:
                     current_group.append(coord_info['coord'])
                 else:
@@ -262,22 +266,22 @@ def FNS_NOTAM_SEARCH():
 
         if len(current_group) >= 3:
             groups.append(current_group)
-        
+
         return groups
 
     def parse_time(start_date, end_date):
         if not start_date or not end_date:
             return "00 JAN 00:00 0000 UNTIL 00 JAN 00:00 0000"
-        
+
         if end_date == "PERM":
             end_date = "12/31/2099 2359"
-            
+
         months = {
             "01": "JAN", "02": "FEB", "03": "MAR", "04": "APR",
             "05": "MAY", "06": "JUN", "07": "JUL", "08": "AUG",
             "09": "SEP", "10": "OCT", "11": "NOV", "12": "DEC"
         }
-        
+
         def convert_date(date_str):
             if not date_str or len(date_str) < 14:
                 return "00 JAN 00:00 0000"
@@ -289,38 +293,40 @@ def FNS_NOTAM_SEARCH():
         return f"{convert_date(start_date)} UNTIL {convert_date(end_date)}"
 
     data_array = np.array(["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE"])
-    
+
     # 处理每个NOTAM
-    debug=False
+    debug = False
     for icao, notams in results.items():
         for notam in notams:
             message = notam.get('Message', '')
-            if ("A TEMPORARY" in message and "-" in message) or ("AEROSPACE" in message) or ("CHINA" in message and "DNG ZONE" in message and "AERIAL" in message):
+            if ("A TEMPORARY" in message and "-" in message) or ("AEROSPACE" in message) or (
+                    "CHINA" in message and "DNG ZONE" in message and "AERIAL" in message):
                 raw_message = message
                 message = message.replace(" ", "")
                 message = message.replace("\n", "")
                 coordinate_groups = extract_coordinate_groups(message)
                 time_result = parse_time(notam.get('startDate'), notam.get('endDate'))
                 code = notam.get('Number', 'UNKNOWN')
-                trans_id = notam.get('transactionID', 'UNKNOWN')   
+                trans_id = notam.get('transactionID', 'UNKNOWN')
                 for i, group in enumerate(coordinate_groups):
                     coordinates_result = '-'.join(group)
                     if len(coordinate_groups) > 1:
-                        area_code = f"{code}_AREA{i+1}"
+                        area_code = f"{code}_AREA{i + 1}"
                     else:
                         area_code = code
-                    data_array = np.vstack([data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message])])
+                    data_array = np.vstack(
+                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message])])
 
     if len(data_array) > 1:
         df = pd.DataFrame(data_array)
-        
-        #按TRANSID排序
+
+        # 按TRANSID排序
         if len(df) > 1 and df.iloc[0, 0] == "CODE":
             header = df.iloc[0]
             data_df = df.iloc[1:]
             data_df_sorted = data_df.sort_values(by=3, ascending=True)
             df = pd.concat([header.to_frame().T, data_df_sorted], ignore_index=True)
-        
+
         df_unique = df.drop_duplicates(subset=0)
         data_array = df_unique.to_numpy()
         if len(data_array) > 1 and data_array[0, 0] == "CODE":
