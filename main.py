@@ -458,7 +458,45 @@ def fetch():
     print(dataDict)
     print(f"使用时请不要关闭控制台，在浏览器中访问 http://{WEBVIEW_HOST}:{WEBVIEW_PORT} 以开始使用")
     return jsonify(dataDict)
+@app.route('/save_image', methods=['POST'])
+def save_image():
+    try:
+        data = request.get_json()
+        default_name = data.get('default_name', 'notam_export.png')
+        data_url = data.get('data_url')
 
+        if not data_url:
+            return jsonify({"error": "缺少 data_url 参数"}), 400
+
+        import base64
+        from tkinter import filedialog
+        print("正在保存导出的图片...")
+
+        # 从 data URL 提取 base64 数据
+        header, encoded = data_url.split(",", 1)
+        data = base64.b64decode(encoded)
+
+        # 弹出“另存为”对话框（在 webview/GUI 环境中正常工作）
+        file_path = filedialog.asksaveasfilename(
+            title="保存导出的图片",
+            initialfile=default_name,
+            defaultextension=f".{default_name.split('.')[-1]}",
+            filetypes=[
+                ("PNG 图片", "*.png"),
+                ("JPEG 图片", "*.jpg;*.jpeg"),
+                ("所有文件", "*.*")
+            ]
+        )
+        if file_path:
+            with open(file_path, 'wb') as f:
+                f.write(data)
+            return jsonify({"success": True, "filePath": os.path.abspath(file_path)})
+        else:
+            return jsonify({"success": False, "message": "用户取消保存"})
+    except Exception as e:
+        print(f"保存图片错误: {e}")
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 def start_flask():
     # 添加Flask日志处理器
@@ -488,7 +526,7 @@ def wait_for_server(host, port, timeout=5):
 if __name__ == '__main__':
     flask_thread = threading.Thread(target=start_flask, daemon=True)
     flask_thread.start()
-
+    
     print("正在启动服务器...")
     if wait_for_server(HOST, PORT):
         print(f"服务器已就绪，启动窗口...")

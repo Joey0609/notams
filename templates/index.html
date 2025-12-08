@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="statics/styles.css">
     <!-- Leaflet -->
     <link rel="stylesheet" href="statics/leaflet/leaflet.css" />
+    <script src="statics/leaflet/leaflet-image.js"></script>
     <script src="statics/leaflet/leaflet.js"></script>
     <title>NOTAM落区查阅绘制工具</title>
 </head>
@@ -137,20 +138,29 @@
         <div class="export-area" id="exportArea">
             <div class="export-content">
                 <div class="export-section">
-                    <h4>没做完</h4>
-                    <p>占个位置</p>
-                    <p>张</p>
-                    <p>康</p>
-                    <p>张</p>
-                    <p>康</p>
-                    <p>张</p>
-                    <p>康</p>
-                    <p>张</p>
-                    <p>康</p>
-                    <p>张</p>
-                    <p>康</p>
-                    <p>张</p>
-                    <p>康</p>
+                    <h4>导出图片设置</h4>
+        
+                    <!-- 导出范围 -->
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; margin-bottom: 4px; font-weight: bold;">导出范围</label>
+                        <select id="exportRange" class="archive-input">
+                            <option value="current">当前地图视图</option>
+                            <option value="full">包含所有落区</option>
+                        </select>
+                    </div>
+        
+                    <!-- 导出格式 -->
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; margin-bottom: 4px; font-weight: bold;">格式</label>
+                        <select id="exportFormat" class="archive-input">
+                            <option value="png">PNG（透明背景）</option>
+                            <option value="jpeg">JPEG（文件更小）</option>
+                        </select>
+                    </div>
+                    <div id="pywebviewSaveHint" style="margin-bottom: 12px; color: #e74c3c; display: none;">
+                        <i class="fas fa-info-circle"></i> 将弹出"另存为"对话框，请选择保存位置
+                    </div>
+                    <button id="btnExportImage" class="archive-search-btn" style="width: 100%;">导出图片</button>
                 </div>
             </div>
         </div>
@@ -196,14 +206,14 @@
             </div>
         </div>
     </div>
-
-    <script src="/scripts/notamsDrawer.js"></script>
-    <script src="/scripts/buttons.js"></script>
-    <script src="/scripts/scripts.js"></script>
-    <script src="/scripts/dataFetching.js"></script>
-    <script src="/scripts/sidebar.js"></script>
-    <script src="/scripts/archiveSearch.js"></script>
-    <script src="/scripts/notification.js"></script>
+    <script src="scripts/notamsDrawer.js"></script>
+    <script src="scripts/buttons.js"></script>
+    <script src="scripts/scripts.js"></script>
+    <script src="scripts/dataFetching.js"></script>
+    <script src="scripts/sidebar.js"></script>
+    <script src="scripts/archiveSearch.js"></script>
+    <script src="scripts/notification.js"></script>
+    <script src="scripts/exportImage.js"></script>
 </body>
 
 </html>
