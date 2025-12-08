@@ -27,26 +27,13 @@ def make_headers():
         "en-US,en;q=0.9,zh;q=0.7",
         "en-GB,en;q=0.8,zh-CN;q=0.6"
     ]
-    encodings = [
-        "gzip, deflate, br",
-        "gzip, deflate",
-        "gzip, deflate, br, zstd"
-    ]
-    chrome_version = random.randint(138, 142)
-    sec_ch_ua = f'"Google Chrome";v="{chrome_version}", "Not A(Brand";v="8", "Chromium";v="{chrome_version}"'
     headers = {
         "Accept": "application/json, text/plain, */*",
-        "Accept-Encoding": random.choice(encodings),
+        "Accept-Encoding": "gzip, deflate",
         "Accept-Language": random.choice(languages),
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         "Origin": "https://notams.aim.faa.gov",
         "Referer": "https://notams.aim.faa.gov/notamSearch/nsapp.html",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-origin",
-        "Sec-CH-UA": sec_ch_ua,
-        "Sec-CH-UA-Mobile": "?0",
-        "Sec-CH-UA-Platform": random.choice(['"Windows"', '"macOS"', '"Linux"']),
         "User-Agent": random.choice(user_agents),
     }
     return headers
@@ -58,12 +45,6 @@ def fetch_one(icao):
         "searchType": "0",
         "designatorsForLocation": icao,
         "offset": "0",
-        "notamsOnly": "false"
-    }
-    payload1 = {
-        "searchType": "4",
-        "offset": "0",
-        "freeFormText": "AEROSPACE",
         "notamsOnly": "false"
     }
     payload1 = {
