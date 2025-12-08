@@ -419,7 +419,7 @@ function siteInit() {
             name: '海南商业航天发射场',
             lat: 19.596983-0.004,
             lng: 110.930836+0.004,
-            icon: '/statics/launch.png',
+            icon: 'statics/launch.png',
             content: "<b><large>海南文昌</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/海南商业航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>海南商业航天发射场</a>（Hainan Commercial Spacecraft Launch Site）</b>，是我国首个开工建设的商业航天发射场，由海南国际商业航天发射有限公司投建，致力于打造国际一流、市场化运营的航天发射场，进一步提升我国民商运载火箭发射能力。"
         },
@@ -455,7 +455,7 @@ function siteInit() {
             //38.445084, 103.480743
             lat: 38.445084,
             lng: 103.480743,
-            icon: '/statics/land1.png',
+            icon: 'statics/land1.png',
             content: "<b><large>甘肃民勤</large></b><br>" +
                 "<b>蓝箭航天火箭回收着陆场</b>，位于甘肃武威市民勤县境内，是蓝箭航天用于其可回收运载火箭朱雀三号的着陆场。"
         },
@@ -464,7 +464,7 @@ function siteInit() {
             //39°02'38.4"N 101°55'22.8"E
             lat: 39.043999,
             lng: 101.922999,
-            icon: '/statics/land2.png',
+            icon: 'statics/land2.png',
             content: "<b><large>甘肃民勤</large></b><br>" +
                 "<b>CZ-12A火箭回收着陆场</b>，位于甘肃武威市民勤县境内，是用于CZ-12A运载火箭一级回收的着陆场。"
         }
@@ -530,7 +530,7 @@ function initHainanSites(sites) {
     
     // 创建合并后的标记（低缩放级别显示）
     const mergedIcon = L.icon({
-        iconUrl: '/statics/launch.png',
+        iconUrl: 'statics/launch.png',
         iconSize: [22, 22],
         iconAnchor: [11, 11],
         popupAnchor: [0, -40]
@@ -554,7 +554,7 @@ function initHainanSites(sites) {
     
     // 创建分离的标记（高缩放级别显示）
     const wenchangIcon = L.icon({
-        iconUrl: '/statics/launch.png',
+        iconUrl: 'statics/launch.png',
         iconSize: [22, 22],
         iconAnchor: [11, 11],
         popupAnchor: [0, -40]
@@ -571,7 +571,7 @@ function initHainanSites(sites) {
     });
     
     const commercialIcon = L.icon({
-        iconUrl: '/statics/launch.png',
+        iconUrl: 'statics/launch.png',
         iconSize: [22, 22],
         iconAnchor: [11, 11],
         popupAnchor: [0, -40]
