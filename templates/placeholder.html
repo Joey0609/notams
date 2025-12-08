@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: "微软雅黑", Arial, sans-serif;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            margin: 30px auto;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-right: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+
+        .text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title">NOTAM落区绘制工具</div>
+    <div class="spinner"></div>
+    <div class="text">正在加载...</div>
+</div>
+<script>
+    function waitForServer() {
+        fetch("/")
+            .then(() => {
+                window.location.href = "/";
+            })
+            .catch(() => {
+                setTimeout(waitForServer, 500);
+            });
+    }
+
+    waitForServer();
+</script>
+</body>
+</html>

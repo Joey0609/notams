@@ -280,6 +280,12 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/placeholder')
+def placeholder():
+    """占位页面，用于webview窗口加载"""
+    return render_template('placeholder.html')
+
+
 @app.route('/logs')
 def get_logs():
     """获取日志的API端点"""
@@ -498,80 +504,9 @@ if __name__ == '__main__':
         print("服务器启动超时，仍然尝试打开窗口...")
         time.sleep(0.5)
 
-    # 创建窗口，使用简单的HTML避免黑屏
-    loading_html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-                font-family: "微软雅黑", Arial, sans-serif;
-                color: white;
-            }
-            .container {
-                text-align: center;
-            }
-            .logo {
-                font-size: 64px;
-                margin-bottom: 20px;
-                animation: bounce 1s infinite;
-            }
-            .title {
-                font-size: 28px;
-                font-weight: bold;
-                margin-bottom: 10px;
-            }
-            .spinner {
-                width: 50px;
-                height: 50px;
-                margin: 30px auto;
-                border: 4px solid rgba(255,255,255,0.3);
-                border-top: 4px solid white;
-                border-right: 4px solid white;
-                border-radius: 50%;
-                animation: spin 1.2s linear infinite;
-            }
-            .text {
-                font-size: 14px;
-                opacity: 0.9;
-            }
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            @keyframes bounce {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-15px); }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="title">NOTAM落区绘制工具</div>
-            <div class="spinner"></div>
-            <div class="text">正在加载...</div>
-        </div>
-        <script>
-            // 立即跳转到主页面
-            setTimeout(function() {
-                window.location.href = 'http://""" + WEBVIEW_HOST + ":" + str(WEBVIEW_PORT) + """';
-            }, 500);
-        </script>
-    </body>
-    </html>
-    """
-
     window = webview.create_window(
         'NOTAM落区绘制工具',
-        html=loading_html,
+        f"http://{WEBVIEW_HOST}:{WEBVIEW_PORT}/placeholder",
         width=1400,
         height=900,
         min_size=(800, 600)
