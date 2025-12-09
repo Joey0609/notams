@@ -8,6 +8,18 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 .notam-popup-header h4 {margin: 0;padding: 0;font-size: 14px;color: #fff;font-weight: bold;text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);}
 .notam-popup-body {margin-bottom: 8px;}
 .popup-info-row {display: flex;flex-direction: column;margin-bottom: 6px;padding: 5px 0;border-bottom: 1px solid #eee;}
+
+.popup-info-row.row-horizontal {
+    flex-direction: row;
+    gap: 5px;
+    justify-content: space-between;
+}
+
+.popup-info-row .popup-col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
 .popup-info-row:last-child {border-bottom: none;margin-bottom: 0;}
 .popup-label {font-size: 11px;color: #666;font-weight: bold;margin-bottom: 3px;}
 .popup-value {font-size: 12px;color: #333;line-height: 1.4;}
@@ -36,7 +48,8 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 	height:450px;
 	width:300px;
 	overFlow-x:scroll;
-	overFlow-y:scroll;} 
+    overFlow-y: scroll;
+}
 .div4{position:absolute;z-index:3;	}
 #controls {position: absolute;top: 10px;left: 10px;background: rgba(255, 255, 255, 0.6);padding: 10px;border-radius: 5px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);}
 #drawer {position: absolute;left: 2px;top: 10px;width: 250px;height: 42px;background: rgba(255, 255, 255, 0.6);border-radius: 10px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);overflow: hidden;transition: height 0.3s ease;}
@@ -98,6 +111,40 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .log-header > div {display: flex;gap: 10px;}
 .log-clear-btn, .log-close-btn {background: rgba(255, 255, 255, 0.2);color: white;border: none;padding: 5px 12px;border-radius: 5px;cursor: pointer;font-size: 14px;transition: background 0.2s;}
 .log-clear-btn:hover, .log-close-btn:hover {background: rgba(255, 255, 255, 0.3);}
+
+/* 选择区域按钮样式 */
+.select-area-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    background: #3498db;
+    transition: background 0.2s;
+}
+
+.select-area-btn:hover {
+    background: #2980b9;
+}
+
+.select-area-btn.selecting {
+    background: #27ae60;
+}
+
+.select-area-btn.selecting:hover {
+    background: #229954;
+}
+
+/* 自定义选区矩形样式 */
+.custom-selection-box {
+    position: absolute;
+    border: 1px solid #000;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 1000;
+}
 .log-close-btn {font-size: 20px;padding: 0;width: 30px;height: 30px;}
 .log-content {flex: 1;overflow-y: auto;padding: 10px;font-family: 'Consolas', 'Monaco', monospace;font-size: 12px;background: #1e1e1e;color: #d4d4d4;user-select: text;-webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;}
 .log-empty {text-align: center;color: #888;padding: 20px;}

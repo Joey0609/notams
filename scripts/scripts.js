@@ -233,14 +233,12 @@ function makeMap() {
         center: [36, 103],
         zoom: 6,
         minZoom: 3,
-        preferCanvas: true,
         zoomControl: false,  // 关闭默认缩放控件，稍后添加到右下角
         attributionControl: false  // 关闭默认版权控件
     });
 
-    // 位于航警下方的图层
-    map.createPane('sitesPane');
-    map.getPane('sitesPane').style.zIndex = 350; 
+    map.getPane('overlayPane').style.zIndex = 400;
+    map.getPane('markerPane').style.zIndex = 350;   // 在落区多边形下
 
     // 添加缩放控件到右下角
     L.control.zoom({
@@ -366,7 +364,7 @@ function redrawAllNotams() {
     
     for (var i = 0; i < dict.NUM; i++) {
         var color = getColorForCode(dict.CODE[i]);
-        drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], i, color, 0, dict.RAWMESSAGE[i]);
+        drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], dict.ALTITUDE[i], i, color, 0, dict.RAWMESSAGE[i]);
         
         if (currentVisibleState[i] === false && polygonAuto[i]) {
             map.removeLayer(polygonAuto[i]);
@@ -486,8 +484,7 @@ function drawLaunchsite(lat, lng, title, content, iconUrl) {
     });
 
     var marker = L.marker([lat, lng], {
-        icon: icon,
-        pane: 'sitesPane'  // 使用自定义 pane
+        icon: icon
     }).addTo(map);
     
     marker.bindPopup(content, {
@@ -506,8 +503,7 @@ function drawLandingZone(lat, lng, title, content, iconUrl){
         popupAnchor: [0, -40]
     });
     var marker = L.marker([lat, lng], {
-        icon: icon,
-        pane: 'sitesPane'  // 使用自定义 pane
+        icon: icon
     }).addTo(map);
     
     marker.bindPopup(content, {
@@ -544,8 +540,7 @@ function initHainanSites(sites) {
         "是我国首个开工建设的商业航天发射场，由海南国际商业航天发射有限公司投建，致力于打造国际一流、市场化运营的航天发射场，进一步提升我国民商运载火箭发射能力。";
     
     hainanMergedMarker = L.marker([centerLat, centerLng], {
-        icon: mergedIcon,
-        pane: 'sitesPane'
+        icon: mergedIcon
     });
     
     hainanMergedMarker.bindPopup(mergedContent, {
@@ -562,8 +557,7 @@ function initHainanSites(sites) {
     });
     
     const wenchangMarker = L.marker([wenchang.lat, wenchang.lng], {
-        icon: wenchangIcon,
-        pane: 'sitesPane'
+        icon: wenchangIcon
     });
     
     wenchangMarker.bindPopup(wenchang.content, {
@@ -579,8 +573,7 @@ function initHainanSites(sites) {
     });
     
     const commercialMarker = L.marker([commercial.lat, commercial.lng], {
-        icon: commercialIcon,
-        pane: 'sitesPane'
+        icon: commercialIcon
     });
     
     commercialMarker.bindPopup(commercial.content, {
@@ -700,7 +693,7 @@ function sortPolygonPoints(latlngs) {
 }
 
 // 绘制NOTAM多边形
-function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
+function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage) {
     var pos = COORstrin;
     var timestr = is_self ? null : convertTime(timee);
     var stPos = 0;
@@ -753,9 +746,14 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
             "<span class='popup-label'>持续时间:</span>" +
             "<span class='popup-value'>" + timestr + "</span>" +
             "</div>" +
-            "<div class='popup-info-row'>" +
+            "<div class='popup-info-row row-horizontal'>" +
+            "<div class='popup-col'>" +
             "<span class='popup-label'>航警编号:</span>" +
             "<span class='popup-value'>" + codee + "</span>" +
+            "</div>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>航警高度:</span>" +
+            "<span class='popup-value'>" + altitude + "</span>" +
             "</div>" +
             "</div>" +
             "<div class='notam-popup-buttons'>" +

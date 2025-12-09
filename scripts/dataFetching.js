@@ -32,6 +32,7 @@ function drawAllAutoNotams() {
             dict.COORDINATES[i],
             dict.TIME[i],
             dict.CODE[i],
+            dict.ALTITUDE[i],
             i,
             col,
             0,
