@@ -8,6 +8,18 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 .notam-popup-header h4 {margin: 0;padding: 0;font-size: 14px;color: #fff;font-weight: bold;text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);}
 .notam-popup-body {margin-bottom: 8px;}
 .popup-info-row {display: flex;flex-direction: column;margin-bottom: 6px;padding: 5px 0;border-bottom: 1px solid #eee;}
+
+.popup-info-row.row-horizontal {
+    flex-direction: row;
+    gap: 5px;
+    justify-content: space-between;
+}
+
+.popup-info-row .popup-col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
 .popup-info-row:last-child {border-bottom: none;margin-bottom: 0;}
 .popup-label {font-size: 11px;color: #666;font-weight: bold;margin-bottom: 3px;}
 .popup-value {font-size: 12px;color: #333;line-height: 1.4;}
@@ -36,7 +48,8 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 	height:450px;
 	width:300px;
 	overFlow-x:scroll;
-	overFlow-y:scroll;} 
+    overFlow-y: scroll;
+}
 .div4{position:absolute;z-index:3;	}
 #controls {position: absolute;top: 10px;left: 10px;background: rgba(255, 255, 255, 0.6);padding: 10px;border-radius: 5px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);}
 #drawer {position: absolute;left: 2px;top: 10px;width: 250px;height: 42px;background: rgba(255, 255, 255, 0.6);border-radius: 10px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);overflow: hidden;transition: height 0.3s ease;}

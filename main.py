@@ -167,6 +167,25 @@ def classify_data(data):
     return classify
 
 
+altitude_regex = re.compile(r'Q\) [A-Z]+?/[A-Z]+?/[IVK\s]*?/[NBOMK\s]*?/[AEWK\s]*?/(\d{3}/\d{3})/')
+
+
+def extract_altitude(raw_message_lst):
+    ans = []
+    for message in raw_message_lst:
+        match = altitude_regex.search(message)
+        if match:
+            altitudes = match.group(1).split('/')
+            lower, upper = int(altitudes[0]), int(altitudes[1])  # 100 feet
+            lower_str, upper_str = round(lower * 0.3048) * 100, round(upper * 0.3048) * 100
+            if upper == 999:
+                upper_str = 'INF'
+            ans.append(f"{lower_str} ~ {upper_str} 米")
+        else:
+            ans.append('None')
+    return ans
+
+
 EXCLUDE_RECTS = [
     # {'lat_min': 39.303183, 'lat_max': 40.856476, 'lon_min': 101.300003, 'lon_max': 105.242712},
     {'lat_min': 36.263957, 'lat_max': 45.841384, 'lon_min': 73.570446, 'lon_max': 90.944820},
@@ -371,6 +390,7 @@ def fetch():
         "COORDINATES": [],
         "TIME": [],
         "PLATID": [],
+        "ALTITUDE": [],
         "RAWMESSAGE": [],
         "CLASSIFY": {},
         "NUM": 0,
@@ -455,9 +475,12 @@ def fetch():
 
     dataDict["NUM"] = len(dataDict["CODE"])
     dataDict["CLASSIFY"] = classify_data(dataDict)
+    dataDict["ALTITUDE"] = extract_altitude(dataDict["RAWMESSAGE"])
     print(dataDict)
     print(f"使用时请不要关闭控制台，在浏览器中访问 http://{WEBVIEW_HOST}:{WEBVIEW_PORT} 以开始使用")
     return jsonify(dataDict)
+
+
 @app.route('/save_image', methods=['POST'])
 def save_image():
     try:
@@ -497,6 +520,7 @@ def save_image():
         print(f"保存图片错误: {e}")
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
 
 def start_flask():
     # 添加Flask日志处理器

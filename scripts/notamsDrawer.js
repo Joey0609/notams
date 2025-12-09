@@ -375,7 +375,7 @@ function selfDrawNot(text, color, num) {
     // const time = text.match(timeRegex);
     const code = text.match(codeRegex);
     // alert(coor[0]);
-    drawNot(coor[0], "null", code, num, color, 1);
+    drawNot(coor[0], "null", code, null, num, color, 1);
 }
 
 function notRemove(num) {

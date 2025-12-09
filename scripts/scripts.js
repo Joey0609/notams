@@ -366,7 +366,7 @@ function redrawAllNotams() {
     
     for (var i = 0; i < dict.NUM; i++) {
         var color = getColorForCode(dict.CODE[i]);
-        drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], i, color, 0, dict.RAWMESSAGE[i]);
+        drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], dict.ALTITUDE[i], i, color, 0, dict.RAWMESSAGE[i]);
         
         if (currentVisibleState[i] === false && polygonAuto[i]) {
             map.removeLayer(polygonAuto[i]);
@@ -700,7 +700,7 @@ function sortPolygonPoints(latlngs) {
 }
 
 // 绘制NOTAM多边形
-function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
+function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage) {
     var pos = COORstrin;
     var timestr = is_self ? null : convertTime(timee);
     var stPos = 0;
@@ -753,9 +753,14 @@ function drawNot(COORstrin, timee, codee, numm, col, is_self, rawmessage) {
             "<span class='popup-label'>持续时间:</span>" +
             "<span class='popup-value'>" + timestr + "</span>" +
             "</div>" +
-            "<div class='popup-info-row'>" +
+            "<div class='popup-info-row row-horizontal'>" +
+            "<div class='popup-col'>" +
             "<span class='popup-label'>航警编号:</span>" +
             "<span class='popup-value'>" + codee + "</span>" +
+            "</div>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>航警高度:</span>" +
+            "<span class='popup-value'>" + altitude + "</span>" +
             "</div>" +
             "</div>" +
             "<div class='notam-popup-buttons'>" +
