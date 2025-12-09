@@ -98,6 +98,40 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .log-header > div {display: flex;gap: 10px;}
 .log-clear-btn, .log-close-btn {background: rgba(255, 255, 255, 0.2);color: white;border: none;padding: 5px 12px;border-radius: 5px;cursor: pointer;font-size: 14px;transition: background 0.2s;}
 .log-clear-btn:hover, .log-close-btn:hover {background: rgba(255, 255, 255, 0.3);}
+
+/* 选择区域按钮样式 */
+.select-area-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    background: #3498db;
+    transition: background 0.2s;
+}
+
+.select-area-btn:hover {
+    background: #2980b9;
+}
+
+.select-area-btn.selecting {
+    background: #27ae60;
+}
+
+.select-area-btn.selecting:hover {
+    background: #229954;
+}
+
+/* 自定义选区矩形样式 */
+.custom-selection-box {
+    position: absolute;
+    border: 1px solid #000;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 1000;
+}
 .log-close-btn {font-size: 20px;padding: 0;width: 30px;height: 30px;}
 .log-content {flex: 1;overflow-y: auto;padding: 10px;font-family: 'Consolas', 'Monaco', monospace;font-size: 12px;background: #1e1e1e;color: #d4d4d4;user-select: text;-webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;}
 .log-empty {text-align: center;color: #888;padding: 20px;}

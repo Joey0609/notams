@@ -13,7 +13,7 @@ let isExportExpanded = false;
 
 // 可调试的高度变量
 const HELP_AREA_HEIGHT = 300;  // 帮助区域高度
-const EXPORT_AREA_HEIGHT = 200; // 导出区域高度
+const EXPORT_AREA_HEIGHT = 300; // 导出区域高度
 
 helpButton.addEventListener('click', () => {
     if (isExportExpanded) {
