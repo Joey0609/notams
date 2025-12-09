@@ -482,6 +482,7 @@ def fetch():
 
 
 @app.route('/save_image', methods=['POST'])
+# @app.route('/save_image', methods=['POST'])
 def save_image():
     try:
         data = request.get_json()
@@ -492,51 +493,34 @@ def save_image():
             return jsonify({"error": "缺少 data_url 参数"}), 400
 
         import base64
-        from io import BytesIO
+        from tkinter import filedialog
         print("正在保存导出的图片...")
 
         # 从 data URL 提取 base64 数据
         header, encoded = data_url.split(",", 1)
-        image_data = base64.b64decode(encoded)
+        data = base64.b64decode(encoded)
 
-        # 设置默认保存路径为用户/图片文件夹
-        pictures_dir = os.path.join(os.path.expanduser('~'), 'Pictures')
-        if not os.path.exists(pictures_dir):
-            pictures_dir = os.path.expanduser('~')
-        
-        # 使用 webview API 弹出文件保存对话框
-        file_ext = default_name.split('.')[-1]
-        file_types = (f'{file_ext.upper()} 图片 (*.{file_ext})', '所有文件 (*.*)')
-        
-        file_path = None
-        try:
-            if webview.windows:
-                window = webview.windows[0]
-                result = window.create_file_dialog(
-                    webview.FileDialog.SAVE,
-                    directory=pictures_dir,
-                    save_filename=default_name,
-                    file_types=file_types
-                )
-                if result:
-                    # create_file_dialog 返回的可能是元组或字符串
-                    file_path = result[0] if isinstance(result, tuple) else result
-        except Exception as e:
-            print(f"对话框错误: {e}")
-            traceback.print_exc()
-        
+        # 弹出“另存为”对话框（在 webview/GUI 环境中正常工作）
+        file_path = filedialog.asksaveasfilename(
+            title="保存导出的图片",
+            initialfile=default_name,
+            defaultextension=f".{default_name.split('.')[-1]}",
+            filetypes=[
+                ("PNG 图片", "*.png"),
+                ("JPEG 图片", "*.jpg;*.jpeg"),
+                ("所有文件", "*.*")
+            ]
+        )
         if file_path:
-            # 保存文件
             with open(file_path, 'wb') as f:
-                f.write(image_data)
-            
-            # 同时复制到剪贴板
+                f.write(data)
             try:
                 from PIL import Image
                 import win32clipboard
-                
+                from io import BytesIO
+
                 # 从字节数据创建图片对象
-                img = Image.open(BytesIO(image_data))
+                img = Image.open(BytesIO(data))
                 
                 # 转换为BMP格式用于剪贴板
                 output = BytesIO()
@@ -552,9 +536,8 @@ def save_image():
                 print("图片已复制到剪贴板")
             except Exception as e:
                 print(f"复制到剪贴板失败: {e}")
-                # 不影响保存功能
-            
             return jsonify({"success": True, "filePath": os.path.abspath(file_path)})
+        
         else:
             return jsonify({"success": False, "message": "用户取消保存"})
     except Exception as e:
