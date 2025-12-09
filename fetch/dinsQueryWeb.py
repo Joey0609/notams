@@ -1,22 +1,24 @@
 """
 从notams.faa.gov网站爬取航警
 """
-import requests
-from bs4 import BeautifulSoup
-import re
 import os
+import re
+
 import numpy as np
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+
 
 def dinsQueryWeb(icao_codes):
     data_array = np.array(["CODE", "COORDINATES", "TIME"])
-    
+
     def removeC(text):
         return re.sub(r'[\r\n\[\]...]+', ' ', text)
-    
+
     def removeC2(text):
         return re.sub(r'[\s+\r\n\[\]...]+', '', text)
-    
+
     def extract_coordinate_groups(text):
         patterns = [
             r'[NS]\d{6}[WE]\d{7}',
@@ -39,17 +41,17 @@ def dinsQueryWeb(icao_codes):
         groups = []
         current_group = []
         max_gap = 20
-        
+
         # 处理分组坐标，避免将两个落区绘制为一个落区导致混乱，同时避免将非落区的航警中零散的坐标提取为落区
         for i, coord_info in enumerate(coordinates_with_positions):
             if not current_group:
                 current_group.append(coord_info['coord'])
             else:
                 # 计算与前一个坐标的字符距离
-                prev_end = coordinates_with_positions[i-1]['end']
+                prev_end = coordinates_with_positions[i - 1]['end']
                 curr_start = coord_info['start']
                 gap = curr_start - prev_end
-                
+
                 if gap <= max_gap:
                     current_group.append(coord_info['coord'])
                 else:
@@ -59,9 +61,9 @@ def dinsQueryWeb(icao_codes):
 
         if len(current_group) >= 3:
             groups.append(current_group)
-        
+
         return groups
-    
+
     def standardize_coordinate(coord):
         coord = coord.replace(' ', '')
         match1 = re.match(r'^([NS])(\d{4,6})([WE])(\d{5,7})$', coord)
@@ -73,42 +75,31 @@ def dinsQueryWeb(icao_codes):
         match3 = re.match(r'^(\d{4})([NS])(\d{5})([WE])$', coord)
         if match3:
             return f"{match3.group(2)}{match3.group(1)}{match3.group(4)}{match3.group(3)}"
-        
+
         return None
 
     form_url = "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
-    
+
     headers = {
-        "authority": "www.notams.faa.gov",
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-encoding": "gzip, deflate",
         "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,ko;q=0.7",
-        "cache-control": "max-age=0",
         "content-type": "application/x-www-form-urlencoded",
         "origin": "https://www.notams.faa.gov",
-        "priority": "u=0, i",
         "referer": "https://www.notams.faa.gov/dinsQueryWeb/",
-        "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
-        "sec-fetch-dest": "document",
-        "sec-fetch-mode": "navigate",
-        "sec-fetch-site": "same-origin",
-        "sec-fetch-user": "?1",
-        "upgrade-insecure-requests": "1",
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
     }
-    
+
     post_data = {
         "retrieveLocId": icao_codes,
         "reportType": "Report",
         "actionType": "notamRetrievalByICAOs",
     }
-    
+
     try:
         response = requests.post(form_url, headers=headers, data=post_data)
         response.raise_for_status()
-        
+
     except requests.RequestException as e:
         print(f"[dinsQueryWeb] 请求失败: {e}")
         return {
@@ -151,12 +142,12 @@ def dinsQueryWeb(icao_codes):
                 for i, group in enumerate(coordinate_groups):
                     coordinates_result = '-'.join(group)
                     if len(coordinate_groups) > 1:
-                        area_code = f"{code}_AREA{i+1}"
+                        area_code = f"{code}_AREA{i + 1}"
                     else:
                         area_code = code
                     data_array = np.vstack([data_array, np.array([area_code, coordinates_result, time_result])])
                     parsed_count += 1
-    
+
     if len(data_array) > 1:
         df = pd.DataFrame(data_array)
         df_unique = df.drop_duplicates(subset=1)
@@ -169,7 +160,7 @@ def dinsQueryWeb(icao_codes):
             "TIME": data_array[:, 2].tolist() if len(data_array) > 0 else [],
         }
     else:
-        result = { 
+        result = {
             "CODE": [],
             "COORDINATES": [],
             "TIME": [],
