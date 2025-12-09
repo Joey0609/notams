@@ -144,36 +144,35 @@
                         <label style="display: block; margin-bottom: 4px; font-weight: bold;">导出范围</label>
                         <div style="display: flex; gap: 8px; align-items: center;">
                             <select id="exportRange" class="archive-input" style="flex: 1;">
-                                <option value="custom" selected>自定义区域</option>
-                                <option value="current">当前地图视图</option>
+                                <option value="current"  selected>当前地图视图</option>
                                 <option value="full">包含所有落区</option>
+                                <option value="custom">自定义区域</option>
                             </select>
                             <button id="selectAreaBtn" class="select-area-btn" style="display: none;">选择区域</button>
                         </div>
                     </div>
         
-                    <!-- 导出格式 -->
-                    <div style="margin-bottom: 12px;">
-                        <label style="display: block; margin-bottom: 4px; font-weight: bold;">格式</label>
-                        <select id="exportFormat" class="archive-input">
-                            <option value="png">PNG</option>
-                            <option value="jpeg">JPEG</option>
-                        </select>
+                    <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                        <!-- 导出格式 -->
+                        <div style="flex: 1;">
+                            <label style="display: block; margin-bottom: 4px; font-weight: bold;">格式</label>
+                            <select id="exportFormat" class="archive-input" style="width: 100%;">
+                                <option value="png">PNG</option>
+                                <option value="jpeg">JPEG</option>
+                            </select>
+                        </div>
+                    
+                        <!-- 图片质量 -->
+                        <div style="flex: 1;">
+                            <label style="display: block; margin-bottom: 4px; font-weight: bold;">质量</label>
+                            <select id="exportQuality" class="archive-input" style="width: 100%;">
+                                <option value="1" selected>x1（普通）</option>
+                                <option value="2">x2（标准）</option>
+                                <option value="3">x3（高清）</option>
+                                <option value="4">x4（超清）</option>
+                            </select>
+                        </div>
                     </div>
-        
-                    <!-- 图片质量 -->
-                    <div style="margin-bottom: 12px;">
-                        <label style="display: block; margin-bottom: 4px; font-weight: bold;">质量</label>
-                        <select id="exportQuality" class="archive-input">
-                            <option value="1">x1（普通 约800KB）</option>
-                            <option value="2" selected>x2（标准 约2MB）</option>
-                            <option value="3">x3（高清 约6MB）</option>
-                            <option value="4">x4（超清 约8MB）</option>
-                        </select>
-                    </div>
-                    <!-- <div id="pywebviewSaveHint" style="margin-bottom: 12px; color: #e74c3c; display: none;">
-                        <i class="fas fa-info-circle"></i> 将弹出"另存为"对话框，请选择保存位置
-                    </div> -->
                     <button id="btnExportImage" class="archive-search-btn" style="width: 100%;">导出图片</button>
                 </div>
             </div>
@@ -223,7 +222,7 @@
     <script src="scripts/notamsDrawer.js"></script>
     <script src="scripts/buttons.js"></script>
     <script src="scripts/scripts.js"></script>
-    <script src="statics/leaflet/leaflet-image-enhanced.js"></script>
+    <script src="statics/leaflet/leaflet-image.js"></script>
     <script src="scripts/customAreaSelect.js"></script>
     <script src="scripts/dataFetching.js"></script>
     <script src="scripts/sidebar.js"></script>

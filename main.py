@@ -9,7 +9,8 @@ import time
 import traceback
 import webbrowser
 from datetime import datetime
-
+import base64
+from tkinter import filedialog
 import webview
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask import request  # 添加request导入
@@ -482,7 +483,6 @@ def fetch():
 
 
 @app.route('/save_image', methods=['POST'])
-# @app.route('/save_image', methods=['POST'])
 def save_image():
     try:
         data = request.get_json()
@@ -492,8 +492,6 @@ def save_image():
         if not data_url:
             return jsonify({"error": "缺少 data_url 参数"}), 400
 
-        import base64
-        from tkinter import filedialog
         print("正在保存导出的图片...")
 
         # 从 data URL 提取 base64 数据

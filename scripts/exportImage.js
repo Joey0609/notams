@@ -1,15 +1,7 @@
 // 检测是否在 PyWebView 环境中
 const isPyWebView = typeof window.pywebview !== 'undefined';
 
-// 初始化时显示/隐藏 PyWebView 相关提示
-if (isPyWebView) {
-  const pywebviewSaveHint = document.getElementById('pywebviewSaveHint');
-  if (pywebviewSaveHint) {
-    pywebviewSaveHint.style.display = 'block';
-  }
-}
-
-// 主导出函数 - 使用增强版 leaflet-image
+// 主导出函数 (使用 leaflet-image)
 async function exportMapAsImage() {
   const exportBtn = document.getElementById('btnExportImage');
   const originalText = exportBtn.innerHTML;
