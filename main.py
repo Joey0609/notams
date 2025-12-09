@@ -1,15 +1,8 @@
 import configparser
 import os
 import re
-import socket
 import sys
-import time
-import traceback
 from datetime import datetime
-import base64
-from tkinter import filedialog
-from flask import jsonify
-from flask import request  # 添加request导入
 
 from fetch.FNS_NOTAM_ARCHIVE_SEARCH import FNS_NOTAM_ARCHIVE_SEARCH
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
