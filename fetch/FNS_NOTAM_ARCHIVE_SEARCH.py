@@ -2,7 +2,7 @@ import random
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import progress
+from fetch import progress
 import numpy as np
 import pandas as pd
 import requests
