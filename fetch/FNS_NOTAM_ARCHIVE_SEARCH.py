@@ -2,16 +2,20 @@ import random
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
+import progress
 import numpy as np
 import pandas as pd
 import requests
 
 ICAO_CODES = [
-    "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
-    "VHHK",
-]
-
+    'AGGG', 'ANAU', 'AYPM', 'KZAK', 'NFFF', 
+    'NZZO', 'RCAA', 'RCSP', 'RJJJ', 'RJTG', 
+    'RPHI', 'VCCC', 'VCCF', 'VECF', 'VHHK', 
+    'VOMF', 'VVGL', 'VVHM', 'VVHN', 'VVTS', 
+    'VLVT', 'VTBB', 'VYYF', 'WAAF', 'WIIF', 
+    'WMFC', 'WSJC', 'YBBB', 'YMMM', 'ZBPE', 
+    'ZGZU', 'ZHWH', 'ZJSA', 'ZLHW', 'ZPKM', 
+    'ZSHA', 'ZWUQ', 'ZYSH']   
 
 def make_headers():
     user_agents = [
@@ -55,7 +59,7 @@ def fetch_one(icao, date):
 
     while num == 30 and page < 100:
         page_attempts = 0
-        max_page_retries = 2
+        max_page_retries = 3
         page_success = False
 
         while page_attempts <= max_page_retries and not page_success:
@@ -66,7 +70,7 @@ def fetch_one(icao, date):
                     data = response.json()
                     num = len(data.get('notamList', []))
                     rslt.extend(process_notam_data(data))
-                    print(f"[进度] {icao} - 第{page + 1}页: 获取 {num} 条 NOTAM")
+                    # print(f"[进度] {icao} - 第{page + 1}页: 获取 {num} 条 NOTAM")
                     page_success = True
                 else:
                     print(f"[进度] {icao} - 第{page + 1}页: 请求失败，状态码 {response.status_code}")
@@ -122,15 +126,17 @@ def fetch_one_with_retry(icao, date, max_retries=2):
                 return icao, [], False
 
 
-def fetch(icao, date, mode=0):
+def fetch(icao, date, mode=0, successed_list = []):
     start = time.time()
+    success_list = successed_list.copy()
+    failure_list = []
     results = {}
     if mode == 0:
         print(f"[进度] 开始并行检索 {len(ICAO_CODES)} 个区域的历史航警...")
         with ThreadPoolExecutor(max_workers=8) as executor:
             sNum = 0
             fNum = 0
-            future_to_icao = {executor.submit(fetch_one_with_retry, code, date): code for code in ICAO_CODES}
+            future_to_icao = {executor.submit(fetch_one_with_retry, code, date): code for code in ICAO_CODES if code not in successed_list}
             completed = 0
             total = len(ICAO_CODES)
             for future in as_completed(future_to_icao):
@@ -141,21 +147,28 @@ def fetch(icao, date, mode=0):
                     results[icao_code] = data
                     if was_successful:
                         sNum += 1
-                        print(f"[进度] ({completed}/{total}) {icao_code} 检索完成，获取 {len(data)} 条 NOTAM")
+                        success_list.append(icao_code)
+                        # print(f"[进度] ({completed}/{total}) {icao_code} 检索完成，获取 {len(data)} 条 NOTAM")
                     else:
                         fNum += 1
-                        print(f"[进度] ({completed}/{total}) {icao_code} 检索失败")
+                        failure_list.append(icao_code)
+                        # print(f"[进度] ({completed}/{total}) {icao_code} 检索失败")
                 except Exception as e:
+                    failure_list.append(code)
                     print(f"[进度] ({completed}/{total}) {code} 检索出现异常: {e}")
-        print(f"[进度] 所有区域检索完成！成功: {sNum}, 失败: {fNum}")
+        print(f"[进度] 所有区域检索完成！成功: {len(success_list)}, 失败: {len(failure_list)}")
     if mode == 1:
         icao_code, data, was_successful = fetch_one_with_retry(icao, date)
         results[icao_code] = data
         if was_successful:
+            success_list.append(icao_code)
             print(f"[进度] {icao} 检索完成，获取 {len(data)} 条 NOTAM")
         else:
+            failure_list.append(icao_code)
             print(f"[进度] {icao} 检索失败")
     print(f"[进度] 总耗时：{time.time() - start:.1f} 秒")
+    results["success_list"] = success_list
+    results["failure_list"] = failure_list
     return results
 
 
@@ -163,7 +176,15 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
     print(f"[进度] ========== 开始历史航警检索 ==========")
     print(
         f"[进度] 日期: {date}, 区域: {icao if mode == 1 else '内陆及近海'}, 模式: {'single' if mode == 1 else 'multi'}")
-    results = fetch(icao, date, mode)
+    succ,fail = progress.load_progress(date)
+    if len(succ) > 0 and len(fail) == 0: 
+        print("[进度] 该日期的所有区域航警已完成检索，跳过此次请求。")
+        return {}
+    results = fetch(icao, date, mode, succ)
+    success_list = results.pop("success_list", [])
+    failure_list = results.pop("failure_list", [])
+    progress.save_progress(date, success_list, failure_list)
+
     print(f"[进度] 开始解析航警数据...")
 
     def standardize_coordinate(coord):
@@ -224,6 +245,18 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
             groups.append(current_group)
 
         return groups
+    def extract_altitude(raw_message):
+        altitude_regex = re.compile(r'Q\) [A-Z]+?/[A-Z]+?/[IVK\s]*?/[NBOMK\s]*?/[AEWK\s]*?/(\d{3}/\d{3})/')
+        match = altitude_regex.search(raw_message)
+        if match:
+            altitudes = match.group(1).split('/')
+            lower, upper = int(altitudes[0]), int(altitudes[1])  # 100 feet
+            lower_str, upper_str = round(lower * 0.3048) * 100, round(upper * 0.3048) * 100
+            if upper == 999:
+                upper_str = 'INF'
+            return f"{lower_str} ~ {upper_str} 米"
+        else:
+            return "Unknown"
 
     def parse_time(start_date, end_date):
         if not start_date or not end_date:
@@ -248,7 +281,7 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
 
         return f"{convert_date(start_date)} UNTIL {convert_date(end_date)}"
 
-    data_array = np.array([["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE"]])
+    data_array = np.array([["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE", "ALTITUDE"]])
 
     # 处理每个NOTAM
     debug = False
@@ -262,6 +295,7 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
                 message = message.replace("\n", "")
                 coordinate_groups = extract_coordinate_groups(message)
                 time_result = parse_time(notam.get('startDate'), notam.get('endDate'))
+                altitude = extract_altitude(raw_message)
                 code = notam.get('Number', 'UNKNOWN')
                 trans_id = notam.get('transactionID', 'UNKNOWN')
                 for i, group in enumerate(coordinate_groups):
@@ -271,7 +305,7 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
                     else:
                         area_code = code
                     data_array = np.vstack(
-                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message])])
+                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message, altitude])])
 
     if len(data_array) > 1:
         df = pd.DataFrame(data_array[1:], columns=data_array[0])
@@ -285,6 +319,7 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
             "TIME": data_array_unique[:, 2].tolist() if len(data_array_unique) > 0 else [],
             "TRANSID": data_array_unique[:, 3].tolist() if len(data_array_unique) > 0 else [],
             "RAWMESSAGE": data_array_unique[:, 4].tolist() if len(data_array_unique) > 0 else [],
+            "ALTITUDE": data_array_unique[:, 5].tolist() if len(data_array_unique) > 0 else [],
         }
     else:
         result = {
@@ -293,6 +328,7 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
             "TIME": [],
             "TRANSID": [],
             "RAWMESSAGE": [],
+            "ALTITUDE": [],
         }
     print(f"[进度] 解析完成，共获取 {len(result['CODE'])} 条有效航警")
     print(f"[进度] ========== 检索完成 ==========\n")

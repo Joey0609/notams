@@ -362,7 +362,6 @@ def fetch():
     dataDict["NUM"] = len(dataDict["CODE"])
     dataDict["CLASSIFY"] = classify_data(dataDict)
     dataDict["ALTITUDE"] = extract_altitude(dataDict["RAWMESSAGE"])
-    print(dataDict)
     sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"]), key=lambda x: x[0])
     dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"] = zip(*sorted_data)
     dataDict["NUM"] = len(dataDict["CODE"])

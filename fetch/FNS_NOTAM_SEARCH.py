@@ -249,6 +249,21 @@ def FNS_NOTAM_SEARCH():
             groups.append(current_group)
 
         return groups
+    def extract_altitude(raw_message_lst):
+        ans = []
+        altitude_regex = re.compile(r'Q\) [A-Z]+?/[A-Z]+?/[IVK\s]*?/[NBOMK\s]*?/[AEWK\s]*?/(\d{3}/\d{3})/')
+        for message in raw_message_lst:
+            match = altitude_regex.search(message)
+            if match:
+                altitudes = match.group(1).split('/')
+                lower, upper = int(altitudes[0]), int(altitudes[1])  # 100 feet
+                lower_str, upper_str = round(lower * 0.3048) * 100, round(upper * 0.3048) * 100
+                if upper == 999:
+                    upper_str = 'INF'
+                ans.append(f"{lower_str} ~ {upper_str} 米")
+            else:
+                ans.append('None')
+        return ans
 
     def parse_time(start_date, end_date):
         if not start_date or not end_date:
@@ -273,7 +288,7 @@ def FNS_NOTAM_SEARCH():
 
         return f"{convert_date(start_date)} UNTIL {convert_date(end_date)}"
 
-    data_array = np.array(["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE"])
+    data_array = np.array(["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE", "ALTITUDE"])
 
     # 处理每个NOTAM
     debug = False
@@ -289,6 +304,7 @@ def FNS_NOTAM_SEARCH():
                 time_result = parse_time(notam.get('startDate'), notam.get('endDate'))
                 code = notam.get('Number', 'UNKNOWN')
                 trans_id = notam.get('transactionID', 'UNKNOWN')
+                altitude = extract_altitude([raw_message])[0]
                 for i, group in enumerate(coordinate_groups):
                     coordinates_result = '-'.join(group)
                     if len(coordinate_groups) > 1:
@@ -296,7 +312,7 @@ def FNS_NOTAM_SEARCH():
                     else:
                         area_code = code
                     data_array = np.vstack(
-                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message])])
+                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message, altitude])])
 
     if len(data_array) > 1:
         df = pd.DataFrame(data_array)
@@ -318,6 +334,7 @@ def FNS_NOTAM_SEARCH():
             "TIME": data_array[:, 2].tolist() if len(data_array) > 0 else [],
             "TRANSID": data_array[:, 3].tolist() if len(data_array) > 0 else [],
             "RAWMESSAGE": data_array[:, 4].tolist() if len(data_array) > 0 else [],
+            "ALTITUDE": data_array[:, 5].tolist() if len(data_array) > 0 else [],
         }
     else:
         result = {
@@ -326,6 +343,7 @@ def FNS_NOTAM_SEARCH():
             "TIME": [],
             "TRANSID": [],
             "RAWMESSAGE": [],
+            "ALTITUDE": [],
         }
     return result
 # print(FNS_NOTAM_SEARCH())
