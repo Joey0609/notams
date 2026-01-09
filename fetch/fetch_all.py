@@ -83,8 +83,8 @@ def batch_fetch_and_save(start_date, end_date):
 
 if __name__ == "__main__":
     # 设置日期范围（2023年1月1日到2023年1月5日）
-    start_date = "2023-01-01"
-    end_date = "2023-12-31"
+    start_date = "2024-06-11"
+    end_date = "2025-12-31"
 
     print("===== 开始批量获取历史航警数据 =====")
     print(f"日期范围: {start_date} 到 {end_date}")

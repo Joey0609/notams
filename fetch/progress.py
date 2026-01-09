@@ -38,7 +38,7 @@ def save_progress(date: str, success_list: list, failure_list: list, filepath: s
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print(f"[INFO] 已保存 {date} 的处理状态到 {filepath}")
-def load_progress(date: str, filepath: str = "progress.json"):
+def load_progress(date: str, filepath: str = "./data/progress.json"):
     """
     从 progress.json 中读取某日的成功与失败 ICAO 列表
     

@@ -2,7 +2,10 @@ import random
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from fetch import progress
+try:
+    from fetch import progress
+except ImportError:
+    import progress
 import numpy as np
 import pandas as pd
 import requests
@@ -59,7 +62,7 @@ def fetch_one(icao, date):
 
     while num == 30 and page < 100:
         page_attempts = 0
-        max_page_retries = 3
+        max_page_retries = 5
         page_success = False
 
         while page_attempts <= max_page_retries and not page_success:
@@ -133,7 +136,7 @@ def fetch(icao, date, mode=0, successed_list = []):
     results = {}
     if mode == 0:
         print(f"[进度] 开始并行检索 {len(ICAO_CODES)} 个区域的历史航警...")
-        with ThreadPoolExecutor(max_workers=8) as executor:
+        with ThreadPoolExecutor(max_workers=12) as executor:
             sNum = 0
             fNum = 0
             future_to_icao = {executor.submit(fetch_one_with_retry, code, date): code for code in ICAO_CODES if code not in successed_list}
@@ -180,6 +183,8 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
     if len(succ) > 0 and len(fail) == 0: 
         print("[进度] 该日期的所有区域航警已完成检索，跳过此次请求。")
         return {}
+    elif len(succ) > 0 and len(fail) > 0:
+        print(f"[进度] 该日期已有部分区域完成检索，跳过已完成区域，继续检索失败区域。已完成区域数: {len(succ)}，待检索区域数: {len(fail)}")
     results = fetch(icao, date, mode, succ)
     success_list = results.pop("success_list", [])
     failure_list = results.pop("failure_list", [])
