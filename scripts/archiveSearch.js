@@ -6,32 +6,8 @@ let archiveVisibleState = {};
 let currentRegionOverlay = null;
 let regionOverlayTimer = null; // 保存定时器ID
 
-// ICAO区域边界定义（简化的矩形范围）
-const ICAO_REGIONS = {
-    'VVTS': { name: 'VVTS', bounds: [[17.443177, 108.705916], [14.486029, 112.001814], [14.486029, 114.001326], [10.518348, 113.979353], [7.000875, 108.002791], [8.828915, 102.531599]], center: [11.937392, 110.429643] },
-    'RPHI': { name: 'RPHI', bounds: [[21.031461, 117.538924], [16.750126, 113.979353], [10.475138, 113.979353], [4.070596, 119.955916], [4.070596, 132.48033], [6.913632, 130.019392], [20.949403, 130.019392]], center: [13.052888, 122.64644] },
-    'RJJJ': { name: 'RJJJ', bounds: [[20.990493, 121.458344], [23.552227, 124.007173], [29.98189, 124.051118], [29.98189, 125.325532], [42.995264, 146.81479], [27.008554, 154.988618], [21.031517, 154.988618]], center: [25.229942, 130.117143] },
-    'KZAK': { name: 'KZAK', bounds: [[21.031517, 154.988618], [21.028268, 154.99019], [3.760284, 179.960982], [3.584864, 133.105424], [7.433451, 129.941362], [21.028268, 130.029252]], center: [13.480612, 138.818315] },
-    'VCCF': { name: 'VCCF', bounds: [[6.036942, 78.085893], [-1.861686, 78.085893], [-2.037365, 91.884721], [6.036942, 91.972612], [10.125876, 81.777299]], center: [2.970639, 84.67769] },
-    'internal': { name: '内陆及近海', bounds: [[45, 100], [45, 135], [18, 135], [18, 100]], center: [36, 106] }
-};
-
-// VVTS[17.443177   108.705916],[14.486029   112.001814],[14.486029  114.001326],[10.518348  113.979353],[7.000875   108.002791],[8.828915   102.531599]
-// RPHI[21.031461	117.538924],[16.750126	113.979353],[10.475138	113.979353],[4.070596	119.955916],[4.070596	132.48033],[6.913632	130.019392],[20.949403	130.019392]
-// RJJJ[20.990493	121.458344],[23.552227	124.007173],[29.98189	124.051118],[29.98189	125.325532],[42.995264	146.81479],[27.008554	154.988618],[21.031517	154.988618]
-// KZAK[21.031517	154.988618],[21.028268	154.99019],[3.760284	-179.960982],[3.584864	133.105424],[7.433451	129.941362]
-// VCCF[6.036942	78.085893],[-1.861686	78.085893],[-2.037365	91.884721],[6.036942	91.972612],[10.125876	81.777299]
-
-
-
-
-
-
-
 // 切换历史检索侧边栏
 function toggleArchiveSidebar() {
-    alert("该功能尚不支持");
-    return;
     const sidebar = document.getElementById('archiveSidebar');
     const isOpening = !sidebar.classList.contains('open');
     
@@ -55,21 +31,36 @@ function toggleArchiveSidebar() {
     const yearSelect = document.getElementById('archiveYear');
     const monthSelect = document.getElementById('archiveMonth');
     const calendarGrid = document.getElementById('calendarGrid');
-    const regionSelect = document.getElementById('archiveRegion');
+    // 移除区域选择元素
+    const regionSelectElement = document.getElementById('archiveRegion');
+    if (regionSelectElement) {
+        regionSelectElement.parentElement.remove();
+    }
     
     let selectedDay = null;
     let selectedYear = null;
     let selectedMonth = null;
-
-    // 生成年份选项（近20年）
-    const currentYear = new Date().getFullYear();
-    for (let y = currentYear; y >= currentYear - 20; y--) {
+    
+    // 限制年份范围：2023-2025
+    const minYear = 2023;
+    const maxYear = 2025;
+    for (let y = maxYear; y >= minYear; y--) {
         const option = document.createElement('option');
         option.value = y;
         option.textContent = y + '年';
         yearSelect.appendChild(option);
     }
-
+    
+    // 设置默认年份（如果当前年份在范围内）
+    const currentYear = new Date().getFullYear();
+    if (currentYear >= minYear && currentYear <= maxYear) {
+        yearSelect.value = currentYear;
+    } else if (currentYear < minYear) {
+        yearSelect.value = minYear;
+    } else {
+        yearSelect.value = maxYear;
+    }
+    
     // 生成日历网格
     function renderCalendar() {
         const year = parseInt(yearSelect.value);
@@ -103,6 +94,14 @@ function toggleArchiveSidebar() {
         const today = new Date();
         const isCurrentMonth = today.getFullYear() === year && (today.getMonth() + 1) === month;
         
+        // 检查日期是否在允许范围内
+        const isDateInRange = (y, m, d) => {
+            const dateToCheck = new Date(y, m - 1, d);
+            const minDate = new Date(minYear, 0, 1); // 2023-01-01
+            const maxDate = new Date(maxYear, 11, 31); // 2025-12-31
+            return dateToCheck >= minDate && dateToCheck <= maxDate;
+        };
+        
         // 添加每一天
         for (let day = 1; day <= daysInMonth; day++) {
             const dayEl = document.createElement('div');
@@ -110,18 +109,32 @@ function toggleArchiveSidebar() {
             dayEl.textContent = day;
             dayEl.dataset.day = day;
             
+            // 检查日期是否在允许范围内
+            if (!isDateInRange(year, month, day)) {
+                dayEl.classList.add('out-of-range');
+                dayEl.style.opacity = '0.5';
+                dayEl.style.cursor = 'not-allowed';
+                continue; // 跳过不可选日期
+            }
+            
             // 标记今天
             if (isCurrentMonth && day === today.getDate()) {
                 dayEl.classList.add('today');
             }
             
             // 如果是当前选中的日期
-            if (selectedDay === day) {
+            if (selectedDay === day && selectedYear === year && selectedMonth === month) {
                 dayEl.classList.add('selected');
             }
             
             // 点击事件
             dayEl.addEventListener('click', () => {
+                // 检查点击的日期是否在允许范围内
+                if (!isDateInRange(year, month, day)) {
+                    showNotification(`仅允许选择 ${minYear}年1月 至 ${maxYear}年12月 的日期`);
+                    return;
+                }
+                
                 // 移除之前的选中状态
                 calendarGrid.querySelectorAll('.calendar-day.selected').forEach(el => {
                     el.classList.remove('selected');
@@ -168,26 +181,37 @@ function toggleArchiveSidebar() {
         }
     });
 
-    // 设置默认日期为昨天
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    yearSelect.value = yesterday.getFullYear();
-    monthSelect.value = yesterday.getMonth() + 1;
-    selectedDay = yesterday.getDate();
-    selectedYear = yesterday.getFullYear();
-    selectedMonth = yesterday.getMonth() + 1;
+    // 设置默认日期为昨天（在允许范围内）
+    const defaultDate = new Date();
+    if (defaultDate.getFullYear() > maxYear) {
+        defaultDate.setFullYear(maxYear, 11, 31); // 2025-12-31
+    } else if (defaultDate.getFullYear() < minYear) {
+        defaultDate.setFullYear(minYear, 0, 1); // 2023-01-01
+    } else {
+        defaultDate.setDate(defaultDate.getDate() - 1); // 昨天
+    }
+    
+    // 确保默认日期在允许范围内
+    if (defaultDate < new Date(minYear, 0, 1)) {
+        defaultDate.setFullYear(minYear, 0, 1);
+    }
+    if (defaultDate > new Date(maxYear, 11, 31)) {
+        defaultDate.setFullYear(maxYear, 11, 31);
+    }
+    
+    yearSelect.value = defaultDate.getFullYear();
+    monthSelect.value = defaultDate.getMonth() + 1;
+    selectedDay = defaultDate.getDate();
+    selectedYear = defaultDate.getFullYear();
+    selectedMonth = defaultDate.getMonth() + 1;
+    
+    // 年份或月份变化时重新渲染日历
+    yearSelect.addEventListener('change', renderCalendar);
+    monthSelect.addEventListener('change', renderCalendar);
+    
+    // 初始化日历
     renderCalendar();
     updateDateText();
-
-    // 年份或月份变化时重新渲染日历
-    yearSelect.addEventListener('change', () => {
-        selectedDay = null; // 重置选中的日期
-        renderCalendar();
-    });
-    monthSelect.addEventListener('change', () => {
-        selectedDay = null;
-        renderCalendar();
-    });
 
     // 检索按钮
     btnSearch.addEventListener('click', async () => {
@@ -196,26 +220,30 @@ function toggleArchiveSidebar() {
             return;
         }
         
+        // 检查日期范围
+        const selectedDate = new Date(selectedYear, selectedMonth - 1, selectedDay);
+        const minDate = new Date(minYear, 0, 1);
+        const maxDate = new Date(maxYear, 11, 31);
+        
+        if (selectedDate < minDate || selectedDate > maxDate) {
+            showNotification(`仅允许选择 ${minYear}年1月 至 ${maxYear}年12月 的日期`);
+            return;
+        }
+        
         const year = String(selectedYear);
         const month = String(selectedMonth).padStart(2, '0');
         const day = String(selectedDay).padStart(2, '0');
         const date = `${year}-${month}-${day}`;
-        const region = regionSelect.value;
 
-        console.log('点击检索按钮，日期:', date, '区域:', region);
+        console.log('点击检索按钮，日期:', date);
 
-        await searchArchiveNotams(date, region);
+        await searchArchiveNotams(date);
     });
 
     // 清除按钮
     btnClear.addEventListener('click', () => {
         clearArchiveNotams();
         showNotification('已清除历史航警');
-    });
-
-    // 区域选择变化时显示区域
-    regionSelect.addEventListener('change', () => {
-        showRegionOnMap(regionSelect.value);
     });
 
     // 初始化拖动功能
@@ -246,7 +274,7 @@ function initArchiveDraggable() {
     // 开始拖动
     function dragStart(e) {
         // 如果点击的是按钮或输入框，不触发拖动
-        if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+        if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.closest('button')) {
             return;
         }
 
@@ -317,9 +345,141 @@ function initArchiveDraggable() {
     header.style.userSelect = 'none';
 }
 
-// 搜索历史航警
-async function searchArchiveNotams(date, region) {
-    console.log('开始搜索历史航警...', { date, region });
+// 日期字符串转时间对象
+function parseNotamDate(dateStr) {
+    // 根据航警时间格式解析：05 JAN 11:09 2024 UNTIL 05 JAN 11:32 2024
+    const parts = dateStr.split(' ');
+    const startDay = parseInt(parts[0]);
+    const startMonth = parts[1];
+    const startYear = parseInt(parts[3]);
+    
+    // 月份映射
+    const monthMap = {
+        'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+        'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
+    };
+    
+    return new Date(startYear, monthMap[startMonth], startDay);
+}
+
+// 从本地加载指定月份的历史航警数据
+async function loadLocalArchiveMonthData(year, month) {
+    const filePath = `data/notam_db/${year}-${month.toString().padStart(2, '0')}.json`;
+    
+    console.log('尝试加载本地数据文件:', filePath);
+    
+    try {
+        const response = await fetch(filePath);
+        
+        if (!response.ok) {
+            if (response.status === 404) {
+                console.log(`数据文件不存在: ${filePath}`);
+                return null;
+            }
+            throw new Error(`无法加载数据文件: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log(`成功加载 ${year}-${month} 数据:`, data);
+        return data;
+    } catch (error) {
+        console.error(`加载 ${year}-${month} 数据失败:`, error);
+        return null;
+    }
+}
+
+// 获取选择日期前后15天内所有相关月份
+function getRelatedMonths(baseDate) {
+    const months = new Set();
+    const startDate = new Date(baseDate);
+    startDate.setDate(startDate.getDate() - 15); // 往前15天
+    
+    const endDate = new Date(baseDate);
+    endDate.setDate(endDate.getDate() + 15); // 往后15天
+    
+    // 遍历日期范围内的所有月份
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+        months.add({
+            year: currentDate.getFullYear(),
+            month: currentDate.getMonth() + 1 // 月份从1开始
+        });
+        // 移到下个月第一天
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        currentDate.setDate(1);
+    }
+    
+    return Array.from(months);
+}
+
+// 合并多个数据源，筛选日期范围内的航警
+function filterNotamsWithinDateRange(allData, baseDate) {
+    const startDate = new Date(baseDate);
+    startDate.setDate(startDate.getDate() - 15); // 往前15天
+    const endDate = new Date(baseDate);
+    endDate.setDate(endDate.getDate() + 15); // 往后15天
+    const result = {
+        NUM: 0,
+        CODE: [],
+        COORDINATES: [],
+        TIME: [],
+        PLATID: [],
+        RAWMESSAGE: [],
+        ALTITUDE: [],
+        CLASSIFY: {}
+    };
+    
+    // 分类数据结构
+    const classifyMap = {};
+    
+    // 遍历所有加载的数据
+    for (const data of allData) {
+        if (!data || !data.NUM || data.NUM === 0) continue;
+        
+        for (let i = 0; i < data.NUM; i++) {
+            try {
+                console.log('正在处理航警:', data.TIME[i]);
+                const notamDate = parseNotamDate(data.TIME[i]);
+                // 检查是否在日期范围内
+                if (notamDate >= startDate && notamDate <= endDate) {
+                    // 添加到结果
+                    result.CODE.push(data.CODE[i]);
+                    result.COORDINATES.push(data.COORDINATES[i]);
+                    result.TIME.push(data.TIME[i]);
+                    result.PLATID.push(data.PLATID?.[i] || 'UNKNOWN');
+                    result.RAWMESSAGE.push(data.RAWMESSAGE?.[i] || '');
+                    result.ALTITUDE.push(data.ALTITUDE?.[i] || 'Unknown');
+                    
+                    // 收集分类信息
+                    for (const [group, codes] of Object.entries(data.CLASSIFY || {})) {
+                        if (codes.includes(data.CODE[i])) {
+                            if (!classifyMap[group]) {
+                                classifyMap[group] = [];
+                            }
+                            if (!classifyMap[group].includes(data.CODE[i])) {
+                                classifyMap[group].push(data.CODE[i]);
+                            }
+                        }
+                    }
+                    
+                    result.NUM++;
+                }
+            } catch (e) {
+                console.error('处理航警时出错:', e, data?.CODE?.[i]);
+            }
+        }
+    }
+    
+    // 构建CLASSIFY对象
+    result.CLASSIFY = classifyMap;
+    
+    console.log(`筛选结果: 共 ${result.NUM} 条航警在 ${baseDate.toISOString().split('T')[0]} 前后15天内`);
+    return result;
+}
+
+// 搜索历史航警 - 改为前端加载本地数据
+async function searchArchiveNotams(dateStr) {
+    console.log('开始搜索历史航警...', { dateStr });
     
     const btnSearch = document.getElementById('btnSearchArchive');
     const originalText = btnSearch.textContent;
@@ -329,84 +489,31 @@ async function searchArchiveNotams(date, region) {
     btnSearch.disabled = true;
     btnSearch.style.opacity = '0.8';
 
-    // 开始轮询日志以显示进度
-    let lastLogCount = 0;
-    let progressInterval = null;
-    
-    const updateProgress = async () => {
-        try {
-            const logsResponse = await fetch('/logs');
-            if (logsResponse.ok) {
-                const logs = await logsResponse.json();
-                // 只显示新的进度日志
-                const newLogs = logs.slice(lastLogCount);
-                const progressLogs = newLogs.filter(log => {
-                    if (!log.message || !log.message.includes('[进度]')) return false;
-                    // 排除包含完整dict数据的消息（通常包含大量的引号和大括号）
-                    const msg = log.message;
-                    if (msg.includes('{"CODE"') || msg.includes("{'CODE'")) return false;
-                    if ((msg.match(/'/g) || []).length > 10) return false;  // 超过10个引号可能是数据
-                    if ((msg.match(/{/g) || []).length > 3) return false;   // 超过3个大括号可能是dict
-                    return true;
-                });
-                
-                if (progressLogs.length > 0) {
-                    const latestProgress = progressLogs[progressLogs.length - 1].message;
-                    // 提取进度信息并显示在按钮上
-                    const progressText = latestProgress.replace('[进度]', '').trim();
-                    // 限制显示长度
-                    const displayText = progressText.length > 30 
-                        ? progressText.substring(0, 30) + '...' 
-                        : progressText;
-                    btnSearch.innerHTML = displayText + '<span class="btn-spinner"></span>';
-                }
-                lastLogCount = logs.length;
-            }
-        } catch (e) {
-            console.error('获取进度日志失败:', e);
-        }
-    };
-
-    // 每500ms更新一次进度
-    progressInterval = setInterval(updateProgress, 500);
-
     try {
-        console.log('发送请求到 /fetch_archive');
+        // 解析选择的日期
+        const baseDate = new Date(dateStr);
         
-        const response = await fetch('/fetch_archive', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ date, region })
-        });
-
-        // 停止进度轮询
-        if (progressInterval) {
-            clearInterval(progressInterval);
-            progressInterval = null;
-        }
-
-        console.log('收到响应，状态码:', response.status);
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('解析响应数据:', data);
-
-        if (data.error) {
-            throw new Error(data.error);
-        }
+        // 获取相关月份
+        const relatedMonths = getRelatedMonths(baseDate);
+        console.log('需要加载的月份:', relatedMonths);
+        
+        // 加载所有相关月份的数据
+        const loadDataPromises = relatedMonths.map(month => 
+            loadLocalArchiveMonthData(month.year, month.month)
+        );
+        
+        const allMonthData = await Promise.all(loadDataPromises);
+        
+        // 筛选日期范围内的航警
+        const filteredData = filterNotamsWithinDateRange(allMonthData, baseDate);
 
         // 清除旧的历史航警
         clearArchiveNotams();
 
         // 保存数据
-        archiveDict = data;
+        archiveDict = filteredData;
 
-        if (data.NUM === 0) {
+        if (!filteredData || filteredData.NUM === 0) {
             // 显示未找到状态
             btnSearch.innerHTML = '未找到相关航警';
             btnSearch.disabled = false;
@@ -424,10 +531,10 @@ async function searchArchiveNotams(date, region) {
         }
 
         // 调试：打印时间数据
-        console.log('历史航警数据:', data);
+        console.log('历史航警数据:', filteredData);
 
         // 分配颜色
-        assignArchiveGroupColors(data.CLASSIFY || {});
+        assignArchiveGroupColors(filteredData.CLASSIFY || {});
 
         // 绘制历史航警
         drawAllArchiveNotams();
@@ -436,7 +543,7 @@ async function searchArchiveNotams(date, region) {
         updateSidebar();
 
         // 显示成功状态
-        btnSearch.innerHTML = `找到 ${data.NUM} 条航警`;
+        btnSearch.innerHTML = `找到 ${filteredData.NUM} 条航警`;
         btnSearch.disabled = false;
         btnSearch.style.opacity = '1';
         btnSearch.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
@@ -447,15 +554,9 @@ async function searchArchiveNotams(date, region) {
             btnSearch.style.background = '';
         }, 3000);
 
-        showNotification(`检索成功：找到 ${data.NUM} 条航警`);
+        showNotification(`检索成功：找到 ${filteredData.NUM} 条航警 (前后15天内)`);
 
     } catch (error) {
-        // 停止进度轮询
-        if (progressInterval) {
-            clearInterval(progressInterval);
-            progressInterval = null;
-        }
-        
         console.error('历史航警检索失败:', error);
         
         // 显示失败状态
@@ -577,6 +678,10 @@ function drawArchiveNotam(COORstrin, timee, codee, numm, col, rawmessage) {
         "<span class='popup-label'>航警编号:</span>" +
         "<span class='popup-value'>" + codee + "</span>" +
         "</div>" +
+        "<div class='popup-info-row'>" +
+        "<span class='popup-label'>数据来源日期:</span>" +
+        "<span class='popup-value'>" + extractDateFromNotamTime(timee) + "</span>" +
+        "</div>" +
         "</div>" +
         "<div class='notam-popup-buttons'>" +
         "<button class='copy copy-coord' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
@@ -590,6 +695,16 @@ function drawArchiveNotam(COORstrin, timee, codee, numm, col, rawmessage) {
     });
 
     polygonArchive[numm] = tmpPolygon;
+}
+
+// 从航警时间字符串中提取日期
+function extractDateFromNotamTime(notamTime) {
+    // 格式: "05 JAN 11:09 2024 UNTIL 05 JAN 11:32 2024"
+    const parts = notamTime.split(' ');
+    if (parts.length >= 5) {
+        return `${parts[0]} ${parts[1]} ${parts[4]}`;
+    }
+    return notamTime;
 }
 
 // 清除所有历史航警
@@ -613,103 +728,4 @@ function locateToArchiveNotam(index) {
     } catch (e) {
         console.error(e);
     }
-}
-
-// 在地图上显示选中的区域
-function showRegionOnMap(regionCode) {
-    // 清除旧的定时器
-    if (regionOverlayTimer) {
-        clearTimeout(regionOverlayTimer);
-        regionOverlayTimer = null;
-    }
-    
-    // 移除旧的区域覆盖层和标签
-    if (currentRegionOverlay) {
-        try {
-            map.removeLayer(currentRegionOverlay);
-        } catch (e) {
-            console.warn('移除覆盖层失败:', e);
-        }
-        
-        if (currentRegionOverlay.label) {
-            try {
-                map.removeLayer(currentRegionOverlay.label);
-            } catch (e) {
-                console.warn('移除标签失败:', e);
-            }
-        }
-        
-        currentRegionOverlay = null;
-    }
-
-    if (!regionCode || !ICAO_REGIONS[regionCode]) return;
-
-    const region = ICAO_REGIONS[regionCode];
-
-    // 对于内陆及近海区域，只显示标签不显示边界
-    if (regionCode === 'internal') {
-        // 只添加标签
-        const label = L.marker(region.center, {
-            icon: L.divIcon({
-                className: 'region-label',
-                html: `<div style="background: rgba(52, 152, 219, 0.9); color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold; white-space: nowrap;">${region.name}</div>`,
-                iconSize: [100, 30]
-            })
-        }).addTo(map);
-
-        // 创建一个虚拟的覆盖层对象，只存储label
-        currentRegionOverlay = { label: label };
-
-        // 缩放到中国区域
-        map.setView(region.center, 4);
-    } else {
-        // 其他区域正常显示边界和标签
-        currentRegionOverlay = L.polygon(region.bounds, {
-            color: '#1c7700ff',
-            weight: 2,
-            opacity: 0.8,
-            fillColor: '#2dc435ff',
-            fillOpacity: 0.1,
-            dashArray: '10, 5'
-        }).addTo(map);
-        
-        // 添加标签
-        const label = L.marker(region.center, {
-            icon: L.divIcon({
-                className: 'region-label',
-                html: `<div style="background: rgba(22, 110, 37, 1); color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold; white-space: nowrap;">${region.name}</div>`,
-                iconSize: [100, 30]
-            })
-        }).addTo(map);
-
-        // 将标签也存储，方便一起删除
-        currentRegionOverlay.label = label;
-
-        // 缩放到区域
-        map.fitBounds(region.bounds, { padding: [50, 50] });
-    }
-
-    // 5秒后自动移除区域显示
-    regionOverlayTimer = setTimeout(() => {
-        if (currentRegionOverlay) {
-            try {
-                if (currentRegionOverlay.removeFrom) {
-                    map.removeLayer(currentRegionOverlay);
-                }
-            } catch (e) {
-                console.warn('定时移除覆盖层失败:', e);
-            }
-            
-            if (currentRegionOverlay.label) {
-                try {
-                    map.removeLayer(currentRegionOverlay.label);
-                } catch (e) {
-                    console.warn('定时移除标签失败:', e);
-                }
-            }
-            
-            currentRegionOverlay = null;
-        }
-        regionOverlayTimer = null;
-    }, 5000);
 }
