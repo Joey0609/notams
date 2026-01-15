@@ -300,6 +300,11 @@ function updateSidebar() {
                     : `<svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 36C35.0457 36 44 24 44 24C44 24 35.0457 12 24 12C12.9543 12 4 24 4 24C4 24 12.9543 36 24 36Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/><path d="M24 29C26.7614 29 29 26.7614 29 24C29 21.2386 26.7614 19 24 19C21.2386 19 19 21.2386 19 24C19 26.7614 21.2386 29 24 29Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>`
 
                             }
+                        </button>   
+                        <button class="icon-btn"
+                            onclick="event.stopPropagation(); archiveNOTAMmatch(${i})"
+                            title="历史航警匹配">
+                            <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81836 6.72729V14H13.0911" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 24C4 35.0457 12.9543 44 24 44V44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C16.598 4 10.1351 8.02111 6.67677 13.9981" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.005 12L24.0038 24.0088L32.4832 32.4882" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
                     </div>
                 
@@ -553,4 +558,11 @@ function locateToNotam(index) {
             map.fitBounds(bounds, { padding: [80, 80], maxZoom: 6 });
         }
     } catch (e) { console.error(e); }
+}
+/* 定位历史航警 */
+function archiveNOTAMmatch(index) {
+    if (!dict || index >= dict.NUM) return;
+    console.log('匹配历史航警航警:', index);
+    // 跳转到 history 页面并传递 index 参数
+    window.open(`match.html?index=${index}`, '_blank');
 }

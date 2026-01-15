@@ -320,7 +320,7 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .color-preview {position: relative;display: inline-block;width: 20px;height: 20px;border-radius: 50%;background: var(--group-color);border: 2px solid #fff;box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);cursor: pointer;transition: transform 0.2s;}
 .color-picker-wrapper:hover .color-preview {transform: scale(1.1);box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);}
 /* 图标按钮 */
-.icon-btn {background: transparent;border: none;border-radius: 6px;width: 28px;height: 28px;padding: 0;cursor: pointer;font-size: 16px;display: flex;align-items: center;justify-content: center;margin-left: 6px;transition: background 0.2s, transform 0.1s;}
+.icon-btn {background: transparent;border: none;border-radius: 3px;width: 20x;height: 20px;padding: 0;cursor: pointer;font-size: 16px;display: flex;align-items: center;justify-content: center;margin-left: 6px;transition: background 0.2s, transform 0.1s;}
 .icon-btn:hover {background: rgba(0, 0, 0, 0.08);transform: scale(1.08);}
 .icon-btn svg {width: 18px;height: 18px;pointer-events: none;}
 .icon-btn:active {transform: scale(0.96);}
