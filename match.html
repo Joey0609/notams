@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="statics/leaflet/leaflet.css" />
     <script src="statics/leaflet/leaflet.js"></script>
     <script src="https://cdn.counter.dev/script.js" data-id="0208cb8b-4c1b-4996-b09e-dc4c551828a5" data-utcoffset="8"></script>
-    <title>NOTAM落区查阅绘制工具</title>
+    <title>NOTAM历史航警匹配</title>
 </head>
 
 <body>
@@ -17,123 +17,24 @@
         <div id="allmap" class="div1"></div>
 
         <!-- 右侧统一按钮组 -->
-        <div id="sidebarToggle" onclick="toggleSidebar()">航警列表</div>
-        <!-- <div id="manualToggle" onclick="toggleManualDrawer()">手动绘制</div> -->
+        <div id="sidebarToggle" onclick="toggleSidebar()">匹配列表</div>
 
-        <!-- 统一侧边栏 - 包含航警列表和手动绘制两个页面 -->
+        <!-- 统一侧边栏 - 仅显示匹配历史航警 -->
         <div id="notamSidebar" class="notam-sidebar">
-            <!-- 航警列表页面 -->
             <div id="notamListPage" class="sidebar-page">
                 <div id="notamSidebarHeader" class="sidebar-header">
-                    <div class="sidebar-title">航警列表 <span id="notamCount">0</span> 条</div>
+                    <div class="sidebar-title">历史航警匹配 <span id="notamCount">0</span> 条</div>
                     <div>
-                        <button id="btnRefresh" title="刷新航警">刷新</button>
+                        <button id="btnBack" onclick="window.history.back()">返回</button>
                         <button class="sidebar-close" onclick="toggleSidebar()">×</button>
                     </div>
                 </div>
                 <div id="notamList"></div>
             </div>
-
-            <!-- 手动绘制页面 -->
-            <div id="manualDrawPage" class="sidebar-page" style="display: none;">
-                <div class="sidebar-header" id="manualSidebarHeader">
-                    <div class="sidebar-title">手动绘制航警 <span id="manualCount">0</span> 条</div>
-                    <div>
-                        <button class="sidebar-close" onclick="toggleManualDrawer()">×</button>
-                    </div>
-                </div>
-                <div id="manualContent">
-                    <!-- 页面切换按钮 -->
-                    <div style="margin-bottom: 10px;">
-                        <button class="page-switch-btn-single" onclick="switchToListPage()">
-                            ← 返回航警列表
-                        </button>
-                    </div>
-                    
-                    <!-- 输入区域 -->
-                    <div class="manual-input-section">
-                        <label style="font-weight: bold; margin-bottom: 8px; display: block; font-size: 14px;">航警内容</label>
-                        <textarea id="warningInput" rows="4" placeholder="输入或粘贴航警内容..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 12px; resize: vertical; box-sizing: border-box;"></textarea>
-                        
-                        <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <label style="font-size: 12px; color: #555;">颜色</label>
-                                <div class="color-picker-wrapper" onclick="event.stopPropagation();">
-                                    <div class="color-preview" id="manualColorPreview" style="background: #3498db;">
-                                        <input type="color" id="manualColorPicker" class="color-picker" value="#3498db" onchange="document.getElementById('manualColorPreview').style.background = this.value;">
-                                    </div>
-                                </div>
-                            </div>
-                            <button id="btnDrawManual" onclick="drawWarning()" style="flex: 1; background: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">绘制</button>
-                        </div>
-                    </div>
-
-                    <!-- 绘制列表 -->
-                    <div id="manualListContainer">
-                        <div style="padding: 20px; text-align: center; color: #7f8c8d;">暂无手动绘制的航警</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="archiveSidebar" class="archive-sidebar">
-            <div id="archiveSidebarHeader" class="sidebar-header">
-                <div class="sidebar-title">历史航警检索</div>
-                <button class="sidebar-close" onclick="toggleArchiveSidebar()">×</button>
-            </div>
-            <div class="sidebar-content" style="padding: 15px; overflow: visible;">
-                <div class="archive-form">
-                    <div class="form-group">
-                        <label>选择日期 (检索选择日期前后15天的航警)</label>
-                        <button id="btnSelectDate" class="archive-input date-display-btn">
-                            <span id="selectedDateText">选择日期</span>
-                            <span class="date-picker-arrow">▼</span>
-                        </button>
-                        <div id="calendarPopup" class="calendar-popup">
-                            <div class="date-selector">
-                                <select id="archiveYear" class="archive-input date-part">
-                                    <!-- 动态生成年份选项 -->
-                                </select>
-                                <select id="archiveMonth" class="archive-input date-part">
-                                    <option value="1">1月</option>
-                                    <option value="2">2月</option>
-                                    <option value="3">3月</option>
-                                    <option value="4">4月</option>
-                                    <option value="5">5月</option>
-                                    <option value="6">6月</option>
-                                    <option value="7">7月</option>
-                                    <option value="8">8月</option>
-                                    <option value="9">9月</option>
-                                    <option value="10">10月</option>
-                                    <option value="11">11月</option>
-                                    <option value="12">12月</option>
-                                </select>
-                            </div>
-                            <div id="calendarGrid" class="calendar-grid">
-                                <!-- 动态生成日历 -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>选择区域</label>
-                        <select id="archiveRegion" class="archive-input">
-                            <option value="internal">内陆及近海区域</option>
-                            <option value="VVTS">VVTS</option>
-                            <option value="RPHI">RPHI</option>
-                            <option value="RJJJ">RJJJ</option>
-                            <option value="KZAK">KZAK</option>
-                            <option value="VCCF">VCCF</option>
-                        </select>
-                    </div>
-                    <button id="btnSearchArchive" class="archive-search-btn">开始检索</button>
-                    <button id="btnClearArchive" class="archive-clear-btn">清除历史航警</button>
-                </div>
-            </div>
         </div>
 
         <div class="export-btn" id="exportButton">导出</div>
         <div class="help-btn" id="helpButton">帮助</div>
-        <!-- <div class="custom-btn" id="customButton" onclick="fetchInit()">移除自动绘制落区</div> -->
 
         <div class="export-area" id="exportArea">
             <div class="export-content">
@@ -216,19 +117,20 @@
             <div class="loading-content">
                 <button class="loading-close-btn" onclick="closeLoadingModal()">×</button>
                 <div class="spinner"></div>
-                <p>正在获取中...<br><br>你可以关闭该窗口<br>这不会影响自动获取</p>
+                <p>正在加载匹配的历史航警...<br><br>你可以关闭该窗口<br>这不会影响操作</p>
             </div>
         </div>
     </div>
+
+    <!-- 外部脚本加载 -->
     <script src="scripts/notamsDrawer.js"></script>
     <script src="scripts/buttons.js"></script>
     <script src="scripts/scripts.js"></script>
     <script src="statics/leaflet/leaflet-image.js"></script>
     <script src="scripts/customAreaSelect.js"></script>
-    <script src="scripts/sidebar.js"></script>
-    <script src="scripts/archiveSearch.js"></script>
-    <script src="scripts/notification.js"></script>
     <script src="scripts/exportImage.js"></script>
+    <script src="scripts/archiveSidebar.js"></script>
+    <script src="scripts/archiveMatchScript.js"></script>
 </body>
 
 </html>

@@ -3,7 +3,7 @@ import os
 import re
 import sys
 from datetime import datetime
-
+from fetch.Archive_Notam_Match import notam_match_archive
 from fetch.FNS_NOTAM_ARCHIVE_SEARCH import FNS_NOTAM_ARCHIVE_SEARCH
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
 from fetch.dinsQueryWeb import dinsQueryWeb
@@ -380,5 +380,7 @@ if __name__ == '__main__':
         before_hash = None
     dataDict = fetch()
     after_hash = dataDict.get("HASH", None)
+    notam_match_archive(dataDict=dataDict)
     if before_hash != after_hash:
+        notam_match_archive(dataDict=dataDict)
         update_visits()
