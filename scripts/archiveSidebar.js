@@ -209,7 +209,7 @@ function updateMatchSidebar() {
         countEl.textContent = 0;
         return;
     }
-    
+    console.log('更新匹配航警侧边栏，数量:', matchData.length);
     countEl.textContent = matchData.length;
     
     // 批量操作按钮
@@ -305,7 +305,7 @@ function hoverUnhighlightMatchNotam(idx) {
         poly.setStyle({
             weight: 2,
             opacity: 0.8,
-            fillOpacity: 0.0
+            fillOpacity: 0.05
         });
     }
 }
