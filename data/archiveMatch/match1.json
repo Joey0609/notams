@@ -1,1223 +1,2039 @@
 [
     {
-        "CODE": "B3159/24",
-        "COORDINATES": "N191900E1232500-N191400E1242500-N184200E1242200-N184600E1232200-N191900E1232500",
-        "TIME": "21 AUG 09:00 2024 UNTIL 25 AUG 15:00 2024",
-        "PLATID": "73309485",
-        "RAWMESSAGE": "B3159/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1900N12353E034\nA) RPHI B) 2408210900 C) 2408251500\nD) 0900-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n191900N 1232500E -\n191400N 1242500E -\n184200N 1242200E -\n184600N 1232200E -\n191900N 1232500E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-08.json",
-        "points": [
-            [
-                19.316666666666666,
-                123.41666666666667
-            ],
-            [
-                19.233333333333334,
-                124.41666666666667
-            ],
-            [
-                18.7,
-                124.36666666666666
-            ],
-            [
-                18.766666666666666,
-                123.36666666666666
-            ],
-            [
-                19.316666666666666,
-                123.41666666666667
-            ]
-        ],
-        "Overlapping_Area": 100.0,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B3279/24",
-        "COORDINATES": "N191900E1232500-N191400E1242500-N184200E1242200-N184600E1232200-N191900E1232500",
-        "TIME": "22 AUG 12:18 2024 UNTIL 22 AUG 13:41 2024",
-        "PLATID": "73379066",
-        "RAWMESSAGE": "B3279/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1900N12353E034\nA) RPHI B) 2408221218 C) 2408221341\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n191900N 1232500E -\n191400N 1242500E -\n184200N 1242200E -\n184600N 1232200E -\n191900N 1232500E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-08.json",
-        "points": [
-            [
-                19.316666666666666,
-                123.41666666666667
-            ],
-            [
-                19.233333333333334,
-                124.41666666666667
-            ],
-            [
-                18.7,
-                124.36666666666666
-            ],
-            [
-                18.766666666666666,
-                123.36666666666666
-            ],
-            [
-                19.316666666666666,
-                123.41666666666667
-            ]
-        ],
-        "Overlapping_Area": 100.0,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B0961/25",
-        "COORDINATES": "N191900E1232500-N191400E1242500-N184200E1242200-N184700E1232200-N191900E1232500",
-        "TIME": "29 MAR 16:00 2025 UNTIL 31 MAR 20:00 2025",
-        "PLATID": "75985807",
-        "RAWMESSAGE": "B0961/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1900N12353E034\nA) RPHI B) 2503291600 C) 2503312000\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n191900N 1232500E - \n191400N 1242500E -\n184200N 1242200E -\n184700N 1232200E -\n191900N 1232500E\n(75NM NORTHEAST OF SANTA ANA, CAGAYAN).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-03.json",
-        "points": [
-            [
-                19.316666666666666,
-                123.41666666666667
-            ],
-            [
-                19.233333333333334,
-                124.41666666666667
-            ],
-            [
-                18.7,
-                124.36666666666666
-            ],
-            [
-                18.783333333333335,
-                123.36666666666666
-            ],
-            [
-                19.316666666666666,
-                123.41666666666667
-            ]
-        ],
-        "Overlapping_Area": 100.0,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B6438/25",
-        "COORDINATES": "N191900E1232500-N191400E1242500-N184200E1242200-N184700E1232300-N191900E1232500",
-        "TIME": "30 DEC 21:00 2025 UNTIL 02 JAN 23:50 2026",
-        "PLATID": "79127021",
-        "RAWMESSAGE": "B6438/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1901N12354E034\nA) RPHI B) 2512302100 C) 2601022350\nD) 2100-2350\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n191900N 1232500E -\n191400N 1242500E -\n184200N 1242200E -\n184700N 1232300E -\n191900N 1232500E\n(166NM NORTHEAST OF LAOAG AP).\nF) SFC G) UNL",
+        "CODE": "B6332/25",
+        "COORDINATES": "N113400E1171500-N124200E1162000-N130200E1164700-N115400E1174100-N113400E1171500",
+        "TIME": "25 DEC 22:00 2025 UNTIL 27 DEC 01:00 2025",
+        "PLATID": "79061844",
+        "RAWMESSAGE": "B6332/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1218N11701E048\nA) RPHI B) 2512252200 C) 2512270100\nD) 2200-0100\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n113400N 1171500E -\n124200N 1162000E -\n130200N 1164700E -\n115400N 1174100E -\n113400N 1171500E\n(140NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-12.json",
         "points": [
             [
-                19.316666666666666,
-                123.41666666666667
+                11.566666666666666,
+                117.25
             ],
             [
-                19.233333333333334,
-                124.41666666666667
+                12.7,
+                116.33333333333333
             ],
             [
-                18.7,
-                124.36666666666666
+                13.033333333333333,
+                116.78333333333333
             ],
             [
-                18.783333333333335,
-                123.38333333333334
+                11.9,
+                117.68333333333334
             ],
             [
-                19.316666666666666,
-                123.41666666666667
+                11.566666666666666,
+                117.25
             ]
         ],
-        "Overlapping_Area": 98.4,
+        "Overlapping_Area": 100.0,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B1124/25",
-        "COORDINATES": "N192000E1232500-N191500E1242600-N184200E1242300-N184600E1232200-N192000E1232500",
-        "TIME": "29 MAR 16:00 2025 UNTIL 29 MAR 17:19 2025",
-        "PLATID": "76109335",
-        "RAWMESSAGE": "B1124/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1901N12354E035\nA) RPHI B) 2503291600 C) 2503291719\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n192000N 1232500E - \n191500N 1242600E -\n184200N 1242300E -\n184600N 1232200E -\n192000N 1232500E\n(75NM NORTHEAST OF SANTA ANA, CAGAYAN).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-03.json",
-        "points": [
-            [
-                19.333333333333332,
-                123.41666666666667
-            ],
-            [
-                19.25,
-                124.43333333333334
-            ],
-            [
-                18.7,
-                124.38333333333334
-            ],
-            [
-                18.766666666666666,
-                123.36666666666666
-            ],
-            [
-                19.333333333333332,
-                123.41666666666667
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B6516/25",
-        "COORDINATES": "N192000E1232200-N191600E1242300-N184200E1242000-N184700E1231900-N192000E1232200",
-        "TIME": "30 DEC 22:34 2025 UNTIL 30 DEC 23:14 2025",
-        "PLATID": "79197660",
-        "RAWMESSAGE": "B6516/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1901N12351E035\nA) RPHI B) 2512302234 C) 2512302314\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n192000N 1232200E -\n191600N 1242300E -\n184200N 1242000E -\n184700N 1231900E -\n192000N 1232200E\n(166NM NORTHEAST OF LAOAG AP).\nF) SFC G) UNL",
+        "CODE": "B6434/25",
+        "COORDINATES": "N113400E1171500-N124200E1162000-N130200E1164700-N115400E1174100-N113400E1171500",
+        "TIME": "25 DEC 23:18 2025 UNTIL 25 DEC 23:43 2025",
+        "PLATID": "79126612",
+        "RAWMESSAGE": "B6434/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1218N11701E048\nA) RPHI B) 2512252318 C) 2512252343\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n113400N 1171500E -\n124200N 1162000E -\n130200N 1164700E -\n115400N 1174100E -\n113400N 1171500E\n(140NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-12.json",
         "points": [
             [
-                19.333333333333332,
-                123.36666666666666
+                11.566666666666666,
+                117.25
             ],
             [
-                19.266666666666666,
-                124.38333333333334
+                12.7,
+                116.33333333333333
             ],
             [
-                18.7,
-                124.33333333333333
+                13.033333333333333,
+                116.78333333333333
             ],
             [
-                18.783333333333335,
-                123.31666666666666
+                11.9,
+                117.68333333333334
             ],
             [
-                19.333333333333332,
-                123.36666666666666
+                11.566666666666666,
+                117.25
             ]
         ],
-        "Overlapping_Area": 92.8,
+        "Overlapping_Area": 100.0,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B6048/25",
-        "COORDINATES": "N192000E1232800-N191600E1242900-N184200E1242600-N184700E1232500-N192000E1232800",
-        "TIME": "30 NOV 12:14 2025 UNTIL 30 NOV 13:34 2025",
-        "PLATID": "78750787",
-        "RAWMESSAGE": "B6048/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1901N12357E035\nA) RPHI B) 2511301214 C) 2511301334\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n192000N 1232800E - \n191600N 1242900E -\n184200N 1242600E -\n184700N 1232500E - \n192000N 1232800E\n(102NM NORTHEAST OF LALLO AP).\nF) SFC G) UNL",
+        "CODE": "B3320/25",
+        "COORDINATES": "N124100E1162000-N130100E1164700-N115200E1174200-N113200E1171500-N124100E1162000",
+        "TIME": "29 JUL 08:00 2025 UNTIL 31 JUL 12:00 2025",
+        "PLATID": "77330676",
+        "RAWMESSAGE": "B3320/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1217N11701E048\nA) RPHI B) 2507290800 C) 2507311200\nD) 0800-1200\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n124100N 1162000E -\n130100N 1164700E -\n115200N 1174200E -\n113200N 1171500E -\n124100N 1162000E\n(182NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-07.json",
+        "points": [
+            [
+                12.683333333333334,
+                116.33333333333333
+            ],
+            [
+                13.016666666666667,
+                116.78333333333333
+            ],
+            [
+                11.866666666666667,
+                117.7
+            ],
+            [
+                11.533333333333333,
+                117.25
+            ],
+            [
+                12.683333333333334,
+                116.33333333333333
+            ]
+        ],
+        "Overlapping_Area": 96.6,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B3418/25",
+        "COORDINATES": "N124100E1162000-N130100E1164700-N115200E1174200-N113200E1171500-N124100E1162000",
+        "TIME": "30 JUL 07:41 2025 UNTIL 30 JUL 08:07 2025",
+        "PLATID": "77399893",
+        "RAWMESSAGE": "B3418/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1217N11701E048\nA) RPHI B) 2507300741 C) 2507300807\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n124100N 1162000E -\n130100N 1164700E -\n115200N 1174200E -\n113200N 1171500E -\n124100N 1162000E\n(182NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-07.json",
+        "points": [
+            [
+                12.683333333333334,
+                116.33333333333333
+            ],
+            [
+                13.016666666666667,
+                116.78333333333333
+            ],
+            [
+                11.866666666666667,
+                117.7
+            ],
+            [
+                11.533333333333333,
+                117.25
+            ],
+            [
+                12.683333333333334,
+                116.33333333333333
+            ]
+        ],
+        "Overlapping_Area": 96.6,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B5508/25",
+        "COORDINATES": "N124100E1162000-N130100E1164700-N115300E1174200-N113200E1171500-N124100E1162000",
+        "TIME": "19 NOV 12:00 2025 UNTIL 22 NOV 15:00 2025",
+        "PLATID": "78480238",
+        "RAWMESSAGE": "B5508/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1217N11701E048\nA) RPHI B) 2511191200 C) 2511221500\nD) 1200-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n124100N 1162000E -\n130100N 1164700E -\n115300N 1174200E -\n113200N 1171500E -\n124100N 1162000E\n(140NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-11.json",
         "points": [
             [
-                19.333333333333332,
-                123.46666666666667
+                12.683333333333334,
+                116.33333333333333
             ],
             [
-                19.266666666666666,
-                124.48333333333333
+                13.016666666666667,
+                116.78333333333333
             ],
             [
-                18.7,
-                124.43333333333334
+                11.883333333333333,
+                117.7
             ],
             [
-                18.783333333333335,
-                123.41666666666667
+                11.533333333333333,
+                117.25
             ],
             [
-                19.333333333333332,
-                123.46666666666667
+                12.683333333333334,
+                116.33333333333333
             ]
         ],
-        "Overlapping_Area": 91.3,
+        "Overlapping_Area": 96.6,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B5402/25",
-        "COORDINATES": "N192000E1232200-N191600E1242100-N184200E1241700-N184700E1231800-N192000E1232200",
-        "TIME": "03 NOV 03:41 2025 UNTIL 03 NOV 04:06 2025",
-        "PLATID": "78413360",
-        "RAWMESSAGE": "B5402/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1902N12349E034\nA) RPHI B) 2511030341 C) 2511030406\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n192000N 1232200E -\n191600N 1242100E -\n184200N 1241700E -\n184700N 1231800E -\n192000N 1232200E\n(95NM NORTHEAST OF LALLO AP).\nF) SFC G) UNL",
+        "CODE": "B5624/25",
+        "COORDINATES": "N124100E1162000-N130100E1164700-N115300E1174200-N113200E1171500-N124100E1162000",
+        "TIME": "19 NOV 12:51 2025 UNTIL 19 NOV 13:17 2025",
+        "PLATID": "78549476",
+        "RAWMESSAGE": "B5624/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1217N11701E048\nA) RPHI B) 2511191251 C) 2511191317\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n124100N 1162000E -\n130100N 1164700E -\n115300N 1174200E -\n113200N 1171500E -\n124100N 1162000E\n(140NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-11.json",
         "points": [
             [
-                19.333333333333332,
-                123.36666666666666
+                12.683333333333334,
+                116.33333333333333
             ],
             [
-                19.266666666666666,
-                124.35
+                13.016666666666667,
+                116.78333333333333
             ],
             [
-                18.7,
-                124.28333333333333
+                11.883333333333333,
+                117.7
             ],
             [
-                18.783333333333335,
-                123.3
+                11.533333333333333,
+                117.25
             ],
             [
-                19.333333333333332,
-                123.36666666666666
+                12.683333333333334,
+                116.33333333333333
             ]
         ],
-        "Overlapping_Area": 91.2,
+        "Overlapping_Area": 96.6,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B2239/24",
-        "COORDINATES": "N184600E1232400-N191900E1232700-N191300E1243300-N184100E1243000-N184600E1232400",
-        "TIME": "28 JUN 11:00 2024 UNTIL 30 JUN 15:00 2024",
-        "PLATID": "72794332",
-        "RAWMESSAGE": "B2239/24 NOTAMN\nQ) RPHI/QRAXX/IV/NBO/W /000/999/1900N12358E037\nA) RPHI B) 2406281100 C) 2406301500\nD) 1100-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n184600N 1232400E -\n191900N 1232700E -\n191300N 1243300E -\n184100N 1243000E -\n184600N 1232400E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-06.json",
-        "points": [
-            [
-                18.766666666666666,
-                123.4
-            ],
-            [
-                19.316666666666666,
-                123.45
-            ],
-            [
-                19.216666666666665,
-                124.55
-            ],
-            [
-                18.683333333333334,
-                124.5
-            ],
-            [
-                18.766666666666666,
-                123.4
-            ]
-        ],
-        "Overlapping_Area": 86.1,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B2391/24",
-        "COORDINATES": "N184600E1232400-N191900E1232700-N191300E1243300-N184100E1243000-N184600E1232400",
-        "TIME": "29 JUN 11:50 2024 UNTIL 29 JUN 13:38 2024",
-        "PLATID": "72860426",
-        "RAWMESSAGE": "B2391/24 NOTAMN\nQ) RPHI/QRAXX/IV/NBO/W /000/999/1900N12358E037\nA) RPHI B) 2406291150 C) 2406291338\nE) SPECIAL OPS (AEROSPACE FLT ACT) CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n184600N 1232400E -\n191900N 1232700E -\n191300N 1243300E -\n184100N 1243000E -\n184600N 1232400E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-06.json",
-        "points": [
-            [
-                18.766666666666666,
-                123.4
-            ],
-            [
-                19.316666666666666,
-                123.45
-            ],
-            [
-                19.216666666666665,
-                124.55
-            ],
-            [
-                18.683333333333334,
-                124.5
-            ],
-            [
-                18.766666666666666,
-                123.4
-            ]
-        ],
-        "Overlapping_Area": 86.1,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B5138/25",
-        "COORDINATES": "N191900E1233400-N191400E1243400-N184100E1243100-N184600E1233100-N191900E1233400",
-        "TIME": "03 NOV 03:00 2025 UNTIL 09 NOV 07:00 2025",
-        "PLATID": "78252330",
-        "RAWMESSAGE": "B5138/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1900N12403E034\nA) RPHI B) 2511030300 C) 2511090700\nD) 0300-0700\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n191900N 1233400E -\n191400N 1243400E -\n184100N 1243100E -\n184600N 1233100E -\n191900N 1233400E\n(215NM NORTHEAST OF LAOAG AP).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-11.json",
-        "points": [
-            [
-                19.316666666666666,
-                123.56666666666666
-            ],
-            [
-                19.233333333333334,
-                124.56666666666666
-            ],
-            [
-                18.683333333333334,
-                124.51666666666667
-            ],
-            [
-                18.766666666666666,
-                123.51666666666667
-            ],
-            [
-                19.316666666666666,
-                123.56666666666666
-            ]
-        ],
-        "Overlapping_Area": 83.5,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B1957/25",
-        "COORDINATES": "N192000E1232700-N191400E1243400-N184100E1243100-N184600E1232400-N192000E1232700",
-        "TIME": "20 MAY 11:44 2025 UNTIL 20 MAY 13:16 2025",
-        "PLATID": "76667591",
-        "RAWMESSAGE": "B1957/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1900N12359E037\nA) RPHI B) 2505201144 C) 2505201316\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n192000N 1232700E - \n191400N 1243400E -\n184100N 1243100E -\n184600N 1232400E -\n192000N 1232700E\n(75NM NORTHEAST OF SANTA ANA, CAGAYAN).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-05.json",
-        "points": [
-            [
-                19.333333333333332,
-                123.45
-            ],
-            [
-                19.233333333333334,
-                124.56666666666666
-            ],
-            [
-                18.683333333333334,
-                124.51666666666667
-            ],
-            [
-                18.766666666666666,
-                123.4
-            ],
-            [
-                19.333333333333332,
-                123.45
-            ]
-        ],
-        "Overlapping_Area": 82.7,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B4332/25",
-        "COORDINATES": "N191900E1233800-N191400E1243900-N184000E1243600-N184500E1233600-N191900E1233800",
-        "TIME": "09 SEP 01:54 2025 UNTIL 09 SEP 04:14 2025",
-        "PLATID": "77846395",
-        "RAWMESSAGE": "B4332/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1900N12407E035\nA) RPHI B) 2509090154 C) 2509090414\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n191900N 1233800E -\n191400N 1243900E -\n184000N 1243600E -\n184500N 1233600E -\n191900N 1233800E\n(111NM NORTHEAST OF LALLO AP).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-09.json",
-        "points": [
-            [
-                19.316666666666666,
-                123.63333333333334
-            ],
-            [
-                19.233333333333334,
-                124.65
-            ],
-            [
-                18.666666666666668,
-                124.6
-            ],
-            [
-                18.75,
-                123.6
-            ],
-            [
-                19.316666666666666,
-                123.63333333333334
-            ]
-        ],
-        "Overlapping_Area": 73.8,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B1661/25",
-        "COORDINATES": "N191800E1234000-N191300E1244000-N184000E1243600-N184600E1233700-N191800E1234000",
-        "TIME": "20 MAY 11:00 2025 UNTIL 23 MAY 15:00 2025",
-        "PLATID": "76488698",
-        "RAWMESSAGE": "B1661/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1900N12408E034\nA) RPHI B) 2505201100 C) 2505231500\nD) 1100-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n191800N 1234000E - \n191300N 1244000E -\n184000N 1243600E -\n184600N 1233700E -\n191800N 1234000E\n(75NM NORTHEAST OF SANTA ANA, CAGAYAN).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-05.json",
-        "points": [
-            [
-                19.3,
-                123.66666666666667
-            ],
-            [
-                19.216666666666665,
-                124.66666666666667
-            ],
-            [
-                18.666666666666668,
-                124.6
-            ],
-            [
-                18.766666666666666,
-                123.61666666666666
-            ],
-            [
-                19.3,
-                123.66666666666667
-            ]
-        ],
-        "Overlapping_Area": 72.2,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B5507/25",
-        "COORDINATES": "N192200E1225800-N191700E1240400-N184400E1240100-N185000E1225500-N192200E1225800",
-        "TIME": "30 NOV 10:00 2025 UNTIL 03 DEC 14:00 2025",
-        "PLATID": "78480151",
-        "RAWMESSAGE": "B5507/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1903N12330E037\nA) RPHI B) 2511301000 C) 2512031400\nD) 1000-1400\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n192200N 1225800E - \n191700N 1240400E -\n184400N 1240100E -\n185000N 1225500E - \n192200N 1225800E\n(77NM NORTHEAST OF LALLO AP).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-11.json",
-        "points": [
-            [
-                19.366666666666667,
-                122.96666666666667
-            ],
-            [
-                19.283333333333335,
-                124.06666666666666
-            ],
-            [
-                18.733333333333334,
-                124.01666666666667
-            ],
-            [
-                18.833333333333332,
-                122.91666666666667
-            ],
-            [
-                19.366666666666667,
-                122.96666666666667
-            ]
-        ],
-        "Overlapping_Area": 56.1,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B4826/23",
-        "COORDINATES": "N191800E1225900-N191300E1235700-N184500E1235500-N185000E1225700-N191800E1225900",
-        "TIME": "15 DEC 13:35 2023 UNTIL 18 DEC 14:38 2023",
-        "PLATID": "70552187",
-        "RAWMESSAGE": "B4826/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1902N12327E032\nA) RPHI B) 2312151335 C) 2312181438\nD) 1335-1438\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n191800N 1225900E -\n191300N 1235700E -\n184500N 1235500E -\n185000N 1225700E -\n191800N 1225900E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-12.json",
-        "points": [
-            [
-                19.3,
-                122.98333333333333
-            ],
-            [
-                19.216666666666665,
-                123.95
-            ],
-            [
-                18.75,
-                123.91666666666667
-            ],
-            [
-                18.833333333333332,
-                122.95
-            ],
-            [
-                19.3,
-                122.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 49.5,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B4843/23",
-        "COORDINATES": "N191800E1225900-N191300E1235700-N184500E1235500-N185000E1225700-N191800E1225900",
-        "TIME": "15 DEC 13:35 2023 UNTIL 15 DEC 14:38 2023",
-        "PLATID": "70567212",
-        "RAWMESSAGE": "B4843/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1902N12327E032\nA) RPHI B) 2312151335 C) 2312151438\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n191800N 1225900E -\n191300N 1235700E -\n184500N 1235500E -\n185000N 1225700E -\n191800N 1225900E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-12.json",
-        "points": [
-            [
-                19.3,
-                122.98333333333333
-            ],
-            [
-                19.216666666666665,
-                123.95
-            ],
-            [
-                18.75,
-                123.91666666666667
-            ],
-            [
-                18.833333333333332,
-                122.95
-            ],
-            [
-                19.3,
-                122.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 49.5,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B4616/23",
-        "COORDINATES": "N191700E1225900-N191200E1235600-N184500E1235400-N185000E1225700-N191700E1225900",
-        "TIME": "15 DEC 12:00 2023 UNTIL 18 DEC 16:00 2023",
-        "PLATID": "70368230",
-        "RAWMESSAGE": "B4616/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1901N12327E032\nA) RPHI B) 2312151200 C) 2312181600\nD) 1200-1600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n191700N 1225900E -\n191200N 1235600E -\n184500N 1235400E -\n185000N 1225700E -\n191700N 1225900E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-12.json",
-        "points": [
-            [
-                19.283333333333335,
-                122.98333333333333
-            ],
-            [
-                19.2,
-                123.93333333333334
-            ],
-            [
-                18.75,
-                123.9
-            ],
-            [
-                18.833333333333332,
-                122.95
-            ],
-            [
-                19.283333333333335,
-                122.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 46.7,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B4292/23",
-        "COORDINATES": "N192300E1225000-N191900E1234900-N184500E1234700-N185000E1224800-N192300E1225000",
-        "TIME": "03 NOV 14:48 2023 UNTIL 03 NOV 17:09 2023",
-        "PLATID": "70085569",
-        "RAWMESSAGE": "B4292/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1904N12319E034\nA) RPHI B) 2311031448 C) 2311031709\nD) 1448-1709\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n192300N 1225000E -\n191900N 1234900E -\n184500N 1234700E -\n185000N 1224800E -\n192300N 1225000E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-11.json",
-        "points": [
-            [
-                19.383333333333333,
-                122.83333333333333
-            ],
-            [
-                19.316666666666666,
-                123.81666666666666
-            ],
-            [
-                18.75,
-                123.78333333333333
-            ],
-            [
-                18.833333333333332,
-                122.8
-            ],
-            [
-                19.383333333333333,
-                122.83333333333333
-            ]
-        ],
-        "Overlapping_Area": 39.4,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B0155/23",
-        "COORDINATES": "N184400E1235200-N185100E1222300-N192400E1222500-N191700E1235500-N184400E1235200",
-        "TIME": "08 JAN 21:30 2023 UNTIL 09 JAN 02:00 2023",
-        "PLATID": "66797369",
-        "RAWMESSAGE": "B0155/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1904N12309E047\nA) RPHI B) 2301082130 C) 2301090200\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n184400N 1235200E -\n185100N 1222300E -\n192400N 1222500E -\n191700N 1235500E -\n184400N 1235200E\n(AREA 2).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-01.json",
-        "points": [
-            [
-                18.733333333333334,
-                123.86666666666666
-            ],
-            [
-                18.85,
-                122.38333333333334
-            ],
-            [
-                19.4,
-                122.41666666666667
-            ],
-            [
-                19.283333333333335,
-                123.91666666666667
-            ],
-            [
-                18.733333333333334,
-                123.86666666666666
-            ]
-        ],
-        "Overlapping_Area": 31.4,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B0115/23",
-        "COORDINATES": "N184300E1225100-N191700E1235400-N192400E1222600-N185200E1222300-N184300E1225100",
-        "TIME": "08 JAN 21:00 2023 UNTIL 13 JAN 03:00 2023",
-        "PLATID": "66766107",
-        "RAWMESSAGE": "B0115/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1905N12308E046\nA) RPHI B) 2301082100 C) 2301130300\nD) 2100-0300\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n184300N 1225100E -\n191700N 1235400E -\n192400N 1222600E -\n185200N 1222300E -\n184300N 1225100E\n(AREA 2).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-01.json",
-        "points": [
-            [
-                18.716666666666665,
-                122.85
-            ],
-            [
-                19.283333333333335,
-                123.9
-            ],
-            [
-                19.4,
-                122.43333333333334
-            ],
-            [
-                18.866666666666667,
-                122.38333333333334
-            ],
-            [
-                18.716666666666665,
-                122.85
-            ]
-        ],
-        "Overlapping_Area": 30.9,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B4179/23",
-        "COORDINATES": "N192400E1222600-N191800E1234800-N184500E1234600-N185200E1222300-N192400E1222600",
-        "TIME": "03 NOV 14:00 2023 UNTIL 06 NOV 20:00 2023",
-        "PLATID": "69997853",
-        "RAWMESSAGE": "B4179/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1904N12306E044\nA) RPHI B) 2311031400 C) 2311062000\nD) 1400-2000\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n192400N 1222600E -\n191800N 1234800E -\n184500N 1234600E -\n185200N 1222300E -\n192400N 1222600E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-11.json",
-        "points": [
-            [
-                19.4,
-                122.43333333333334
-            ],
-            [
-                19.3,
-                123.8
-            ],
-            [
-                18.75,
-                123.76666666666667
-            ],
-            [
-                18.866666666666667,
-                122.38333333333334
-            ],
-            [
-                19.4,
-                122.43333333333334
-            ]
-        ],
-        "Overlapping_Area": 26.7,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B0301/24",
-        "COORDINATES": "N191000E1241400-N190500E1251100-N183800E1250800-N184300E1241200-N191000E1241400",
-        "TIME": "23 FEB 10:00 2024 UNTIL 28 FEB 16:00 2024",
-        "PLATID": "71179938",
-        "RAWMESSAGE": "B0301/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1854N12441E031\nA) RPHI B) 2402231000 C) 2402281600\nD) 1000-1600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n191000N 1241400E -\n190500N 1251100E -\n183800N 1250800E -\n184300N 1241200E -\n191000N 1241400E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-02.json",
-        "points": [
-            [
-                19.166666666666668,
-                124.23333333333333
-            ],
-            [
-                19.083333333333332,
-                125.18333333333334
-            ],
-            [
-                18.633333333333333,
-                125.13333333333334
-            ],
-            [
-                18.716666666666665,
-                124.2
-            ],
-            [
-                19.166666666666668,
-                124.23333333333333
-            ]
-        ],
-        "Overlapping_Area": 15.6,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B0564/24",
-        "COORDINATES": "N191000E1241400-N190500E1251100-N183800E1250800-N184300E1241200-N191000E1241400",
-        "TIME": "23 FEB 11:21 2024 UNTIL 23 FEB 13:40 2024",
-        "PLATID": "71493318",
-        "RAWMESSAGE": "B0564/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1854N12441E031\nA) RPHI B) 2402231121 C) 2402231340\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n191000N 1241400E -\n190500N 1251100E -\n183800N 1250800E -\n184300N 1241200E -\n191000N 1241400E.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-02.json",
-        "points": [
-            [
-                19.166666666666668,
-                124.23333333333333
-            ],
-            [
-                19.083333333333332,
-                125.18333333333334
-            ],
-            [
-                18.633333333333333,
-                125.13333333333334
-            ],
-            [
-                18.716666666666665,
-                124.2
-            ],
-            [
-                19.166666666666668,
-                124.23333333333333
-            ]
-        ],
-        "Overlapping_Area": 15.6,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B5216/25",
-        "COORDINATES": "N191100E1241800-N190600E1251600-N183800E1251300-N184300E1241500-N191100E1241800",
-        "TIME": "23 OCT 14:25 2025 UNTIL 23 OCT 15:45 2025",
-        "PLATID": "78301702",
-        "RAWMESSAGE": "B5216/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E032\nA) RPHI B) 2510231425 C) 2510231545\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n191100N 1241800E -\n190600N 1251600E -\n183800N 1251300E -\n184300N 1241500E -\n191100N 1241800E\n(245NM NORTHEAST OF LAOAG AP).\nF) SFC G) UNL",
+        "CODE": "B4807/25",
+        "COORDINATES": "N125200E1161200-N131200E1163800-N120400E1173400-N114300E1170700-N125200E1161200",
+        "TIME": "10 OCT 03:11 2025 UNTIL 10 OCT 03:37 2025",
+        "PLATID": "78097722",
+        "RAWMESSAGE": "B4807/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1228N11653E048\nA) RPHI B) 2510100311 C) 2510100337\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n125200N 1161200E -\n131200N 1163800E -\n120400N 1173400E -\n114300N 1170700E -\n125200N 1161200E\n(155NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-10.json",
         "points": [
             [
-                19.183333333333334,
-                124.3
+                12.866666666666667,
+                116.2
             ],
             [
-                19.1,
-                125.26666666666667
+                13.2,
+                116.63333333333334
             ],
             [
-                18.633333333333333,
-                125.21666666666667
+                12.066666666666666,
+                117.56666666666666
             ],
             [
-                18.716666666666665,
-                124.25
+                11.716666666666667,
+                117.11666666666666
             ],
             [
-                19.183333333333334,
-                124.3
+                12.866666666666667,
+                116.2
             ]
         ],
-        "Overlapping_Area": 12.4,
+        "Overlapping_Area": 80.1,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B6412/25",
-        "COORDINATES": "N191100E1241800-N190600E1251600-N183800E1251300-N184300E1241500-N191100E1241800",
-        "TIME": "20 DEC 12:25 2025 UNTIL 20 DEC 13:45 2025",
-        "PLATID": "79107364",
-        "RAWMESSAGE": "B6412/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E032\nA) RPHI B) 2512201225 C) 2512201345\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n191100N 1241800E -\n190600N 1251600E -\n183800N 1251300E -\n184300N 1241500E -\n191100N 1241800E\n(158NM NORTHEAST OF TUGUEGARAO AP).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-12.json",
-        "points": [
-            [
-                19.183333333333334,
-                124.3
-            ],
-            [
-                19.1,
-                125.26666666666667
-            ],
-            [
-                18.633333333333333,
-                125.21666666666667
-            ],
-            [
-                18.716666666666665,
-                124.25
-            ],
-            [
-                19.183333333333334,
-                124.3
-            ]
-        ],
-        "Overlapping_Area": 12.4,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B4986/25",
-        "COORDINATES": "N191100E1241800-N190500E1251500-N183900E1251200-N184400E1241600-N191100E1241800",
-        "TIME": "22 OCT 14:00 2025 UNTIL 26 OCT 18:00 2025",
-        "PLATID": "78185965",
-        "RAWMESSAGE": "B4986/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E031\nA) RPHI B) 2510221400 C) 2510261800\nD) 1400-1800\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n191100N 1241800E -\n190500N 1251500E -\n183900N 1251200E -\n184400N 1241600E -\n191100N 1241800E\n(245NM NORTHEAST OF LAOAG AP).\nF) SFC G) UNL",
+        "CODE": "B4980/25",
+        "COORDINATES": "N125200E1161200-N131200E1163800-N120400E1173400-N114300E1170700-N125200E1161200",
+        "TIME": "16 OCT 01:25 2025 UNTIL 16 OCT 01:52 2025",
+        "PLATID": "78185531",
+        "RAWMESSAGE": "B4980/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1228N11653E048\nA) RPHI B) 2510160125 C) 2510160152\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n125200N 1161200E -\n131200N 1163800E -\n120400N 1173400E -\n114300N 1170700E -\n125200N 1161200E\n(155NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-10.json",
         "points": [
             [
-                19.183333333333334,
-                124.3
+                12.866666666666667,
+                116.2
             ],
             [
-                19.083333333333332,
-                125.25
+                13.2,
+                116.63333333333334
             ],
             [
-                18.65,
-                125.2
+                12.066666666666666,
+                117.56666666666666
             ],
             [
-                18.733333333333334,
-                124.26666666666667
+                11.716666666666667,
+                117.11666666666666
             ],
             [
-                19.183333333333334,
-                124.3
+                12.866666666666667,
+                116.2
             ]
         ],
-        "Overlapping_Area": 11.2,
+        "Overlapping_Area": 80.1,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B6044/25",
-        "COORDINATES": "N191100E1241800-N190500E1251500-N183900E1251200-N184400E1241600-N191100E1241800",
-        "TIME": "20 DEC 11:00 2025 UNTIL 22 DEC 15:00 2025",
-        "PLATID": "78750551",
-        "RAWMESSAGE": "B6044/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E031\nA) RPHI B) 2512201100 C) 2512221500\nD) 1100-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n191100N 1241800E -\n190500N 1251500E -\n183900N 1251200E -\n184400N 1241600E -\n191100N 1241800E\n(158NM NORTHEAST OF TUGUEGARAO AP).\nF) SFC G) UNL",
+        "CODE": "B6009/25",
+        "COORDINATES": "N125400E1161000-N131400E1163700-N120500E1173200-N114600E1170500-N125400E1161000",
+        "TIME": "02 DEC 11:00 2025 UNTIL 05 DEC 15:00 2025",
+        "PLATID": "78738241",
+        "RAWMESSAGE": "B6009/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1230N11651E048\nA) RPHI B) 2512021100 C) 2512051500\nD) 1100-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n125400N 1161000E -\n131400N 1163700E -\n120500N 1173200E -\n114600N 1170500E -\n125400N 1161000E\n(140NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-12.json",
         "points": [
             [
-                19.183333333333334,
-                124.3
+                12.9,
+                116.16666666666667
             ],
             [
-                19.083333333333332,
-                125.25
+                13.233333333333333,
+                116.61666666666666
             ],
             [
-                18.65,
-                125.2
+                12.083333333333334,
+                117.53333333333333
             ],
             [
-                18.733333333333334,
-                124.26666666666667
+                11.766666666666667,
+                117.08333333333333
             ],
             [
-                19.183333333333334,
-                124.3
+                12.9,
+                116.16666666666667
             ]
         ],
-        "Overlapping_Area": 11.2,
+        "Overlapping_Area": 75.8,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B4069/24",
-        "COORDINATES": "N210000E1204500-N210000E1275000-N183500E1275000-N183500E1252500-N210000E1204500",
-        "TIME": "27 SEP 21:30 2024 UNTIL 27 SEP 23:30 2024",
-        "PLATID": "73790957",
-        "RAWMESSAGE": "B4069/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/1950N12419E217\nA) RPHI B) 2409272130 C) 2409272330\nE) SPECIAL OPS (DROPSONDES FOR TROPICAL DEPRESSION SURVEILLANCE)\nWILL TAKE PLACE WI:\n210000N 1204500E -\n210000N 1275000E -\n183500N 1275000E -\n183500N 1252500E -\n210000N 1204500E\n\nRMK:\n1. TYPE OF ACFT - ASTRA SPX\n2. ACFT REGISTRY B20001\n3. CALL SIGN: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
-        "ALTITUDE": "0 ~ 12500 米",
-        "source_file": "2024-09.json",
+        "CODE": "B6116/25",
+        "COORDINATES": "N125400E1161000-N131400E1163700-N120500E1173200-N114600E1170500-N125400E1161000",
+        "TIME": "06 DEC 07:45 2025 UNTIL 06 DEC 08:10 2025",
+        "PLATID": "78799417",
+        "RAWMESSAGE": "B6116/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1230N11651E048\nA) RPHI B) 2512060745 C) 2512060810\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n125400N 1161000E -\n131400N 1163700E -\n120500N 1173200E -\n114600N 1170500E -\n125400N 1161000E\n(140NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-12.json",
         "points": [
             [
-                21.0,
-                120.75
+                12.9,
+                116.16666666666667
             ],
             [
-                21.0,
-                127.83333333333333
+                13.233333333333333,
+                116.61666666666666
             ],
             [
-                18.583333333333332,
-                127.83333333333333
+                12.083333333333334,
+                117.53333333333333
             ],
             [
-                18.583333333333332,
-                125.41666666666667
+                11.766666666666667,
+                117.08333333333333
             ],
             [
-                21.0,
-                120.75
+                12.9,
+                116.16666666666667
             ]
         ],
-        "Overlapping_Area": 3.8,
+        "Overlapping_Area": 75.8,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B4030/24",
-        "COORDINATES": "N210000E1204500-N210000E1272000-N174000E1272000-N174000E1245000-N210000E1204500",
-        "TIME": "28 SEP 21:30 2024 UNTIL 28 SEP 23:30 2024",
-        "PLATID": "73834194",
-        "RAWMESSAGE": "B4030/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/1922N12405E215\nA) RPHI B) 2409282130 C) 2409282330\nE) SPECIAL OPS (DROPSONDES FOR TROPICAL DEPRESSION SURVEILLANCE)\nWILL TAKE PLACE WI:\n210000N 1204500E -\n210000N 1272000E -\n174000N 1272000E -\n174000N 1245000E -\n210000N 1204500E\n\nRMK:\n1. TYPE OF ACFT - ASTRA SPX\n2. ACFT REGISTRY B20001\n3. CALL SIGN: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
-        "ALTITUDE": "0 ~ 12500 米",
-        "source_file": "2024-09.json",
+        "CODE": "B5718/25",
+        "COORDINATES": "N125400E1161000-N131400E1163700-N120500E1173200-N114600E1170500-N125400E1161000",
+        "TIME": "19 NOV 12:51 2025 UNTIL 19 NOV 13:17 2025",
+        "PLATID": "78591381",
+        "RAWMESSAGE": "B5718/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1230N11651E048\nA) RPHI B) 2511191251 C) 2511191317\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n125400N 1161000E -\n131400N 1163700E -\n120500N 1173200E -\n114600N 1170500E -\n125400N 1161000E\n(157NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-11.json",
         "points": [
             [
-                21.0,
-                120.75
+                12.9,
+                116.16666666666667
             ],
             [
-                21.0,
-                127.33333333333333
+                13.233333333333333,
+                116.61666666666666
             ],
             [
-                17.666666666666668,
-                127.33333333333333
+                12.083333333333334,
+                117.53333333333333
             ],
             [
-                17.666666666666668,
-                124.83333333333333
+                11.766666666666667,
+                117.08333333333333
             ],
             [
-                21.0,
-                120.75
+                12.9,
+                116.16666666666667
             ]
         ],
-        "Overlapping_Area": 3.0,
+        "Overlapping_Area": 75.8,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B4786/24",
-        "COORDINATES": "N210000E1223000-N163000E1223000-N163000E1273000-N210000E1273000-N210000E1223000",
-        "TIME": "29 OCT 21:30 2024 UNTIL 29 OCT 23:30 2024",
-        "PLATID": "74138914",
-        "RAWMESSAGE": "B4786/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/1844N12500E199\nA) RPHI B) 2410292130 C) 2410292330\nE) SPECIAL OPS (DROPSONDES FOR TYPH KONG-REY SURVEILLANCE) \nWILL TAKE PLACE WI:\n210000N 1223000E -\n163000N 1223000E -\n163000N 1273000E -\n210000N 1273000E -\n210000N 1223000E\n\nRMK:\n1. TYPE OF ACFT - ASTRA SPX\n2. ACFT REGISTRY B20001\n3. CALL SIGN: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
-        "ALTITUDE": "0 ~ 12500 米",
-        "source_file": "2024-10.json",
+        "CODE": "B1921/25",
+        "COORDINATES": "N130200E1160300-N132300E1163000-N121400E1172500-N115400E1165800-N130200E1160300",
+        "TIME": "25 MAY 22:00 2025 UNTIL 28 MAY 02:00 2025",
+        "PLATID": "76653572",
+        "RAWMESSAGE": "B1921/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1238N11644E048\nA) RPHI B) 2505252200 C) 2505280200\nD) 2200-0200\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n130200N 1160300E -\n132300N 1163000E -\n121400N 1172500E -\n115400N 1165800E -\n130200N 1160300E -\n(195NM NORTHWEST OF LUBANG ISLAND)\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-05.json",
         "points": [
             [
-                21.0,
-                122.5
+                13.033333333333333,
+                116.05
             ],
             [
-                16.5,
-                122.5
+                13.383333333333333,
+                116.5
             ],
             [
-                16.5,
-                127.5
+                12.233333333333333,
+                117.41666666666667
             ],
             [
-                21.0,
-                127.5
+                11.9,
+                116.96666666666667
             ],
             [
-                21.0,
-                122.5
+                13.033333333333333,
+                116.05
             ]
         ],
-        "Overlapping_Area": 2.9,
+        "Overlapping_Area": 60.6,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B4029/24",
-        "COORDINATES": "N210000E1204500-N210000E1274500-N174500E1274500-N174500E1250500-N210000E1204500",
-        "TIME": "27 SEP 21:30 2024 UNTIL 27 SEP 23:30 2024",
-        "PLATID": "73777466",
-        "RAWMESSAGE": "B4029/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/1925N12417E225\nA) RPHI B) 2409272130 C) 2409272330\nE) SPECIAL OPS (DROPSONDES FOR TROPICAL DEPRESSION SURVEILLANCE)\nWILL TAKE PLACE WI:\n210000N 1204500E -\n210000N 1274500E -\n174500N 1274500E -\n174500N 1250500E -\n210000N 1204500E\n\nRMK:\n1. TYPE OF ACFT - ASTRA SPX\n2. ACFT REGISTRY B20001\n3. CALL SIGN: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
-        "ALTITUDE": "0 ~ 12500 米",
-        "source_file": "2024-09.json",
-        "points": [
-            [
-                21.0,
-                120.75
-            ],
-            [
-                21.0,
-                127.75
-            ],
-            [
-                17.75,
-                127.75
-            ],
-            [
-                17.75,
-                125.08333333333333
-            ],
-            [
-                21.0,
-                120.75
-            ]
-        ],
-        "Overlapping_Area": 2.8,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "B3730/25",
-        "COORDINATES": "N210000E1204500-N180500E1260500-N180500E1293500-N210000E1293500-N210000E1204500",
-        "TIME": "11 AUG 21:30 2025 UNTIL 11 AUG 23:30 2025",
-        "PLATID": "77567890",
-        "RAWMESSAGE": "B3730/25 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/1936N12512E269\nA) RPHI B) 2508112130 C) 2508112330\nE) SPECIAL OPS (DROPSONDES FOR TYPH PODUL) WILL TAKE PLACE WI:\n210000N 1204500E (POTIB) -\n180500N 1260500E -\n180500N 1293500E -\n210000N 1293500E -\n210000N 1204500E (POTIB)\n\nRMK:\n1. TYP: ASTRA SPX\n2. ACFT REGISTRY: B20001\n3. CS: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
-        "ALTITUDE": "0 ~ 12500 米",
+        "CODE": "B3810/25",
+        "COORDINATES": "N130200E1160300-N132300E1163000-N121400E1172500-N115400E1165800-N130200E1160300",
+        "TIME": "24 AUG 18:00 2025 UNTIL 27 AUG 21:00 2025",
+        "PLATID": "77613701",
+        "RAWMESSAGE": "B3810/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1238N11644E048\nA) RPHI B) 2508241800 C) 2508272100\nD) 1800-2100\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n130200N 1160300E -\n132300N 1163000E -\n121400N 1172500E -\n115400N 1165800E -\n130200N 1160300E\n(210NM NORTHWEST OF PUERTO PRINCESA AP)\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-08.json",
         "points": [
             [
-                21.0,
-                120.75
+                13.033333333333333,
+                116.05
             ],
             [
-                18.083333333333332,
-                126.08333333333333
+                13.383333333333333,
+                116.5
             ],
             [
-                18.083333333333332,
-                129.58333333333334
+                12.233333333333333,
+                117.41666666666667
             ],
             [
-                21.0,
-                129.58333333333334
+                11.9,
+                116.96666666666667
             ],
             [
-                21.0,
-                120.75
+                13.033333333333333,
+                116.05
             ]
         ],
-        "Overlapping_Area": 2.5,
+        "Overlapping_Area": 60.6,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "B3892/24",
-        "COORDINATES": "N190615E1244043-N185702E1254209-N181116E1253547-N182121E1243417-N190615E1244043",
-        "TIME": "25 SEP 00:20 2024 UNTIL 25 SEP 02:30 2024",
-        "PLATID": "73740568",
-        "RAWMESSAGE": "B3892/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1839N12508E039\nA) RPHI B) 2409250020 C) 2409250230\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n190615N 1244043E -\n185702N 1254209E -\n181116N 1253547E -\n182121N 1243417E -\n190615N 1244043E.\nF) SFC G) UNL",
+        "CODE": "B3926/25",
+        "COORDINATES": "N130200E1160300-N132300E1163000-N121400E1172500-N115400E1165800-N130200E1160300",
+        "TIME": "24 AUG 19:18 2025 UNTIL 24 AUG 19:43 2025",
+        "PLATID": "77658850",
+        "RAWMESSAGE": "B3926/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1238N11644E048\nA) RPHI B) 2508241918 C) 2508241943\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n130200N 1160300E -\n132300N 1163000E -\n121400N 1172500E -\n115400N 1165800E -\n130200N 1160300E\n(210NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-08.json",
+        "points": [
+            [
+                13.033333333333333,
+                116.05
+            ],
+            [
+                13.383333333333333,
+                116.5
+            ],
+            [
+                12.233333333333333,
+                117.41666666666667
+            ],
+            [
+                11.9,
+                116.96666666666667
+            ],
+            [
+                13.033333333333333,
+                116.05
+            ]
+        ],
+        "Overlapping_Area": 60.6,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B4002/25",
+        "COORDINATES": "N130200E1160300-N132300E1163000-N121400E1172500-N115400E1165800-N130200E1160300",
+        "TIME": "25 AUG 19:00 2025 UNTIL 25 AUG 19:25 2025",
+        "PLATID": "77706616",
+        "RAWMESSAGE": "B4002/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1238N11644E048\nA) RPHI B) 2508251900 C) 2508251925\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n130200N 1160300E -\n132300N 1163000E -\n121400N 1172500E -\n115400N 1165800E -\n130200N 1160300E\n(210NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-08.json",
+        "points": [
+            [
+                13.033333333333333,
+                116.05
+            ],
+            [
+                13.383333333333333,
+                116.5
+            ],
+            [
+                12.233333333333333,
+                117.41666666666667
+            ],
+            [
+                11.9,
+                116.96666666666667
+            ],
+            [
+                13.033333333333333,
+                116.05
+            ]
+        ],
+        "Overlapping_Area": 60.6,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B0028/25",
+        "COORDINATES": "N123100E1162900-N125100E1165500-N120800E1172900-N114900E1170300-N123100E1162900",
+        "TIME": "19 JAN 09:00 2025 UNTIL 21 JAN 13:00 2025",
+        "PLATID": "74866747",
+        "RAWMESSAGE": "B0028/25 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1220N11659E033\nA) RPHI B) 2501190900 C) 2501211300\nD) 0900-1300\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n123100N 1162900E -\n125100N 1165500E -\n120800N 1172900E -\n114900N 1170300E -\n123100N 1162900E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-01.json",
+        "points": [
+            [
+                12.516666666666667,
+                116.48333333333333
+            ],
+            [
+                12.85,
+                116.91666666666667
+            ],
+            [
+                12.133333333333333,
+                117.48333333333333
+            ],
+            [
+                11.816666666666666,
+                117.05
+            ],
+            [
+                12.516666666666667,
+                116.48333333333333
+            ]
+        ],
+        "Overlapping_Area": 52.2,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B0134/25",
+        "COORDINATES": "N123100E1162900-N125100E1165500-N120800E1172900-N114900E1170300-N123100E1162900",
+        "TIME": "25 JAN 09:00 2025 UNTIL 27 JAN 13:00 2025",
+        "PLATID": "74983302",
+        "RAWMESSAGE": "B0134/25 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1220N11659E033\nA) RPHI B) 2501250900 C) 2501271300\nD) 0900-1300\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n123100N 1162900E -\n125100N 1165500E -\n120800N 1172900E -\n114900N 1170300E -\n123100N 1162900E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-01.json",
+        "points": [
+            [
+                12.516666666666667,
+                116.48333333333333
+            ],
+            [
+                12.85,
+                116.91666666666667
+            ],
+            [
+                12.133333333333333,
+                117.48333333333333
+            ],
+            [
+                11.816666666666666,
+                117.05
+            ],
+            [
+                12.516666666666667,
+                116.48333333333333
+            ]
+        ],
+        "Overlapping_Area": 52.2,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B0283/25",
+        "COORDINATES": "N123800E1161400-N125800E1164000-N121400E1171400-N115400E1164800-N123800E1161400",
+        "TIME": "25 JAN 09:53 2025 UNTIL 25 JAN 10:42 2025",
+        "PLATID": "75188979",
+        "RAWMESSAGE": "B0283/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1226N11644E033\nA) RPHI B) 2501250953 C) 2501251042\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n123800N 1161400E -\n125800N 1164000E -\n121400N 1171400E -\n115400N 1164800E -\n123800N 1161400E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-01.json",
+        "points": [
+            [
+                12.633333333333333,
+                116.23333333333333
+            ],
+            [
+                12.966666666666667,
+                116.66666666666667
+            ],
+            [
+                12.233333333333333,
+                117.23333333333333
+            ],
+            [
+                11.9,
+                116.8
+            ],
+            [
+                12.633333333333333,
+                116.23333333333333
+            ]
+        ],
+        "Overlapping_Area": 48.5,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B0329/25",
+        "COORDINATES": "N123800E1161400-N125800E1164000-N121400E1171400-N115400E1164800-N123800E1161400",
+        "TIME": "11 FEB 09:53 2025 UNTIL 11 FEB 10:46 2025",
+        "PLATID": "75244516",
+        "RAWMESSAGE": "B0329/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1226N11644E033\nA) RPHI B) 2502110953 C) 2502111046\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n123800N 1161400E -\n125800N 1164000E -\n121400N 1171400E -\n115400N 1164800E -\n123800N 1161400E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-02.json",
+        "points": [
+            [
+                12.633333333333333,
+                116.23333333333333
+            ],
+            [
+                12.966666666666667,
+                116.66666666666667
+            ],
+            [
+                12.233333333333333,
+                117.23333333333333
+            ],
+            [
+                11.9,
+                116.8
+            ],
+            [
+                12.633333333333333,
+                116.23333333333333
+            ]
+        ],
+        "Overlapping_Area": 48.5,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B0490/25",
+        "COORDINATES": "N123800E1161400-N125800E1164000-N121400E1171400-N115400E1164800-N123800E1161400",
+        "TIME": "11 FEB 09:22 2025 UNTIL 11 FEB 10:12 2025",
+        "PLATID": "75459772",
+        "RAWMESSAGE": "B0490/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1226N11644E033\nA) RPHI B) 2502110922 C) 2502111012\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n123800N 1161400E -\n125800N 1164000E -\n121400N 1171400E -\n115400N 1164800E -\n123800N 1161400E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-02.json",
+        "points": [
+            [
+                12.633333333333333,
+                116.23333333333333
+            ],
+            [
+                12.966666666666667,
+                116.66666666666667
+            ],
+            [
+                12.233333333333333,
+                117.23333333333333
+            ],
+            [
+                11.9,
+                116.8
+            ],
+            [
+                12.633333333333333,
+                116.23333333333333
+            ]
+        ],
+        "Overlapping_Area": 48.5,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B5341/24",
+        "COORDINATES": "N130300E1164300-N125900E1165400-N122800E1171900-N121600E1170300-N124700E1163800-N125600E1163400-N130300E1164300",
+        "TIME": "30 NOV 14:17 2024 UNTIL 30 NOV 16:08 2024",
+        "PLATID": "74426384",
+        "RAWMESSAGE": "B5341/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1241N11656E027\nA) RPHI B) 2411301417 C) 2411301608\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n130300N 1164300E -\n125900N 1165400E -\n122800N 1171900E -\n121600N 1170300E -\n124700N 1163800E -\n125600N 1163400E -\n130300N 1164300E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-11.json",
+        "points": [
+            [
+                13.05,
+                116.71666666666667
+            ],
+            [
+                12.983333333333333,
+                116.9
+            ],
+            [
+                12.466666666666667,
+                117.31666666666666
+            ],
+            [
+                12.266666666666667,
+                117.05
+            ],
+            [
+                12.783333333333333,
+                116.63333333333334
+            ],
+            [
+                12.933333333333334,
+                116.56666666666666
+            ],
+            [
+                13.05,
+                116.71666666666667
+            ]
+        ],
+        "Overlapping_Area": 29.0,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B5123/24",
+        "COORDINATES": "N130200E1164400-N125800E1165400-N122800E1171800-N121700E1170300-N124600E1163900-N125500E1163500-N130200E1164400",
+        "TIME": "30 NOV 12:00 2024 UNTIL 05 DEC 16:00 2024",
+        "PLATID": "74271712",
+        "RAWMESSAGE": "B5123/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1241N11656E026\nA) RPHI B) 2411301200 C) 2412051600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n130200N 1164400E -\n125800N 1165400E -\n122800N 1171800E -\n121700N 1170300E -\n124600N 1163900E -\n125500N 1163500E -\n130200N 1164400E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-11.json",
+        "points": [
+            [
+                13.033333333333333,
+                116.73333333333333
+            ],
+            [
+                12.966666666666667,
+                116.9
+            ],
+            [
+                12.466666666666667,
+                117.3
+            ],
+            [
+                12.283333333333333,
+                117.05
+            ],
+            [
+                12.766666666666667,
+                116.65
+            ],
+            [
+                12.916666666666666,
+                116.58333333333333
+            ],
+            [
+                13.033333333333333,
+                116.73333333333333
+            ]
+        ],
+        "Overlapping_Area": 27.1,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "B3784/24",
+        "COORDINATES": "N121000E1163100-N114400E1155600-N122700E1152200-N125400E1155700-N121000E1163100",
+        "TIME": "19 SEP 00:58 2024 UNTIL 19 SEP 01:38 2024",
+        "PLATID": "73671394",
+        "RAWMESSAGE": "B3784/24 NOTAMN\nQ) RPHI/QRAXX/IV/NBO/W /000/999/1219N11556E036\nA) RPHI B) 2409190058 C) 2409190138\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n121000N 1163100E -\n114400N 1155600E -\n122700N 1152200E -\n125400N 1155700E -\n121000N 1163100E.\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2024-09.json",
         "points": [
             [
-                19.104166666666668,
-                124.67861111111111
+                12.166666666666666,
+                116.51666666666667
             ],
             [
-                18.950555555555553,
-                125.7025
+                11.733333333333333,
+                115.93333333333334
             ],
             [
-                18.18777777777778,
-                125.59638888888888
+                12.45,
+                115.36666666666666
             ],
             [
-                18.355833333333333,
-                124.57138888888889
+                12.9,
+                115.95
             ],
             [
-                19.104166666666668,
-                124.67861111111111
+                12.166666666666666,
+                116.51666666666667
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 136.4
+        "Center_Distance": 89.7
     },
     {
-        "CODE": "B3343/25",
-        "COORDINATES": "N210000E1223300-N203000E1223300-N203000E1242000-N210000E1242000-N210000E1223300",
-        "TIME": "22 JUL 03:30 2025 UNTIL 22 JUL 05:30 2025",
-        "PLATID": "77343429",
-        "RAWMESSAGE": "B3343/25 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/2045N12327E054\nA) RPHI B) 2507220330 C) 2507220530\nE) SPECIAL OPS (DROPSONDES FOR TROPICAL DEPRESSION SURVEILLANCE)\nWILL TAKE PLACE WI:\n210000N 1223300E (MEVIN) -\n203000N 1223300E -\n203000N 1242000E -\n210000N 1242000E -\n210000N 1223300E (MEVIN)\n\nRMK:\n1. TYP: ASTRA SPX\n2. ACFT REGISTRY: B20001\n3. CS: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
-        "ALTITUDE": "0 ~ 12500 米",
+        "CODE": "B3553/24",
+        "COORDINATES": "N121000E1163100-N114400E1155500-N122700E1152200-N125400E1155700-N121000E1163100",
+        "TIME": "19 SEP 00:00 2024 UNTIL 21 SEP 06:00 2024",
+        "PLATID": "73557969",
+        "RAWMESSAGE": "B3553/24 NOTAMN\nQ) RPHI/QRAXX/IV/NBO/W /000/999/1219N11556E036\nA) RPHI B) 2409190000 C) 2409210600\nD) 0000-0600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n121000N 1163100E -\n114400N 1155500E -\n122700N 1152200E -\n125400N 1155700E -\n121000N 1163100E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-09.json",
+        "points": [
+            [
+                12.166666666666666,
+                116.51666666666667
+            ],
+            [
+                11.733333333333333,
+                115.91666666666667
+            ],
+            [
+                12.45,
+                115.36666666666666
+            ],
+            [
+                12.9,
+                115.95
+            ],
+            [
+                12.166666666666666,
+                116.51666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 90.0
+    },
+    {
+        "CODE": "B5342/24",
+        "COORDINATES": "N115000E1164800-N110600E1172100-N103900E1164500-N112400E1161100-N115000E1164800",
+        "TIME": "03 DEC 05:51 2024 UNTIL 03 DEC 06:30 2024",
+        "PLATID": "74426397",
+        "RAWMESSAGE": "B5342/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1115N11646E037\nA) RPHI B) 2412030551 C) 2412030630\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n115000N 1164800E -\n110600N 1172100E -\n103900N 1164500E -\n112400N 1161100E -\n115000N 1164800E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-12.json",
+        "points": [
+            [
+                11.833333333333334,
+                116.8
+            ],
+            [
+                11.1,
+                117.35
+            ],
+            [
+                10.65,
+                116.75
+            ],
+            [
+                11.4,
+                116.18333333333334
+            ],
+            [
+                11.833333333333334,
+                116.8
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 113.2
+    },
+    {
+        "CODE": "B1504/24",
+        "COORDINATES": "N115000E1164800-N110600E1172100-N103900E1164500-N112400E1161100-N115000E1164800",
+        "TIME": "09 MAY 01:37 2024 UNTIL 09 MAY 02:23 2024",
+        "PLATID": "72297384",
+        "RAWMESSAGE": "B1504/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1115N11646E037\nA) RPHI B) 2405090137 C) 2405090223\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n115000N 1164800E - \n110600N 1172100E - \n103900N 1164500E - \n112400N 1161100E -\n115000N 1164800E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-05.json",
+        "points": [
+            [
+                11.833333333333334,
+                116.8
+            ],
+            [
+                11.1,
+                117.35
+            ],
+            [
+                10.65,
+                116.75
+            ],
+            [
+                11.4,
+                116.18333333333334
+            ],
+            [
+                11.833333333333334,
+                116.8
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 113.2
+    },
+    {
+        "CODE": "B4805/23",
+        "COORDINATES": "N122700E1152200-N125300E1155800-N121000E1163100-N114400E1155600-N122700E1152200",
+        "TIME": "26 DEC 03:00 2023 UNTIL 28 DEC 08:00 2023",
+        "PLATID": "70539636",
+        "RAWMESSAGE": "B4805/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1219N11557E036\nA) RPHI B) 2312260300 C) 2312280800\nD) 0300-0800\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n122700N 1152200E -\n125300N 1155800E -\n121000N 1163100E -\n114400N 1155600E -\n122700N 1152200E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                12.45,
+                115.36666666666666
+            ],
+            [
+                12.883333333333333,
+                115.96666666666667
+            ],
+            [
+                12.166666666666666,
+                116.51666666666667
+            ],
+            [
+                11.733333333333333,
+                115.93333333333334
+            ],
+            [
+                12.45,
+                115.36666666666666
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 113.8
+    },
+    {
+        "CODE": "B3736/22",
+        "COORDINATES": "N114900E1164700-N110600E1172000-N104000E1164500-N112300E1161200-N114900E1164700",
+        "TIME": "30 DEC 04:00 2022 UNTIL 02 JAN 10:00 2023",
+        "PLATID": "66185357",
+        "RAWMESSAGE": "B3736/22 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1115N11646E036\nA) RPHI B) 2212300400 C) 2301021000\nD) 0400-1000\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n114900N 1164700E -\n110600N 1172000E -\n104000N 1164500E -\n112300N 1161200E -\n114900N 1164700E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2022-12.json",
+        "points": [
+            [
+                11.816666666666666,
+                116.78333333333333
+            ],
+            [
+                11.1,
+                117.33333333333333
+            ],
+            [
+                10.666666666666666,
+                116.75
+            ],
+            [
+                11.383333333333333,
+                116.2
+            ],
+            [
+                11.816666666666666,
+                116.78333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 114.0
+    },
+    {
+        "CODE": "B4995/23",
+        "COORDINATES": "N122800E1152200-N125400E1155800-N121000E1163100-N114400E1155500-N122800E1152200",
+        "TIME": "26 DEC 03:11 2023 UNTIL 26 DEC 03:50 2023",
+        "PLATID": "70661261",
+        "RAWMESSAGE": "B4995/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1219N11556E036\nA) RPHI B) 2312260311 C) 2312260350\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n122800N 1152200E -\n125400N 1155800E -\n121000N 1163100E -\n114400N 1155500E -\n122800N 1152200E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                12.466666666666667,
+                115.36666666666666
+            ],
+            [
+                12.9,
+                115.96666666666667
+            ],
+            [
+                12.166666666666666,
+                116.51666666666667
+            ],
+            [
+                11.733333333333333,
+                115.91666666666667
+            ],
+            [
+                12.466666666666667,
+                115.36666666666666
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 114.1
+    },
+    {
+        "CODE": "B1185/24",
+        "COORDINATES": "N114900E1164700-N110600E1172000-N103900E1164500-N112300E1161200-N114900E1164700",
+        "TIME": "09 MAY 01:00 2024 UNTIL 12 MAY 07:00 2024",
+        "PLATID": "72087065",
+        "RAWMESSAGE": "B1185/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1114N11646E036\nA) RPHI B) 2405090100 C) 2405120700\nD) 0100-0700\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n114900N 1164700E - \n110600N 1172000E - \n103900N 1164500E - \n112300N 1161200E -\n114900N 1164700E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-05.json",
+        "points": [
+            [
+                11.816666666666666,
+                116.78333333333333
+            ],
+            [
+                11.1,
+                117.33333333333333
+            ],
+            [
+                10.65,
+                116.75
+            ],
+            [
+                11.383333333333333,
+                116.2
+            ],
+            [
+                11.816666666666666,
+                116.78333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 114.4
+    },
+    {
+        "CODE": "B5124/24",
+        "COORDINATES": "N114900E1164700-N110600E1172000-N103800E1164500-N112300E1161200-N114900E1164700",
+        "TIME": "03 DEC 03:00 2024 UNTIL 05 DEC 08:00 2024",
+        "PLATID": "74271745",
+        "RAWMESSAGE": "B5124/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1114N11646E037\nA) RPHI B) 2412030300 C) 2412050800\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n114900N 1164700E -\n110600N 1172000E -\n103800N 1164500E -\n112300N 1161200E -\n114900N 1164700E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-12.json",
+        "points": [
+            [
+                11.816666666666666,
+                116.78333333333333
+            ],
+            [
+                11.1,
+                117.33333333333333
+            ],
+            [
+                10.633333333333333,
+                116.75
+            ],
+            [
+                11.383333333333333,
+                116.2
+            ],
+            [
+                11.816666666666666,
+                116.78333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 114.7
+    },
+    {
+        "CODE": "B5787/25",
+        "COORDINATES": "N112400E1161100-N115000E1164800-N110600E1172100-N103900E1164500-N112400E1161100",
+        "TIME": "21 NOV 10:50 2025 UNTIL 21 NOV 11:32 2025",
+        "PLATID": "78627090",
+        "RAWMESSAGE": "B5787/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1115N11646E037\nA) RPHI B) 2511211050 C) 2511211132\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n112400N 1161100E -\n115000N 1164800E -\n110600N 1172100E -\n103900N 1164500E -\n112400N 1161100E\n(117NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-11.json",
+        "points": [
+            [
+                11.4,
+                116.18333333333334
+            ],
+            [
+                11.833333333333334,
+                116.8
+            ],
+            [
+                11.1,
+                117.35
+            ],
+            [
+                10.65,
+                116.75
+            ],
+            [
+                11.4,
+                116.18333333333334
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 124.7
+    },
+    {
+        "CODE": "B5510/25",
+        "COORDINATES": "N112300E1161200-N114900E1164700-N110600E1172000-N104000E1164500-N112300E1161200",
+        "TIME": "21 NOV 10:00 2025 UNTIL 25 NOV 14:00 2025",
+        "PLATID": "78480363",
+        "RAWMESSAGE": "B5510/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1115N11646E036\nA) RPHI B) 2511211000 C) 2511251400\nD) 1000-1400\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n112300N 1161200E -\n114900N 1164700E -\n110600N 1172000E -\n104000N 1164500E -\n112300N 1161200E\n(117NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-11.json",
+        "points": [
+            [
+                11.383333333333333,
+                116.2
+            ],
+            [
+                11.816666666666666,
+                116.78333333333333
+            ],
+            [
+                11.1,
+                117.33333333333333
+            ],
+            [
+                10.666666666666666,
+                116.75
+            ],
+            [
+                11.383333333333333,
+                116.2
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 125.4
+    },
+    {
+        "CODE": "B0285/25",
+        "COORDINATES": "N111000E1171300-N113600E1174900-N104500E1182800-N101900E1175200-N111000E1171300",
+        "TIME": "25 JAN 09:53 2025 UNTIL 25 JAN 10:46 2025",
+        "PLATID": "75189081",
+        "RAWMESSAGE": "B0285/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1058N11751E040\nA) RPHI B) 2501250953 C) 2501251046\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n111000N 1171300E -\n113600N 1174900E -\n104500N 1182800E -\n101900N 1175200E -\n111000N 1171300E.\n(63NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-01.json",
+        "points": [
+            [
+                11.166666666666666,
+                117.21666666666667
+            ],
+            [
+                11.6,
+                117.81666666666666
+            ],
+            [
+                10.75,
+                118.46666666666667
+            ],
+            [
+                10.316666666666666,
+                117.86666666666666
+            ],
+            [
+                11.166666666666666,
+                117.21666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 178.3
+    },
+    {
+        "CODE": "B0132/24",
+        "COORDINATES": "N134400E1171700-N141700E1174800-N134800E1182100-N131500E1175100-N134400E1171700",
+        "TIME": "17 JAN 14:20 2024 UNTIL 17 JAN 14:43 2024",
+        "PLATID": "70928498",
+        "RAWMESSAGE": "B0132/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1346N11749E032\nA) RPHI B) 2401171420 C) 2401171443\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n134400N 1171700E -\n141700N 1174800E -\n134800N 1182100E -\n131500N 1175100E -\n134400N 1171700E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-01.json",
+        "points": [
+            [
+                13.733333333333333,
+                117.28333333333333
+            ],
+            [
+                14.283333333333333,
+                117.8
+            ],
+            [
+                13.8,
+                118.35
+            ],
+            [
+                13.25,
+                117.85
+            ],
+            [
+                13.733333333333333,
+                117.28333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 178.5
+    },
+    {
+        "CODE": "B0335/25",
+        "COORDINATES": "N111000E1171400-N113600E1174900-N104500E1182800-N101900E1175200-N111000E1171400",
+        "TIME": "11 FEB 09:53 2025 UNTIL 11 FEB 10:46 2025",
+        "PLATID": "75244649",
+        "RAWMESSAGE": "B0335/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1058N11751E040\nA) RPHI B) 2502110953 C) 2502111046\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n111000N 1171400E -\n113600N 1174900E -\n104500N 1182800E -\n101900N 1175200E -\n111000N 1171400E.\n(63NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-02.json",
+        "points": [
+            [
+                11.166666666666666,
+                117.23333333333333
+            ],
+            [
+                11.6,
+                117.81666666666666
+            ],
+            [
+                10.75,
+                118.46666666666667
+            ],
+            [
+                10.316666666666666,
+                117.86666666666666
+            ],
+            [
+                11.166666666666666,
+                117.23333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 178.7
+    },
+    {
+        "CODE": "B0494/25",
+        "COORDINATES": "N111000E1171400-N113600E1174900-N104500E1182800-N101900E1175200-N111000E1171400",
+        "TIME": "11 FEB 09:23 2025 UNTIL 11 FEB 10:16 2025",
+        "PLATID": "75459950",
+        "RAWMESSAGE": "B0494/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1058N11751E040\nA) RPHI B) 2502110923 C) 2502111016\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n111000N 1171400E -\n113600N 1174900E -\n104500N 1182800E -\n101900N 1175200E -\n111000N 1171400E.\n(63NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-02.json",
+        "points": [
+            [
+                11.166666666666666,
+                117.23333333333333
+            ],
+            [
+                11.6,
+                117.81666666666666
+            ],
+            [
+                10.75,
+                118.46666666666667
+            ],
+            [
+                10.316666666666666,
+                117.86666666666666
+            ],
+            [
+                11.166666666666666,
+                117.23333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 178.7
+    },
+    {
+        "CODE": "B3174/25",
+        "COORDINATES": "N132500E1175000-N135800E1182000-N142800E1174600-N135400E1171600-N132500E1175000",
+        "TIME": "14 JUL 21:33 2025 UNTIL 14 JUL 21:56 2025",
+        "PLATID": "77265234",
+        "RAWMESSAGE": "B3174/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1357N11748E033\nA) RPHI B) 2507142133 C) 2507142156\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n132500N 1175000E -\n135800N 1182000E -\n142800N 1174600E -\n135400N 1171600E -\n132500N 1175000E\n(180NM NORTHWEST OF LUBANG ISLAND) .\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-07.json",
         "points": [
             [
-                21.0,
-                122.55
+                13.416666666666666,
+                117.83333333333333
             ],
             [
-                20.5,
-                122.55
+                13.966666666666667,
+                118.33333333333333
             ],
             [
-                20.5,
-                124.33333333333333
+                14.466666666666667,
+                117.76666666666667
             ],
             [
-                21.0,
-                124.33333333333333
+                13.9,
+                117.26666666666667
             ],
             [
-                21.0,
-                122.55
+                13.416666666666666,
+                117.83333333333333
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 200.3
+        "Center_Distance": 190.7
     },
     {
-        "CODE": "B3342/25",
-        "COORDINATES": "N210000E1204500-N201500E1232500-N204500E1242000-N210000E1242000-N210000E1204500",
-        "TIME": "21 JUL 21:30 2025 UNTIL 21 JUL 23:30 2025",
-        "PLATID": "77343366",
-        "RAWMESSAGE": "B3342/25 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/2053N12233E103\nA) RPHI B) 2507212130 C) 2507212330\nE) SPECIAL OPS (DROPSONDES FOR TROPICAL DEPRESSION SURVEILLANCE)\nWILL TAKE PLACE WI:\n210000N 1204500E (POTIB) -\n201500N 1232500E -\n204500N 1242000E -\n210000N 1242000E -\n210000N 1204500E (POTIB)\n\nRMK:\n1. TYP: ASTRA SPX\n2. ACFT REGISTRY: B20001\n3. CS: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
-        "ALTITUDE": "0 ~ 12500 米",
+        "CODE": "B4968/23",
+        "COORDINATES": "N135500E1171300-N142800E1174300-N135900E1181700-N132600E1174700-N135500E1171300",
+        "TIME": "15 JAN 13:00 2024 UNTIL 20 JAN 16:00 2024",
+        "PLATID": "70641314",
+        "RAWMESSAGE": "B4968/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1357N11745E032\nA) RPHI B) 2401151300 C) 2401201600\nD) 1300-1600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n135500N 1171300E -\n142800N 1174300E -\n135900N 1181700E -\n132600N 1174700E -\n135500N 1171300E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-01.json",
+        "points": [
+            [
+                13.916666666666666,
+                117.21666666666667
+            ],
+            [
+                14.466666666666667,
+                117.71666666666667
+            ],
+            [
+                13.983333333333333,
+                118.28333333333333
+            ],
+            [
+                13.433333333333334,
+                117.78333333333333
+            ],
+            [
+                13.916666666666666,
+                117.21666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 193.0
+    },
+    {
+        "CODE": "B4975/24",
+        "COORDINATES": "N1417E11748-N1348E11821-N1315E11751-N1344E11717-N1417E11748",
+        "TIME": "15 NOV 13:00 2024 UNTIL 17 NOV 16:00 2024",
+        "PLATID": "74198644",
+        "RAWMESSAGE": "B4975/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1346N11749E032\nA) RPHI B) 2411151300 C) 2411171600\nD) 1300-1600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n1417N 11748E -\n1348N 11821E -\n1315N 11751E -\n1344N 11717E -\n1417N 11748E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-11.json",
+        "points": [
+            [
+                14.283333333333333,
+                117.8
+            ],
+            [
+                13.8,
+                118.35
+            ],
+            [
+                13.25,
+                117.85
+            ],
+            [
+                13.733333333333333,
+                117.28333333333333
+            ],
+            [
+                14.283333333333333,
+                117.8
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 194.8
+    },
+    {
+        "CODE": "B2605/25",
+        "COORDINATES": "N141700E1175700-N134800E1183100-N131500E1180100-N134400E1172700-N141700E1175700",
+        "TIME": "14 JUL 18:00 2025 UNTIL 18 JUL 22:00 2025",
+        "PLATID": "76997837",
+        "RAWMESSAGE": "B2605/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1346N11759E032\nA) RPHI B) 2507141800 C) 2507182200\nD) 1800-2200\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n141700N 1175700E -\n134800N 1183100E -\n131500N 1180100E -\n134400N 1172700E -\n141700N 1175700E\n(93NM NORTHWEST OF LUBANG ISLAND).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-07.json",
         "points": [
             [
-                21.0,
-                120.75
+                14.283333333333333,
+                117.95
             ],
             [
-                20.25,
-                123.41666666666667
+                13.8,
+                118.51666666666667
             ],
             [
-                20.75,
-                124.33333333333333
+                13.25,
+                118.01666666666667
             ],
             [
-                21.0,
-                124.33333333333333
+                13.733333333333333,
+                117.45
             ],
             [
-                21.0,
-                120.75
+                14.283333333333333,
+                117.95
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 223.0
+        "Center_Distance": 204.4
     },
     {
-        "CODE": "B3778/25",
-        "COORDINATES": "N210000E1204500-N195500E1272000-N195500E1292000-N210000E1292000-N210000E1204500",
-        "TIME": "11 AUG 21:30 2025 UNTIL 11 AUG 23:30 2025",
-        "PLATID": "77588693",
-        "RAWMESSAGE": "B3778/25 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/2031N12503E248\nA) RPHI B) 2508112130 C) 2508112330\nE) SPECIAL OPS (DROPSONDES FOR TYPH PODUL) WILL TAKE PLACE WI:\n210000N 1204500E (POTIB) -\n195500N 1272000E -\n195500N 1292000E -\n210000N 1292000E -\n210000N 1204500E (POTIB)\n\nRMK:\n1. TYP: ASTRA SPX\n2. ACFT REGISTRY: B20001\n3. CS: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
-        "ALTITUDE": "0 ~ 12500 米",
-        "source_file": "2025-08.json",
+        "CODE": "B5078/24",
+        "COORDINATES": "N1417E11757-N1348E11831-N1315E11801-N1344E11727-N1417E11757",
+        "TIME": "15 NOV 15:06 2024 UNTIL 15 NOV 15:29 2024",
+        "PLATID": "74244840",
+        "RAWMESSAGE": "B5078/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1346N11759E032\nA) RPHI B) 2411151506 C) 2411151529\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n1417N 11757E -\n1348N 11831E -\n1315N 11801E -\n1344N 11727E -\n1417N 11757E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-11.json",
         "points": [
             [
-                21.0,
-                120.75
+                14.283333333333333,
+                117.95
             ],
             [
-                19.916666666666668,
-                127.33333333333333
+                13.8,
+                118.51666666666667
             ],
             [
-                19.916666666666668,
-                129.33333333333334
+                13.25,
+                118.01666666666667
             ],
             [
-                21.0,
-                129.33333333333334
+                13.733333333333333,
+                117.45
             ],
             [
-                21.0,
-                120.75
+                14.283333333333333,
+                117.95
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 243.8
+        "Center_Distance": 204.4
+    },
+    {
+        "CODE": "B0029/25",
+        "COORDINATES": "N110300E1173100-N112900E1180600-N104000E1184400-N101400E1180900-N110300E1173100",
+        "TIME": "19 JAN 09:00 2025 UNTIL 21 JAN 13:00 2025",
+        "PLATID": "74866782",
+        "RAWMESSAGE": "B0029/25 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1052N11808E039\nA) RPHI B) 2501190900 C) 2501211300\nD) 0900-1300\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n110300N 1173100E -\n112900N 1180600E -\n104000N 1184400E -\n101400N 1180900E -\n110300N 1173100E.\n(55NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-01.json",
+        "points": [
+            [
+                11.05,
+                117.51666666666667
+            ],
+            [
+                11.483333333333333,
+                118.1
+            ],
+            [
+                10.666666666666666,
+                118.73333333333333
+            ],
+            [
+                10.233333333333333,
+                118.15
+            ],
+            [
+                11.05,
+                117.51666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 205.3
+    },
+    {
+        "CODE": "B0136/25",
+        "COORDINATES": "N110300E1173100-N112900E1180600-N104000E1184400-N101400E1180900-N110300E1173100",
+        "TIME": "25 JAN 09:00 2025 UNTIL 27 JAN 13:00 2025",
+        "PLATID": "74983346",
+        "RAWMESSAGE": "B0136/25 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1052N11808E039\nA) RPHI B) 2501250900 C) 2501271300\nD) 0900-1300\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n110300N 1173100E -\n112900N 1180600E -\n104000N 1184400E -\n101400N 1180900E -\n110300N 1173100E.\n(55NM NORTHWEST OF PUERTO PRINCESA AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-01.json",
+        "points": [
+            [
+                11.05,
+                117.51666666666667
+            ],
+            [
+                11.483333333333333,
+                118.1
+            ],
+            [
+                10.666666666666666,
+                118.73333333333333
+            ],
+            [
+                10.233333333333333,
+                118.15
+            ],
+            [
+                11.05,
+                117.51666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 205.3
+    },
+    {
+        "CODE": "B3356/22",
+        "COORDINATES": "N141400E1171100-N143400E1173000-N135300E1181600-N133300E1175800-N141400E1171100",
+        "TIME": "31 OCT 07:37 2022 UNTIL 31 OCT 07:50 2022",
+        "PLATID": "66858826",
+        "RAWMESSAGE": "B3356/22 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1403N11744E035\nA) RPHI B) 2210310737 C) 2210310750\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n141400N 1171100E -\n143400N 1173000E -\n135300N 1181600E -\n133300N 1175800E -\n141400N 1171100E\n(AREA 1)\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2022-10.json",
+        "points": [
+            [
+                14.233333333333333,
+                117.18333333333334
+            ],
+            [
+                14.566666666666666,
+                117.5
+            ],
+            [
+                13.883333333333333,
+                118.26666666666667
+            ],
+            [
+                13.55,
+                117.96666666666667
+            ],
+            [
+                14.233333333333333,
+                117.18333333333334
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 207.1
+    },
+    {
+        "CODE": "B1588/23",
+        "COORDINATES": "N142700E1174400-N135900E1181800-N132500E1174800-N135500E1171400-N142700E1174400",
+        "TIME": "10 MAY 13:18 2023 UNTIL 10 MAY 13:50 2023",
+        "PLATID": "68403140",
+        "RAWMESSAGE": "B1588/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1356N11746E032\nA) RPHI B) 2305101318 C) 2305101350\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n142700N 1174400E -\n135900N 1181800E -\n132500N 1174800E -\n135500N 1171400E -\n142700N 1174400E\n(AREA 3).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-05.json",
+        "points": [
+            [
+                14.45,
+                117.73333333333333
+            ],
+            [
+                13.983333333333333,
+                118.3
+            ],
+            [
+                13.416666666666666,
+                117.8
+            ],
+            [
+                13.916666666666666,
+                117.23333333333333
+            ],
+            [
+                14.45,
+                117.73333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 208.5
+    },
+    {
+        "CODE": "B1352/23",
+        "COORDINATES": "N142800E1174300-N135900E1181700-N132600E1174700-N135500E1171300-N142800E1174300",
+        "TIME": "10 MAY 13:00 2023 UNTIL 13 MAY 15:00 2023",
+        "PLATID": "68264487",
+        "RAWMESSAGE": "B1352/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1357N11745E032\nA) RPHI B) 2305101300 C) 2305131500\nD) 1300-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n142800N 1174300E -\n135900N 1181700E -\n132600N 1174700E -\n135500N 1171300E -\n142800N 1174300E\n(AREA 3).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-05.json",
+        "points": [
+            [
+                14.466666666666667,
+                117.71666666666667
+            ],
+            [
+                13.983333333333333,
+                118.28333333333333
+            ],
+            [
+                13.433333333333334,
+                117.78333333333333
+            ],
+            [
+                13.916666666666666,
+                117.21666666666667
+            ],
+            [
+                14.466666666666667,
+                117.71666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 208.7
+    },
+    {
+        "CODE": "B1489/23",
+        "COORDINATES": "N142800E1174300-N135900E1181700-N132600E1174700-N135500E1171300-N142800E1174300",
+        "TIME": "10 MAY 13:23 2023 UNTIL 10 MAY 13:56 2023",
+        "PLATID": "68346273",
+        "RAWMESSAGE": "B1489/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1357N11745E032\nA) RPHI B) 2305101323 C) 2305101356\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n142800N 1174300E -\n135900N 1181700E -\n132600N 1174700E -\n135500N 1171300E -\n142800N 1174300E\n(AREA 3).\nF) SFC G) UNL\n\n\nCNS123W SEQUENCE CHECK FOR RPLLYNYX B -- \n  EXPECTED B1490/23 -- RECEIVED B1489/23\nCNN038W DUPLICATE NOTAM\nTRANSACTION ROLLED BACK, RETCODE = 14",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-05.json",
+        "points": [
+            [
+                14.466666666666667,
+                117.71666666666667
+            ],
+            [
+                13.983333333333333,
+                118.28333333333333
+            ],
+            [
+                13.433333333333334,
+                117.78333333333333
+            ],
+            [
+                13.916666666666666,
+                117.21666666666667
+            ],
+            [
+                14.466666666666667,
+                117.71666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 208.7
+    },
+    {
+        "CODE": "B0131/24",
+        "COORDINATES": "N141300E1164800-N144300E1171400-N141700E1174400-N134800E1171700-N141300E1164800",
+        "TIME": "17 JAN 14:19 2024 UNTIL 17 JAN 14:39 2024",
+        "PLATID": "70928398",
+        "RAWMESSAGE": "B0131/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1416N11716E029\nA) RPHI B) 2401171419 C) 2401171439\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n141300N 1164800E -\n144300N 1171400E -\n141700N 1174400E -\n134800N 1171700E -\n141300N 1164800E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-01.json",
+        "points": [
+            [
+                14.216666666666667,
+                116.8
+            ],
+            [
+                14.716666666666667,
+                117.23333333333333
+            ],
+            [
+                14.283333333333333,
+                117.73333333333333
+            ],
+            [
+                13.8,
+                117.28333333333333
+            ],
+            [
+                14.216666666666667,
+                116.8
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 210.3
+    },
+    {
+        "CODE": "B3171/25",
+        "COORDINATES": "N135800E1171700-N142800E1174300-N145200E1171300-N142300E1164600-N135800E1171700",
+        "TIME": "14 JUL 21:33 2025 UNTIL 14 JUL 21:52 2025",
+        "PLATID": "77265174",
+        "RAWMESSAGE": "B3171/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1426N11714E029\nA) RPHI B) 2507142133 C) 2507142152\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n135800N 1171700E -\n142800N 1174300E -\n145200N 1171300E -\n142300N 1164600E -\n135800N 1171700E\n(155NM NORTHWEST OF LUBANG ISLAND) .\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-07.json",
+        "points": [
+            [
+                13.966666666666667,
+                117.28333333333333
+            ],
+            [
+                14.466666666666667,
+                117.71666666666667
+            ],
+            [
+                14.866666666666667,
+                117.21666666666667
+            ],
+            [
+                14.383333333333333,
+                116.76666666666667
+            ],
+            [
+                13.966666666666667,
+                117.28333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 221.0
+    },
+    {
+        "CODE": "B4974/24",
+        "COORDINATES": "N1443E11714-N1417E11744-N1348E11717-N1413E11648-N1443E11714",
+        "TIME": "15 NOV 13:00 2024 UNTIL 17 NOV 16:00 2024",
+        "PLATID": "74198643",
+        "RAWMESSAGE": "B4974/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1416N11716E029\nA) RPHI B) 2411151300 C) 2411171600\nD) 1300-1600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n1443N 11714E -\n1417N 11744E -\n1348N 11717E -\n1413N 11648E -\n1443N 11714E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-11.json",
+        "points": [
+            [
+                14.716666666666667,
+                117.23333333333333
+            ],
+            [
+                14.283333333333333,
+                117.73333333333333
+            ],
+            [
+                13.8,
+                117.28333333333333
+            ],
+            [
+                14.216666666666667,
+                116.8
+            ],
+            [
+                14.716666666666667,
+                117.23333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 222.9
+    },
+    {
+        "CODE": "B2604/25",
+        "COORDINATES": "N144300E1172500-N141800E1175300-N134900E1172600-N141400E1165700-N144300E1172500",
+        "TIME": "14 JUL 18:00 2025 UNTIL 18 JUL 22:00 2025",
+        "PLATID": "76997803",
+        "RAWMESSAGE": "B2604/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1416N11725E028\nA) RPHI B) 2507141800 C) 2507182200\nD) 1800-2200\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n144300N 1172500E -\n141800N 1175300E -\n134900N 1172600E -\n141400N 1165700E -\n144300N 1172500E\n(132NM NORTHWEST OF LUBANG ISLAND).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-07.json",
+        "points": [
+            [
+                14.716666666666667,
+                117.41666666666667
+            ],
+            [
+                14.3,
+                117.88333333333334
+            ],
+            [
+                13.816666666666666,
+                117.43333333333334
+            ],
+            [
+                14.233333333333333,
+                116.95
+            ],
+            [
+                14.716666666666667,
+                117.41666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 227.9
+    },
+    {
+        "CODE": "B5076/24",
+        "COORDINATES": "N1443E11725-N1418E11753-N1349E11726-N1414E11657-N1443E11725",
+        "TIME": "15 NOV 15:05 2024 UNTIL 15 NOV 15:25 2024",
+        "PLATID": "74244820",
+        "RAWMESSAGE": "B5076/24 NOTAMN\nQ) RPHI/QRAXX/IV/BO /W /000/999/1416N11725E028\nA) RPHI B) 2411151505 C) 2411151525\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n1443N 11725E -\n1418N 11753E -\n1349N 11726E -\n1414N 11657E -\n1443N 11725E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-11.json",
+        "points": [
+            [
+                14.716666666666667,
+                117.41666666666667
+            ],
+            [
+                14.3,
+                117.88333333333334
+            ],
+            [
+                13.816666666666666,
+                117.43333333333334
+            ],
+            [
+                14.233333333333333,
+                116.95
+            ],
+            [
+                14.716666666666667,
+                117.41666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 227.9
+    },
+    {
+        "CODE": "B4970/23",
+        "COORDINATES": "N142400E1164500-N145300E1171000-N142700E1174100-N135900E1171500-N142400E1164500",
+        "TIME": "15 JAN 13:00 2024 UNTIL 20 JAN 16:00 2024",
+        "PLATID": "70641388",
+        "RAWMESSAGE": "B4970/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1426N11713E028\nA) RPHI B) 2401151300 C) 2401201600\nD) 1300-1600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n142400N 1164500E -\n145300N 1171000E -\n142700N 1174100E -\n135900N 1171500E -\n142400N 1164500E.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-01.json",
+        "points": [
+            [
+                14.4,
+                116.75
+            ],
+            [
+                14.883333333333333,
+                117.16666666666667
+            ],
+            [
+                14.45,
+                117.68333333333334
+            ],
+            [
+                13.983333333333333,
+                117.25
+            ],
+            [
+                14.4,
+                116.75
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 229.1
+    },
+    {
+        "CODE": "B1597/23",
+        "COORDINATES": "N145300E1171000-N142700E1174100-N135800E1171500-N142400E1164500-N145300E1171000",
+        "TIME": "10 MAY 13:18 2023 UNTIL 10 MAY 13:44 2023",
+        "PLATID": "68411823",
+        "RAWMESSAGE": "B1597/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1426N11713E029\nA) RPHI B) 2305101318 C) 2305101344\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n145300N 1171000E -\n142700N 1174100E -\n135800N 1171500E -\n142400N 1164500E -\n145300N 1171000E\n(AREA 2).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-05.json",
+        "points": [
+            [
+                14.883333333333333,
+                117.16666666666667
+            ],
+            [
+                14.45,
+                117.68333333333334
+            ],
+            [
+                13.966666666666667,
+                117.25
+            ],
+            [
+                14.4,
+                116.75
+            ],
+            [
+                14.883333333333333,
+                117.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 240.6
+    },
+    {
+        "CODE": "B1351/23",
+        "COORDINATES": "N145300E1171000-N142700E1174100-N135900E1171500-N142400E1164500-N145300E1171000",
+        "TIME": "10 MAY 13:00 2023 UNTIL 13 MAY 15:00 2023",
+        "PLATID": "68264453",
+        "RAWMESSAGE": "B1351/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1426N11713E028\nA) RPHI B) 2305101300 C) 2305131500\nD) 1300-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n145300N 1171000E -\n142700N 1174100E -\n135900N 1171500E -\n142400N 1164500E -\n145300N 1171000E\n(AREA 2).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-05.json",
+        "points": [
+            [
+                14.883333333333333,
+                117.16666666666667
+            ],
+            [
+                14.45,
+                117.68333333333334
+            ],
+            [
+                13.983333333333333,
+                117.25
+            ],
+            [
+                14.4,
+                116.75
+            ],
+            [
+                14.883333333333333,
+                117.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 240.9
+    },
+    {
+        "CODE": "B1487/23",
+        "COORDINATES": "N145300E1171000-N142700E1174100-N135900E1171500-N142400E1164500-N145300E1171000",
+        "TIME": "10 MAY 13:23 2023 UNTIL 10 MAY 13:50 2023",
+        "PLATID": "68346218",
+        "RAWMESSAGE": "B1487/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1426N11713E028\nA) RPHI B) 2305101323 C) 2305101350\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n145300N 1171000E -\n142700N 1174100E -\n135900N 1171500E -\n142400N 1164500E -\n145300N 1171000E\n(AREA 2).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-05.json",
+        "points": [
+            [
+                14.883333333333333,
+                117.16666666666667
+            ],
+            [
+                14.45,
+                117.68333333333334
+            ],
+            [
+                13.983333333333333,
+                117.25
+            ],
+            [
+                14.4,
+                116.75
+            ],
+            [
+                14.883333333333333,
+                117.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 240.9
+    },
+    {
+        "CODE": "B3359/22",
+        "COORDINATES": "N125200E1184500-N131200E1190400-N123900E1194200-N121900E1192300-N125200E1184500",
+        "TIME": "31 OCT 07:38 2022 UNTIL 31 OCT 07:57 2022",
+        "PLATID": "66864425",
+        "RAWMESSAGE": "B3359/22 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1246N11914E030\nA) RPHI B) 2210310738 C) 2210310757\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n125200N 1184500E -\n131200N 1190400E -\n123900N 1194200E -\n121900N 1192300E -\n125200N 1184500E\n(AREA 2).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2022-10.json",
+        "points": [
+            [
+                12.866666666666667,
+                118.75
+            ],
+            [
+                13.2,
+                119.06666666666666
+            ],
+            [
+                12.65,
+                119.7
+            ],
+            [
+                12.316666666666666,
+                119.38333333333334
+            ],
+            [
+                12.866666666666667,
+                118.75
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 248.6
+    },
+    {
+        "CODE": "B3394/22",
+        "COORDINATES": "N154500E1160600-N142500E1174600-N135600E1181900-N132500E1175000-N135300E1171600-N152000E1154400-N154500E1160600",
+        "TIME": "12 NOV 01:00 2022 UNTIL 15 NOV 05:00 2022",
+        "PLATID": "66848160",
+        "RAWMESSAGE": "B3394/22 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1437N11701E088\nA) RPHI B) 2211120100 C) 2211150500\nD) 0100-0500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n154500N 1160600E -\n142500N 1174600E -\n135600N 1181900E -\n132500N 1175000E -\n135300N 1171600E -\n152000N 1154400E -\n154500N 1160600E\n(PORTION OF RNAV RTE L625, M754, L628, AND W23).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2022-11.json",
+        "points": [
+            [
+                15.75,
+                116.1
+            ],
+            [
+                14.416666666666666,
+                117.76666666666667
+            ],
+            [
+                13.933333333333334,
+                118.31666666666666
+            ],
+            [
+                13.416666666666666,
+                117.83333333333333
+            ],
+            [
+                13.883333333333333,
+                117.26666666666667
+            ],
+            [
+                15.333333333333334,
+                115.73333333333333
+            ],
+            [
+                15.75,
+                116.1
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 252.2
+    },
+    {
+        "CODE": "B3170/25",
+        "COORDINATES": "N141900E1165700-N144300E1171900-N153800E1161500-N151400E1155300-N141900E1165700",
+        "TIME": "14 JUL 21:32 2025 UNTIL 14 JUL 21:52 2025",
+        "PLATID": "77265152",
+        "RAWMESSAGE": "B3170/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1459N11636E046\nA) RPHI B) 2507142132 C) 2507142152\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA FOR UNBURNED DEBRIS WI:\n141900N 1165700E -\n144300N 1171900E -\n153800N 1161500E -\n151400N 1155300E -\n141900N 1165700E\n(115NM NORTHWEST OF LUBANG ISLAND) .\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-07.json",
+        "points": [
+            [
+                14.316666666666666,
+                116.95
+            ],
+            [
+                14.716666666666667,
+                117.31666666666666
+            ],
+            [
+                15.633333333333333,
+                116.25
+            ],
+            [
+                15.233333333333333,
+                115.88333333333334
+            ],
+            [
+                14.316666666666666,
+                116.95
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 275.2
+    },
+    {
+        "CODE": "B0130/24",
+        "COORDINATES": "N151100E1154700-N153500E1160900-N144000E1171300-N141600E1165000-N151100E1154700",
+        "TIME": "17 JAN 14:18 2024 UNTIL 17 JAN 14:39 2024",
+        "PLATID": "70928311",
+        "RAWMESSAGE": "B0130/24 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1456N11630E046\nA) RPHI B) 2401171418 C) 2401171439\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n151100N 1154700E -\n153500N 1160900E -\n144000N 1171300E -\n141600N 1165000E -\n151100N 1154700E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-01.json",
+        "points": [
+            [
+                15.183333333333334,
+                115.78333333333333
+            ],
+            [
+                15.583333333333334,
+                116.15
+            ],
+            [
+                14.666666666666666,
+                117.21666666666667
+            ],
+            [
+                14.266666666666667,
+                116.83333333333333
+            ],
+            [
+                15.183333333333334,
+                115.78333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 294.6
     }
 ]
