@@ -1,10 +1,11 @@
+&
 name: Update NOTAM and Deploy to Pages
 
 on:
   push:
     branches: ["main"]
   schedule:
-    - cron: "*/15 * * * *" 
+   b - cron: "*/15 * * * *" 
   workflow_dispatch:
 
 permissions:
