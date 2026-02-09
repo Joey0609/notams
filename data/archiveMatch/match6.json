@@ -1,0 +1,68 @@
+[
+    {
+        "CODE": "E3928/25",
+        "COORDINATES": "S3039E10253-S3046E10344-S3327E10315-S3321E10223-S3039E10253",
+        "TIME": "26 DEC 06:30 2025 UNTIL 26 DEC 07:07 2025",
+        "PLATID": "79177678",
+        "RAWMESSAGE": "E3928/25 NOTAMN\nQ) YMMM/QRDCA/IV/BO/W/000/999/3204S10303E090\nA) YMMM\nB) 2512260630 C) 2512260707\nD) DAILY 0630-0707\nE) TEMPO DANGER AREA ACT\nDUE CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE FLW RECEIVED\nFM CIVIL AVIATION ADMINISTRATION OF CHINA:\nTHE FLIGHT SAFETY OF ACFT MAY BE AFFECTED IN THE FOLLOWING AREA\nBOUNDED BY: 3039S10253E - 3046S10344E -3327S10315E - 3321S10223E -\n3039S10253E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-12.json",
+        "points": [
+            [
+                -30.65,
+                102.88333333333334
+            ],
+            [
+                -30.766666666666666,
+                103.73333333333333
+            ],
+            [
+                -33.45,
+                103.25
+            ],
+            [
+                -33.35,
+                102.38333333333334
+            ],
+            [
+                -30.65,
+                102.88333333333334
+            ]
+        ],
+        "Overlapping_Area": 97.5,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "E3930/25",
+        "COORDINATES": "S3039E10253-S3046E10344-S3327E10315-S3321E10223-S3039E10253",
+        "TIME": "29 DEC 06:10 2025 UNTIL 29 DEC 07:27 2025",
+        "PLATID": "79189964",
+        "RAWMESSAGE": "E3930/25 NOTAMR E3928/25\nQ) YMMM/QRDCA/IV/BO/W/000/999/3204S10303E090\nA) YMMM\nB) 2512290610 C) 2512290727\nD) DAILY 0610-0727\nE) TEMPO DANGER AREA ACT\nDUE CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE FLW RECEIVED\nFM CIVIL AVIATION ADMINISTRATION OF CHINA:\nTHE FLIGHT SAFETY OF ACFT MAY BE AFFECTED IN THE FOLLOWING AREA\nBOUNDED BY: 3039S10253E - 3046S10344E -3327S10315E - 3321S10223E -\n3039S10253E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-12.json",
+        "points": [
+            [
+                -30.65,
+                102.88333333333334
+            ],
+            [
+                -30.766666666666666,
+                103.73333333333333
+            ],
+            [
+                -33.45,
+                103.25
+            ],
+            [
+                -33.35,
+                102.38333333333334
+            ],
+            [
+                -30.65,
+                102.88333333333334
+            ]
+        ],
+        "Overlapping_Area": 97.5,
+        "Center_Distance": -1.0
+    }
+]
