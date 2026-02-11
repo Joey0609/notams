@@ -1,752 +1,877 @@
 [
     {
-        "CODE": "A4744/25",
-        "COORDINATES": "N205400E1115100-N205000E1120900-N202200E1120300-N202600E1114500",
-        "TIME": "26 DEC 06:27 2025 UNTIL 26 DEC 06:48 2025",
-        "PLATID": "79158967",
-        "RAWMESSAGE": "A4744/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2038N11157E017\nA) ZGZU B) 2512260627 C) 2512260648 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN205400E1115100-N205000E1120900-N202200E1120300-N202600E1114500,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA. RELATED TO HONGKONG \nATC OPERATION.\nF) SFC G) UNL",
+        "CODE": "A4140/25",
+        "COORDINATES": "N074100E1095000-N074630E1091943-N080657E1095446-N074100E1095000",
+        "TIME": "26 DEC 06:29 2025 UNTIL 26 DEC 07:05 2025",
+        "PLATID": "79166174",
+        "RAWMESSAGE": "A4140/25 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0757N10937E021\nA) WSJC B) 2512260629 C) 2512260705\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 074100N1095000E-\n074630N1091943E - 080657N1095446E - 074100N1095000E.\nDUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 BETWEEN GUTUP\nAND AKMON NOT AVBL.\nACFT ENTERING SINGAPORE FIR VIA ATS ROUTE M768 BETWEEN ASISU AND\nAKMON NOT AVBL\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-12.json",
         "points": [
             [
-                20.9,
-                111.85
+                7.683333333333334,
+                109.83333333333333
             ],
             [
-                20.833333333333332,
-                112.15
+                7.775,
+                109.3286111111111
             ],
             [
-                20.366666666666667,
-                112.05
+                8.115833333333333,
+                109.91277777777778
             ],
             [
-                20.433333333333334,
-                111.75
+                7.683333333333334,
+                109.83333333333333
             ]
         ],
-        "Overlapping_Area": 91.8,
+        "Overlapping_Area": 96.8,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "A4790/25",
-        "COORDINATES": "N205400E1115100-N205000E1120900-N202200E1120300-N202600E1114500",
-        "TIME": "29 DEC 06:07 2025 UNTIL 29 DEC 07:08 2025",
-        "PLATID": "79189970",
-        "RAWMESSAGE": "A4790/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2037N11157E017\nA) ZGZU B) 2512290607 C) 2512290708 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN205400E1115100-N205000E1120900-N202200E1120300-N202600E1114500,\nBACK TO START.VERTICAL LIMITS:SFC-UNL. RELATED TO HONGKONG ATC \nOPERATION.\nF) SFC G) UNL",
+        "CODE": "A4162/25",
+        "COORDINATES": "N074100E1095000-N074630E1091943-N080657E1095446-N074100E1095000",
+        "TIME": "29 DEC 06:09 2025 UNTIL 29 DEC 07:25 2025",
+        "PLATID": "79192213",
+        "RAWMESSAGE": "A4162/25 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0757N10937E021\nA) WSJC B) 2512290609 C) 2512290725\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 074100N1095000E-\n074630N1091943E - 080657N1095446E - 074100N1095000E.\nDUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 BETWEEN GUTUP\nAND AKMON NOT AVBL.\nACFT ENTERING SINGAPORE FIR VIA ATS ROUTE M768 BETWEEN ASISU AND\nAKMON NOT AVBL\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2025-12.json",
         "points": [
             [
-                20.9,
-                111.85
+                7.683333333333334,
+                109.83333333333333
             ],
             [
-                20.833333333333332,
-                112.15
+                7.775,
+                109.3286111111111
             ],
             [
-                20.366666666666667,
-                112.05
+                8.115833333333333,
+                109.91277777777778
             ],
             [
-                20.433333333333334,
-                111.75
+                7.683333333333334,
+                109.83333333333333
             ]
         ],
-        "Overlapping_Area": 91.8,
+        "Overlapping_Area": 96.8,
         "Center_Distance": -1.0
     },
     {
-        "CODE": "A3745/23",
-        "COORDINATES": "N204700E1114900-N204600E1120700-N201800E1120500-N201900E1114700",
-        "TIME": "05 DEC 19:18 2023 UNTIL 05 DEC 20:04 2023",
-        "PLATID": "70325627",
-        "RAWMESSAGE": "A3745/23 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2032N11157E016\nA) ZGZU B) 2312051918 C) 2312052004 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN204700E1114900-N204600E1120700-N201800E1120500-N201900E1114700 \nBACK TO START. VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "CODE": "A5118/25",
+        "COORDINATES": "N094100E1092600-N093300E1101000-N090800E1100600-N080759E1095446-N074642E1091841-N074900E1090600-N081500E1091000",
+        "TIME": "26 DEC 06:29 2025 UNTIL 26 DEC 07:05 2025",
+        "PLATID": "79166542",
+        "RAWMESSAGE": "A5118/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0844N10938E063\nA) VVHM B) 2512260629 C) 2512260705 \nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREA MAY BE AFFECTED:\n094100N1092600E - 093300N1101000E - 090800N1100600E -\n080759N1095446E - 074642N1091841E - 074900N1090600E - \n081500N1091000E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC CLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY \nIS REQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT IN \nANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-12.json",
+        "points": [
+            [
+                9.683333333333334,
+                109.43333333333334
+            ],
+            [
+                9.55,
+                110.16666666666667
+            ],
+            [
+                9.133333333333333,
+                110.1
+            ],
+            [
+                8.133055555555556,
+                109.91277777777778
+            ],
+            [
+                7.778333333333333,
+                109.31138888888889
+            ],
+            [
+                7.816666666666666,
+                109.1
+            ],
+            [
+                8.25,
+                109.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 89.9
+    },
+    {
+        "CODE": "A5151/25",
+        "COORDINATES": "N094100E1092600-N093300E1101000-N090800E1100600-N080759E1095446-N074642E1091841-N074900E1090600-N081500E1091000",
+        "TIME": "29 DEC 06:09 2025 UNTIL 29 DEC 07:25 2025",
+        "PLATID": "79192436",
+        "RAWMESSAGE": "A5151/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0844N10938E063\nA) VVHM B) 2512290609 C) 2512290725 \nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREA MAY BE AFFECTED:\n094100N1092600E - 093300N1101000E - 090800N1100600E -\n080759N1095446E - 074642N1091841E - 074900N1090600E - \n081500N1091000E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC CLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY \nIS REQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT IN \nANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-12.json",
+        "points": [
+            [
+                9.683333333333334,
+                109.43333333333334
+            ],
+            [
+                9.55,
+                110.16666666666667
+            ],
+            [
+                9.133333333333333,
+                110.1
+            ],
+            [
+                8.133055555555556,
+                109.91277777777778
+            ],
+            [
+                7.778333333333333,
+                109.31138888888889
+            ],
+            [
+                7.816666666666666,
+                109.1
+            ],
+            [
+                8.25,
+                109.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 89.9
+    },
+    {
+        "CODE": "A3267/23",
+        "COORDINATES": "N0722E11101-N0807E11043-N0804E11127-N0637E11121-N0640E11036-N0807E11043",
+        "TIME": "05 DEC 19:20 2023 UNTIL 05 DEC 20:12 2023",
+        "PLATID": "70369557",
+        "RAWMESSAGE": "A3267/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0722N11102E050\nA) WSJC B) 2312051920 C) 2312052012\nE) UNBURNED DEBRIS IS EXPECTED TO FALL AT 0722N11101E WI 0807N11043E -\n0804N11127E - 0637N11121E - 0640N11036E - 0807N11043E DUE TO\nAEROSPACE FLT ACT. RMK/ATS ROUTES N884 AND M768 NOT AVBL IN\nSINGAPORE FIR\n\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "source_file": "2023-12.json",
         "points": [
             [
-                20.783333333333335,
-                111.81666666666666
+                7.366666666666666,
+                111.01666666666667
             ],
             [
-                20.766666666666666,
-                112.11666666666666
-            ],
-            [
-                20.3,
-                112.08333333333333
-            ],
-            [
-                20.316666666666666,
-                111.78333333333333
-            ]
-        ],
-        "Overlapping_Area": 68.2,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "A3749/23",
-        "COORDINATES": "N2047E11149-N2046E11207-N2018E11205-N2019E11147",
-        "TIME": "05 DEC 19:18 2023 UNTIL 05 DEC 20:04 2023",
-        "PLATID": "70326189",
-        "RAWMESSAGE": "A3749/23 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2032N11157E016\nA) ZGZU B) 2312051918 C) 2312052004 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN2047E11149-N2046E11207-N2018E11205-N2019E11147 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nTHIS DANGER AREA CONCERNING HONGKONG ATC OPERATIONS.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-12.json",
-        "points": [
-            [
-                20.783333333333335,
-                111.81666666666666
-            ],
-            [
-                20.766666666666666,
-                112.11666666666666
-            ],
-            [
-                20.3,
-                112.08333333333333
-            ],
-            [
-                20.316666666666666,
-                111.78333333333333
-            ]
-        ],
-        "Overlapping_Area": 68.2,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "A0255/24",
-        "COORDINATES": "N210300E1115100-N210200E1120900-N203400E1120800-N203500E1114900",
-        "TIME": "02 FEB 02:50 2024 UNTIL 02 FEB 03:17 2024",
-        "PLATID": "71243041",
-        "RAWMESSAGE": "A0255/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2048N11159E017\nA) ZGZU B) 2402020250 C) 2402020317 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN210300E1115100-N210200E1120900-N203400E1120800-N203500E1114900 \nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nTHIS DANGER AREA CONCERNING HONGKONG ATC OPERATIONS.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-02.json",
-        "points": [
-            [
-                21.05,
-                111.85
-            ],
-            [
-                21.033333333333335,
-                112.15
-            ],
-            [
-                20.566666666666666,
-                112.13333333333334
-            ],
-            [
-                20.583333333333332,
-                111.81666666666666
-            ]
-        ],
-        "Overlapping_Area": 53.3,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "A0296/24",
-        "COORDINATES": "N2103E11151-N2102E11209-N2034E11208-N2035E11149",
-        "TIME": "03 FEB 02:56 2024 UNTIL 03 FEB 03:18 2024",
-        "PLATID": "71288212",
-        "RAWMESSAGE": "A0296/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2048N11159E017\nA) ZGZU B) 2402030256 C) 2402030318 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN2103E11151-N2102E11209-N2034E11208-N2035E11149 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nTHIS DANGER AREA CONCERNING HONGKONG ATC OPERATIONS.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-02.json",
-        "points": [
-            [
-                21.05,
-                111.85
-            ],
-            [
-                21.033333333333335,
-                112.15
-            ],
-            [
-                20.566666666666666,
-                112.13333333333334
-            ],
-            [
-                20.583333333333332,
-                111.81666666666666
-            ]
-        ],
-        "Overlapping_Area": 53.3,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "A4141/24",
-        "COORDINATES": "N202100E1122700-N200700E1121400-N204200E1113400-N205600E1114700",
-        "TIME": "04 DEC 04:38 2024 UNTIL 04 DEC 05:30 2024",
-        "PLATID": "74436780",
-        "RAWMESSAGE": "A4141/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2032N11200E028\nA) ZGZU B) 2412040438 C) 2412040530 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN202100E1122700-N200700E1121400-N204200E1113400-N205600E1114700.\nBACK TO START. (FIR ZGZU,FIR VHHK).VERTICAL \nLIMITS:SFC-UNL.CONCERNED WITH HONGKONG ATC OPERATION.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-12.json",
-        "points": [
-            [
-                20.35,
-                112.45
-            ],
-            [
-                20.116666666666667,
-                112.23333333333333
-            ],
-            [
-                20.7,
-                111.56666666666666
-            ],
-            [
-                20.933333333333334,
-                111.78333333333333
-            ]
-        ],
-        "Overlapping_Area": 27.2,
-        "Center_Distance": -1.0
-    },
-    {
-        "CODE": "A2921/24",
-        "COORDINATES": "N204500E1105000-N201000E1112700-N202300E1114100-N205800E1110400",
-        "TIME": "20 SEP 09:34 2024 UNTIL 20 SEP 10:08 2024",
-        "PLATID": "73667938",
-        "RAWMESSAGE": "A2921/24 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/2034N11116E026\nA) ZGZU ZJSA B) 2409200934 C) 2409201008 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN204500E1105000-N201000E1112700-N202300E1114100-N205800E1110400,BAC\nK TO START. VERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-09.json",
-        "points": [
-            [
-                20.75,
-                110.83333333333333
-            ],
-            [
-                20.166666666666668,
-                111.45
-            ],
-            [
-                20.383333333333333,
-                111.68333333333334
-            ],
-            [
-                20.966666666666665,
-                111.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 72.4
-    },
-    {
-        "CODE": "A3054/24",
-        "COORDINATES": "N200247E1113156-N200222E1120118-N194011E1120042-N194142E1113027",
-        "TIME": "25 SEP 00:20 2024 UNTIL 25 SEP 02:30 2024",
-        "PLATID": "73739285",
-        "RAWMESSAGE": "A3054/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/1952N11145E018\nA) ZGZU B) 2409250020 C) 2409250230 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN200247E1113156-N200222E1120118-N194011E1120042-N194142E1113027,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-09.json",
-        "points": [
-            [
-                20.04638888888889,
-                111.53222222222222
-            ],
-            [
-                20.039444444444445,
-                112.02166666666666
-            ],
-            [
-                19.669722222222223,
-                112.01166666666667
-            ],
-            [
-                19.695,
-                111.5075
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 87.8
-    },
-    {
-        "CODE": "A2219/23",
-        "COORDINATES": "N2113E11052-N2121E11100-N2055E11129-N2047E11121",
-        "TIME": "13 AUG 05:25 2023 UNTIL 13 AUG 05:58 2023",
-        "PLATID": "69274763",
-        "RAWMESSAGE": "A2219/23 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2104N11111E020\nA) ZGZU B) 2308130525 C) 2308130558 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN2113E11052-N2121E11100-N2055E11129-N2047E11121 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-08.json",
-        "points": [
-            [
-                21.216666666666665,
-                110.86666666666666
-            ],
-            [
-                21.35,
-                111.0
-            ],
-            [
-                20.916666666666668,
-                111.48333333333333
-            ],
-            [
-                20.783333333333335,
-                111.35
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 93.9
-    },
-    {
-        "CODE": "A2291/23",
-        "COORDINATES": "N2113E11052-N2121E11100-N2055E11129-N2047E11121",
-        "TIME": "14 AUG 05:25 2023 UNTIL 14 AUG 05:58 2023",
-        "PLATID": "69322455",
-        "RAWMESSAGE": "A2291/23 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2104N11111E020\nA) ZGZU B) 2308140525 C) 2308140558 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN2113E11052-N2121E11100-N2055E11129-N2047E11121 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-08.json",
-        "points": [
-            [
-                21.216666666666665,
-                110.86666666666666
-            ],
-            [
-                21.35,
-                111.0
-            ],
-            [
-                20.916666666666668,
-                111.48333333333333
-            ],
-            [
-                20.783333333333335,
-                111.35
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 93.9
-    },
-    {
-        "CODE": "A2089/23",
-        "COORDINATES": "N200500E1111100-N200800E1112200-N194000E1114100-N185300E1104600-N193800E1110600-N200500E1111100",
-        "TIME": "30 JUL 22:00 2023 UNTIL 31 JUL 04:00 2023",
-        "PLATID": "69186006",
-        "RAWMESSAGE": "A2089/23 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/1930N11104E041\nA) ZJSA ZGZU B) 2307302200 C) 2307310400 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N200500E1111100-N200800E1112200-N194000E1114100-N185300E1104600-\nN1\n93800E1110600- N200500E1111100 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-07.json",
-        "points": [
-            [
-                20.083333333333332,
-                111.18333333333334
-            ],
-            [
-                20.133333333333333,
-                111.36666666666666
-            ],
-            [
-                19.666666666666668,
-                111.68333333333334
-            ],
-            [
-                18.883333333333333,
-                110.76666666666667
-            ],
-            [
-                19.633333333333333,
-                111.1
-            ],
-            [
-                20.083333333333332,
-                111.18333333333334
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 124.9
-    },
-    {
-        "CODE": "A2889/22",
-        "COORDINATES": "N220216E1130000-N213000E1130000-N213000E1130830",
-        "TIME": "08 NOV 01:45 2022 UNTIL 13 NOV 06:55 2022",
-        "PLATID": "66874413",
-        "RAWMESSAGE": "A2889/22 NOTAMN\nQ) ZGZU/QRTCA/IV/NBO/W/000/187/2152N11314E025\nA) ZGZU B) 2211080145 C) 2211130655 \nD) 0145-0625 ON NOV,08\n0300-0730 ON NOV,09\n0300-0700 ON NOV,10\n0300-0715 ON NOV,11\n0300-0655 ON NOV,12\n0300-0655 ON NOV,13\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY: \nLIANSHENGWEI &apos;ZUH&apos; \nVOR/DME-N220216E1130000-GURIN-N213000E1130000-N213000E1130830-SIERA\n\n BACK TO START. ALL ACFT SHALL BE FORBIDDEN TO FLY INTO THE AREA \nAT 5,700M AND BELOW, EXCEPT AIR SHOW FLIGHTS.\nF) SFC G) 5700M AMSL",
-        "ALTITUDE": "0 ~ 5700 米",
-        "source_file": "2022-11.json",
-        "points": [
-            [
-                22.03777777777778,
-                113.0
-            ],
-            [
-                21.5,
-                113.0
-            ],
-            [
-                21.5,
-                113.14166666666668
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 162.7
-    },
-    {
-        "CODE": "A3805/24",
-        "COORDINATES": "N220216E1130000-N213000E1130000-N213000E1130830",
-        "TIME": "08 NOV 02:00 2024 UNTIL 08 NOV 04:40 2024",
-        "PLATID": "74201217",
-        "RAWMESSAGE": "A3805/24 NOTAMN\nQ) ZGZU/QRTCA/IV/NBO/W/000/187/2152N11314E025\nA) ZGZU B) 2411080200 C) 2411080440 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY: \nLIANSHENGWEI VOR/DME &apos;ZUH&apos; \n-N220216E1130000-GURIN-N213000E1130000-N213000E1130830-SIERA\n BACK TO START. ALL ACFT SHALL BE FORBIDDEN TO FLY INTO THE AREA \nAT 5,700M \nAND BELOW WITHOUT ATC INSTRUCTION, EXCEPT AIR SHOW FLIGHTS.\nF) SFC G) 5700M AMSL",
-        "ALTITUDE": "0 ~ 5700 米",
-        "source_file": "2024-11.json",
-        "points": [
-            [
-                22.03777777777778,
-                113.0
-            ],
-            [
-                21.5,
-                113.0
-            ],
-            [
-                21.5,
-                113.14166666666668
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 162.7
-    },
-    {
-        "CODE": "A3872/24",
-        "COORDINATES": "N220216E1130000-N213000E1130000-N213000E1130830",
-        "TIME": "11 NOV 03:00 2024 UNTIL 11 NOV 04:05 2024",
-        "PLATID": "74231079",
-        "RAWMESSAGE": "A3872/24 NOTAMN\nQ) ZGZU/QRTCA/IV/NBO/W/000/187/2152N11314E025\nA) ZGZU B) 2411110300 C) 2411110405 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY: \nLIANSHENGWEI VOR/DME &apos;ZUH&apos; - N220216E1130000-GURIN-\nN213000E1130000-N213000E1130830-SIERA BACK TO START.\nALL ACFT SHALL BE FORBIDDEN TO FLY INTO THE AREA AT 5,700M AND \nBELOW WITHOUT ATC INSTRUCTION, EXCEPT AIR SHOW FLIGHTS.\nF) SFC G) 5700M AMSL",
-        "ALTITUDE": "0 ~ 5700 米",
-        "source_file": "2024-11.json",
-        "points": [
-            [
-                22.03777777777778,
-                113.0
-            ],
-            [
-                21.5,
-                113.0
-            ],
-            [
-                21.5,
-                113.14166666666668
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 162.7
-    },
-    {
-        "CODE": "A3667/25",
-        "COORDINATES": "N190300E1115200-N190300E1122700-N175200E1122900-N175100E1115400",
-        "TIME": "17 OCT 07:01 2025 UNTIL 17 OCT 07:26 2025",
-        "PLATID": "78238911",
-        "RAWMESSAGE": "A3667/25 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1827N11210E040\nA) ZJSA B) 2510170701 C) 2510170726 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN190300E1115200-N190300E1122700-N175200E1122900-N175100E1115400,BAC\nK TO START.(FIR ZJSA,FIR VHHK).VERTICAL LIMITS:SFC-UNL.\nCONCERNED WITH HONGKONG ATC OPERATION.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-10.json",
-        "points": [
-            [
-                19.05,
-                111.86666666666666
-            ],
-            [
-                19.05,
-                112.45
-            ],
-            [
-                17.866666666666667,
-                112.48333333333333
-            ],
-            [
-                17.85,
-                111.9
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 243.5
-    },
-    {
-        "CODE": "A4057/23",
-        "COORDINATES": "N184200E1111700-N183900E1113500-N181100E1112900-N181500E1111200",
-        "TIME": "25 DEC 22:20 2023 UNTIL 25 DEC 23:09 2023",
-        "PLATID": "70653008",
-        "RAWMESSAGE": "A4057/23 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1826N11123E017\nA) ZJSA B) 2312252220 C) 2312252309 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N184200E1111700-N183900E1113500-N181100E1112900-N181500E1111200 \nBACK TO START. VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-12.json",
-        "points": [
-            [
-                18.7,
-                111.28333333333333
-            ],
-            [
-                18.65,
-                111.58333333333333
-            ],
-            [
-                18.183333333333334,
-                111.48333333333333
-            ],
-            [
-                18.25,
-                111.2
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 250.3
-    },
-    {
-        "CODE": "A2243/24",
-        "COORDINATES": "N183700E1115800-N183800E1122700-N175400E1122800-N175400E1115900",
-        "TIME": "06 AUG 06:53 2024 UNTIL 06 AUG 07:25 2024",
-        "PLATID": "73194983",
-        "RAWMESSAGE": "A2243/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11213E026\nA) ZJSA B) 2408060653 C) 2408060725 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183700E1115800-N183800E1122700-N175400E1122800-N175400E1115900 \nBACK TO START(FIR ZJSA,FIR VHHK). \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-08.json",
-        "points": [
-            [
-                18.616666666666667,
-                111.96666666666667
-            ],
-            [
-                18.633333333333333,
-                112.45
-            ],
-            [
-                17.9,
-                112.46666666666667
-            ],
-            [
-                17.9,
-                111.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 265.1
-    },
-    {
-        "CODE": "A4089/24",
-        "COORDINATES": "N183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900",
-        "TIME": "02 DEC 04:47 2024 UNTIL 02 DEC 05:14 2024",
-        "PLATID": "74399390",
-        "RAWMESSAGE": "A4089/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11214E027\nA) ZJSA B) 2412020447 C) 2412020514 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900,BAC\nK TO START.(FIR ZJSA,FIR VHHK). \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-12.json",
-        "points": [
-            [
-                18.633333333333333,
-                111.96666666666667
-            ],
-            [
-                18.633333333333333,
-                112.46666666666667
-            ],
-            [
-                17.9,
-                112.46666666666667
-            ],
-            [
-                17.883333333333333,
-                111.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 265.1
-    },
-    {
-        "CODE": "A4186/24",
-        "COORDINATES": "N183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900",
-        "TIME": "05 DEC 04:34 2024 UNTIL 05 DEC 05:06 2024",
-        "PLATID": "74499850",
-        "RAWMESSAGE": "A4186/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11214E027\nA) ZJSA B) 2412050434 C) 2412050506 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.(FIR ZJSA,FIR VHHK).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-12.json",
-        "points": [
-            [
-                18.633333333333333,
-                111.96666666666667
-            ],
-            [
-                18.633333333333333,
-                112.46666666666667
-            ],
-            [
-                17.9,
-                112.46666666666667
-            ],
-            [
-                17.883333333333333,
-                111.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 265.1
-    },
-    {
-        "CODE": "A0205/25",
-        "COORDINATES": "N183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900",
-        "TIME": "23 JAN 05:06 2025 UNTIL 23 JAN 05:31 2025",
-        "PLATID": "75167628",
-        "RAWMESSAGE": "A0205/25 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11214E027\nA) ZJSA B) 2501230506 C) 2501230531 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900,\nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.(FIR ZJSA,FIR VHHK).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2025-01.json",
-        "points": [
-            [
-                18.633333333333333,
-                111.96666666666667
-            ],
-            [
-                18.633333333333333,
-                112.46666666666667
-            ],
-            [
-                17.9,
-                112.46666666666667
-            ],
-            [
-                17.883333333333333,
-                111.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 265.1
-    },
-    {
-        "CODE": "A3248/24",
-        "COORDINATES": "N183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900",
-        "TIME": "15 OCT 11:16 2024 UNTIL 15 OCT 11:43 2024",
-        "PLATID": "73854100",
-        "RAWMESSAGE": "A3248/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11213E027\nA) ZJSA B) 2410151116 C) 2410151143 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900\nBACK TO START. (FIR ZJSA,FIR VHHK). VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-10.json",
-        "points": [
-            [
-                18.633333333333333,
-                111.96666666666667
-            ],
-            [
-                18.633333333333333,
-                112.46666666666667
-            ],
-            [
-                17.9,
-                112.46666666666667
-            ],
-            [
-                17.883333333333333,
-                111.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 265.1
-    },
-    {
-        "CODE": "A3349/24",
-        "COORDINATES": "N1838E11158-N1838E11228-N1754E11228-N1753E11159",
-        "TIME": "15 OCT 10:58 2024 UNTIL 15 OCT 11:25 2024",
-        "PLATID": "73948147",
-        "RAWMESSAGE": "A3349/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11213E027\nA) ZJSA B) 2410151058 C) 2410151125 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN1838E11158-N1838E11228-N1754E11228-N1753E11159 BACK TO START. \n(FIR ZJSA,FIR VHHK). VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-10.json",
-        "points": [
-            [
-                18.633333333333333,
-                111.96666666666667
-            ],
-            [
-                18.633333333333333,
-                112.46666666666667
-            ],
-            [
-                17.9,
-                112.46666666666667
-            ],
-            [
-                17.883333333333333,
-                111.98333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 265.1
-    },
-    {
-        "CODE": "A0253/24",
-        "COORDINATES": "N173500E1110600-N180900E1103800-N185300E1113900-N182000E1120800",
-        "TIME": "02 FEB 23:37 2024 UNTIL 03 FEB 00:08 2024",
-        "PLATID": "71242854",
-        "RAWMESSAGE": "A0253/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1814N11123E043\nA) ZJSA B) 2402022337 C) 2402030008 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN173500E1110600-N180900E1103800-N185300E1113900-N182000E1120800,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-02.json",
-        "points": [
-            [
-                17.583333333333332,
-                111.1
-            ],
-            [
-                18.15,
-                110.63333333333334
-            ],
-            [
-                18.883333333333333,
-                111.65
-            ],
-            [
-                18.333333333333332,
-                112.13333333333334
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 273.0
-    },
-    {
-        "CODE": "A4060/23",
-        "COORDINATES": "N180500E1115100-N184400E1112000-N181700E1104300-N173800E1111500",
-        "TIME": "26 DEC 03:09 2023 UNTIL 26 DEC 03:51 2023",
-        "PLATID": "70653033",
-        "RAWMESSAGE": "A4060/23 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1811N11117E033\nA) ZJSA B) 2312260309 C) 2312260351 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N180500E1115100-N184400E1112000-N181700E1104300-N173800E1111500 \nBACK TO START. VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2023-12.json",
-        "points": [
-            [
-                18.083333333333332,
-                111.85
-            ],
-            [
-                18.733333333333334,
-                111.33333333333333
-            ],
-            [
-                18.283333333333335,
+                8.116666666666667,
                 110.71666666666667
             ],
             [
-                17.633333333333333,
-                111.25
+                8.066666666666666,
+                111.45
+            ],
+            [
+                6.616666666666667,
+                111.35
+            ],
+            [
+                6.666666666666667,
+                110.6
+            ],
+            [
+                8.116666666666667,
+                110.71666666666667
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 281.1
+        "Center_Distance": 143.1
     },
     {
-        "CODE": "A2918/24",
-        "COORDINATES": "N180500E1115100-N184400E1111900-N181700E1104400-N173800E1111500",
-        "TIME": "19 SEP 00:57 2024 UNTIL 19 SEP 01:41 2024",
-        "PLATID": "73667921",
-        "RAWMESSAGE": "A2918/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1811N11117E033\nA) ZJSA B) 2409190057 C) 2409190141 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN180500E1115100-N184400E1111900-N181700E1104400-N173800E1111500,BAC\nK TO START. VERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
+        "CODE": "A3579/23",
+        "COORDINATES": "N0719E10842-N0711E10926-N0541E10909-N0548E10825-N0715E10840-N0719E10842",
+        "TIME": "25 DEC 22:21 2023 UNTIL 25 DEC 23:20 2023",
+        "PLATID": "70663331",
+        "RAWMESSAGE": "A3579/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0630N10855E053\nA) WSJC B) 2312252221 C) 2312252320\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0719N10842E - 0711N10926E -\n0541N10909E - 0548N10825E - 0715N10840E - 0719N10842E DUE TO\nAEROSPACE FLT ACT. RMK/ATS ROUTE L625 BTN LUSMO AND AKMON NOT AVBL IN\nSINGAPORE FIR\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
-        "source_file": "2024-09.json",
+        "source_file": "2023-12.json",
         "points": [
             [
-                18.083333333333332,
-                111.85
+                7.316666666666666,
+                108.7
             ],
             [
-                18.733333333333334,
-                111.31666666666666
+                7.183333333333334,
+                109.43333333333334
             ],
             [
-                18.283333333333335,
-                110.73333333333333
+                5.683333333333334,
+                109.15
             ],
             [
-                17.633333333333333,
-                111.25
+                5.8,
+                108.41666666666667
+            ],
+            [
+                7.25,
+                108.66666666666667
+            ],
+            [
+                7.316666666666666,
+                108.7
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 281.1
+        "Center_Distance": 152.6
+    },
+    {
+        "CODE": "A4465/24",
+        "COORDINATES": "N083430E1104200-N083300E1104200-N083300E1110900-N085015E1110900-N083430E1104200",
+        "TIME": "15 DEC 09:30 2024 UNTIL 19 DEC 16:30 2024",
+        "PLATID": "74412911",
+        "RAWMESSAGE": "A4465/24 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0842N11055E017\nA) WSJC B) 2412150930 C) 2412191630\nD) DEC 15-19 0930-1630\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 083430N1104200E -\n083300N1104200E - 083300N1110900E - 085015N1110900E -\n083430N1104200E DUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 AFTER LUSMO\nNOT AVBL\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-12.json",
+        "points": [
+            [
+                8.575,
+                110.7
+            ],
+            [
+                8.55,
+                110.7
+            ],
+            [
+                8.55,
+                111.15
+            ],
+            [
+                8.8375,
+                111.15
+            ],
+            [
+                8.575,
+                110.7
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 155.3
+    },
+    {
+        "CODE": "A0341/24",
+        "COORDINATES": "N090234E1113007-N071900E1112100-N072200E1104000-N083617E1104504-N090234E1113007",
+        "TIME": "02 FEB 02:00 2024 UNTIL 05 FEB 08:00 2024",
+        "PLATID": "71258719",
+        "RAWMESSAGE": "A0341/24 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0811N11107E057\nA) WSJC B) 2402020200 C) 2402050800\nD) FEB 02-05 0200-0800\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 090234N1113007E -\n071900N1112100E - 072200N1104000E - 083617N1104504E -\n090234N1113007E\nDUE TO AEROSPACE FLT ACT BY CHINA.\n\nRMK/ATS ROUTES M768 AND N884 WI SINGAPORE NOT AVBL / ACFT \nENTERING HO CHI MINH FIR VIA ATS ROUTE L625 AFTER LUSMO NOT AVBL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-02.json",
+        "points": [
+            [
+                9.042777777777777,
+                111.50194444444445
+            ],
+            [
+                7.316666666666666,
+                111.35
+            ],
+            [
+                7.366666666666666,
+                110.66666666666667
+            ],
+            [
+                8.604722222222222,
+                110.75111111111111
+            ],
+            [
+                9.042777777777777,
+                111.50194444444445
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 165.7
+    },
+    {
+        "CODE": "A0390/24",
+        "COORDINATES": "N090234E1113007-N071900E1112100-N072200E1104000-N083617E1104504-N090234E1113007",
+        "TIME": "03 FEB 02:58 2024 UNTIL 03 FEB 03:33 2024",
+        "PLATID": "71291404",
+        "RAWMESSAGE": "A0390/24 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0811N11107E057\nA) WSJC B) 2402030258 C) 2402030333\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 090234N1113007E - \n071900N1112100E - 072200N1104000E - 083617N1104504E - \n090234N1113007E  DUE TO AEROSPACE FLT ACT BY CHINA.\n\nRMK/ATS ROUTES M768 AND N884 WI SINGAPORE NOT AVBL / ACFT \nENTERING HO CHI MINH FIR VIA ATS ROUTE L625 AFTER LUSMO NOT AVBL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-02.json",
+        "points": [
+            [
+                9.042777777777777,
+                111.50194444444445
+            ],
+            [
+                7.316666666666666,
+                111.35
+            ],
+            [
+                7.366666666666666,
+                110.66666666666667
+            ],
+            [
+                8.604722222222222,
+                110.75111111111111
+            ],
+            [
+                9.042777777777777,
+                111.50194444444445
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 165.7
+    },
+    {
+        "CODE": "A1209/25",
+        "COORDINATES": "N085015E1110900-N083300E1110900-N083300E1104200-N083430E1104200-N085015E1110900",
+        "TIME": "28 APR 20:00 2025 UNTIL 30 APR 23:55 2025",
+        "PLATID": "76292440",
+        "RAWMESSAGE": "A1209/25 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0900N11055E017\nA) WSJC B) 2504282000 C) 2504302355\nD) APR 28-30 2000-2355\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 085015N1110900E -\n083300N1110900E - 083300N1104200E - 083430N1104200E -\n085015N1110900E DUE TO AEROSPACE FLT ACT BY CHINA\n\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 AFTER LUSMO\nNOT AVBL\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-04.json",
+        "points": [
+            [
+                8.8375,
+                111.15
+            ],
+            [
+                8.55,
+                111.15
+            ],
+            [
+                8.55,
+                110.7
+            ],
+            [
+                8.575,
+                110.7
+            ],
+            [
+                8.8375,
+                111.15
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 166.8
+    },
+    {
+        "CODE": "A2642/25",
+        "COORDINATES": "N085015E1110900-N083300E1110900-N083300E1104200-N083430E1104200-N085015E1110900",
+        "TIME": "12 AUG 05:00 2025 UNTIL 14 AUG 10:00 2025",
+        "PLATID": "77434967",
+        "RAWMESSAGE": "A2642/25 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0842N11055E017\nA) WSJC B) 2508120500 C) 2508141000\nD) AUG 12-14 0500-1000\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 085015N1110900E -\n083300N1110900E - 083300N1104200E - 083430N1104200E -\n085015N1110900E DUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 AFTER LUSMO\nNOT AVBL\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-08.json",
+        "points": [
+            [
+                8.8375,
+                111.15
+            ],
+            [
+                8.55,
+                111.15
+            ],
+            [
+                8.55,
+                110.7
+            ],
+            [
+                8.575,
+                110.7
+            ],
+            [
+                8.8375,
+                111.15
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 166.8
+    },
+    {
+        "CODE": "A4641/24",
+        "COORDINATES": "N085050E1111000-N083300E1111000-N083300E1104200-N083430E1104200-N085050E1111000",
+        "TIME": "16 DEC 10:00 2024 UNTIL 16 DEC 12:14 2024",
+        "PLATID": "74627205",
+        "RAWMESSAGE": "A4641/24 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0842N11056E017\nA) WSJC B) 2412161000 C) 2412161214\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 085050N1111000E -\n083300N1111000E - 083300N1104200E - 083430N1104200E -\n085050N1111000E DUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 AFTER LUSMO\nNOT AVBL\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-12.json",
+        "points": [
+            [
+                8.847222222222223,
+                111.16666666666667
+            ],
+            [
+                8.55,
+                111.16666666666667
+            ],
+            [
+                8.55,
+                110.7
+            ],
+            [
+                8.575,
+                110.7
+            ],
+            [
+                8.847222222222223,
+                111.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 167.9
+    },
+    {
+        "CODE": "A1391/25",
+        "COORDINATES": "N085050E1111000-N083300E1111000-N083300E1104200-N083430E1104200-N085050E1111000",
+        "TIME": "28 APR 20:02 2025 UNTIL 28 APR 20:25 2025",
+        "PLATID": "76514838",
+        "RAWMESSAGE": "A1391/25 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0842N11056E017\nA) WSJC B) 2504282002 C) 2504282025\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 085050N1111000E -\n083300N1111000E - 083300N1104200E - 083430N1104200E -\n085050N1111000E DUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 AFTER LUSMO\nNOT AVBL\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-04.json",
+        "points": [
+            [
+                8.847222222222223,
+                111.16666666666667
+            ],
+            [
+                8.55,
+                111.16666666666667
+            ],
+            [
+                8.55,
+                110.7
+            ],
+            [
+                8.575,
+                110.7
+            ],
+            [
+                8.847222222222223,
+                111.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 167.9
+    },
+    {
+        "CODE": "A2747/25",
+        "COORDINATES": "N085050E1111000-N083300E1111000-N083300E1104200-N083430E1104200-N085050E1111000",
+        "TIME": "13 AUG 06:36 2025 UNTIL 13 AUG 07:01 2025",
+        "PLATID": "77568394",
+        "RAWMESSAGE": "A2747/25 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0842N11056E017\nA) WSJC B) 2508130636 C) 2508130701\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 085050N1111000E -\n083300N1111000E - 083300N1104200E - 083430N1104200E -\n085050N1111000E DUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 AFTER LUSMO\nNOT AVBL\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-08.json",
+        "points": [
+            [
+                8.847222222222223,
+                111.16666666666667
+            ],
+            [
+                8.55,
+                111.16666666666667
+            ],
+            [
+                8.55,
+                110.7
+            ],
+            [
+                8.575,
+                110.7
+            ],
+            [
+                8.847222222222223,
+                111.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 167.9
+    },
+    {
+        "CODE": "A3268/23",
+        "COORDINATES": "N0645E11058-N0731E11040-N0728E11124-N0600E11118-N0603E11034-N0731E11040",
+        "TIME": "05 DEC 19:20 2023 UNTIL 05 DEC 20:23 2023",
+        "PLATID": "70369570",
+        "RAWMESSAGE": "A3268/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0645N11059E051\nA) WSJC B) 2312051920 C) 2312052023\nE) UNBURNED DEBRIS IS EXPECTED TO FALL AT 0645N11058E WI 0731N11040E -\n0728N11124E - 0600N11118E - 0603N11034E - 0731N11040E DUE TO\nAEROSPACE FLT ACT. \nRMK/ATS ROUTES N884 AND M768 NOT AVBL IN SINGAPORE FIR\n\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                6.75,
+                110.96666666666667
+            ],
+            [
+                7.516666666666667,
+                110.66666666666667
+            ],
+            [
+                7.466666666666667,
+                111.4
+            ],
+            [
+                6.0,
+                111.3
+            ],
+            [
+                6.05,
+                110.56666666666666
+            ],
+            [
+                7.516666666666667,
+                110.66666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 169.2
+    },
+    {
+        "CODE": "A3507/23",
+        "COORDINATES": "N0549E10824-N0719E10840-N0711E10923-N0541E10906-N0549E10824",
+        "TIME": "25 DEC 22:00 2023 UNTIL 28 DEC 02:00 2023",
+        "PLATID": "70590947",
+        "RAWMESSAGE": "A3507/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0630N10853E052\nA) WSJC B) 2312252200 C) 2312280200\nD) DEC 25 2200-2359, 26 27 0000 - 0200  2200 - 2359, 28 0000-0200\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0549N10824E - 0719N10840E -\n0711N10923E- 0541N10906E - 0549N10824E DUE TO AEROSPACE FLT ACT. \nRMK/ATS ROUTE L625 NOT AVBL IN SINGAPORE FIR\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                5.816666666666666,
+                108.4
+            ],
+            [
+                7.316666666666666,
+                108.66666666666667
+            ],
+            [
+                7.183333333333334,
+                109.38333333333334
+            ],
+            [
+                5.683333333333334,
+                109.1
+            ],
+            [
+                5.816666666666666,
+                108.4
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 191.9
+    },
+    {
+        "CODE": "A3800/24",
+        "COORDINATES": "N083541E1104200-N092700E1104200-N092700E1110900-N085127E1110859",
+        "TIME": "15 DEC 09:30 2024 UNTIL 19 DEC 16:30 2024",
+        "PLATID": "74392443",
+        "RAWMESSAGE": "A3800/24 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0901N11056E030\nA) VVHM B) 2412150930 C) 2412191630 \nD) DAILY 0930-1630\nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT SAFETY \nOF THE ACFT IN THE FLW AREA MAY BE AFFECTED:\n083541N1104200E-092700N1104200E-092700N1110900E-085127N1110859E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\nDRG THIS ACTIVITY, ATS RTE SEGMENT L625 (AKMON - UDOSI - ALDAS) \nIS NOT USED\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC CLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY IS \nREQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT IN \nANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-12.json",
+        "points": [
+            [
+                8.594722222222222,
+                110.7
+            ],
+            [
+                9.45,
+                110.7
+            ],
+            [
+                9.45,
+                111.15
+            ],
+            [
+                8.8575,
+                111.14972222222222
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 193.4
+    },
+    {
+        "CODE": "A0738/25",
+        "COORDINATES": "N083541E1104200-N092700E1104200-N092700E1110900-N085127E1110859",
+        "TIME": "28 APR 19:30 2025 UNTIL 01 MAY 00:25 2025",
+        "PLATID": "76292979",
+        "RAWMESSAGE": "A0738/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0901N11056E028\nA) VVHM B) 2504281930 C) 2505010025 \nD) APR 28 1930-2359, APR 29 0000-0025 1930-2359, \nAPR 30 0000-0025 1930-2359, MAY 01 0000-0025\nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREA MAY BE AFFECTED: \n083541N1104200E - 092700N1104200E - 092700N1110900E - \n085127N1110859E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\nDRG THIS ACTIVITY, ATS RTE SEGMENTS MENTIONED BELOW ARE \nAFFECTED: \n- L625: AKMON - UDOSI - ALDAS\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC \nCLEARANCES \n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA \nPARTY IS REQUIRED TO CONTINUE TO COORDINATE WITH THE \nCOMPETENT AUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES \nSET OUT IN ANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IIN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-04.json",
+        "points": [
+            [
+                8.594722222222222,
+                110.7
+            ],
+            [
+                9.45,
+                110.7
+            ],
+            [
+                9.45,
+                111.15
+            ],
+            [
+                8.8575,
+                111.14972222222222
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 193.4
+    },
+    {
+        "CODE": "A0827/25_AREA2",
+        "COORDINATES": "N083541E1104200-N092700E1104200-N092700E1110900-N085127E1110859",
+        "TIME": "28 APR 19:30 2025 UNTIL 01 MAY 00:25 2025",
+        "PLATID": "76338865",
+        "RAWMESSAGE": " A0827/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0944N11125E032\nA) VVHM PART 1 OF 2 B) 2504281930 C) 2505010025 \nD) APR 28 1930-2359, APR 29 0000-0025 1930-2359, \nAPR 30 0000-0025 1930-2359, MAY 01 0000-0025\nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREAS MAY BE AFFECTED:\n- AREA 1: 095300N1104200E - 105200N1104200E - \n105200N1111000E - 095300N1111000E\n0POINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\n- AREA 2: \n083541N1104200E - 092700N1104200E - 092700N1110900E - \n085127N1110859E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\n1. DRG THIS ACTIVITY, ATS RTE SEGMENTS MENTIONED BELOW ARE \nNOT USED:\n- N500: DAMVO - MIMUX\n- N892: OSIXA - MAPNO - MIMUX\n- M765: SAMAP - MAPNO - ALDAS\n- L625: AKMON - UDOSI - ALDAS\n2. DRG THIS ACTIVITY, ATS RTE SEGMENTS MENTIONED BELOW SHALL \nBE OPERATED AS FLW:\n- ACFT ON M765: M765 - DAGAG - DAMVO - 113000N1111300E - \nAGSAM - PANDI (AND VICE VERSA)\nPART 1 OF 2\r\nA0827/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0944N11125E032\nA) VVHM PART 2 OF 2 B) 2504281930 C) 2505010025 \nD) APR 28 1930-2359, APR 29 0000-0025 1930-2359, \nAPR 30 0000-0025 1930-2359, MAY 01 0000-0025\nE) - ACFT ON N500 TO VVTS AND VICE VERSA: \nPANDI - AGSAM - 113000N1111300E - DAMVO - \nVVTS (AND VICE VERSA)\n- OVERFLIGHT ACFT ON N500 - R468 AND VICE VERSA: \nPANDI - AGSAM - 113000N1111300E - DAMVO - TSH AND \nENTERING R468 (AND VICE VERSA)\n- ACFT ON N892 - N500 TO VVTS: \nN892 - MUGAN - 113000N1111300E - DAMVO - N500 TO VVTS\n- ACFT ON N892: N892 - MUGAN - 110600N1101600E - SAMAP - \nMOXON AND ENTERING N892\n- ACFT ON M768: DO NOT DEVIATE TO THE NORTH OF THE ATS ROUTE \nSEGMENT AKMON - MOXON\n- FL310, FL350, FL390 WILL BE APPLIED TO ACFT ON ATS RTE M771\n- FL320, FL360, FL400 WILL BE APPLIED TO ACFT ON ATS RTE N892\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC \nCLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY \nIS REQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT IN \nANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL)\nPART 2 OF 2\r\n",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-04.json",
+        "points": [
+            [
+                8.594722222222222,
+                110.7
+            ],
+            [
+                9.45,
+                110.7
+            ],
+            [
+                9.45,
+                111.15
+            ],
+            [
+                8.8575,
+                111.14972222222222
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 193.4
+    },
+    {
+        "CODE": "A0990/25_AREA2",
+        "COORDINATES": "N083541E1104200-N092700E1104200-N092700E1110900-N085127E1110859",
+        "TIME": "28 APR 20:00 2025 UNTIL 30 APR 23:55 2025",
+        "PLATID": "76416132",
+        "RAWMESSAGE": " A0990/25 NOTAMN\nQ) VVHM/QAFXX/IV/NBO/E/000/999/0938N11055E070\nA) VVHM PART 1 OF 2 B) 2504282000 C) 2504302355\nD) 28-30 2000-2355\nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREAS MAY BE AFFECTED:\n- AREA 1: 095300N1104200E - 105200N1104200E - \n105200N1111000E - 095300N1111000E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\n- AREA 2: \n083541N1104200E - 092700N1104200E - 092700N1110900E - \n085127N1110859E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\n1. DRG THIS ACTIVITY, ATS RTE SEGMENTS MENTIONED BELOW ARE \nNOT USED:\n- N500: DAMVO - MIMUX\n- N892: OSIXA - MAPNO - MIMUX\n- M765: SAMAP - MAPNO - ALDAS\n- L625: AKMON - UDOSI - ALDAS\n2. DRG THIS ACTIVITY, ATS RTE SEGMENTS MENTIONED BELOW SHALL \nBE OPERATED AS FLW:\n- ACFT ON M765: M765 - DAGAG - DAMVO - 113000N1111300E - \nAGSAM - PANDI (AND VICE VERSA\n\n\nCNS123W SEQUENCE CHECK FOR VVVVYNYX A -- \n  EXPECTED A0992/25 -- RECEIVED A0990/25\nCNN038W DUPLICATE NOTAM\nTRANSACTION ROLLED BACK, RETCODE = 14\r\nA0990/25 NOTAMN\nQ) VVHM/QAFXX/IV/NBO/E/000/999/0938N11055E070\nA) VVHM PART 2 OF 2 B) 2504282000 C) 2504302355\nD) 28-30 2000-2355\nE) - ACFT ON N500 TO VVTS AND VICE VERSA: \nPANDI - AGSAM - 113000N1111300E - DAMVO - \nVVTS (AND VICE VERSA)\n- OVERFLIGHT ACFT ON N500 - R468 AND VICE VERSA: \nPANDI - AGSAM - 113000N1111300E - DAMVO - TSH AND \nENTERING R468 (AND VICE VERSA)\n- ACFT ON N892 - N500 TO VVTS: \nN892 - MUGAN - 113000N1111300E - DAMVO - N500 TO VVTS\n- ACFT ON N892: N892 - MUGAN - 110600N1101600E - SAMAP - \nMOXON AND ENTERING N892\n- ACFT ON M768: DO NOT DEVIATE TO THE NORTH OF THE ATS ROUTE \nSEGMENT AKMON - MOXON\n- FL310, FL350, FL390 WILL BE APPLIED TO ACFT ON ATS RTE M771\n- FL320, FL360, FL400 WILL BE APPLIED TO ACFT ON ATS RTE N892\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC \nCLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY\nIS REQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT IN \nANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL\n\nCNN038W DUPLICATE NOTAM\nTRANSACTION ROLLED BACK, RETCODE = 14\r\n",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-04.json",
+        "points": [
+            [
+                8.594722222222222,
+                110.7
+            ],
+            [
+                9.45,
+                110.7
+            ],
+            [
+                9.45,
+                111.15
+            ],
+            [
+                8.8575,
+                111.14972222222222
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 193.4
+    },
+    {
+        "CODE": "A2472/25_AREA2",
+        "COORDINATES": "N083541E1104200-N092700E1104200-N092700E1110900-N085127E1110859",
+        "TIME": "12 AUG 05:00 2025 UNTIL 14 AUG 10:00 2025",
+        "PLATID": "77461958",
+        "RAWMESSAGE": "A2472/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0944N11056E070\nA) VVHM B) 2508120500 C) 2508141000 \nD) DAILY 0500-1000\nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREAS MAY BE AFFECTED:\n- AREA 1: 095300N1104200E - 105200N1104200E - \n105200N1111000E - 095300N1111000E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\n- AREA 2: \n083541N1104200E - 092700N1104200E - 092700N1110900E - \n085127N1110859E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC \nCLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY \nIS REQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT \nIN ANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-08.json",
+        "points": [
+            [
+                8.594722222222222,
+                110.7
+            ],
+            [
+                9.45,
+                110.7
+            ],
+            [
+                9.45,
+                111.15
+            ],
+            [
+                8.8575,
+                111.14972222222222
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 193.4
+    },
+    {
+        "CODE": "A4064/24",
+        "COORDINATES": "N092800E1104200-N092800E1111000-N085202E1110959-N083541E1104200",
+        "TIME": "16 DEC 10:00 2024 UNTIL 16 DEC 12:14 2024",
+        "PLATID": "74626392",
+        "RAWMESSAGE": "A4064/24 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0901N11055E030\nA) VVHM B) 2412161000 C) 2412161214 \nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREA MAY BE AFFECTED:\n092800N1104200E-092800N1111000E-085202N1110959E-083541N1104200E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\nDRG THIS ACTIVITY, ATS RTE SEGMENT L625 (AKMON - UDOSI - ALDAS)\nIS NOT USED\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC CLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY \nIS REQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT IN \nANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-12.json",
+        "points": [
+            [
+                9.466666666666667,
+                110.7
+            ],
+            [
+                9.466666666666667,
+                111.16666666666667
+            ],
+            [
+                8.867222222222223,
+                111.16638888888889
+            ],
+            [
+                8.594722222222222,
+                110.7
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 194.9
+    },
+    {
+        "CODE": "A2598/25_AREA2",
+        "COORDINATES": "N083541E1104200-N092800E1104200-N092800E1111000-N085202E1110959",
+        "TIME": "13 AUG 06:35 2025 UNTIL 13 AUG 07:01 2025",
+        "PLATID": "77576720",
+        "RAWMESSAGE": "A2598/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0944N11056E070\nA) VVHM B) 2508130635 C) 2508130701 \nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREAS MAY BE AFFECTED:\n- AREA 1: \n095200N1104200E - 105300N1104200E - 105300N1111000E -\n095200N1111000E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\n- AREA 2: \n083541N1104200E - 092800N1104200E - 092800N1111000E -\n085202N1110959E\nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC \nCLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY \nIS REQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT \nIN ANNEX 11 AND AGREED PROCEDURES OF THE REGION\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS \nFOR THE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-08.json",
+        "points": [
+            [
+                8.594722222222222,
+                110.7
+            ],
+            [
+                9.466666666666667,
+                110.7
+            ],
+            [
+                9.466666666666667,
+                111.16666666666667
+            ],
+            [
+                8.867222222222223,
+                111.16638888888889
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 194.9
+    },
+    {
+        "CODE": "A1050/25_AREA2",
+        "COORDINATES": "N083541E1104200-N092800E1104200-N092800E1111000-N085202E1111000",
+        "TIME": "28 APR 20:01 2025 UNTIL 28 APR 20:25 2025",
+        "PLATID": "76522701",
+        "RAWMESSAGE": " A1050/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/1122N10849E999\nA) VVHM PART 1 OF 2 B) 2504282001 C) 2504282025 \nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT \nSAFETY OF THE ACFT IN THE FLW AREAS MAY BE AFFECTED:\n- AREA 1: 095200N1104200E - 105300N1104200E - \n105300N1111000E - 095200N1111000E \nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\n- AREA 2: 083541N1104200E - 092800N1104200E - \n092800N1111000E - 085202N1111000E \nPOINTS CONNECTION RANGE\nVERTICAL ALTITUDE: SFC-UNL\n1. DRG THIS ACTIVITY, ATS RTE SEGMENTS MENTIONED BELOW ARE \nNOT USED:\n- N500: DAMVO - MIMUX\n- N892: OSIXA - MAPNO - MIMUX\n- M765: SAMAP - MAPNO - ALDAS\n- L625: AKMON - UDOSI - ALDAS\n2. DRG THIS ACTIVITY, ATS RTE SEGMENTS MENTIONED BELOW SHALL \nBE OPERATED AS FLW:\n- ACFT ON M765: M765 - DAGAG - DAMVO - 113000N1111300E - \nAGSAM - PANDI (AND VICE VERSA)\n- ACFT ON N500 TO VVTS AND VICE VERSA: \nEND PART 1 OF 2\r\nA1050/25 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/1122N10849E999\nA) VVHM PART 2 OF 2 B) 2504282001 C) 2504282025 \nE) PANDI - AGSAM - 113000N1111300E - DAMVO - VVTS (AND VICE VERSA)\n- OVERFLIGHT ACFT ON N500 - R468 AND VICE VERSA: \nPANDI - AGSAM - 113000N1111300E - DAMVO - TSH AND \nENTERING R468 (AND VICE VERSA)\n- ACFT ON N892 - N500 TO VVTS: \nN892 - MUGAN - 113000N1111300E - DAMVO - N500 TO VVTS\n- ACFT ON N892: N892 - MUGAN - 110600N1101600E - SAMAP - \nMOXON AND ENTERING N892\n- ACFT ON M768: DO NOT DEVIATE TO THE NORTH OF THE ATS ROUTE \nSEGMENT AKMON - MOXON\n- FL310, FL350, FL390 WILL BE APPLIED TO ACFT ON ATS RTE M771\n- FL320, FL360, FL400 WILL BE APPLIED TO ACFT ON ATS RTE N892\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC \nCLEARANCES\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY \nEND PART 2 OF 2\r\n",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2025-04.json",
+        "points": [
+            [
+                8.594722222222222,
+                110.7
+            ],
+            [
+                9.466666666666667,
+                110.7
+            ],
+            [
+                9.466666666666667,
+                111.16666666666667
+            ],
+            [
+                8.867222222222223,
+                111.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 194.9
+    },
+    {
+        "CODE": "A0209/24",
+        "COORDINATES": "N091800E1104800-N091500E1113100-N090348E1113012-N083731E1104508-N085000E1104600",
+        "TIME": "02 FEB 02:52 2024 UNTIL 02 FEB 03:32 2024",
+        "PLATID": "71259493",
+        "RAWMESSAGE": "A0209/24 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0858N11108E030\nA) VVHM B) 2402020252 C) 2402020332 \nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT SAFETY OF \nTHE ACFT IN THE FLW AREA MAY BE AFFECTED:\n091800N1104800E-091500N1113100E-090348N1113012E-083731N1104508E-\n085000N1104600E\nPOINTS CONNECTION RANGE.\nVERTICAL ALTITUDE: SFC-UNL.\n- DRG THIS ACTIVITY: \n+ ATS RTE/SEGMENT M768 AND L625 (AKMON-UDOSI) ARE NOT USED\n+ ATS ROUTE SEGMENT L625 (AKMON-UDOSI) WILL BE CHANGED TO DUDIS - \nM771 - DAGAG - M765 - ALDAS - L625\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC CLEARANCES.\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY AFFECTS \nFLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY IS REQUIRED \nTO CONTINUE TO COORDINATE WITH THE COMPETENT AUTHORITIES OF VIETNAM \nIN LINE WITH THE PROCEDURES SET OUT IN ANNEX 11 AND AGREED \nPROCEDURES OF THE REGION.\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS FOR THE \nSAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-02.json",
+        "points": [
+            [
+                9.3,
+                110.8
+            ],
+            [
+                9.25,
+                111.51666666666667
+            ],
+            [
+                9.063333333333334,
+                111.50333333333333
+            ],
+            [
+                8.625277777777779,
+                110.75222222222222
+            ],
+            [
+                8.833333333333334,
+                110.76666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 198.9
+    },
+    {
+        "CODE": "A0220/24",
+        "COORDINATES": "N091800E1104800-N091500E1113100-N090348E1113012-N083731E1104508-N085000E1104600",
+        "TIME": "03 FEB 02:58 2024 UNTIL 03 FEB 03:33 2024",
+        "PLATID": "71291855",
+        "RAWMESSAGE": "A0220/24 NOTAMN \nQ) VVHM/QAFXX/IV/NBO/E/000/999/0858N11108E030\nA) VVHM B) 2402030258 C) 2402030333 \nE) DUE TO AEROSPACE FLIGHT ACTIVITY FM CHINA, THE FLIGHT SAFETY OF \nTHE ACFT IN THE FLW AREA MAY BE AFFECTED:\n091800N1104800E-091500N1113100E-090348N1113012E-083731N1104508E-\n085000N1104600E\nPOINTS CONNECTION RANGE.\nVERTICAL ALTITUDE: SFC-UNL.\n- DRG THIS ACTIVITY: \n+ ATS RTE/SEGMENT M768 AND L625 (AKMON-UDOSI) ARE NOT USED\n+ ATS ROUTE SEGMENT L625 (AKMON-UDOSI) WILL BE CHANGED TO DUDIS - \nM771 - DAGAG - M765 - ALDAS - L625\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC CLEARANCES.\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY AFFECTS \nFLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY IS REQUIRED \nTO CONTINUE TO COORDINATE WITH THE COMPETENT AUTHORITIES OF VIETNAM \nIN LINE WITH THE PROCEDURES SET OUT IN ANNEX 11 AND AGREED \nPROCEDURES OF THE REGION.\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS FOR THE \nSAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-02.json",
+        "points": [
+            [
+                9.3,
+                110.8
+            ],
+            [
+                9.25,
+                111.51666666666667
+            ],
+            [
+                9.063333333333334,
+                111.50333333333333
+            ],
+            [
+                8.625277777777779,
+                110.75222222222222
+            ],
+            [
+                8.833333333333334,
+                110.76666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 198.9
+    },
+    {
+        "CODE": "A0194/24",
+        "COORDINATES": "N091700E1104800-N091400E1113000-N090311E1112908-N083734E1104512",
+        "TIME": "02 FEB 01:30 2024 UNTIL 05 FEB 08:30 2024",
+        "PLATID": "71210190",
+        "RAWMESSAGE": "A0194/24 NOTAMN \nQ) VVHM/QWMLW/IV/BO/W/000/999/0857N11108E029\nA) VVHM B) 2402020130 C) 2402050830 \nD) 02-05 0130-0830\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE FLW \nRECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE \nAIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\n091700N1104800E - 091400N1113000E - 090311N1112908E - 083734N1104512E\nFOUR-POINT CONNECTION RANGE.\nRMKS:\n- ALL ACFT SHALL AVOID THE AFFECTED AREA OR SUBJ TO ATC CLEARANCES.\n- THE AEROSPACE FLIGHT ACTIVITY CONDUCTED BY CHINA DIRECTLY \nAFFECTS FLIGHT OPERATIONS WI HO CHI MINH FIR. THE CHINA PARTY IS \nREQUIRED TO CONTINUE TO COORDINATE WITH THE COMPETENT \nAUTHORITIES OF VIETNAM IN LINE WITH THE PROCEDURES SET OUT IN \nANNEX 11 AND AGREED PROCEDURES OF THE REGION.\n- THIS NOTAM IS ISSUED IN ACCORDANCE WITH ICAO REQUIREMENTS FOR \nTHE SAFETY OF ACFT OPERATIONS WI HO CHI MINH FIR.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-02.json",
+        "points": [
+            [
+                9.283333333333333,
+                110.8
+            ],
+            [
+                9.233333333333333,
+                111.5
+            ],
+            [
+                9.053055555555556,
+                111.48555555555555
+            ],
+            [
+                8.626111111111111,
+                110.75333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 207.0
     }
 ]
