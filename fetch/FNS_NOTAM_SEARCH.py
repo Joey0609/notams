@@ -313,30 +313,40 @@ def FNS_NOTAM_SEARCH():
                         area_code = code
                     data_array = np.vstack(
                         [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message, altitude])])
+    try:
+        if len(data_array) > 1:
+            df = pd.DataFrame(data_array)
 
-    if len(data_array) > 1:
-        df = pd.DataFrame(data_array)
+            # 按TRANSID排序
+            if len(df) > 1 and df.iloc[0, 0] == "CODE":
+                header = df.iloc[0]
+                data_df = df.iloc[1:]
+                data_df_sorted = data_df.sort_values(by=3, ascending=True)
+                df = pd.concat([header.to_frame().T, data_df_sorted], ignore_index=True)
 
-        # 按TRANSID排序
-        if len(df) > 1 and df.iloc[0, 0] == "CODE":
-            header = df.iloc[0]
-            data_df = df.iloc[1:]
-            data_df_sorted = data_df.sort_values(by=3, ascending=True)
-            df = pd.concat([header.to_frame().T, data_df_sorted], ignore_index=True)
-
-        df_unique = df.drop_duplicates(subset=0)
-        data_array = df_unique.to_numpy()
-        if len(data_array) > 1 and data_array[0, 0] == "CODE":
-            data_array = data_array[1:]
-        result = {
-            "CODE": data_array[:, 0].tolist() if len(data_array) > 0 else [],
-            "COORDINATES": data_array[:, 1].tolist() if len(data_array) > 0 else [],
-            "TIME": data_array[:, 2].tolist() if len(data_array) > 0 else [],
-            "TRANSID": data_array[:, 3].tolist() if len(data_array) > 0 else [],
-            "RAWMESSAGE": data_array[:, 4].tolist() if len(data_array) > 0 else [],
-            "ALTITUDE": data_array[:, 5].tolist() if len(data_array) > 0 else [],
-        }
-    else:
+            df_unique = df.drop_duplicates(subset=0)
+            data_array = df_unique.to_numpy()
+            if len(data_array) > 1 and data_array[0, 0] == "CODE":
+                data_array = data_array[1:]
+            result = {
+                "CODE": data_array[:, 0].tolist() if len(data_array) > 0 else [],
+                "COORDINATES": data_array[:, 1].tolist() if len(data_array) > 0 else [],
+                "TIME": data_array[:, 2].tolist() if len(data_array) > 0 else [],
+                "TRANSID": data_array[:, 3].tolist() if len(data_array) > 0 else [],
+                "RAWMESSAGE": data_array[:, 4].tolist() if len(data_array) > 0 else [],
+                "ALTITUDE": data_array[:, 5].tolist() if len(data_array) > 0 else [],
+            }
+        else:
+            result = {
+                "CODE": [],
+                "COORDINATES": [],
+                "TIME": [],
+                "TRANSID": [],
+                "RAWMESSAGE": [],
+                "ALTITUDE": [],
+            }
+    except Exception as e:
+        print(f"处理最终数据时出错: {e}")
         result = {
             "CODE": [],
             "COORDINATES": [],
