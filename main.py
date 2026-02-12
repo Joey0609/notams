@@ -363,9 +363,15 @@ def fetch():
     dataDict["CLASSIFY"] = classify_data(dataDict)
     dataDict["ALTITUDE"] = extract_altitude(dataDict["RAWMESSAGE"])
     sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"]), key=lambda x: x[0])
-    dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"] = zip(*sorted_data)
-    dataDict["NUM"] = len(dataDict["CODE"])
-    dataDict["HASH"] = sum(int(platid) % 998244353 for platid in dataDict["PLATID"]) % 998244353
+    if (sorted_data == []):
+        print("No data fetched.")
+        dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"] = [], [], [], [], []
+        dataDict["NUM"] = len(dataDict["CODE"])
+        dataDict["HASH"] = sum(int(platid) % 998244353 for platid in dataDict["PLATID"]) % 998244353
+    else:
+        dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"] = zip(*sorted_data)
+        dataDict["NUM"] = len(dataDict["CODE"])
+        dataDict["HASH"] = sum(int(platid) % 998244353 for platid in dataDict["PLATID"]) % 998244353
     print(dataDict)
     with open('data_dict.json', 'w', encoding='utf-8') as json_file:
         json.dump(dataDict, json_file, ensure_ascii=False, indent=4)
