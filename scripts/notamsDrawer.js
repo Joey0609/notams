@@ -4,6 +4,14 @@ let manualNotams = []; // 存储手动绘制的航警信息
 let manualVisibleState = {}; // 存储每个手动航警的显示/隐藏状态
 let manualPolygons = []; // 存储手动绘制的多边形对象
 
+// 地图交互绘制相关变量
+let isMapDrawing = false; // 是否正在地图绘制模式
+let drawingPoints = []; // 当前绘制的点
+let drawingPolyline = null; // 临时绘制的折线
+let drawingMarkers = []; // 临时绘制的标记点
+let isAltPressed = false; // 是否按住Alt键
+let tempLine = null; // 鼠标跟随的临时线
+
 // 切换到手动绘制页面
 function toggleManualDrawer() {
     const sidebar = document.getElementById('notamSidebar');
@@ -597,4 +605,289 @@ function removeAllManual() {
 function modeInitial(){
     clearAllPolygons();
     siteInit();
+}
+
+// ============ 地图交互绘制功能 ============
+
+// 切换地图绘制模式
+function toggleMapDrawing() {
+    isMapDrawing = !isMapDrawing;
+    const btn = document.getElementById('mapDrawToggleBtn');
+    
+    if (isMapDrawing) {
+        // 开始绘制
+        btn.textContent = '✓ 结束绘制';
+        btn.style.background = '#e74c3c';
+        startMapDrawing();
+        showNotification('📍 开始绘制：点击添加点，右击闭合，按住Alt自动对齐5°角', 'info', 5000);
+    } else {
+        // 结束绘制
+        btn.textContent = '📍 在地图中绘制';
+        btn.style.background = '#27ae60';
+        cancelMapDrawing();
+    }
+}
+
+// 开始地图绘制
+function startMapDrawing() {
+    drawingPoints = [];
+    drawingMarkers = [];
+    
+    // 改变鼠标样式
+    document.getElementById('allmap').style.cursor = 'crosshair';
+    
+    // 监听键盘事件
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+    
+    // 监听地图点击事件
+    map.on('click', handleMapClick);
+    map.on('dblclick', finishDrawing);
+    map.on('contextmenu', finishDrawing);
+    map.on('mousemove', handleMouseMove);
+}
+
+// 取消地图绘制
+function cancelMapDrawing() {
+    // 清理临时图形
+    clearDrawingTemp();
+    
+    // 恢复鼠标样式
+    document.getElementById('allmap').style.cursor = '';
+    
+    // 移除事件监听
+    document.removeEventListener('keydown', handleKeyDown);
+    document.removeEventListener('keyup', handleKeyUp);
+    map.off('click', handleMapClick);
+    map.off('dblclick', finishDrawing);
+    map.off('contextmenu', finishDrawing);
+    map.off('mousemove', handleMouseMove);
+}
+
+// 清理临时绘制元素
+function clearDrawingTemp() {
+    if (drawingPolyline) {
+        map.removeLayer(drawingPolyline);
+        drawingPolyline = null;
+    }
+    if (tempLine) {
+        map.removeLayer(tempLine);
+        tempLine = null;
+    }
+    drawingMarkers.forEach(marker => map.removeLayer(marker));
+    drawingMarkers = [];
+    drawingPoints = [];
+}
+
+// 键盘按下事件
+function handleKeyDown(e) {
+    if (e.key === 'Alt') {
+        isAltPressed = true;
+    }
+}
+
+// 键盘释放事件
+function handleKeyUp(e) {
+    if (e.key === 'Alt') {
+        isAltPressed = false;
+    }
+}
+
+// 处理地图点击
+function handleMapClick(e) {
+    if (!isMapDrawing) return;
+    
+    let point = [e.latlng.lat, e.latlng.lng];
+    
+    // 如果按住Alt且有上一个点，进行角度吸附
+    if (isAltPressed && drawingPoints.length > 0) {
+        point = snapToAngle(drawingPoints[drawingPoints.length - 1], point);
+    }
+    
+    // 如果已有3个点，检查是否靠近初始点
+    if (drawingPoints.length >= 3) {
+        const distToFirst = map.distance(e.latlng, L.latLng(drawingPoints[0]));
+        if (distToFirst < 50000) { // 50km内自动吸附
+            point = drawingPoints[0];
+            // 自动完成绘制
+            setTimeout(() => finishDrawing(e), 100);
+            return;
+        }
+    }
+    
+    // 添加点
+    drawingPoints.push(point);
+    
+    // 添加标记
+    const marker = L.circleMarker(point, {
+        radius: 5,
+        color: '#e74c3c',
+        fillColor: '#e74c3c',
+        fillOpacity: 0.8,
+        weight: 2
+    }).addTo(map);
+    
+    // 为第一个点添加特殊样式
+    if (drawingPoints.length === 1) {
+        marker.setStyle({
+            radius: 7,
+            color: '#27ae60',
+            fillColor: '#27ae60'
+        });
+    }
+    
+    drawingMarkers.push(marker);
+    
+    // 更新折线
+    updateDrawingPolyline();
+}
+
+// 鼠标移动事件
+function handleMouseMove(e) {
+    if (!isMapDrawing || drawingPoints.length === 0) return;
+    
+    let mousePoint = [e.latlng.lat, e.latlng.lng];
+    
+    // 如果按住Alt，显示角度吸附效果
+    if (isAltPressed && drawingPoints.length > 0) {
+        mousePoint = snapToAngle(drawingPoints[drawingPoints.length - 1], mousePoint);
+    }
+    
+    // 如果已有3个点，检查是否靠近初始点
+    if (drawingPoints.length >= 3) {
+        const distToFirst = map.distance(e.latlng, L.latLng(drawingPoints[0]));
+        if (distToFirst < 50000) { // 50km内高亮初始点
+            mousePoint = drawingPoints[0];
+            // 高亮第一个点
+            if (drawingMarkers[0]) {
+                drawingMarkers[0].setStyle({
+                    radius: 9,
+                    color: '#f39c12',
+                    fillColor: '#f39c12'
+                });
+            }
+        } else {
+            // 恢复第一个点样式
+            if (drawingMarkers[0]) {
+                drawingMarkers[0].setStyle({
+                    radius: 7,
+                    color: '#27ae60',
+                    fillColor: '#27ae60'
+                });
+            }
+        }
+    }
+    
+    // 更新临时线
+    if (tempLine) {
+        map.removeLayer(tempLine);
+    }
+    
+    tempLine = L.polyline([drawingPoints[drawingPoints.length - 1], mousePoint], {
+        color: '#3498db',
+        weight: 2,
+        dashArray: '5, 5',
+        opacity: 0.7
+    }).addTo(map);
+}
+
+// 将点吸附到5°整数倍的角度
+function snapToAngle(fromPoint, toPoint) {
+    const lat1 = fromPoint[0];
+    const lng1 = fromPoint[1];
+    const lat2 = toPoint[0];
+    const lng2 = toPoint[1];
+    
+    // 计算角度（相对于正北方向）
+    const dx = lng2 - lng1;
+    const dy = lat2 - lat1;
+    let angle = Math.atan2(dx, dy) * 180 / Math.PI; // 转换为度
+    
+    // 吸附到最近的5度整数倍
+    const snappedAngle = Math.round(angle / 5) * 5;
+    
+    // 计算距离
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    // 根据吸附后的角度计算新坐标
+    const radians = snappedAngle * Math.PI / 180;
+    const newLat = lat1 + distance * Math.cos(radians);
+    const newLng = lng1 + distance * Math.sin(radians);
+    
+    return [newLat, newLng];
+}
+
+// 更新绘制中的折线
+function updateDrawingPolyline() {
+    if (drawingPolyline) {
+        map.removeLayer(drawingPolyline);
+    }
+    
+    if (drawingPoints.length > 1) {
+        drawingPolyline = L.polyline(drawingPoints, {
+            color: '#3498db',
+            weight: 3,
+            opacity: 0.8
+        }).addTo(map);
+    }
+}
+
+// 完成绘制
+function finishDrawing(e) {
+    if (e) {
+        e.originalEvent.preventDefault();
+    }
+    
+    if (!isMapDrawing || drawingPoints.length < 3) {
+        if (drawingPoints.length > 0 && drawingPoints.length < 3) {
+            showNotification('至少需要3个点才能形成区域', 'warning');
+        }
+        return;
+    }
+    
+    // 获取当前颜色
+    const colorInput = document.getElementById('manualColorPicker');
+    const color = colorInput ? colorInput.value : '#3498db';
+    
+    // 创建多边形
+    warningCount++;
+    const notamId = `航警-${warningCount}`;
+    
+    const polygon = L.polygon(drawingPoints, {
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.3,
+        weight: 2
+    }).addTo(map);
+    
+    // 保存手动航警信息
+    const coordsStr = drawingPoints.map((p, i) => `点${i+1}: ${p[0].toFixed(6)}, ${p[1].toFixed(6)}`).join('\n');
+    manualNotams.push({
+        id: notamId,
+        coords: drawingPoints.slice(), // 复制数组
+        originalText: coordsStr,
+        color: color,
+        polygon: polygon
+    });
+    
+    manualVisibleState[notamId] = true;
+    manualPolygons.push(polygon);
+    
+    // 更新列表
+    updateManualList();
+    
+    // 调整视图
+    map.fitBounds(polygon.getBounds());
+    
+    // 清理临时元素
+    clearDrawingTemp();
+    
+    // 退出绘制模式
+    isMapDrawing = false;
+    const btn = document.getElementById('mapDrawToggleBtn');
+    btn.textContent = '📍 在地图中绘制';
+    btn.style.background = '#27ae60';
+    cancelMapDrawing();
+    
+    showNotification(`✓ 已创建 ${notamId}（${drawingPoints.length}个点）`, 'success');
 }

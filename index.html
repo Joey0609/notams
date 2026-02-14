@@ -44,9 +44,12 @@
                 </div>
                 <div id="manualContent">
                     <!-- 页面切换按钮 -->
-                    <div style="margin-bottom: 10px;">
-                        <button class="page-switch-btn-single" onclick="switchToListPage()">
+                    <div style="margin-bottom: 10px; display: flex; gap: 10px;">
+                        <button class="page-switch-btn" onclick="switchToListPage()" style="flex: 1;">
                             ← 返回航警列表
+                        </button>
+                        <button id="mapDrawToggleBtn" class="page-switch-btn" onclick="toggleMapDrawing()" style="flex: 1; background: #27ae60;">
+                            📍 在地图中绘制
                         </button>
                     </div>
                     
