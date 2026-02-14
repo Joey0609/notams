@@ -859,7 +859,7 @@ function finishDrawing(e) {
         fillOpacity: 0.3,
         weight: 2
     }).addTo(map);
-    
+    pointnum = drawingPoints.length;
     // 保存手动航警信息
     const coordsStr = drawingPoints.map((p, i) => `点${i+1}: ${p[0].toFixed(6)}, ${p[1].toFixed(6)}`).join('\n');
     manualNotams.push({
@@ -889,5 +889,5 @@ function finishDrawing(e) {
     btn.style.background = '#27ae60';
     cancelMapDrawing();
     
-    showNotification(`✓ 已创建 ${notamId}（${drawingPoints.length}个点）`, 'success');
+    showNotification(`✓ 已创建 ${notamId}（${pointnum}个点）`, 'success');
 }
