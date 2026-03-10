@@ -37,10 +37,17 @@ def batch_fetch_and_save(start_date, end_date):
         try:
             # 获取当天所有区域的NOTAM数据
             result = FNS_NOTAM_ARCHIVE_SEARCH("", date_str, mode=0)
-            print(f"[INFO] 成功获取 {date_str} 的 NOTAM 数据，共 {len(result['CODE'])} 条记录")
+
+            # 处理"已完成"状态（progress.json 中已记录为全部成功）
+            if result.get("_status") == "already_done":
+                print(f"[跳过] {date_str} 已在进度记录中，无需重复保存")
+                continue
+
+            codes = result.get("CODE", [])
+            print(f"[INFO] 成功获取 {date_str} 的 NOTAM 数据，共 {len(codes)} 条记录")
             # 转换并保存数据
             saved_count = 0
-            for i in range(len(result["CODE"])):
+            for i in range(len(codes)):
                 notam_record = {
                     "CODE": result["CODE"][i],
                     "COORDINATES": result["COORDINATES"][i],

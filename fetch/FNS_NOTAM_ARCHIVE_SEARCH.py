@@ -175,20 +175,32 @@ def fetch(icao, date, mode=0, successed_list = []):
     return results
 
 
-def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
+def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0, progress_filepath="./data/progress.json"):
+    """
+    获取指定日期的归档航警。
+    返回含 CODE/COORDINATES/TIME/TRANSID/RAWMESSAGE/ALTITUDE 的字典；
+    若该日期已全部检索完成则返回 {"_status": "already_done"}；
+    若无结果则返回 {"_status": "empty", "CODE": [], ...}。
+
+    参数:
+        icao: 单个 ICAO 代码（mode=1 时生效）
+        date: 查询日期，格式 "YYYY-MM-DD"
+        mode: 0=并行检索全部 ICAO，1=单 ICAO 检索
+        progress_filepath: progress.json 路径，默认 "./data/progress.json"
+    """
     print(f"[进度] ========== 开始历史航警检索 ==========")
     print(
         f"[进度] 日期: {date}, 区域: {icao if mode == 1 else '内陆及近海'}, 模式: {'single' if mode == 1 else 'multi'}")
-    succ,fail = progress.load_progress(date)
-    if len(succ) > 0 and len(fail) == 0: 
+    succ, fail = progress.load_progress(date, filepath=progress_filepath)
+    if len(succ) > 0 and len(fail) == 0:
         print("[进度] 该日期的所有区域航警已完成检索，跳过此次请求。")
-        return {}
+        return {"_status": "already_done"}
     elif len(succ) > 0 and len(fail) > 0:
         print(f"[进度] 该日期已有部分区域完成检索，跳过已完成区域，继续检索失败区域。已完成区域数: {len(succ)}，待检索区域数: {len(fail)}")
     results = fetch(icao, date, mode, succ)
     success_list = results.pop("success_list", [])
     failure_list = results.pop("failure_list", [])
-    progress.save_progress(date, success_list, failure_list)
+    progress.save_progress(date, success_list, failure_list, filepath=progress_filepath)
 
     print(f"[进度] 开始解析航警数据...")
 
@@ -319,6 +331,7 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
         if len(data_array_unique) > 1 and data_array_unique[0, 0] == "CODE":
             data_array_unique = data_array_unique[1:]
         result = {
+            "_status": "ok",
             "CODE": data_array_unique[:, 0].tolist() if len(data_array_unique) > 0 else [],
             "COORDINATES": data_array_unique[:, 1].tolist() if len(data_array_unique) > 0 else [],
             "TIME": data_array_unique[:, 2].tolist() if len(data_array_unique) > 0 else [],
@@ -328,6 +341,7 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0):
         }
     else:
         result = {
+            "_status": "empty",
             "CODE": [],
             "COORDINATES": [],
             "TIME": [],

@@ -1,0 +1,112 @@
+name: Monthly NOTAM Archive
+
+# 触发规则：
+#   schedule  — 每月 28~31 日 23:55 UTC 运行，脚本内部确认"今天是本月最后一天"后才正式执行
+#   workflow_dispatch — 手动触发，可指定 year/month；留空则自动取上个月
+on:
+  schedule:
+    - cron: '00 23 28-31 * *'
+  workflow_dispatch:
+    inputs:
+      year:
+        description: '目标年份（如 2025），留空则自动取上个月'
+        required: false
+        default: ''
+      month:
+        description: '目标月份 1-12，留空则自动取上个月'
+        required: false
+        default: ''
+
+permissions:
+  contents: write   # 允许推送数据文件
+
+jobs:
+  fetch-archive:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. 检出仓库（包含历史 notam_db 与 progress.json）──────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # ── 2. 计划任务：确认今天是本月最后一天，否则跳过 ─────────────────
+      - name: Check last day of month (schedule only)
+        if: github.event_name == 'schedule'
+        shell: bash
+        run: |
+          TOMORROW=$(date -u -d "+1 day" +%d)
+          if [ "$TOMORROW" != "01" ]; then
+            echo "今天不是本月最后一天（明天是 ${TOMORROW} 日），跳过本次执行。"
+            echo "SKIP=true" >> "$GITHUB_ENV"
+          else
+            echo "今天是本月最后一天，开始归档上个月的航警数据。"
+            echo "SKIP=false" >> "$GITHUB_ENV"
+          fi
+
+      # ── 3. 初始化 Python ──────────────────────────────────────────────
+      - name: Set up Python
+        if: env.SKIP != 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # ── 4. 安装依赖 ───────────────────────────────────────────────────
+      - name: Install dependencies
+        if: env.SKIP != 'true'
+        run: pip install -r requirements.txt
+
+      # ── 5. 确保数据目录存在 ───────────────────────────────────────────
+      - name: Ensure data directories exist
+        if: env.SKIP != 'true'
+        run: |
+          mkdir -p data/notam_db
+          mkdir -p data/archiveMatch
+
+      # ── 6. 运行月度归档脚本 ───────────────────────────────────────────
+      - name: Run monthly archive fetch
+        if: env.SKIP != 'true'
+        run: |
+          YEAR="${{ github.event.inputs.year }}"
+          MONTH="${{ github.event.inputs.month }}"
+          if [ -n "$YEAR" ] && [ -n "$MONTH" ]; then
+            echo "[CI] 手动指定月份：$YEAR-$MONTH"
+            python fetch/monthly_archive.py --year "$YEAR" --month "$MONTH"
+          else
+            echo "[CI] 自动检测上个月"
+            python fetch/monthly_archive.py
+          fi
+
+      # ── 7. 提交并推送更新的数据库文件 ────────────────────────────────
+      - name: Commit and push archive data
+        if: env.SKIP != 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 计算归档的目标月份标签（用于 commit message）
+          MONTH_TAG=$(python - <<'EOF'
+          import sys, os
+          sys.path.insert(0, os.path.join(os.getcwd(), 'fetch'))
+          year_arg = "${{ github.event.inputs.year }}"
+          month_arg = "${{ github.event.inputs.month }}"
+          if year_arg and month_arg:
+              print(f"{int(year_arg):04d}-{int(month_arg):02d}")
+          else:
+              from datetime import datetime, timedelta
+              t = datetime.utcnow().replace(day=1) - timedelta(days=1)
+              print(t.strftime('%Y-%m'))
+          EOF
+          )
+
+          git add data/notam_db/ data/progress.json
+
+          if git diff --staged --quiet; then
+            echo "无新数据，无需提交。"
+          else
+            git commit -m "archive: NOTAM 数据 ${MONTH_TAG} [skip ci]"
+            git push
+            echo "已成功推送 ${MONTH_TAG} 的航警归档数据。"
+          fi
