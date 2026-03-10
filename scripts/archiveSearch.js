@@ -43,7 +43,7 @@ function toggleArchiveSidebar() {
     
     // 限制年份范围：2023-2025
     const minYear = 2023;
-    const maxYear = 2025;
+    const maxYear = 2026;
     for (let y = maxYear; y >= minYear; y--) {
         const option = document.createElement('option');
         option.value = y;
