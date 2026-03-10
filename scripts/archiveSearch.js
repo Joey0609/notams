@@ -98,7 +98,7 @@ function toggleArchiveSidebar() {
         const isDateInRange = (y, m, d) => {
             const dateToCheck = new Date(y, m - 1, d);
             const minDate = new Date(minYear, 0, 1); // 2023-01-01
-            const maxDate = new Date(maxYear, 11, 31); // 2025-12-31
+            const maxDate = new Date(); // 当前日期
             return dateToCheck >= minDate && dateToCheck <= maxDate;
         };
         
@@ -223,7 +223,8 @@ function toggleArchiveSidebar() {
         // 检查日期范围
         const selectedDate = new Date(selectedYear, selectedMonth - 1, selectedDay);
         const minDate = new Date(minYear, 0, 1);
-        const maxDate = new Date(maxYear, 11, 31);
+        // 将最大允许日期改为当前日期
+        const maxDate = new Date();
         
         if (selectedDate < minDate || selectedDate > maxDate) {
             showNotification(`仅允许选择 ${minYear}年1月 至 ${maxYear}年12月 的日期`);
