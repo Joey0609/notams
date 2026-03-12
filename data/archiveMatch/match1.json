@@ -580,6 +580,35 @@
         "Center_Distance": 68.7
     },
     {
+        "CODE": "A0129/26",
+        "COORDINATES": "N272200E1083700-N273200E1074300-N271500E1073900-N270600E1083400",
+        "TIME": "16 JAN 16:47 2026 UNTIL 16 JAN 17:34 2026",
+        "PLATID": "79463663",
+        "RAWMESSAGE": "A0129/26 NOTAMN\nQ) ZPKM/QRDCA/IV/BO/W/000/999/2719N10808E027\nA) ZPKM B) 2601161647 C) 2601161734 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN272200E1083700-N273200E1074300-N271500E1073900-N270600E1083400\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2026-01.json",
+        "points": [
+            [
+                27.366666666666667,
+                108.61666666666666
+            ],
+            [
+                27.533333333333335,
+                107.71666666666667
+            ],
+            [
+                27.25,
+                107.65
+            ],
+            [
+                27.1,
+                108.56666666666666
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 68.7
+    },
+    {
         "CODE": "A0539/25",
         "COORDINATES": "N272200E1083700-N273200E1074300-N271500E1073900-N270600E1083400",
         "TIME": "09 MAR 17:09 2025 UNTIL 09 MAR 17:46 2025",
