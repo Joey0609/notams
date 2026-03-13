@@ -8,6 +8,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from dataBase import  *
 # 导入获取历史航警的函数
 from FNS_NOTAM_ARCHIVE_SEARCH import *
+from classify_notam_db import rebuild_notam_db_classify
 
 def batch_fetch_and_save(start_date, end_date):
     """
@@ -84,6 +85,13 @@ def batch_fetch_and_save(start_date, end_date):
     for month, count in stats["months"].items():
         print(f"  {month}: {count} 条记录")
     print(f"总计: {stats['total_notams']} 条记录")
+
+    # 批量抓取结束后，统一重建 notam_db 的 classify（支持跨月分组）
+    classify_stats = rebuild_notam_db_classify("./data/notam_db")
+    print(
+        f"[CLASSIFY] 已重建: files={classify_stats['files']}, "
+        f"records={classify_stats['records']}, groups={classify_stats['groups']}"
+    )
 
     return total_notams_saved
 

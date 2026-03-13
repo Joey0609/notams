@@ -153,7 +153,7 @@ def match_two_notams(notam1, notam2):
                 if intersect:
                     break
         
-        # 3. 计算重叠比例 - 改进版
+        # 3. 计算重叠比例
         if intersect:
             # 计算AABB交集面积
             area_intersection = (lat_max - lat_min) * (lon_max - lon_min)
@@ -263,7 +263,7 @@ def notam_match_archive(dataDict):
             overlap_ratio, center_distance = match_two_notams(current_notam, hist)
             
             # 检查是否匹配
-            if overlap_ratio > 0 or (overlap_ratio == 0 and 0 < center_distance < 300):
+            if overlap_ratio > 0 or (overlap_ratio == 0 and 0 < center_distance < 500):
                 # 创建历史航警副本并添加匹配字段
                 match_item = hist.copy()
                 match_item['Overlapping_Area'] = round(overlap_ratio * 100, 1)  # 转换为百分比
