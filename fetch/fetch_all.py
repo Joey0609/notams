@@ -10,7 +10,7 @@ from dataBase import  *
 from FNS_NOTAM_ARCHIVE_SEARCH import *
 from classify_notam_db import rebuild_notam_db_classify
 
-def batch_fetch_and_save(start_date, end_date):
+def batch_fetch_and_save(start_date, end_date, interval_days=3):
     """
     批量获取并保存NOTAM数据
 
@@ -24,7 +24,7 @@ def batch_fetch_and_save(start_date, end_date):
     # 生成日期范围
     start = datetime.strptime(start_date, "%Y-%m-%d")
     end = datetime.strptime(end_date, "%Y-%m-%d")
-    date_range = [start + timedelta(days=x) for x in range(0,(end - start).days + 3, 3)] # 每隔2天获取一次数据
+    date_range = [start + timedelta(days=x) for x in range(0,(end - start).days + interval_days, interval_days)] # 每隔interval_days天获取一次数据
 
     print(f"计划获取 {len(date_range)} 天的数据，从 {start_date} 到 {end_date}")
 
@@ -98,15 +98,15 @@ def batch_fetch_and_save(start_date, end_date):
 
 if __name__ == "__main__":
     # 设置日期范围（2023年1月1日到2023年1月5日）
-    start_date = "2024-06-11"
-    end_date = "2025-12-31"
+    start_date = "2021-01-01"
+    end_date = "2022-12-31"
 
     print("===== 开始批量获取历史航警数据 =====")
     print(f"日期范围: {start_date} 到 {end_date}")
     print("注意: 每次API请求后会有3-6秒的随机延迟，避免请求过于频繁")
 
     try:
-        total_saved = batch_fetch_and_save(start_date, end_date)
+        total_saved = batch_fetch_and_save(start_date, end_date, interval_days=10)
         print(f"\n===== 任务成功完成! 共保存 {total_saved} 条NOTAM数据 =====")
     except KeyboardInterrupt:
         print("\n[警告] 用户中断了程序执行")

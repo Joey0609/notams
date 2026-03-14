@@ -50,11 +50,11 @@ def last_month_info():
 
 
 def iter_days(year: int, month: int):
-    """生成目标月份内每一天的 YYYY-MM-DD 字符串列表。"""
+    """生成目标月份内每 3 天一次的 YYYY-MM-DD 字符串列表。"""
     _, last_day = calendar.monthrange(year, month)
     return [
         f"{year}-{month:02d}-{d:02d}"
-        for d in range(1, last_day + 1)
+        for d in range(1, last_day + 1, 3)
     ]
 
 
@@ -87,7 +87,7 @@ def fetch_month(year: int, month: int) -> bool:
     month_tag = f"{year}-{month:02d}"
 
     print(f"\n[月度归档] ======= 开始归档 {month_tag} =======")
-    print(f"[月度归档] 目标范围: {date_list[0]} ~ {date_list[-1]}（共 {len(date_list)} 天）")
+    print(f"[月度归档] 目标范围: {date_list[0]} ~ {date_list[-1]}（每 3 天一次，共 {len(date_list)} 次请求）")
     print(f"[月度归档] 进度文件: {_PROGRESS_FILE}")
     print(f"[月度归档] 数据库  : {_DB_DIR}\n")
 
