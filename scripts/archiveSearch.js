@@ -25,220 +25,63 @@ function toggleArchiveSidebar() {
 (function initArchiveSearch() {
     const btnSearch = document.getElementById('btnSearchArchive');
     const btnClear = document.getElementById('btnClearArchive');
-    const btnSelectDate = document.getElementById('btnSelectDate');
-    const selectedDateText = document.getElementById('selectedDateText');
-    const calendarPopup = document.getElementById('calendarPopup');
-    const yearSelect = document.getElementById('archiveYear');
-    const monthSelect = document.getElementById('archiveMonth');
-    const calendarGrid = document.getElementById('calendarGrid');
+    const startDateInput = document.getElementById('archiveStartDate');
+    const endDateInput = document.getElementById('archiveEndDate');
     // 移除区域选择元素
     const regionSelectElement = document.getElementById('archiveRegion');
     if (regionSelectElement) {
         regionSelectElement.parentElement.remove();
     }
-    
-    let selectedDay = null;
-    let selectedYear = null;
-    let selectedMonth = null;
-    
-    // 限制年份范围：2023-2025
-    const minYear = 2023;
-    const maxYear = 2026;
-    for (let y = maxYear; y >= minYear; y--) {
-        const option = document.createElement('option');
-        option.value = y;
-        option.textContent = y + '年';
-        yearSelect.appendChild(option);
-    }
-    
-    // 设置默认年份（如果当前年份在范围内）
-    const currentYear = new Date().getFullYear();
-    if (currentYear >= minYear && currentYear <= maxYear) {
-        yearSelect.value = currentYear;
-    } else if (currentYear < minYear) {
-        yearSelect.value = minYear;
-    } else {
-        yearSelect.value = maxYear;
-    }
-    
-    // 生成日历网格
-    function renderCalendar() {
-        const year = parseInt(yearSelect.value);
-        const month = parseInt(monthSelect.value);
-        
-        // 清空日历
-        calendarGrid.innerHTML = '';
-        
-        // 添加星期标题
-        const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-        weekdays.forEach(day => {
-            const weekdayEl = document.createElement('div');
-            weekdayEl.className = 'calendar-weekday';
-            weekdayEl.textContent = day;
-            calendarGrid.appendChild(weekdayEl);
-        });
-        
-        // 获取月份第一天是星期几（0=星期日）
-        const firstDay = new Date(year, month - 1, 1).getDay();
-        // 获取这个月有多少天
-        const daysInMonth = new Date(year, month, 0).getDate();
-        
-        // 添加空白格子（月份开始前的日子）
-        for (let i = 0; i < firstDay; i++) {
-            const emptyEl = document.createElement('div');
-            emptyEl.className = 'calendar-day empty';
-            calendarGrid.appendChild(emptyEl);
-        }
-        
-        // 获取今天的日期
-        const today = new Date();
-        const isCurrentMonth = today.getFullYear() === year && (today.getMonth() + 1) === month;
-        
-        // 检查日期是否在允许范围内
-        const isDateInRange = (y, m, d) => {
-            const dateToCheck = new Date(y, m - 1, d);
-            const minDate = new Date(minYear, 0, 1); // 2023-01-01
-            const maxDate = new Date(); // 当前日期
-            return dateToCheck >= minDate && dateToCheck <= maxDate;
-        };
-        
-        // 添加每一天
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayEl = document.createElement('div');
-            dayEl.className = 'calendar-day';
-            dayEl.textContent = day;
-            dayEl.dataset.day = day;
-            
-            // 检查日期是否在允许范围内
-            if (!isDateInRange(year, month, day)) {
-                dayEl.classList.add('out-of-range');
-                dayEl.style.opacity = '0.5';
-                dayEl.style.cursor = 'not-allowed';
-                continue; // 跳过不可选日期
-            }
-            
-            // 标记今天
-            if (isCurrentMonth && day === today.getDate()) {
-                dayEl.classList.add('today');
-            }
-            
-            // 如果是当前选中的日期
-            if (selectedDay === day && selectedYear === year && selectedMonth === month) {
-                dayEl.classList.add('selected');
-            }
-            
-            // 点击事件
-            dayEl.addEventListener('click', () => {
-                // 检查点击的日期是否在允许范围内
-                if (!isDateInRange(year, month, day)) {
-                    showNotification(`仅允许选择 ${minYear}年1月 至 ${maxYear}年12月 的日期`);
-                    return;
-                }
-                
-                // 移除之前的选中状态
-                calendarGrid.querySelectorAll('.calendar-day.selected').forEach(el => {
-                    el.classList.remove('selected');
-                });
-                // 添加新的选中状态
-                dayEl.classList.add('selected');
-                selectedDay = day;
-                selectedYear = parseInt(yearSelect.value);
-                selectedMonth = parseInt(monthSelect.value);
-                
-                // 更新显示文本
-                updateDateText();
-                
-                // 关闭日历
-                calendarPopup.classList.remove('show');
-                btnSelectDate.classList.remove('open');
-            });
-            
-            calendarGrid.appendChild(dayEl);
-        }
+
+    const minDateText = '2022-01-01';
+    const todayDate = new Date();
+    const maxDateText = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
+
+    startDateInput.min = minDateText;
+    startDateInput.max = maxDateText;
+    endDateInput.min = minDateText;
+    endDateInput.max = maxDateText;
+
+    // 默认最近30天
+    const defaultEnd = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
+    const defaultStart = new Date(defaultEnd);
+    defaultStart.setDate(defaultStart.getDate() - 30);
+    if (defaultStart < new Date(minDateText)) {
+        defaultStart.setTime(new Date(minDateText).getTime());
     }
 
-    // 更新日期显示文本
-    function updateDateText() {
-        if (selectedYear && selectedMonth && selectedDay) {
-            selectedDateText.textContent = `${selectedYear}年${selectedMonth}月${selectedDay}日`;
-        } else {
-            selectedDateText.textContent = '选择日期';
-        }
-    }
-
-    // 日期选择按钮点击事件
-    btnSelectDate.addEventListener('click', (e) => {
-        e.stopPropagation();
-        calendarPopup.classList.toggle('show');
-        btnSelectDate.classList.toggle('open');
-    });
-
-    // 点击外部关闭日历
-    document.addEventListener('click', (e) => {
-        if (!calendarPopup.contains(e.target) && e.target !== btnSelectDate) {
-            calendarPopup.classList.remove('show');
-            btnSelectDate.classList.remove('open');
-        }
-    });
-
-    // 设置默认日期为昨天（在允许范围内）
-    const defaultDate = new Date();
-    if (defaultDate.getFullYear() > maxYear) {
-        defaultDate.setFullYear(maxYear, 11, 31); // 2025-12-31
-    } else if (defaultDate.getFullYear() < minYear) {
-        defaultDate.setFullYear(minYear, 0, 1); // 2023-01-01
-    } else {
-        defaultDate.setDate(defaultDate.getDate() - 1); // 昨天
-    }
-    
-    // 确保默认日期在允许范围内
-    if (defaultDate < new Date(minYear, 0, 1)) {
-        defaultDate.setFullYear(minYear, 0, 1);
-    }
-    if (defaultDate > new Date(maxYear, 11, 31)) {
-        defaultDate.setFullYear(maxYear, 11, 31);
-    }
-    
-    yearSelect.value = defaultDate.getFullYear();
-    monthSelect.value = defaultDate.getMonth() + 1;
-    selectedDay = defaultDate.getDate();
-    selectedYear = defaultDate.getFullYear();
-    selectedMonth = defaultDate.getMonth() + 1;
-    
-    // 年份或月份变化时重新渲染日历
-    yearSelect.addEventListener('change', renderCalendar);
-    monthSelect.addEventListener('change', renderCalendar);
-    
-    // 初始化日历
-    renderCalendar();
-    updateDateText();
+    const toDateInputText = (dt) => `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+    startDateInput.value = toDateInputText(defaultStart);
+    endDateInput.value = toDateInputText(defaultEnd);
 
     // 检索按钮
     btnSearch.addEventListener('click', async () => {
-        if (!selectedYear || !selectedMonth || !selectedDay) {
-            showNotification('请选择日期');
+        const startDateRaw = startDateInput.value;
+        const endDateRaw = endDateInput.value;
+
+        if (!startDateRaw || !endDateRaw) {
+            showNotification('请选择起止日期');
             return;
         }
-        
-        // 检查日期范围
-        const selectedDate = new Date(selectedYear, selectedMonth - 1, selectedDay);
-        const minDate = new Date(minYear, 0, 1);
-        // 将最大允许日期改为当前日期
-        const maxDate = new Date();
-        
-        if (selectedDate < minDate || selectedDate > maxDate) {
-            showNotification(`仅允许选择 ${minYear}年1月 至 ${maxYear}年12月 的日期`);
+
+        const startDate = new Date(`${startDateRaw}T00:00:00`);
+        const endDate = new Date(`${endDateRaw}T23:59:59`);
+        const minDate = new Date(`${minDateText}T00:00:00`);
+        const maxDate = new Date(`${maxDateText}T23:59:59`);
+
+        if (startDate < minDate || endDate > maxDate) {
+            showNotification('仅允许选择 2022-01-01 至今天 的日期');
             return;
         }
-        
-        const year = String(selectedYear);
-        const month = String(selectedMonth).padStart(2, '0');
-        const day = String(selectedDay).padStart(2, '0');
-        const date = `${year}-${month}-${day}`;
 
-        console.log('点击检索按钮，日期:', date);
+        if (startDate > endDate) {
+            showNotification('起始日期不能晚于结束日期');
+            return;
+        }
 
-        await searchArchiveNotams(date);
+        console.log('点击检索按钮，日期区间:', startDateRaw, endDateRaw);
+
+        await searchArchiveNotams(startDateRaw, endDateRaw);
     });
 
     // 清除按钮
@@ -389,36 +232,25 @@ async function loadLocalArchiveMonthData(year, month) {
     }
 }
 
-// 获取选择日期前后15天内所有相关月份
-function getRelatedMonths(baseDate) {
-    const months = new Set();
-    const startDate = new Date(baseDate);
-    startDate.setDate(startDate.getDate() - 15); // 往前15天
-    
-    const endDate = new Date(baseDate);
-    endDate.setDate(endDate.getDate() + 15); // 往后15天
-    
-    // 遍历日期范围内的所有月份
-    let currentDate = new Date(startDate);
-    while (currentDate <= endDate) {
-        months.add({
-            year: currentDate.getFullYear(),
-            month: currentDate.getMonth() + 1 // 月份从1开始
+// 获取区间内所有相关月份
+function getMonthsInRange(startDate, endDate) {
+    const months = [];
+    let current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+    const endMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
+
+    while (current <= endMonth) {
+        months.push({
+            year: current.getFullYear(),
+            month: current.getMonth() + 1
         });
-        // 移到下个月第一天
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        currentDate.setDate(1);
+        current.setMonth(current.getMonth() + 1);
     }
-    
-    return Array.from(months);
+
+    return months;
 }
 
-// 合并多个数据源，筛选日期范围内的航警
-function filterNotamsWithinDateRange(allData, baseDate) {
-    const startDate = new Date(baseDate);
-    startDate.setDate(startDate.getDate() - 15); // 往前15天
-    const endDate = new Date(baseDate);
-    endDate.setDate(endDate.getDate() + 15); // 往后15天
+// 合并多个数据源，筛选区间内的航警
+function filterNotamsWithinDateRange(allData, startDate, endDate) {
     const result = {
         NUM: 0,
         CODE: [],
@@ -474,13 +306,13 @@ function filterNotamsWithinDateRange(allData, baseDate) {
     // 构建CLASSIFY对象
     result.CLASSIFY = classifyMap;
     
-    console.log(`筛选结果: 共 ${result.NUM} 条航警在 ${baseDate.toISOString().split('T')[0]} 前后15天内`);
+    console.log(`筛选结果: 共 ${result.NUM} 条航警在 ${startDate.toISOString().split('T')[0]} 至 ${endDate.toISOString().split('T')[0]} 内`);
     return result;
 }
 
-// 搜索历史航警 - 改为前端加载本地数据
-async function searchArchiveNotams(dateStr) {
-    console.log('开始搜索历史航警...', { dateStr });
+// 搜索历史航警 - 按自定义区间加载本地数据
+async function searchArchiveNotams(startDateStr, endDateStr) {
+    console.log('开始搜索历史航警...', { startDateStr, endDateStr });
     
     const btnSearch = document.getElementById('btnSearchArchive');
     const originalText = btnSearch.textContent;
@@ -491,11 +323,11 @@ async function searchArchiveNotams(dateStr) {
     btnSearch.style.opacity = '0.8';
 
     try {
-        // 解析选择的日期
-        const baseDate = new Date(dateStr);
-        
-        // 获取相关月份
-        const relatedMonths = getRelatedMonths(baseDate);
+        const startDate = new Date(`${startDateStr}T00:00:00`);
+        const endDate = new Date(`${endDateStr}T23:59:59`);
+
+        // 获取区间相关月份
+        const relatedMonths = getMonthsInRange(startDate, endDate);
         console.log('需要加载的月份:', relatedMonths);
         
         // 加载所有相关月份的数据
@@ -505,8 +337,8 @@ async function searchArchiveNotams(dateStr) {
         
         const allMonthData = await Promise.all(loadDataPromises);
         
-        // 筛选日期范围内的航警
-        const filteredData = filterNotamsWithinDateRange(allMonthData, baseDate);
+        // 筛选区间内的航警
+        const filteredData = filterNotamsWithinDateRange(allMonthData, startDate, endDate);
 
         // 清除旧的历史航警
         clearArchiveNotams();
@@ -555,7 +387,7 @@ async function searchArchiveNotams(dateStr) {
             btnSearch.style.background = '';
         }, 3000);
 
-        showNotification(`检索成功：找到 ${filteredData.NUM} 条航警 (前后15天内)`);
+        showNotification(`检索成功：找到 ${filteredData.NUM} 条航警（区间 ${startDateStr} 至 ${endDateStr}）`);
 
     } catch (error) {
         console.error('历史航警检索失败:', error);

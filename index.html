@@ -87,34 +87,11 @@
             <div class="sidebar-content" style="padding: 15px; overflow: visible;">
                 <div class="archive-form">
                     <div class="form-group">
-                        <label>选择日期 (检索选择日期前后15天的航警)</label>
-                        <button id="btnSelectDate" class="archive-input date-display-btn">
-                            <span id="selectedDateText">选择日期</span>
-                            <span class="date-picker-arrow">▼</span>
-                        </button>
-                        <div id="calendarPopup" class="calendar-popup">
-                            <div class="date-selector">
-                                <select id="archiveYear" class="archive-input date-part">
-                                    <!-- 动态生成年份选项 -->
-                                </select>
-                                <select id="archiveMonth" class="archive-input date-part">
-                                    <option value="1">1月</option>
-                                    <option value="2">2月</option>
-                                    <option value="3">3月</option>
-                                    <option value="4">4月</option>
-                                    <option value="5">5月</option>
-                                    <option value="6">6月</option>
-                                    <option value="7">7月</option>
-                                    <option value="8">8月</option>
-                                    <option value="9">9月</option>
-                                    <option value="10">10月</option>
-                                    <option value="11">11月</option>
-                                    <option value="12">12月</option>
-                                </select>
-                            </div>
-                            <div id="calendarGrid" class="calendar-grid">
-                                <!-- 动态生成日历 -->
-                            </div>
+                        <label>选择日期区间（2022年至今）</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input id="archiveStartDate" class="archive-input" type="date" style="flex: 1;" />
+                            <span style="color: #666;">至</span>
+                            <input id="archiveEndDate" class="archive-input" type="date" style="flex: 1;" />
                         </div>
                     </div>
                     <div class="form-group">
