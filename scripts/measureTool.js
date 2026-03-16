@@ -433,7 +433,7 @@
         map.doubleClickZoom.disable();
         map.getContainer().classList.add('measure-mode');
         bindEvents();
-        notify('测距已开启: 单击落点(首点也会吸附中心点/标记)，双击结束当前测距，右键退出测距模式');
+        notify('测距已开启: 单击选点，双击结束当前测距，右键退出测距模式');
     }
 
     function stopMeasure() {

@@ -95,14 +95,14 @@
                     <a href="https://tieba.baidu.com/p/9298301903" target="_blank">百度贴吧</a>
                 </div>
                 <div class="help-section">
-                    <h4>调试工具</h4><a href="#" onclick="toggleLogPanel(); return false;">查看终端日志</a>
+                    <h4>调试工具</h4><a href="#" onclick="toggleLogPanel(); return false;">查看浏览器控制台日志</a>
                 </div>
             </div>
         </div>
 
         <div class="log-panel" id="logPanel">
             <div class="log-header">
-                <span>查看终端日志</span>
+                <span>查看浏览器控制台日志</span>
                 <div>
                     <button class="log-clear-btn" onclick="clearLogs()">清空</button>
                     <button class="log-close-btn" onclick="toggleLogPanel()">×</button>
@@ -124,6 +124,7 @@
 
     <!-- 外部脚本加载 -->
     <script src="scripts/notamsDrawer.js"></script>
+    <script src="scripts/browserConsoleLog.js"></script>
     <script src="scripts/buttons.js"></script>
     <script src="scripts/scripts.js"></script>
     <script src="statics/leaflet/leaflet-image.js"></script>

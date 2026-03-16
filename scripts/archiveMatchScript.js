@@ -235,19 +235,6 @@ function closeLoadingModal() {
     if (modal) modal.style.display = 'none';
 }
 
-// 日志面板控制
-function toggleLogPanel() {
-    const panel = document.getElementById('logPanel');
-    if (panel) panel.classList.toggle('open');
-}
-
-function clearLogs() {
-    const content = document.getElementById('logContent');
-    if (content) {
-        content.innerHTML = '<div class="log-empty">暂无日志</div>';
-    }
-}
-
 // 复制原始航警
 function copyMatchRaw(idx) {
     const raw = matchData?.[idx]?.RAWMESSAGE || '';

@@ -16,6 +16,6 @@ function showNotification(message, type = 'info') {
     
     setTimeout(() => {
         div.classList.remove('show');
-        setTimeout(() => div.remove(), 400);
+        setTimeout(() => div.remove(), 600);
     }, duration);
 }

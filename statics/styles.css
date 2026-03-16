@@ -155,6 +155,8 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .log-level-INFO {background: #4ec9b0;color: #1e1e1e;}
 .log-level-ERROR {background: #f48771;color: #1e1e1e;}
 .log-level-WARNING {background: #dcdcaa;color: #1e1e1e;}
+.log-level-LOG {background: #cfd8e6;color: #1e1e1e;}
+.log-level-DEBUG {background: #89c2ff;color: #0f172a;}
 .log-message {color: #d4d4d4;}
 .log-timestamp, .log-level, .log-message {user-select: text;-webkit-user-select: text;}
 /* ────────────────────── 响应式航警侧边栏 ────────────────────── */
