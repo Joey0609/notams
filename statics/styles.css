@@ -313,9 +313,77 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 
 /* 按钮组 */
 #btnRefresh,
+#btnMeasure,
 #btnBack,
 #btnShowAll,
 #btnHideAll{background: rgba(255, 255, 255, 0.3);border: none;color: white;padding: 4px 8px;border-radius: 4px;cursor: pointer;font-size: 12px;margin-left: 4px;}
+#btnMeasure.active {background: #f59e0b;color: #1f2937;font-weight: bold;}
+
+.measure-distance-label {
+    background: rgba(17, 24, 39, 0.9);
+    color: #fff;
+    border: 1px solid rgba(245, 158, 11, 0.9);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.measure-result-marker {
+    pointer-events: auto;
+}
+
+.measure-result-badge {
+    position: relative;
+    display: inline-block;
+    background: rgba(17, 24, 39, 0.9);
+    color: #fff;
+    border: 1px solid rgba(245, 158, 11, 0.9);
+    border-radius: 4px;
+    padding: 3px 14px 3px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.measure-result-text {
+    display: inline-block;
+}
+
+.measure-result-close {
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    width: 14px;
+    height: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.95);
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 10px;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+}
+
+#allmap.measure-mode,
+#allmap.measure-mode .leaflet-container {
+    cursor: crosshair !important;
+}
+
+/* 测距模式下屏蔽原有 marker/polygon 的点击提示交互 */
+#allmap.measure-mode .leaflet-marker-icon,
+#allmap.measure-mode .leaflet-interactive {
+    pointer-events: none !important;
+}
+
+#allmap.measure-mode .measure-result-marker,
+#allmap.measure-mode .measure-result-marker * {
+    pointer-events: auto !important;
+}
 /* 颜色选择器（隐藏原生 input） */
 .color-picker-wrapper {position: relative;display: inline-block;width: fit-content;}
 .color-picker {position: absolute;opacity: 0;width: 100%;height: 100%;cursor: pointer;top: 0;left: 0;z-index: 2;}
