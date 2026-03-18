@@ -420,12 +420,15 @@ if __name__ == '__main__':
     if before_hash != after_hash:
         notam_match_archive(dataDict=dataDict)
         email_draft = generate_change_email_draft(previous_data, dataDict)
-        if MAIL_ENABLED:
+        added_count = int(email_draft.get('added_count', 0) or 0)
+        if MAIL_ENABLED and added_count > 0:
             try:
                 send_result = send_email_via_qq_smtp(get_mail_config(), email_draft)
                 print(f"邮件发送成功: {send_result}")
             except Exception as exc:
                 print(f"邮件发送失败: {exc}")
+        elif MAIL_ENABLED:
+            print('无新增航警，已跳过邮件发送')
         else:
             print('MAIL.enabled=false，已跳过邮件发送')
         update_visits()
