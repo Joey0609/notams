@@ -12,12 +12,12 @@ import html
 
 
 MAIL_LAUNCH_SITES = [
-    {'name': '酒泉卫星发射中心', 'abbr': 'JQ', 'lat': 40.96806, 'lon': 100.27806},
-    {'name': '西昌卫星发射中心', 'abbr': 'XC', 'lat': 28.24556, 'lon': 102.02667},
-    {'name': '太原卫星发射中心', 'abbr': 'TY', 'lat': 38.84861, 'lon': 111.60778},
-    {'name': '文昌航天发射场', 'abbr': 'WC', 'lat': 19.610379, 'lon': 110.954996},
-    {'name': '海南商业航天发射场', 'abbr': 'HC', 'lat': 19.592983, 'lon': 110.934836},
-    {'name': '海阳东方航天港', 'abbr': 'HY', 'lat': 36.688761, 'lon': 121.259377},
+    {'name': '酒泉卫星发射中心', 'lat': 40.96806, 'lon': 100.27806, 'icon': 'statics/launch.png'},
+    {'name': '西昌卫星发射中心', 'lat': 28.24556, 'lon': 102.02667, 'icon': 'statics/launch.png'},
+    {'name': '太原卫星发射中心', 'lat': 38.84861, 'lon': 111.60778, 'icon': 'statics/launch.png'},
+    {'name': '文昌航天发射场', 'lat': 19.610379, 'lon': 110.954996, 'icon': 'statics/launch.png'},
+    {'name': '海南商业航天发射场', 'lat': 19.592983, 'lon': 110.934836, 'icon': 'statics/launch.png'},
+    {'name': '海阳东方航天港', 'lat': 36.688761, 'lon': 121.259377, 'icon': 'statics/launch1.png'},
 ]
 
 
@@ -314,22 +314,33 @@ def _render_tiles_map(polys, data, width=1280, height=720, padding=80, provider=
         draw.polygon(points, fill=color + (250,), outline=color + (140,))
         draw.line(points + [points[0]], fill=color + (140,), width=1)
 
-    # 叠加发射场标记（用于邮件总览图识别关键位置）
+    # 叠加发射场图标（与网站主地图保持一致）
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    icon_cache = {}
+
+    def load_site_icon(icon_rel_path):
+        if icon_rel_path in icon_cache:
+            return icon_cache[icon_rel_path]
+        abs_path = os.path.join(repo_root, icon_rel_path.replace('/', os.sep))
+        try:
+            icon_img = Image.open(abs_path).convert('RGBA').resize((22, 22), Image.Resampling.LANCZOS)
+        except Exception:
+            icon_img = None
+        icon_cache[icon_rel_path] = icon_img
+        return icon_img
+
     for site in MAIL_LAUNCH_SITES:
         px, py = to_canvas_px(site['lat'], site['lon'])
         if px < -20 or py < -20 or px > width + 20 or py > height + 20:
             continue
+        site_icon = load_site_icon(site.get('icon', 'statics/launch.png'))
+        if site_icon is None:
+            continue
 
-        r = 6
-        draw.ellipse((px - r, py - r, px + r, py + r), fill=(255, 255, 255, 240), outline=(30, 30, 30, 255), width=2)
-        draw.line((px - 2, py, px + 2, py), fill=(30, 30, 30, 255), width=1)
-        draw.line((px, py - 2, px, py + 2), fill=(30, 30, 30, 255), width=1)
-
-        label = site['abbr']
-        text_x = int(px + 8)
-        text_y = int(py - 8)
-        draw.rectangle((text_x - 2, text_y - 1, text_x + 18, text_y + 11), fill=(255, 255, 255, 230), outline=(60, 60, 60, 180), width=1)
-        draw.text((text_x, text_y), label, fill=(20, 20, 20, 255))
+        # 与网页 Leaflet 设置一致：iconSize=[22,22], iconAnchor=[11,11]
+        icon_x = int(round(px - 11))
+        icon_y = int(round(py - 11))
+        canvas.alpha_composite(site_icon, (icon_x, icon_y))
 
     output = io.BytesIO()
     canvas.save(output, format='PNG', optimize=True)

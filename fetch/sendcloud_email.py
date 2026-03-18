@@ -7,7 +7,8 @@ from email.mime.text import MIMEText
 def _parse_recipients(to_emails):
     if not to_emails:
         return []
-    return [item.strip() for item in str(to_emails).split(';') if item.strip()]
+    raw = str(to_emails).replace(';', ',')
+    return [item.strip() for item in raw.split(',') if item.strip()]
 
 
 def send_email_via_qq_smtp(mail_config, email_payload):
@@ -32,7 +33,8 @@ def send_email_via_qq_smtp(mail_config, email_payload):
     subject = email_payload.get('subject', 'NOTAM 变更通知')
     message['Subject'] = subject
     message['From'] = f'{from_name} <{from_email}>' if from_name else from_email
-    message['To'] = ';'.join(to_emails)
+    # 保护收件人隐私：不在邮件头暴露群发地址列表
+    message['To'] = 'undisclosed-recipients'
 
     alt_part = MIMEMultipart('alternative')
     plain_text = email_payload.get('body_text', '')
