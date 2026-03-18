@@ -19,6 +19,11 @@ concurrency:
 jobs:
   update-notam:
     runs-on: ubuntu-latest
+    env:
+      NOTAM_SMTP_USER: ${{ secrets.NOTAM_SMTP_USER }}
+      NOTAM_SMTP_AUTH_CODE: ${{ secrets.NOTAM_SMTP_AUTH_CODE }}
+      NOTAM_FROM_EMAIL: ${{ secrets.NOTAM_FROM_EMAIL }}
+      NOTAM_TO_EMAILS: ${{ secrets.NOTAM_TO_EMAILS }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
