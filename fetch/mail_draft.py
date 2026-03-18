@@ -11,6 +11,16 @@ from PIL import Image, ImageDraw
 import html
 
 
+MAIL_LAUNCH_SITES = [
+    {'name': '酒泉卫星发射中心', 'abbr': 'JQ', 'lat': 40.96806, 'lon': 100.27806},
+    {'name': '西昌卫星发射中心', 'abbr': 'XC', 'lat': 28.24556, 'lon': 102.02667},
+    {'name': '太原卫星发射中心', 'abbr': 'TY', 'lat': 38.84861, 'lon': 111.60778},
+    {'name': '文昌航天发射场', 'abbr': 'WC', 'lat': 19.610379, 'lon': 110.954996},
+    {'name': '海南商业航天发射场', 'abbr': 'HC', 'lat': 19.592983, 'lon': 110.934836},
+    {'name': '海阳东方航天港', 'abbr': 'HY', 'lat': 36.688761, 'lon': 121.259377},
+]
+
+
 def parse_point(pt):
     import re
 
@@ -66,7 +76,7 @@ def _build_notam_map(data):
     return records
 
 
-def _format_match_summary(match_idx, top_n=8):
+def _format_match_summary(match_idx, top_n=5):
     match_path = os.path.join('data', 'archiveMatch', f'match{match_idx}.json')
     if not os.path.exists(match_path):
         return ['历史匹配结果未生成']
@@ -304,6 +314,23 @@ def _render_tiles_map(polys, data, width=1280, height=720, padding=80, provider=
         draw.polygon(points, fill=color + (250,), outline=color + (140,))
         draw.line(points + [points[0]], fill=color + (140,), width=1)
 
+    # 叠加发射场标记（用于邮件总览图识别关键位置）
+    for site in MAIL_LAUNCH_SITES:
+        px, py = to_canvas_px(site['lat'], site['lon'])
+        if px < -20 or py < -20 or px > width + 20 or py > height + 20:
+            continue
+
+        r = 6
+        draw.ellipse((px - r, py - r, px + r, py + r), fill=(255, 255, 255, 240), outline=(30, 30, 30, 255), width=2)
+        draw.line((px - 2, py, px + 2, py), fill=(30, 30, 30, 255), width=1)
+        draw.line((px, py - 2, px, py + 2), fill=(30, 30, 30, 255), width=1)
+
+        label = site['abbr']
+        text_x = int(px + 8)
+        text_y = int(py - 8)
+        draw.rectangle((text_x - 2, text_y - 1, text_x + 18, text_y + 11), fill=(255, 255, 255, 230), outline=(60, 60, 60, 180), width=1)
+        draw.text((text_x, text_y), label, fill=(20, 20, 20, 255))
+
     output = io.BytesIO()
     canvas.save(output, format='PNG', optimize=True)
     return output.getvalue()
@@ -383,7 +410,10 @@ def generate_change_email_draft(previous_data, current_data):
 
     def match_link(index_value):
         url = f'https://joey0609.github.io/notams/match.html?index={index_value}'
-        return f'<a href="{url}" target="_blank" style="color:#1a73e8; text-decoration:underline;">历史匹配结果</a>'
+        return f'<a href="{url}" target="_blank" style="color:#1a73e8; text-decoration:none;">历史匹配结果</a>'
+
+    def home_link():
+        return '<a href="https://joey0609.github.io/notams/" target="_blank" style="color:#1a73e8; text-decoration:none;">【打开网站】</a>'
 
     body_html = '<html><body style="font-family: \"Microsoft YaHei\", Arial, sans-serif; color: #222;">'
     body_html += '<div style="line-height:1.6; font-size:14px;">'
@@ -391,6 +421,8 @@ def generate_change_email_draft(previous_data, current_data):
     # 图片放在最前面
     if image_bytes:
         body_html += '<div style="margin: 2px 0 10px 0;"><img src="cid:notam_overview_x1" alt="NOTAM落区总览图" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;"/></div>'
+
+    body_html += '<div style="margin: 4px 0 8px 0;">' + home_link() + '</div>'
 
     body_html += '<div style="font-weight:700; font-size:1.08em; margin:6px 0;">新增航警：</div>'
     if added_ids:
