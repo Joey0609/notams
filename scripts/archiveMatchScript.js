@@ -133,12 +133,6 @@ function assignMatchGroupColors() {
     matchGroupColors = {};
     if (!matchData || !Array.isArray(matchData)) return;
     
-    // 筛选重叠面积大于20%的匹配项
-    matchData = matchData.filter(item => {
-        const overlap = item.Overlapping_Area || 0;
-        const total = item.Total_Area || 1;
-        return total === 0 ? false : (overlap / total) >= 20;
-    });
     
     // 按重叠面积和距离排序
     matchData.sort((a, b) => {

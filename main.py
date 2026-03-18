@@ -11,6 +11,8 @@ from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
 from fetch.FNS_NOTAM_ARCHIVE_SEARCH import FNS_NOTAM_ARCHIVE_SEARCH
 import re
 import json
+from fetch.mail_draft import generate_change_email_draft
+from fetch.sendcloud_email import send_email_via_qq_smtp
 from fetch.visits import update_visits
 from datetime import datetime
 dins = False
@@ -198,6 +200,16 @@ def load_config():
             'port': '5000',
             'auto_open_browser': 'true'
         }
+        config['MAIL'] = {
+            'enabled': 'false',
+            'smtp_server': 'smtp.qq.com',
+            'smtp_port': '465',
+            'smtp_user': 'your@qq.com',
+            'smtp_auth_code': '',
+            'from_email': 'your@qq.com',
+            'from_name': 'NOTAM Bot',
+            'to_emails': 'receiver@example.com',
+        }
         
         with open(config_file, 'w', encoding='utf-8') as f:
             f.write('# FIR/ICAO配置，填写你需要获取的航警所在的飞行情报区（FIR）代码或机场ICAO代码\n')
@@ -210,6 +222,24 @@ ICAO_CODES = config.get('ICAO', 'codes', fallback='ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM
 HOST = config.get('SERVER', 'host', fallback='127.0.0.1')
 PORT = config.getint('SERVER', 'port', fallback=5005)
 AUTO_OPEN = config.getboolean('SERVER', 'auto_open_browser', fallback=True)
+MAIL_ENABLED = config.getboolean('MAIL', 'enabled', fallback=False)
+
+
+def get_mail_config():
+    smtp_user = os.getenv('NOTAM_SMTP_USER', '').strip() or config.get('MAIL', 'smtp_user', fallback='').strip()
+    smtp_auth_code = os.getenv('NOTAM_SMTP_AUTH_CODE', '').strip() or config.get('MAIL', 'smtp_auth_code', fallback='').strip()
+    from_email = os.getenv('NOTAM_FROM_EMAIL', '').strip() or config.get('MAIL', 'from_email', fallback='').strip()
+    to_emails = os.getenv('NOTAM_TO_EMAILS', '').strip() or config.get('MAIL', 'to_emails', fallback='').strip()
+
+    return {
+        'smtp_server': config.get('MAIL', 'smtp_server', fallback='smtp.qq.com'),
+        'smtp_port': config.get('MAIL', 'smtp_port', fallback='465'),
+        'smtp_user': smtp_user,
+        'smtp_auth_code': smtp_auth_code,
+        'from_email': from_email,
+        'from_name': config.get('MAIL', 'from_name', fallback='NOTAM Bot').strip(),
+        'to_emails': to_emails,
+    }
 
 import logging
 from io import StringIO
@@ -378,6 +408,7 @@ def fetch():
     return dataDict
 
 if __name__ == '__main__':
+    previous_data = {}
     try:
         with open('data_dict.json', 'r', encoding='utf-8') as json_file:
             previous_data = json.load(json_file)
@@ -388,4 +419,13 @@ if __name__ == '__main__':
     after_hash = dataDict.get("HASH", None)
     if before_hash != after_hash:
         notam_match_archive(dataDict=dataDict)
+        email_draft = generate_change_email_draft(previous_data, dataDict)
+        if MAIL_ENABLED:
+            try:
+                send_result = send_email_via_qq_smtp(get_mail_config(), email_draft)
+                print(f"邮件发送成功: {send_result}")
+            except Exception as exc:
+                print(f"邮件发送失败: {exc}")
+        else:
+            print('MAIL.enabled=false，已跳过邮件发送')
         update_visits()

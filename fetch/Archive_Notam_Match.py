@@ -263,7 +263,7 @@ def notam_match_archive(dataDict):
             overlap_ratio, center_distance = match_two_notams(current_notam, hist)
             
             # 检查是否匹配
-            if overlap_ratio > 0 or (overlap_ratio == 0 and 0 < center_distance < 500):
+            if overlap_ratio > 0 or (overlap_ratio == 0 and 0 < center_distance < 250):
                 # 创建历史航警副本并添加匹配字段
                 match_item = hist.copy()
                 match_item['Overlapping_Area'] = round(overlap_ratio * 100, 1)  # 转换为百分比
