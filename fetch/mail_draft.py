@@ -239,7 +239,16 @@ def _fetch_tile_image(url, session):
     return Image.open(io.BytesIO(response.content)).convert('RGBA')
 
 
-def _render_tiles_map(polys, data, width=1280, height=720, padding=80, provider='gaode_vec'):
+def _render_tiles_map(
+    polys,
+    data,
+    min_width=960,
+    min_height=540,
+    max_width=2200,
+    max_height=1600,
+    padding=100,
+    provider='gaode_vec',
+):
     if not polys:
         return None
 
@@ -248,20 +257,36 @@ def _render_tiles_map(polys, data, width=1280, height=720, padding=80, provider=
     min_lon = min(pt[1] for _, poly in polys for pt in poly)
     max_lon = max(pt[1] for _, poly in polys for pt in poly)
 
+    # 极小包围盒时补一点余量，避免后续尺寸过小
+    if max_lat - min_lat < 1e-5:
+        max_lat += 1e-4
+        min_lat -= 1e-4
+    if max_lon - min_lon < 1e-5:
+        max_lon += 1e-4
+        min_lon -= 1e-4
+
     center_lat = (min_lat + max_lat) / 2.0
     center_lon = (min_lon + max_lon) / 2.0
 
-    # 选择合适 zoom，确保所有落区完整包含在画布中
-    chosen_zoom = 5
-    for zoom in range(5, 13):
+    # 按最大画布约束选缩放级别，确保所有落区可完整容纳
+    chosen_zoom = 3
+    span_x = 0.0
+    span_y = 0.0
+    for zoom in range(3, 14):
         x1, y1 = _lonlat_to_world_px(max_lat, min_lon, zoom)
         x2, y2 = _lonlat_to_world_px(min_lat, max_lon, zoom)
-        span_x = abs(x2 - x1)
-        span_y = abs(y2 - y1)
-        if span_x <= width - 2 * padding and span_y <= height - 2 * padding:
+        cur_span_x = abs(x2 - x1)
+        cur_span_y = abs(y2 - y1)
+        if cur_span_x <= max_width - 2 * padding and cur_span_y <= max_height - 2 * padding:
             chosen_zoom = zoom
+            span_x = cur_span_x
+            span_y = cur_span_y
         else:
             break
+
+    # 用包围盒跨度反推画布尺寸（不再固定宽高）
+    width = int(math.ceil(max(min_width, min(max_width, span_x + 2 * padding))))
+    height = int(math.ceil(max(min_height, min(max_height, span_y + 2 * padding))))
 
     center_x, center_y = _lonlat_to_world_px(center_lat, center_lon, chosen_zoom)
     half_w = width / 2.0
@@ -361,9 +386,7 @@ def generate_change_email_draft(previous_data, current_data):
         image_bytes = _render_tiles_map(
             polys,
             current_data or {},
-            width=1280,
-            height=720,
-            padding=80,
+            padding=100,
             provider='gaode_vec',
         )
 
