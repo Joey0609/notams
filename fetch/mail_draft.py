@@ -20,6 +20,17 @@ MAIL_LAUNCH_SITES = [
     {'name': '海阳东方航天港', 'lat': 36.688761, 'lon': 121.259377, 'icon': 'statics/launch1.png'},
 ]
 
+# 与网页 scripts.js 保持一致的颜色池
+COLOR_POOL_VECTOR = [
+    '#a70000ff', '#1a2cd1', '#006d1bff', '#806800ff', '#6a009bff',
+    '#548100ff', '#a74e00ff', '#313131', '#a0008bff', '#006b79ff'
+]
+
+COLOR_POOL_SATELLITE = [
+    '#ff3b3b', '#00d9ff', '#00ff41', '#ffea00', '#c300ffff',
+    '#7dff00', '#ff8c00', '#ffffff', '#ff1493', '#00ffff'
+]
+
 
 def parse_point(pt):
     import re
@@ -205,6 +216,19 @@ def _class_key_to_rgb(class_key):
     return (int(red * 255), int(green * 255), int(blue * 255))
 
 
+def _build_group_color_map(data, provider='gaode_vec'):
+    classify = data.get('CLASSIFY', {}) if isinstance(data, dict) else {}
+    pool = COLOR_POOL_VECTOR if provider in ('gaode_vec', 'tianditu_vec') else COLOR_POOL_SATELLITE
+    if not pool:
+        return {}
+
+    group_color_map = {}
+    if isinstance(classify, dict) and classify:
+        for idx, group_key in enumerate(classify.keys()):
+            group_color_map[str(group_key)] = _hex_to_rgb(pool[idx % len(pool)])
+    return group_color_map
+
+
 def _lonlat_to_world_px(lat, lon, zoom):
     lat = max(min(lat, 85.05112878), -85.05112878)
     sin_lat = math.sin(math.radians(lat))
@@ -328,13 +352,11 @@ def _render_tiles_map(
         class_key = code_to_class.get(code, code)
         polygon_groups.append((class_key, code, poly))
 
-    group_color_map = {}
-    for group_key, _, _ in polygon_groups:
-        if group_key not in group_color_map:
-            group_color_map[group_key] = _class_key_to_rgb(group_key)
+    group_color_map = _build_group_color_map(data, provider=provider)
+    fallback_rgb = _hex_to_rgb((COLOR_POOL_VECTOR if provider in ('gaode_vec', 'tianditu_vec') else COLOR_POOL_SATELLITE)[0])
 
     for group_key, code, poly in polygon_groups:
-        color = group_color_map[group_key]
+        color = group_color_map.get(group_key, fallback_rgb)
         points = [to_canvas_px(lat, lon) for lat, lon in poly]
         draw.polygon(points, fill=color + (250,), outline=color + (140,))
         draw.line(points + [points[0]], fill=color + (140,), width=1)
