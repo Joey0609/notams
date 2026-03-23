@@ -1,0 +1,466 @@
+[
+    {
+        "CODE": "F0700/23",
+        "COORDINATES": "S195500E0870200-S270100E0853000-S271100E0862900-S200500E0875800",
+        "TIME": "22 MAR 08:00 2023 UNTIL 26 MAR 14:00 2023",
+        "PLATID": "67642143",
+        "RAWMESSAGE": "F0700/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2334S08645E250\nA) YMMM\nB) 2303220800 C) 2303261400\nD) DAILY 0800/1400\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO UNBURNED DEBRIS EXPECTED TO FALL, THE FLIGHT SAFETY OF THE\nAIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS19 55 00 E 087 02 00 \nS27 01 00 E 085 30 00\nS27 11 00 E 086 29 00\nS20 05 00 E 087 58 00\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-03.json",
+        "points": [
+            [
+                -19.916666666666668,
+                87.03333333333333
+            ],
+            [
+                -27.016666666666666,
+                85.5
+            ],
+            [
+                -27.183333333333334,
+                86.48333333333333
+            ],
+            [
+                -20.083333333333332,
+                87.96666666666667
+            ]
+        ],
+        "Overlapping_Area": 38.5,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F0891/23",
+        "COORDINATES": "S195500E0870200-S270100E0853000-S271100E0862900-S200500E0875800",
+        "TIME": "21 MAR 08:00 2023 UNTIL 26 MAR 14:00 2023",
+        "PLATID": "67834542",
+        "RAWMESSAGE": "F0891/23 NOTAMR F0700/23\nQ) YMMM/QWMLW/IV/BO/W/000/999/2334S08645E250\nA) YMMM\nB) 2303210800 C) 2303261400\nD) DAILY 0800/1400\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO UNBURNED DEBRIS EXPECTED TO FALL, THE FLIGHT SAFETY OF THE\nAIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS19 55 00 E 087 02 00 \nS27 01 00 E 085 30 00\nS27 11 00 E 086 29 00\nS20 05 00 E 087 58 00\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-03.json",
+        "points": [
+            [
+                -19.916666666666668,
+                87.03333333333333
+            ],
+            [
+                -27.016666666666666,
+                85.5
+            ],
+            [
+                -27.183333333333334,
+                86.48333333333333
+            ],
+            [
+                -20.083333333333332,
+                87.96666666666667
+            ]
+        ],
+        "Overlapping_Area": 38.5,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F4446/23",
+        "COORDINATES": "S2437E08701-S2428E08613-S2148E08647-S2156E08734",
+        "TIME": "27 DEC 06:52 2023 UNTIL 27 DEC 07:53 2023",
+        "PLATID": "70663216",
+        "RAWMESSAGE": "F4446/23 NOTAMR F4384/23\nQ) YMMM/QWMLW/IV/BO/W/000/999/2312S08653E090\nA) YMMM\nB) 2312270652 C) 2312270753\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED DUE POSSIBLE UNBURNED DEBRIS:\n2437S08701E, 2428S08613E, 2148S08647E, 2156S08734E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                -24.616666666666667,
+                87.01666666666667
+            ],
+            [
+                -24.466666666666665,
+                86.21666666666667
+            ],
+            [
+                -21.8,
+                86.78333333333333
+            ],
+            [
+                -21.933333333333334,
+                87.56666666666666
+            ]
+        ],
+        "Overlapping_Area": 9.7,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F4384/23",
+        "COORDINATES": "S2148E08647-S2156E08733-S2436E08700-S2427E08613",
+        "TIME": "27 DEC 05:00 2023 UNTIL 30 DEC 11:00 2023",
+        "PLATID": "70629427",
+        "RAWMESSAGE": "F4384/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2312S08653E084\nA) YMMM\nB) 2312270500 C) 2312301100\nD) DAILY 0500-1100\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED DUE POSSIBLE UNBURNED DEBRIS:\nS21 48 E086 47\nS21 56 E087 33\nS24 36 E087 00 \nS24 27 E086 13 \n(AREA-PI, SVC0444/23)\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                -21.8,
+                86.78333333333333
+            ],
+            [
+                -21.933333333333334,
+                87.55
+            ],
+            [
+                -24.6,
+                87.0
+            ],
+            [
+                -24.45,
+                86.21666666666667
+            ]
+        ],
+        "Overlapping_Area": 9.7,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F4385/23",
+        "COORDINATES": "S2141E08645-S2149E08730-S2429E08657-S2421E08611",
+        "TIME": "05 JAN 10:00 2024 UNTIL 08 JAN 15:00 2024",
+        "PLATID": "70629699",
+        "RAWMESSAGE": "F4385/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2304S08651E085\nA) YMMM\nB) 2401051000 C) 2401081500\nD) DAILY 1000-1500\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED DUE POSSIBLE UNBURNED DEBRIS:\nS21 41 E086 45\nS21 49 E087 30\nS24 29 E086 57\nS24 21 E086 11\n(AREA-PK, SVC0446/23)\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2024-01.json",
+        "points": [
+            [
+                -21.683333333333334,
+                86.75
+            ],
+            [
+                -21.816666666666666,
+                87.5
+            ],
+            [
+                -24.483333333333334,
+                86.95
+            ],
+            [
+                -24.35,
+                86.18333333333334
+            ]
+        ],
+        "Overlapping_Area": 9.5,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F4447/23",
+        "COORDINATES": "S2406E08706-S2358E08619-S2118E08653-S2126E08739",
+        "TIME": "25 DEC 00:52 2023 UNTIL 25 DEC 01:53 2023",
+        "PLATID": "70663220",
+        "RAWMESSAGE": "F4447/23 NOTAMR F4383/23\nQ) YMMM/QWMLW/IV/BO/W/000/999/2241S08658E084\nA) YMMM\nB) 2312250052 C) 2312250153\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED DUE POSSIBLE UNBURNED DEBRIS:\n2406S08706E, 2358S08619E, 2118S08653E, 2126S08739E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                -24.1,
+                87.1
+            ],
+            [
+                -23.966666666666665,
+                86.31666666666666
+            ],
+            [
+                -21.3,
+                86.88333333333334
+            ],
+            [
+                -21.433333333333334,
+                87.65
+            ]
+        ],
+        "Overlapping_Area": 6.4,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F4383/23",
+        "COORDINATES": "S2118E08653-S2126E08738-S2405E08705-S2357E08619",
+        "TIME": "25 DEC 00:00 2023 UNTIL 28 DEC 06:00 2023",
+        "PLATID": "70629341",
+        "RAWMESSAGE": "F4383/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2241S08658E084\nA) YMMM\nB) 2312250000 C) 2312280600\nD) DAILY 0000-0600\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED DUE POSSIBLE UNBURNED DEBRIS:\nS21 18 E086 53\nS21 26 E087 38\nS24 05 E087 05\nS23 57 E086 19\n(AREA-PH, SVC0443/23)\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                -21.3,
+                86.88333333333334
+            ],
+            [
+                -21.433333333333334,
+                87.63333333333334
+            ],
+            [
+                -24.083333333333332,
+                87.08333333333333
+            ],
+            [
+                -23.95,
+                86.31666666666666
+            ]
+        ],
+        "Overlapping_Area": 6.3,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F3484/21",
+        "COORDINATES": "S243343E0861428-S252617E0860011-S253130E0862320-S243853E0863726",
+        "TIME": "22 NOV 22:30 2021 UNTIL 26 NOV 01:00 2021",
+        "PLATID": "62183236",
+        "RAWMESSAGE": "F3484/21 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2501S08618E035\nA) YMMM\nB) 2111222230 C) 2111260100\nD) DAILY 2230/0100\nE) AEROSPACE FLIGHT ACTIVITY FROM CHINA WILL TAKE PLACE\nFLW RECEIVED FROM CAAC: DUE TO AN AEROSPACE FLIGHT ACTIVITY, THE\nFLIGHT SAFETY OF AIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED. \nCHARACTERISTICS OF IMPACT AREA:\nS243343 E0861428\nS252617 E0860011\nS253130 E0862320\nS243853 E0863726\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2021-11.json",
+        "points": [
+            [
+                -24.561944444444446,
+                86.24111111111111
+            ],
+            [
+                -25.438055555555557,
+                86.00305555555556
+            ],
+            [
+                -25.525,
+                86.3888888888889
+            ],
+            [
+                -24.648055555555555,
+                86.62388888888889
+            ]
+        ],
+        "Overlapping_Area": 3.6,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F2210/23",
+        "COORDINATES": "S230300E0863800-S230700E0870300-S240200E0865200-S235800E0862700",
+        "TIME": "03 JUL 03:14 2023 UNTIL 03 JUL 03:54 2023",
+        "PLATID": "68893611",
+        "RAWMESSAGE": "F2210/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2330S08642E035\nA) YMMM\nB) 2307030314 C) 2307030354\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES SVC 212/23, THE FLIGHT SAFETY OF\nTHE AIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS23 03 00 E 086 38 00 \nS23 07 00 E 087 03 00\nS24 02 00 E 086 52 00\nS23 58 00 E 086 27 00\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-07.json",
+        "points": [
+            [
+                -23.05,
+                86.63333333333334
+            ],
+            [
+                -23.116666666666667,
+                87.05
+            ],
+            [
+                -24.033333333333335,
+                86.86666666666666
+            ],
+            [
+                -23.966666666666665,
+                86.45
+            ]
+        ],
+        "Overlapping_Area": 3.2,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F2271/23",
+        "COORDINATES": "S2303E08638-S2307E08703-S2402E08652-S2358E08627",
+        "TIME": "19 JUL 03:00 2023 UNTIL 22 JUL 08:00 2023",
+        "PLATID": "68947599",
+        "RAWMESSAGE": "F2271/23 NOTAMR F2240/23\nQ) YMMM/QWMXX/IV/BO/W/000/999/2333S08646E040\nA) YMMM\nB) 2307190300 C) 2307220800\nD) DAILY 0300/0800\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES SVC0233/23, THE FLIGHT SAFETY OF\nTHE AIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS2303 E08638\nS2307 E08703\nS2402 E08652\nS2358 E08627\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-07.json",
+        "points": [
+            [
+                -23.05,
+                86.63333333333334
+            ],
+            [
+                -23.116666666666667,
+                87.05
+            ],
+            [
+                -24.033333333333335,
+                86.86666666666666
+            ],
+            [
+                -23.966666666666665,
+                86.45
+            ]
+        ],
+        "Overlapping_Area": 3.2,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F2280/23",
+        "COORDINATES": "S2303E08638-S2358E08627-S2402E08652-S2307E08703",
+        "TIME": "19 JUL 03:00 2023 UNTIL 22 JUL 08:00 2023",
+        "PLATID": "68948752",
+        "RAWMESSAGE": "F2280/23 NOTAMR F2235/23\nQ) YMMM/QWMLW/IV/BO/W/000/999/2308S08702E040\nA) YMMM\nB) 2307190300 C) 2307220800\nD) DAILY 0300/0800\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES AREA-PW, THE FLIGHT SAFETY OF THE\nAIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS2303 E08638\nS2358 E08627\nS2402 E08652\nS2307 E08703\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-07.json",
+        "points": [
+            [
+                -23.05,
+                86.63333333333334
+            ],
+            [
+                -23.966666666666665,
+                86.45
+            ],
+            [
+                -24.033333333333335,
+                86.86666666666666
+            ],
+            [
+                -23.116666666666667,
+                87.05
+            ]
+        ],
+        "Overlapping_Area": 3.2,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F2361/23",
+        "COORDINATES": "S2303E08638-S2307E08703-S2402E08652-S2358E08627",
+        "TIME": "19 JUL 03:14 2023 UNTIL 19 JUL 03:54 2023",
+        "PLATID": "69046539",
+        "RAWMESSAGE": "F2361/23 NOTAMR F2271/23\nQ) YMMM/QWMXX/IV/BO/W/000/999/2333S08646E040\nA) YMMM\nB) 2307190314 C) 2307190354\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES SVC0267/23, THE FLIGHT SAFETY OF\nTHE AIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS2303 E08638\nS2307 E08703\nS2402 E08652\nS2358 E08627\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-07.json",
+        "points": [
+            [
+                -23.05,
+                86.63333333333334
+            ],
+            [
+                -23.116666666666667,
+                87.05
+            ],
+            [
+                -24.033333333333335,
+                86.86666666666666
+            ],
+            [
+                -23.966666666666665,
+                86.45
+            ]
+        ],
+        "Overlapping_Area": 3.2,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F2376/23",
+        "COORDINATES": "S2303E08638-S2358E08627-S2402E08652-S2307E08703",
+        "TIME": "19 JUL 03:14 2023 UNTIL 19 JUL 03:54 2023",
+        "PLATID": "69058954",
+        "RAWMESSAGE": "F2376/23 NOTAMR F2280/23\nQ) YMMM/QWMLW/IV/BO/W/000/999/2308S08702E040\nA) YMMM\nB) 2307190314 C) 2307190354\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES AREA-PW, THE FLIGHT SAFETY OF THE\nAIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS2303 E08638\nS2358 E08627\nS2402 E08652\nS2307 E08703\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-07.json",
+        "points": [
+            [
+                -23.05,
+                86.63333333333334
+            ],
+            [
+                -23.966666666666665,
+                86.45
+            ],
+            [
+                -24.033333333333335,
+                86.86666666666666
+            ],
+            [
+                -23.116666666666667,
+                87.05
+            ]
+        ],
+        "Overlapping_Area": 3.2,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F2386/23",
+        "COORDINATES": "S2303E08638-S2307E08703-S2402E08652-S2358E08627",
+        "TIME": "20 JUL 03:14 2023 UNTIL 20 JUL 03:54 2023",
+        "PLATID": "69063055",
+        "RAWMESSAGE": "F2386/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2308S08702E040\nA) YMMM\nB) 2307200314 C) 2307200354\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES SVC0272/23, THE FLIGHT SAFETY OF\nTHE AIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS23 03 E086 38\nS23 07 E087 03\nS24 02 E086 52\nS23 58 E086 27\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-07.json",
+        "points": [
+            [
+                -23.05,
+                86.63333333333334
+            ],
+            [
+                -23.116666666666667,
+                87.05
+            ],
+            [
+                -24.033333333333335,
+                86.86666666666666
+            ],
+            [
+                -23.966666666666665,
+                86.45
+            ]
+        ],
+        "Overlapping_Area": 3.2,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F2235/23",
+        "COORDINATES": "S230400E0863900-S235700E0862800-S240100E0865100-S230800E0870200",
+        "TIME": "03 JUL 03:00 2023 UNTIL 06 JUL 08:00 2023",
+        "PLATID": "68917813",
+        "RAWMESSAGE": "F2235/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2308S08702E040\nA) YMMM\nB) 2307030300 C) 2307060800\nD) DAILY 0300/0800\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\nS23 04 00 E086 39 00\nS23 57 00 E086 28 00\nS24 01 00 E086 51 00\nS23 08 00 E087 02 00\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-07.json",
+        "points": [
+            [
+                -23.066666666666666,
+                86.65
+            ],
+            [
+                -23.95,
+                86.46666666666667
+            ],
+            [
+                -24.016666666666666,
+                86.85
+            ],
+            [
+                -23.133333333333333,
+                87.03333333333333
+            ]
+        ],
+        "Overlapping_Area": 3.0,
+        "Center_Distance": -1.0
+    },
+    {
+        "CODE": "F3793/23",
+        "COORDINATES": "S2228E08414-S2240E08512-S2609E08419-S2557E08320",
+        "TIME": "16 NOV 03:53 2023 UNTIL 16 NOV 04:29 2023",
+        "PLATID": "70210862",
+        "RAWMESSAGE": "F3793/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2350S08416E087\nA) YMMM\nB) 2311160353 C) 2311160429\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES SVC0394/23, THE FLIGHT SAFETY OF\nTHE AIRCRAFT IN THE FOLLOWING AREA MAY BE AFFECTED:\nS22 28 E084 14\nS22 40 E085 12\nS26 09 E084 19\nS25 57 E083 20\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "source_file": "2023-11.json",
+        "points": [
+            [
+                -22.466666666666665,
+                84.23333333333333
+            ],
+            [
+                -22.666666666666668,
+                85.2
+            ],
+            [
+                -26.15,
+                84.31666666666666
+            ],
+            [
+                -25.95,
+                83.33333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 135.2
+    }
+]
