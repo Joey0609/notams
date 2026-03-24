@@ -2,12 +2,43 @@
 // 全局变量
 let matchIndex = -1;
 let matchData = null;
+let relatedChildLayersByParent = {};
 const matchColorPool = [
     '#3498db99', '#e74c3c99', '#2ecc7199', '#f39c1299', '#9b59b699',
     '#1abc9c99', '#34495e99', '#16a08599', '#27ae6099', '#2980b999',
     '#8e44ad99', '#2c3e5099', '#d3540099', '#c0392b99', '#7f8c8d99'
 ];
 const originalNotamColor = '#4444ffff'; // 原始航警使用半透明红色
+
+function parsePoint(pt) {
+    const match = String(pt || '').trim().match(/^([NS])(\d{4,6})([WE])(\d{5,7})$/);
+    if (!match) return null;
+    const ns = match[1];
+    const latRaw = match[2];
+    const ew = match[3];
+    const lonRaw = match[4];
+
+    const latDeg = parseInt(latRaw.slice(0, 2), 10);
+    const latMin = parseInt(latRaw.slice(2, 4), 10);
+    const latSec = latRaw.length === 6 ? parseInt(latRaw.slice(4, 6), 10) : 0;
+    let lat = latDeg + latMin / 60.0 + latSec / 3600.0;
+    if (ns === 'S') lat = -lat;
+
+    const lonDeg = parseInt(lonRaw.slice(0, 3), 10);
+    const lonMin = parseInt(lonRaw.slice(3, 5), 10);
+    const lonSec = lonRaw.length === 7 ? parseInt(lonRaw.slice(5, 7), 10) : 0;
+    let lon = lonDeg + lonMin / 60.0 + lonSec / 3600.0;
+    if (ew === 'W') lon = -lon;
+
+    return [lat, lon];
+}
+
+function parseCoordinatesToLatLngs(coordStr) {
+    return String(coordStr || '')
+        .split('-')
+        .map((part) => parsePoint(part))
+        .filter((point) => Array.isArray(point) && point.length === 2);
+}
 
 // 页面加载
 window.addEventListener('DOMContentLoaded', function() {
@@ -121,6 +152,13 @@ function clearMatchPolygons() {
         polygonMatch.forEach(p => p && map.removeLayer(p));
         polygonMatch = [];
     }
+
+    // 清除同组子项图层
+    Object.values(relatedChildLayersByParent).forEach((layers) => {
+        (layers || []).forEach((layer) => layer && map.removeLayer(layer));
+    });
+    relatedChildLayersByParent = {};
+    window.relatedChildLayersByParent = relatedChildLayersByParent;
     
     // 重置匹配状态
     Object.keys(visibleMatchState).forEach(key => {
@@ -167,6 +205,8 @@ function drawMatchNotams() {
     if (!matchData || !Array.isArray(matchData)) return;
     
     polygonMatch = [];
+    relatedChildLayersByParent = {};
+    window.relatedChildLayersByParent = relatedChildLayersByParent;
     
     for (let i = 0; i < matchData.length; i++) {
         const item = matchData[i];
@@ -185,6 +225,8 @@ function drawMatchNotams() {
         // 重用自动航警的数组
         polygonMatch[i] = window.polygonAuto[i];
         visibleMatchState[i] = true;
+
+        drawRelatedChildPolygons(i, item, col);
     }
     // 适应所有多边形
     if (polygonMatch.length > 0) {
@@ -228,6 +270,38 @@ function closeLoadingModal() {
     const modal = document.getElementById('loadingModal');
     if (modal) modal.style.display = 'none';
 }
+                function drawRelatedChildPolygons(parentIndex, item, color) {
+                    const related = item?.RelatedItems;
+                    if (!Array.isArray(related) || related.length === 0) {
+                        relatedChildLayersByParent[parentIndex] = [];
+                        return;
+                    }
+
+                    const layers = [];
+                    related.forEach((child) => {
+                        const latlngs = parseCoordinatesToLatLngs(child.COORDINATES);
+                        if (latlngs.length < 3) return;
+                        const layer = L.polygon(latlngs, {
+                            color,
+                            weight: 3,
+                            opacity: 1,
+                            fillColor: color,
+                            fillOpacity: 0.0,
+                            dashArray: '8 6',
+                        });
+                        layer.__baseStyle = {
+                            weight: 3,
+                            opacity: 1,
+                            fillOpacity: 0.0,
+                            dashArray: '8 6',
+                            color,
+                            fillColor: color,
+                        };
+                        layers.push(layer);
+                    });
+                    relatedChildLayersByParent[parentIndex] = layers;
+                    window.relatedChildLayersByParent = relatedChildLayersByParent;
+                }
 
 // 复制原始航警
 function copyMatchRaw(idx) {
@@ -253,6 +327,9 @@ function fallbackCopyText(text) {
     range.selectNodeContents(textarea);
     const selection = window.getSelection();
     selection.removeAllRanges();
+
+                        // 绘制同组子项（作为子图层，不进入主列表）
+                        drawRelatedChildPolygons(i, item, col);
     selection.addRange(range);
     textarea.setSelectionRange(0, text.length);
     
@@ -268,6 +345,10 @@ function fallbackCopyText(text) {
         showNotification('已复制原始航警到剪贴板');
     } else {
         showNotification('复制失败，请长按手动复制');
+                        if (typeof highlightSameClassByParent === 'function') {
+                            highlightSameClassByParent(index, true);
+                            setTimeout(() => highlightSameClassByParent(index, false), 1600);
+                        }
     }
 }
 

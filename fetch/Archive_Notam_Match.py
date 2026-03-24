@@ -233,6 +233,22 @@ def notam_match_archive(dataDict):
                     print(f"读取历史文件 {filename} 时出错: {str(e)}")
     
     print(f"共加载 {len(history_notams)} 条历史航警")
+    # 2.1 构建当前航警分类索引，用于给每条匹配项补充“同类子项”
+    current_classify = dataDict.get('CLASSIFY', {}) if isinstance(dataDict, dict) else {}
+    code_to_current_group = {}
+    if isinstance(current_classify, dict):
+        for group_key, codes in current_classify.items():
+            if isinstance(codes, list):
+                for code in codes:
+                    code_to_current_group[str(code)] = str(group_key)
+
+    current_group_index = {}
+    for i in range(dataDict.get('NUM', 0)):
+        code = str(dataDict['CODE'][i])
+        group_key = code_to_current_group.get(code)
+        if not group_key:
+            continue
+        current_group_index.setdefault(group_key, []).append(i)
     
     # 3. 为当前dataDict中的每条航警生成匹配文件
     for idx in range(dataDict['NUM']):
@@ -268,6 +284,28 @@ def notam_match_archive(dataDict):
                 match_item = hist.copy()
                 match_item['Overlapping_Area'] = round(overlap_ratio * 100, 1)  # 转换为百分比
                 match_item['Center_Distance'] = round(center_distance, 1) if overlap_ratio == 0 else -1.0
+
+                # 为当前匹配项补充“同类子项”（来自当前 dataDict，而不是把它们添加到主列表）
+                related_items = []
+                current_group_key = code_to_current_group.get(str(current_notam['CODE']))
+                if current_group_key and current_group_key in current_group_index:
+                    for rel_idx in current_group_index[current_group_key]:
+                        if rel_idx == idx:
+                            continue
+                        related_items.append({
+                            'CODE': dataDict['CODE'][rel_idx],
+                            'COORDINATES': dataDict['COORDINATES'][rel_idx],
+                            'TIME': dataDict['TIME'][rel_idx],
+                            'PLATID': dataDict['PLATID'][rel_idx],
+                            'RAWMESSAGE': dataDict['RAWMESSAGE'][rel_idx],
+                            'ALTITUDE': dataDict['ALTITUDE'][rel_idx] if 'ALTITUDE' in dataDict and rel_idx < len(dataDict['ALTITUDE']) else 'None',
+                            'source_file': 'current_dict',
+                            'GroupKey': current_group_key,
+                            'IsSameGroup': True,
+                            'parent_index': idx,
+                        })
+
+                match_item['RelatedItems'] = related_items
                 
                 # 添加匹配信息
                 matches.append({

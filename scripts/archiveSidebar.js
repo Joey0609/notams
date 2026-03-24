@@ -198,6 +198,204 @@ function convertTime(utcTimeStr) {
 const visibleMatchState = {};
 let polygonMatch = [];
 let matchGroupColors = {};
+// 同编码分组附属航警显示状态：true=显示（默认），false=隐藏
+const relatedGroupVisibleState = {};
+
+function getMatchGroupKey(item) {
+    if (!item) return '';
+    return item.GroupKey || item.CODE || '';
+}
+
+function getSameGroupIndexes(idx) {
+    // 子项模式下不再依赖主列表索引分组，保留函数以兼容旧调用
+    return [];
+}
+
+function isRelatedGroupVisible(code) {
+    if (!(code in relatedGroupVisibleState)) {
+        relatedGroupVisibleState[code] = false;
+    }
+    return relatedGroupVisibleState[code];
+}
+
+function applyRelatedVisibility(idx) {
+    if (!matchData || !Array.isArray(matchData) || !matchData[idx]) return;
+    const parentVisible = visibleMatchState[idx] !== false;
+    const relatedVisible = isRelatedGroupVisible(idx);
+    const childLayers = (window.relatedChildLayersByParent && window.relatedChildLayersByParent[idx]) || [];
+    childLayers.forEach((layer) => {
+        if (!layer) return;
+        if (parentVisible && relatedVisible) layer.addTo(map);
+        else map.removeLayer(layer);
+    });
+}
+
+function toggleRelatedMatches(idx) {
+    if (!matchData || !Array.isArray(matchData) || !matchData[idx]) return;
+    relatedGroupVisibleState[idx] = !isRelatedGroupVisible(idx);
+    applyRelatedVisibility(idx);
+    updateMatchSidebar();
+}
+
+function fitLayersBounds(layers, padding = [80, 80], maxZoom = 8) {
+    const validLayers = (layers || []).filter((layer) => layer && typeof layer.getBounds === 'function');
+    if (validLayers.length === 0) return;
+    const group = L.featureGroup(validLayers);
+    map.fitBounds(group.getBounds(), { padding, maxZoom });
+}
+
+function handleMatchItemClick(idx) {
+    if (!matchData || !Array.isArray(matchData) || !matchData[idx]) return;
+
+    const parentLayer = polygonMatch[idx];
+    if (!parentLayer) return;
+
+    const relatedVisible = isRelatedGroupVisible(idx);
+    if (!relatedVisible) {
+        fitLayersBounds([parentLayer]);
+        return;
+    }
+
+    const childLayers = (window.relatedChildLayersByParent && window.relatedChildLayersByParent[idx]) || [];
+    fitLayersBounds([parentLayer, ...childLayers]);
+}
+
+function locateRelatedMatchNotam(parentIdx, relIdx) {
+    if (!matchData || !Array.isArray(matchData) || !matchData[parentIdx]) return;
+
+    if (!isRelatedGroupVisible(parentIdx)) {
+        relatedGroupVisibleState[parentIdx] = true;
+        applyRelatedVisibility(parentIdx);
+        updateMatchSidebar();
+    }
+
+    const childLayers = (window.relatedChildLayersByParent && window.relatedChildLayersByParent[parentIdx]) || [];
+    const targetLayer = childLayers[relIdx] || childLayers[0] || null;
+    const parentLayer = polygonMatch[parentIdx] || null;
+
+    if (targetLayer) {
+        fitLayersBounds([targetLayer]);
+    } else if (parentLayer) {
+        fitLayersBounds([parentLayer]);
+    }
+
+    highlightSameClassByParent(parentIdx, true);
+    setTimeout(() => highlightSameClassByParent(parentIdx, false), 1200);
+}
+
+function setLayerHighlight(layer, highlighted) {
+    if (!layer || typeof layer.setStyle !== 'function') return;
+    if (!layer.__baseStyle) {
+        layer.__baseStyle = {
+            weight: layer.options?.weight || 1,
+            opacity: layer.options?.opacity || 0.85,
+            fillOpacity: layer.options?.fillOpacity || 0.05,
+            dashArray: layer.options?.dashArray,
+            color: layer.options?.color,
+            fillColor: layer.options?.fillColor,
+        };
+    }
+    const b = layer.__baseStyle;
+    if (highlighted) {
+        layer.setStyle({
+            weight: Math.max(3, b.weight || 1),
+            opacity: 1,
+            fillOpacity: Math.max(0.45, b.fillOpacity || 0.05),
+            dashArray: b.dashArray,
+            color: b.color,
+            fillColor: b.fillColor,
+        });
+        if (layer.bringToFront) layer.bringToFront();
+    } else {
+        layer.setStyle({
+            weight: b.weight,
+            opacity: b.opacity,
+            fillOpacity: b.fillOpacity,
+            dashArray: b.dashArray,
+            color: b.color,
+            fillColor: b.fillColor,
+        });
+    }
+}
+
+function highlightSameClassByParent(idx, highlighted) {
+    const parent = polygonMatch[idx];
+    if (parent && visibleMatchState[idx] !== false) {
+        setLayerHighlight(parent, highlighted);
+    }
+    const childLayers = (window.relatedChildLayersByParent && window.relatedChildLayersByParent[idx]) || [];
+    childLayers.forEach((layer) => {
+        if (!layer) return;
+        if (!map.hasLayer(layer) && highlighted) return;
+        setLayerHighlight(layer, highlighted);
+    });
+}
+
+window.highlightSameClassByParent = highlightSameClassByParent;
+
+function parseNotamUtcRange(utcTimeStr) {
+    if (!utcTimeStr) return null;
+    const regex = /(\d{1,2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{1,2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/;
+    const match = String(utcTimeStr).match(regex);
+    if (!match) return null;
+
+    const [, sDay, sMon, sTime, sYear, eDay, eMon, eTime, eYear] = match;
+    const monthMap = {
+        JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
+        JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11
+    };
+
+    const sm = monthMap[String(sMon).toUpperCase()];
+    const em = monthMap[String(eMon).toUpperCase()];
+    if (sm === undefined || em === undefined) return null;
+
+    const [sh, si] = String(sTime).split(':').map(Number);
+    const [eh, ei] = String(eTime).split(':').map(Number);
+    const startUtcMs = Date.UTC(Number(sYear), sm, Number(sDay), sh, si, 0);
+    const endUtcMs = Date.UTC(Number(eYear), em, Number(eDay), eh, ei, 0);
+    return { startUtcMs, endUtcMs };
+}
+
+function openLaunchRecordPage(idx) {
+    if (!matchData || !Array.isArray(matchData) || !matchData[idx]) return;
+    const item = matchData[idx];
+    const range = parseNotamUtcRange(item.TIME);
+    if (!range) {
+        showNotification('无法解析该航警时间，无法跳转发射记录');
+        return;
+    }
+    const midUtcMs = Math.floor((range.startUtcMs + range.endUtcMs) / 2);
+    const beijingMs = midUtcMs + 8 * 60 * 60 * 1000;
+    const dt = new Date(beijingMs);
+    const year = dt.getUTCFullYear();
+    const month = String(dt.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(dt.getUTCDate()).padStart(2, '0');
+    const ymd = `${year}${month}${day}`;
+    const url = `https://sat.huijiwiki.com/wiki/引导页:发射记录/${year}?date=${ymd}`;
+    window.open(encodeURI(url), '_blank', 'noopener');
+}
+
+function getRelatedToggleIconSvg(showingRelated) {
+    // 参考 fa-grid-2：显示时有斜杠；隐藏时无斜杠
+    const slash = '<path d="M8 8L40 40" stroke="#333" stroke-width="4" stroke-linecap="round"/>';
+    return `<svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="8" width="13" height="13" rx="2" stroke="#333" stroke-width="3"/>
+        <rect x="27" y="8" width="13" height="13" rx="2" stroke="#333" stroke-width="3"/>
+        <rect x="8" y="27" width="13" height="13" rx="2" stroke="#333" stroke-width="3"/>
+        <rect x="27" y="27" width="13" height="13" rx="2" stroke="#333" stroke-width="3"/>
+        ${showingRelated ? slash : ''}
+    </svg>`;
+}
+
+function getLaunchRecordIconSvg() {
+    // 参考 fa-file-magnifying-glass
+    return `<svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 6H28L38 16V42H12V6Z" stroke="#333" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M28 6V16H38" stroke="#333" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="23" cy="27" r="6" stroke="#333" stroke-width="3"/>
+        <path d="M28 32L33 37" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+    </svg>`;
+}
 
 // 更新侧边栏
 function updateMatchSidebar() {
@@ -228,14 +426,16 @@ function updateMatchSidebar() {
         const prettyTime = convertTime(rawTime);
         const col = getMatchColor(item.CODE);
         const visible = visibleMatchState[i] !== false;
+        const relatedVisible = isRelatedGroupVisible(i);
         const overlapArea = item.Overlapping_Area ?? 0;
         const centerDistance = item.Center_Distance ?? -1;
+        const relatedItems = Array.isArray(item.RelatedItems) ? item.RelatedItems : [];
         
         html += `
         <div class="notam-item match-item" style="--group-color:${col}; cursor:pointer;"
             onmouseenter="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightMatchNotam(${i});"
             onmouseleave="this.style.background=''; hoverUnhighlightMatchNotam(${i});"
-            onclick="locateToMatchNotam(${i})">
+            onclick="handleMatchItemClick(${i})">
             <div class="notam-content">
                 <div class="notam-header">
                     <div style="display:flex; align-items:center; gap:10px;">
@@ -255,12 +455,34 @@ function updateMatchSidebar() {
                     <span>${overlapArea > 0 ? `重叠面积: ${overlapArea.toFixed(1)}%` : `中心距离: ${centerDistance.toFixed(1)}km`}</span>
                     <span>${item.source_file || '未知来源'}</span>
                 </div>
+                ${relatedItems.length > 0 ? `
+                <div style="margin-top:8px; padding-left:10px; border-left:2px solid rgba(0,0,0,0.08);" onclick="event.stopPropagation();">
+                    <div style="font-size:12px; color:#666; margin-bottom:4px;">同期航警 (${relatedItems.length})</div>
+                    ${relatedItems.map((rel, relIdx) => `
+                        <div class="related-child-item"
+                            style="padding:5px 6px; margin:4px 0; background:rgba(0,0,0,0.03); border-radius:4px; cursor:pointer;"
+                            onclick="event.stopPropagation(); locateRelatedMatchNotam(${i}, ${relIdx});">
+                            <div style="font-weight:600; font-size:13px;">${rel.CODE || 'UNKNOWN'}</div>
+                            <div style="font-size:12px; color:#666; line-height:1.4;">${convertTime(rel.TIME || '')}</div>
+                        </div>
+                    `).join('')}
+                </div>` : ''}
             </div>
             <div class="notam-actions">
                 <button class="icon-btn"
                     onclick="event.stopPropagation(); copyMatchRaw(${i})"
                     title="复制原始航警">
                     <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 12.4316V7.8125C13 6.2592 14.2592 5 15.8125 5H40.1875C41.7408 5 43 6.2592 43 7.8125V32.1875C43 33.7408 41.7408 35 40.1875 35H35.5163" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32.1875 13H7.8125C6.2592 13 5 14.2592 5 15.8125V40.1875C5 41.7408 6.2592 43 7.8125 43H32.1875C33.7408 43 35 41.7408 35 40.1875V15.8125C35 14.2592 33.7408 13 32.1875 13Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="icon-btn"
+                    onclick="event.stopPropagation(); toggleRelatedMatches(${i})"
+                    title="${relatedVisible ? '隐藏同分类其它航警' : '显示同分类其它航警'}">
+                    ${getRelatedToggleIconSvg(relatedVisible)}
+                </button>
+                <button class="icon-btn"
+                    onclick="event.stopPropagation(); openLaunchRecordPage(${i})"
+                    title="打开发射记录">
+                    ${getLaunchRecordIconSvg()}
                 </button>
                 <button class="icon-btn"
                     onclick="event.stopPropagation(); toggleMatchVisibility(${i})"
@@ -281,41 +503,36 @@ function toggleMatchVisibility(idx) {
     visibleMatchState[idx] = !visibleMatchState[idx];
     const poly = polygonMatch[idx];
     if (poly) {
-        if (visibleMatchState[idx]) poly.addTo(map);
-        else map.removeLayer(poly);
+        if (visibleMatchState[idx]) {
+            poly.addTo(map);
+            // 主航警恢复显示时，附属航警默认同步显示
+            if (matchData && matchData[idx]) {
+                relatedGroupVisibleState[idx] = true;
+            }
+        } else {
+            map.removeLayer(poly);
+        }
     }
+    applyRelatedVisibility(idx);
     updateMatchSidebar();
 }
 
 function hoverHighlightMatchNotam(idx) {
-    const poly = polygonMatch[idx];
-    if (poly && visibleMatchState[idx] !== false) {
-        poly.setStyle({
-            weight: 3,
-            opacity: 1,
-            fillOpacity: 0.6
-        });
-        poly.bringToFront();
-    }
+    highlightSameClassByParent(idx, true);
 }
 
 function hoverUnhighlightMatchNotam(idx) {
-    const poly = polygonMatch[idx];
-    if (poly && visibleMatchState[idx] !== false) {
-        poly.setStyle({
-            weight: 2,
-            opacity: 0.8,
-            fillOpacity: 0.05
-        });
-    }
+    highlightSameClassByParent(idx, false);
 }
 
 function showAllMatches() {
     if (!matchData || !Array.isArray(matchData)) return;
     for (let i = 0; i < matchData.length; i++) {
         visibleMatchState[i] = true;
+        relatedGroupVisibleState[i] = true;
         const poly = polygonMatch[i];
         if (poly) poly.addTo(map);
+        applyRelatedVisibility(i);
     }
     updateMatchSidebar();
 }
@@ -326,6 +543,7 @@ function hideAllMatches() {
         visibleMatchState[i] = false;
         const poly = polygonMatch[i];
         if (poly) map.removeLayer(poly);
+        applyRelatedVisibility(i);
     }
     updateMatchSidebar();
 }

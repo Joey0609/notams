@@ -190,20 +190,31 @@ function initArchiveDraggable() {
 }
 
 // 日期字符串转时间对象
-function parseNotamDate(dateStr) {
-    // 根据航警时间格式解析：05 JAN 11:09 2024 UNTIL 05 JAN 11:32 2024
-    const parts = dateStr.split(' ');
-    const startDay = parseInt(parts[0]);
-    const startMonth = parts[1];
-    const startYear = parseInt(parts[3]);
-    
-    // 月份映射
+function parseNotamTimeRange(dateStr) {
+    // 航警时间格式：05 JAN 11:09 2024 UNTIL 05 JAN 11:32 2024
+    const regex = /(\d{1,2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{1,2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/;
+    const match = String(dateStr || '').match(regex);
+    if (!match) return null;
+
+    const [, sDay, sMon, sTime, sYear, eDay, eMon, eTime, eYear] = match;
     const monthMap = {
-        'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
-        'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
+        JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
+        JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11
     };
-    
-    return new Date(startYear, monthMap[startMonth], startDay);
+
+    const sm = monthMap[String(sMon).toUpperCase()];
+    const em = monthMap[String(eMon).toUpperCase()];
+    if (sm === undefined || em === undefined) return null;
+
+    const [sh, si] = String(sTime).split(':').map(Number);
+    const [eh, ei] = String(eTime).split(':').map(Number);
+
+    // 源时间按 UTC 解析，再转换到北京时间进行区间判断
+    const startUtc = new Date(Date.UTC(Number(sYear), sm, Number(sDay), sh, si, 0));
+    const endUtc = new Date(Date.UTC(Number(eYear), em, Number(eDay), eh, ei, 0));
+    const startBj = new Date(startUtc.getTime() + 8 * 60 * 60 * 1000);
+    const endBj = new Date(endUtc.getTime() + 8 * 60 * 60 * 1000);
+    return { start: startBj, end: endBj };
 }
 
 // 从本地加载指定月份的历史航警数据
@@ -264,6 +275,7 @@ function filterNotamsWithinDateRange(allData, startDate, endDate) {
     
     // 分类数据结构
     const classifyMap = {};
+    const seen = new Set();
     
     // 遍历所有加载的数据
     for (const data of allData) {
@@ -272,9 +284,24 @@ function filterNotamsWithinDateRange(allData, startDate, endDate) {
         for (let i = 0; i < data.NUM; i++) {
             try {
                 console.log('正在处理航警:', data.TIME[i]);
-                const notamDate = parseNotamDate(data.TIME[i]);
-                // 检查是否在日期范围内
-                if (notamDate >= startDate && notamDate <= endDate) {
+                const range = parseNotamTimeRange(data.TIME[i]);
+                if (!range) {
+                    continue;
+                }
+
+                // 按完整时间区间判断是否与筛选区间重叠
+                const overlapped = range.end >= startDate && range.start <= endDate;
+                if (overlapped) {
+                    const uniqueKey = [
+                        data.CODE[i] || '',
+                        data.TIME[i] || '',
+                        data.COORDINATES[i] || '',
+                        data.PLATID?.[i] || ''
+                    ].join('|');
+                    if (seen.has(uniqueKey)) {
+                        continue;
+                    }
+                    seen.add(uniqueKey);
                     // 添加到结果
                     result.CODE.push(data.CODE[i]);
                     result.COORDINATES.push(data.COORDINATES[i]);
