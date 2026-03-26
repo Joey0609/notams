@@ -9,11 +9,13 @@
 [![Website Visits](https://img.shields.io/badge/dynamic/json?color=blue&label=Visits&query=value&url=https://joey0609.github.io/notams/visits.json)](https://counter.dev/dashboard.html?user=Starsky69&token=Beb6_vARt7c%3D)
 </div>
 
+[中文](README_CN.md) | English
+
 Obtain and plot rocket launch debris zones via NOTAMs<br>
 
 **If you find this project helpful, please consider giving it a ⭐ on GitHub! Your support motivates us to keep improving and adding new features. Thank you! 😊**
 
-**This project is forked from FallingFengre/notams:main.**<br>
+**This project is modified from FallingFengre/notams:main.**<br>
 
 ## <span style="font-weight:bold;color:red;">This project and its URL are strictly prohibited from being shared externally!</span>
 
