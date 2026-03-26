@@ -739,7 +739,7 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
     if (!is_self) {
         popupContent = "<div class='notam-popup'>" +
             "<div class='notam-popup-header'>" +
-            "<h4>NOTAM信息</h4>" +
+            "<h4>NOTAM 信息</h4>" +
             "</div>" +
             "<div class='notam-popup-body'>" +
             "<div class='popup-info-row'>" +
