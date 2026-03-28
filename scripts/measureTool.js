@@ -1,10 +1,14 @@
 (function () {
+    let activeTool = 'none';
     let isMeasuring = false;
+    let isLatLngQuerying = false;
     let measurePoints = [];
     let fixedLine = null;
     let tempLine = null;
     let distanceLabel = null;
     let snapHint = null;
+    let latLngQueryHint = null;
+    let currentQueryText = '';
     let persistedMeasures = [];
     let snapHintTimer = null;
 
@@ -22,6 +26,10 @@
         return document.getElementById('btnMeasure');
     }
 
+    function getLatLngQueryButton() {
+        return document.getElementById('btnLatLngQuery');
+    }
+
     function setButtonState(active) {
         const btn = getMeasureButton();
         if (!btn) return;
@@ -32,6 +40,65 @@
             btn.classList.remove('active');
             btn.textContent = '测距';
         }
+    }
+
+    function setLatLngQueryButtonState(active) {
+        const btn = getLatLngQueryButton();
+        if (!btn) return;
+        if (active) {
+            btn.classList.add('active');
+            btn.textContent = '经纬度中';
+        } else {
+            btn.classList.remove('active');
+            btn.textContent = '经纬度查询';
+        }
+    }
+
+    function setActiveTool(tool) {
+        activeTool = tool;
+        isMeasuring = tool === 'measure';
+        isLatLngQuerying = tool === 'latlng';
+        setButtonState(isMeasuring);
+        setLatLngQueryButtonState(isLatLngQuerying);
+        map.getContainer().classList.toggle('measure-mode', isMeasuring);
+        map.getContainer().classList.toggle('latlng-query-mode', isLatLngQuerying);
+    }
+
+    function formatLatLng(latlng) {
+        if (!latlng) return '';
+        return '纬度: ' + latlng.lat.toFixed(6) + ', 经度: ' + latlng.lng.toFixed(6);
+    }
+
+    function ensureLatLngQueryHint() {
+        if (latLngQueryHint) return latLngQueryHint;
+        const container = map.getContainer();
+        latLngQueryHint = L.DomUtil.create('div', 'latlng-query-hint', container);
+        latLngQueryHint.style.display = 'none';
+        return latLngQueryHint;
+    }
+
+    function updateLatLngQueryHint(latlng, containerPoint) {
+        const hint = ensureLatLngQueryHint();
+        if (!latlng) {
+            hint.style.display = 'none';
+            currentQueryText = '';
+            return;
+        }
+
+        currentQueryText = formatLatLng(latlng);
+        hint.textContent = currentQueryText + '  Ctrl+C 复制';
+        hint.style.display = 'block';
+
+        const point = containerPoint || map.latLngToContainerPoint(latlng);
+        hint.style.left = (point.x + 14) + 'px';
+        hint.style.top = (point.y + 14) + 'px';
+    }
+
+    function clearLatLngQueryHint() {
+        if (latLngQueryHint) {
+            latLngQueryHint.style.display = 'none';
+        }
+        currentQueryText = '';
     }
 
     function formatDistance(meters) {
@@ -129,9 +196,17 @@
         }
     }
 
+    function clearQueryOverlay() {
+        clearLatLngQueryHint();
+    }
+
     function resetMeasure() {
         measurePoints = [];
         clearOverlay();
+    }
+
+    function resetLatLngQuery() {
+        clearQueryOverlay();
     }
 
     function createPersistedMeasure(points, meters) {
@@ -344,11 +419,17 @@
     }
 
     function onMapMove(e) {
-        if (!isMeasuring) return;
-        const snappedResult = getSnappedResult(e.latlng);
-        updateSnapHint(snappedResult.snapped ? snappedResult.latlng : null);
-        if (measurePoints.length > 0) {
-            updateLines(snappedResult.latlng);
+        if (isMeasuring) {
+            const snappedResult = getSnappedResult(e.latlng);
+            updateSnapHint(snappedResult.snapped ? snappedResult.latlng : null);
+            if (measurePoints.length > 0) {
+                updateLines(snappedResult.latlng);
+            }
+            return;
+        }
+
+        if (isLatLngQuerying) {
+            updateLatLngQueryHint(e.latlng, e.containerPoint);
         }
     }
 
@@ -380,8 +461,13 @@
     }
 
     function onMapRightClick(e) {
-        if (!isMeasuring) return;
+        if (!isMeasuring && !isLatLngQuerying) return;
         L.DomEvent.stop(e);
+        if (isLatLngQuerying) {
+            stopLatLngQuery();
+            notify('已退出经纬度查询');
+            return;
+        }
         finishCurrentIfPossible();
         stopMeasure();
         notify('已退出测距模式');
@@ -397,8 +483,27 @@
     }
 
     function onKeyDown(e) {
-        if (!isMeasuring) return;
+        if (!isMeasuring && !isLatLngQuerying) return;
+
+        if (isLatLngQuerying && e.ctrlKey && !e.altKey && !e.metaKey && e.key.toLowerCase() === 'c') {
+            if (currentQueryText) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof handleCopy === 'function') {
+                    handleCopy(currentQueryText);
+                } else {
+                    notify(currentQueryText);
+                }
+            }
+            return;
+        }
+
         if (e.key === 'Escape') {
+            if (isLatLngQuerying) {
+                stopLatLngQuery();
+                notify('已退出经纬度查询');
+                return;
+            }
             resetMeasure();
             notify('已清除当前测距');
         }
@@ -427,22 +532,46 @@
             notify('地图尚未初始化');
             return;
         }
+        if (isLatLngQuerying) {
+            stopLatLngQuery();
+        }
         isMeasuring = true;
+        setActiveTool('measure');
         resetMeasure();
-        setButtonState(true);
         map.doubleClickZoom.disable();
-        map.getContainer().classList.add('measure-mode');
         bindEvents();
         notify('测距已开启: 单击选点，双击结束当前测距，右键退出测距模式');
     }
 
     function stopMeasure() {
         isMeasuring = false;
-        setButtonState(false);
+        setActiveTool('none');
         unbindEvents();
         map.doubleClickZoom.enable();
-        map.getContainer().classList.remove('measure-mode');
         resetMeasure();
+    }
+
+    function startLatLngQuery() {
+        if (!window.map) {
+            notify('地图尚未初始化');
+            return;
+        }
+        if (isMeasuring) {
+            stopMeasure();
+        }
+        setActiveTool('latlng');
+        resetLatLngQuery();
+        map.doubleClickZoom.disable();
+        bindEvents();
+        notify('经纬度查询已开启: Ctrl+C 复制，右键退出');
+    }
+
+    function stopLatLngQuery() {
+        isLatLngQuerying = false;
+        setActiveTool('none');
+        unbindEvents();
+        map.doubleClickZoom.enable();
+        resetLatLngQuery();
     }
 
     function toggleMeasure() {
@@ -453,15 +582,31 @@
         }
     }
 
+    function toggleLatLngQuery() {
+        if (isLatLngQuerying) {
+            stopLatLngQuery();
+        } else {
+            startLatLngQuery();
+        }
+    }
+
     function initMeasureButton() {
         const btn = getMeasureButton();
         if (!btn) return;
         btn.addEventListener('click', toggleMeasure);
     }
 
+    function initLatLngQueryButton() {
+        const btn = getLatLngQueryButton();
+        if (!btn) return;
+        btn.addEventListener('click', toggleLatLngQuery);
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initMeasureButton);
+        document.addEventListener('DOMContentLoaded', initLatLngQueryButton);
     } else {
         initMeasureButton();
+        initLatLngQueryButton();
     }
 })();

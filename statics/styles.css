@@ -316,10 +316,12 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 /* 按钮组 */
 #btnRefresh,
 #btnMeasure,
+#btnLatLngQuery,
 #btnBack,
 #btnShowAll,
 #btnHideAll{background: rgba(255, 255, 255, 0.3);border: none;color: white;padding: 4px 8px;border-radius: 4px;cursor: pointer;font-size: 12px;margin-left: 4px;}
-#btnMeasure.active {background: #f59e0b;color: #1f2937;font-weight: bold;}
+#btnMeasure.active,
+#btnLatLngQuery.active {background: #f59e0b;color: #1f2937;font-weight: bold;}
 
 .measure-distance-label {
     background: rgba(17, 24, 39, 0.9);
@@ -376,6 +378,11 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
     cursor: crosshair !important;
 }
 
+#allmap.latlng-query-mode,
+#allmap.latlng-query-mode .leaflet-container {
+    cursor: crosshair !important;
+}
+
 /* 测距模式下屏蔽原有 marker/polygon 的点击提示交互 */
 #allmap.measure-mode .leaflet-marker-icon,
 #allmap.measure-mode .leaflet-interactive {
@@ -385,6 +392,27 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 #allmap.measure-mode .measure-result-marker,
 #allmap.measure-mode .measure-result-marker * {
     pointer-events: auto !important;
+}
+
+#allmap.latlng-query-mode .leaflet-marker-icon,
+#allmap.latlng-query-mode .leaflet-interactive {
+    pointer-events: none !important;
+}
+
+.latlng-query-hint {
+    position: absolute;
+    z-index: 1200;
+    pointer-events: none;
+    background: rgba(17, 24, 39, 0.92);
+    color: #fff;
+    border: 1px solid rgba(59, 130, 246, 0.9);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transform: translate(12px, 12px);
 }
 /* 颜色选择器（隐藏原生 input） */
 .color-picker-wrapper {position: relative;display: inline-block;width: fit-content;}
