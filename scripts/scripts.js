@@ -233,6 +233,7 @@ function makeMap() {
         center: [36, 103],
         zoom: 6,
         minZoom: 3,
+        worldCopyJump: false,
         zoomControl: false,  // 关闭默认缩放控件，稍后添加到右下角
         attributionControl: false  // 关闭默认版权控件
     });
@@ -364,7 +365,18 @@ function redrawAllNotams() {
     
     for (var i = 0; i < dict.NUM; i++) {
         var color = getColorForCode(dict.CODE[i]);
-        drawNot(dict.COORDINATES[i], dict.TIME[i], dict.CODE[i], dict.ALTITUDE[i], i, color, 0, dict.RAWMESSAGE[i]);
+        drawNot(
+            dict.COORDINATES[i],
+            dict.TIME[i],
+            dict.CODE[i],
+            dict.ALTITUDE[i],
+            i,
+            color,
+            0,
+            dict.RAWMESSAGE[i],
+            dict.SOURCE?.[i] || 'NOTAM',
+            dict.FIR?.[i] || ''
+        );
         
         if (currentVisibleState[i] === false && polygonAuto[i]) {
             map.removeLayer(polygonAuto[i]);
@@ -671,6 +683,24 @@ function parseCoordinatesToPoints(coordStr) {
     return points;
 }
 
+function normalizeLngForWrap(lng) {
+    let v = Number(lng);
+    if (!isFinite(v)) return lng;
+    while (v > 180) v -= 360;
+    while (v < -180) v += 360;
+    return v;
+}
+
+function buildWrappedLatLngRings(latlngs) {
+    if (!Array.isArray(latlngs) || latlngs.length < 3) return [];
+    const normalized = latlngs.map(([lat, lng]) => [lat, normalizeLngForWrap(lng)]);
+    const left = normalized.map(([lat, lng]) => [lat, lng - 360]);
+    const right = normalized.map(([lat, lng]) => [lat, lng + 360]);
+    return [normalized, left, right];
+}
+
+window.buildWrappedLatLngRings = buildWrappedLatLngRings;
+
 function sortPolygonPoints(latlngs) {
     if (latlngs.length < 3) return latlngs;
     
@@ -693,7 +723,7 @@ function sortPolygonPoints(latlngs) {
 }
 
 // 绘制NOTAM多边形
-function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage) {
+function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, sourceType = 'NOTAM', fir = '') {
     var pos = COORstrin;
     var timestr = is_self ? null : convertTime(timee);
     var stPos = 0;
@@ -724,9 +754,11 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
 
     // 对坐标点排序，确保多边形是凸的或至少是合理的形状
     latlngs = sortPolygonPoints(latlngs);
+    const wrappedRings = buildWrappedLatLngRings(latlngs);
+    if (wrappedRings.length === 0) return;
 
     // 创建多边形
-    var tmpPolygon = L.polygon(latlngs, {
+    var tmpPolygon = L.polygon(wrappedRings, {
         color: col,
         weight: 1,
         opacity: 1,
@@ -737,9 +769,16 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
     // 创建弹出窗口内容
     var popupContent;
     if (!is_self) {
+        var normalizedSource = (sourceType || 'NOTAM').toUpperCase();
+        var isMsi = normalizedSource === 'MSI';
+        var popupTitle = isMsi ? 'MSI 信息' : 'NOTAM 信息';
+        var firLabel = isMsi ? '关键词' : '飞行情报区';
+        var codeLabel = isMsi ? '海警编号' : '航警编号';
+        var altitudeLabel = isMsi ? '海警高度' : '航警高度';
+        var rawLabel = isMsi ? '复制原始海警' : '复制原始航警';
         popupContent = "<div class='notam-popup'>" +
             "<div class='notam-popup-header'>" +
-            "<h4>NOTAM 信息</h4>" +
+            "<h4>" + popupTitle + "</h4>" +
             "</div>" +
             "<div class='notam-popup-body'>" +
             "<div class='popup-info-row'>" +
@@ -748,17 +787,27 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
             "</div>" +
             "<div class='popup-info-row row-horizontal'>" +
             "<div class='popup-col'>" +
-            "<span class='popup-label'>航警编号:</span>" +
+            "<span class='popup-label'>来源:</span>" +
+            "<span class='popup-value'>" + (sourceType || 'NOTAM') + "</span>" +
+            "</div>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>" + firLabel + ":</span>" +
+            "<span class='popup-value'>" + (fir || '-') + "</span>" +
+            "</div>" +
+            "</div>" +
+            "<div class='popup-info-row row-horizontal'>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>" + codeLabel + ":</span>" +
             "<span class='popup-value'>" + codee + "</span>" +
             "</div>" +
             "<div class='popup-col'>" +
-            "<span class='popup-label'>航警高度:</span>" +
+            "<span class='popup-label'>" + altitudeLabel + ":</span>" +
             "<span class='popup-value'>" + altitude + "</span>" +
             "</div>" +
             "</div>" +
             "<div class='notam-popup-buttons'>" +
             "<button class='copy copy-coord' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
-            "<button class='copy copy-raw' data-raw-index='" + numm + "'>复制原始航警</button>" +
+            "<button class='copy copy-raw' data-raw-index='" + numm + "'>" + rawLabel + "</button>" +
             "</div>" +
             "</div>";
     } else {

@@ -5,6 +5,26 @@ let archiveGroupColors = {};
 let archiveVisibleState = {};
 let currentRegionOverlay = null;
 let regionOverlayTimer = null; // 保存定时器ID
+let archiveBlacklistCodes = new Set();
+
+async function loadArchiveBlacklist() {
+    try {
+        const resp = await fetch('data/blacklist.json', { cache: 'no-cache' });
+        if (!resp.ok) {
+            archiveBlacklistCodes = new Set();
+            return;
+        }
+        const raw = await resp.json();
+        if (Array.isArray(raw)) {
+            archiveBlacklistCodes = new Set(raw.map((x) => String(x || '').trim()).filter(Boolean));
+        } else {
+            archiveBlacklistCodes = new Set();
+        }
+    } catch (e) {
+        console.warn('加载 blacklist 失败，按无黑名单处理', e);
+        archiveBlacklistCodes = new Set();
+    }
+}
 
 // 切换历史检索侧边栏
 function toggleArchiveSidebar() {
@@ -292,8 +312,12 @@ function filterNotamsWithinDateRange(allData, startDate, endDate) {
                 // 按完整时间区间判断是否与筛选区间重叠
                 const overlapped = range.end >= startDate && range.start <= endDate;
                 if (overlapped) {
+                    const code = data.CODE[i] || '';
+                    if (archiveBlacklistCodes.has(String(code))) {
+                        continue;
+                    }
                     const uniqueKey = [
-                        data.CODE[i] || '',
+                        code,
                         data.TIME[i] || '',
                         data.COORDINATES[i] || '',
                         data.PLATID?.[i] || ''
@@ -303,21 +327,25 @@ function filterNotamsWithinDateRange(allData, startDate, endDate) {
                     }
                     seen.add(uniqueKey);
                     // 添加到结果
-                    result.CODE.push(data.CODE[i]);
+                    result.CODE.push(code);
                     result.COORDINATES.push(data.COORDINATES[i]);
                     result.TIME.push(data.TIME[i]);
                     result.PLATID.push(data.PLATID?.[i] || 'UNKNOWN');
                     result.RAWMESSAGE.push(data.RAWMESSAGE?.[i] || '');
                     result.ALTITUDE.push(data.ALTITUDE?.[i] || 'Unknown');
+                    if (!Array.isArray(result.SOURCE)) result.SOURCE = [];
+                    if (!Array.isArray(result.FIR)) result.FIR = [];
+                    result.SOURCE.push(data.SOURCE?.[i] || 'NOTAM');
+                    result.FIR.push(data.FIR?.[i] || '');
                     
                     // 收集分类信息
                     for (const [group, codes] of Object.entries(data.CLASSIFY || {})) {
-                        if (codes.includes(data.CODE[i])) {
+                        if (codes.includes(code)) {
                             if (!classifyMap[group]) {
                                 classifyMap[group] = [];
                             }
-                            if (!classifyMap[group].includes(data.CODE[i])) {
-                                classifyMap[group].push(data.CODE[i]);
+                            if (!classifyMap[group].includes(code)) {
+                                classifyMap[group].push(code);
                             }
                         }
                     }
@@ -350,6 +378,7 @@ async function searchArchiveNotams(startDateStr, endDateStr) {
     btnSearch.style.opacity = '0.8';
 
     try {
+        await loadArchiveBlacklist();
         const startDate = new Date(`${startDateStr}T00:00:00`);
         const endDate = new Date(`${endDateStr}T23:59:59`);
 
@@ -470,7 +499,9 @@ function drawAllArchiveNotams() {
             archiveDict.CODE[i],
             i,
             col,
-            archiveDict.RAWMESSAGE?.[i] || ""
+            archiveDict.RAWMESSAGE?.[i] || "",
+            archiveDict.SOURCE?.[i] || 'NOTAM',
+            archiveDict.FIR?.[i] || ''
         );
         // 保持之前的可见状态
         if (archiveVisibleState[i] === false) {
@@ -483,7 +514,7 @@ function drawAllArchiveNotams() {
 }
 
 // 绘制单个历史航警
-function drawArchiveNotam(COORstrin, timee, codee, numm, col, rawmessage) {
+function drawArchiveNotam(COORstrin, timee, codee, numm, col, rawmessage, sourceType = 'NOTAM', fir = '') {
     var pos = COORstrin;
     console.log(timee);
     var timestr = convertTime(timee);
@@ -514,8 +545,11 @@ function drawArchiveNotam(COORstrin, timee, codee, numm, col, rawmessage) {
 
     if (latlngs.length < 3) return;
 
+    const wrappedRings = typeof buildWrappedLatLngRings === 'function' ? buildWrappedLatLngRings(latlngs) : [latlngs];
+    if (!wrappedRings || wrappedRings.length === 0) return;
+
     // 创建多边形
-    var tmpPolygon = L.polygon(latlngs, {
+    var tmpPolygon = L.polygon(wrappedRings, {
         color: col,
         weight: 2,
         opacity: 0.8,
@@ -537,6 +571,16 @@ function drawArchiveNotam(COORstrin, timee, codee, numm, col, rawmessage) {
         "<div class='popup-info-row'>" +
         "<span class='popup-label'>航警编号:</span>" +
         "<span class='popup-value'>" + codee + "</span>" +
+        "</div>" +
+        "<div class='popup-info-row row-horizontal'>" +
+        "<div class='popup-col'>" +
+        "<span class='popup-label'>来源:</span>" +
+        "<span class='popup-value'>" + (sourceType || 'NOTAM') + "</span>" +
+        "</div>" +
+        "<div class='popup-col'>" +
+        "<span class='popup-label'>飞行情报区:</span>" +
+        "<span class='popup-value'>" + (fir || '-') + "</span>" +
+        "</div>" +
         "</div>" +
         "<div class='popup-info-row'>" +
         "<span class='popup-label'>数据来源日期:</span>" +

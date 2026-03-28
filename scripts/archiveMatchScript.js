@@ -101,7 +101,9 @@ function drawOriginalNotam() {
                 TIME: data.TIME[matchIndex],
                 CODE: data.CODE[matchIndex],
                 ALTITUDE: data.ALTITUDE[matchIndex] || 'None',
-                RAWMESSAGE: data.RAWMESSAGE[matchIndex] || ''
+                RAWMESSAGE: data.RAWMESSAGE[matchIndex] || '',
+                SOURCE: data.SOURCE?.[matchIndex] || 'NOTAM',
+                FIR: data.FIR?.[matchIndex] || ''
             };
             
             // 绘制原始航警，使用特殊颜色（半透明红色）
@@ -114,7 +116,9 @@ function drawOriginalNotam() {
                 originalNotamColor,
                 0,
                 originalNotam.RAWMESSAGE || "",
-                0.8
+                0.8,
+                originalNotam.SOURCE || 'NOTAM',
+                originalNotam.FIR || ''
             );
             
             // 将原始航警置于顶层
@@ -220,7 +224,9 @@ function drawMatchNotams() {
             col,
             0,
             item.RAWMESSAGE || "",
-            0.05
+            0.05,
+            item.SOURCE || 'NOTAM',
+            item.FIR || ''
         );
         // 重用自动航警的数组
         polygonMatch[i] = window.polygonAuto[i];
@@ -281,7 +287,9 @@ function closeLoadingModal() {
                     related.forEach((child) => {
                         const latlngs = parseCoordinatesToLatLngs(child.COORDINATES);
                         if (latlngs.length < 3) return;
-                        const layer = L.polygon(latlngs, {
+                        const rings = typeof buildWrappedLatLngRings === 'function' ? buildWrappedLatLngRings(latlngs) : [latlngs];
+                        if (!rings || rings.length === 0) return;
+                        const layer = L.polygon(rings, {
                             color,
                             weight: 3,
                             opacity: 1,
@@ -353,7 +361,7 @@ function fallbackCopyText(text) {
 }
 
 // 绘制NOTAM多边形
-function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, fillopacity = 0.5) {
+function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, fillopacity = 0.5, sourceType = 'NOTAM', fir = '') {
     var pos = COORstrin;
     var timestr = is_self ? null : convertTime(timee);
     var stPos = 0;
@@ -384,9 +392,11 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
 
     // 对坐标点排序，确保多边形是凸的或至少是合理的形状
     latlngs = sortPolygonPoints(latlngs);
+    const wrappedRings = typeof buildWrappedLatLngRings === 'function' ? buildWrappedLatLngRings(latlngs) : [latlngs];
+    if (!wrappedRings || wrappedRings.length === 0) return;
 
     // 创建多边形
-    var tmpPolygon = L.polygon(latlngs, {
+    var tmpPolygon = L.polygon(wrappedRings, {
         color: col,
         weight: 1,
         opacity: 1,
@@ -405,6 +415,16 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
             "<div class='popup-info-row'>" +
             "<span class='popup-label'>持续时间:</span>" +
             "<span class='popup-value'>" + timestr + "</span>" +
+            "</div>" +
+            "<div class='popup-info-row row-horizontal'>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>来源:</span>" +
+            "<span class='popup-value'>" + (sourceType || 'NOTAM') + "</span>" +
+            "</div>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>飞行情报区:</span>" +
+            "<span class='popup-value'>" + (fir || '-') + "</span>" +
+            "</div>" +
             "</div>" +
             "<div class='popup-info-row row-horizontal'>" +
             "<div class='popup-col'>" +

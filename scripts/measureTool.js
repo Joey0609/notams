@@ -47,7 +47,7 @@
         if (!btn) return;
         if (active) {
             btn.classList.add('active');
-            btn.textContent = '经纬度中';
+            btn.textContent = '经纬度查询中';
         } else {
             btn.classList.remove('active');
             btn.textContent = '经纬度查询';

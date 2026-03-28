@@ -171,25 +171,7 @@ def fetch():
 def FNS_NOTAM_SEARCH():
     json_path = "notam_results.json"
     now = time.time()
-    results = {}
-    if os.path.exists(json_path):
-        with open(json_path, "r", encoding="utf-8") as f:
-            try:
-                data = json.load(f)
-                ts = data.get("timestamp", 0)
-                stats_obj = data.get('stats', {})  # 如果 'stats' 不存在，返回一个空字典 {}
-                failed_cnt = stats_obj.get('fail', 0)
-                if now - ts < 600 and "results" in data and failed_cnt == 0:
-                    results = data["results"]
-                    print("10分钟内爬取过航警，使用已有数据。")
-                else:
-                    raise Exception("已有数据过期或格式不正确，尝试重新爬取航警。")
-            except Exception as e:
-                print(e)
-                results = fetch()
-    else:
-        print("未找到已有数据，尝试爬取航警。")
-        results = fetch()
+    results = fetch()
 
     def standardize_coordinate(coord):
         coord = coord.replace(' ', '')
@@ -288,7 +270,13 @@ def FNS_NOTAM_SEARCH():
 
         return f"{convert_date(start_date)} UNTIL {convert_date(end_date)}"
 
-    data_array = np.array(["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE", "ALTITUDE"])
+    data_array = np.array(["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE", "ALTITUDE", "SOURCE", "FIR"])
+
+    def normalize_fir(icao_value):
+        value = str(icao_value or "").strip()
+        if value in {"FUCK", "双曲线你为什么要特立独行"}:
+            return "UNKNOWN"
+        return value
 
     # 处理每个NOTAM
     debug = False
@@ -312,7 +300,7 @@ def FNS_NOTAM_SEARCH():
                     else:
                         area_code = code
                     data_array = np.vstack(
-                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message, altitude])])
+                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message, altitude, 'NOTAM', normalize_fir(icao)])])
     try:
         if len(data_array) > 1:
             df = pd.DataFrame(data_array)
@@ -335,6 +323,8 @@ def FNS_NOTAM_SEARCH():
                 "TRANSID": data_array[:, 3].tolist() if len(data_array) > 0 else [],
                 "RAWMESSAGE": data_array[:, 4].tolist() if len(data_array) > 0 else [],
                 "ALTITUDE": data_array[:, 5].tolist() if len(data_array) > 0 else [],
+                "SOURCE": data_array[:, 6].tolist() if len(data_array) > 0 else [],
+                "FIR": data_array[:, 7].tolist() if len(data_array) > 0 else [],
             }
         else:
             result = {
@@ -344,6 +334,8 @@ def FNS_NOTAM_SEARCH():
                 "TRANSID": [],
                 "RAWMESSAGE": [],
                 "ALTITUDE": [],
+                "SOURCE": [],
+                "FIR": [],
             }
     except Exception as e:
         print(f"处理最终数据时出错: {e}")
@@ -354,6 +346,8 @@ def FNS_NOTAM_SEARCH():
             "TRANSID": [],
             "RAWMESSAGE": [],
             "ALTITUDE": [],
+            "SOURCE": [],
+            "FIR": [],
         }
     return result
 # print(FNS_NOTAM_SEARCH())

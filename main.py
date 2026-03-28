@@ -1,22 +1,22 @@
 import configparser
+import hashlib
+import json
 import os
 import re
 import sys
 from datetime import datetime
+
 from fetch.Archive_Notam_Match import notam_match_archive
-from fetch.FNS_NOTAM_ARCHIVE_SEARCH import FNS_NOTAM_ARCHIVE_SEARCH
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
+from fetch.MSI_FETCH import MSI_FETCH
 from fetch.dinsQueryWeb import dinsQueryWeb
-from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
-from fetch.FNS_NOTAM_ARCHIVE_SEARCH import FNS_NOTAM_ARCHIVE_SEARCH
-import re
-import json
 from fetch.mail_draft import generate_change_email_draft
 from fetch.sendcloud_email import send_email_via_qq_smtp
 from fetch.visits import update_visits
-from datetime import datetime
+
 dins = False
 FNSs = True
+MSIs = False
 
 def parse_point(pt):
     m = re.match(r'([NS])(\d{4,6})([WE])(\d{5,7})', pt)
@@ -180,6 +180,219 @@ def extract_altitude(raw_message_lst):
     return ans
 
 
+def coordinates_has_lon_in_range(coord_str, lon_min=70.0, lon_max=180.0):
+    if not coord_str:
+        return False
+    for part in str(coord_str).split('-'):
+        p = parse_point(part.strip())
+        if not p:
+            continue
+        lon = p[1]
+        if lon_min <= lon <= lon_max:
+            return True
+    return False
+
+
+def count_new_notams_for_mail(previous_data, current_data):
+    prev_ids = set(str(x) for x in (previous_data.get('PLATID', []) if isinstance(previous_data, dict) else []))
+    curr_ids = current_data.get('PLATID', []) if isinstance(current_data, dict) else []
+    curr_coords = current_data.get('COORDINATES', []) if isinstance(current_data, dict) else []
+
+    cnt = 0
+    for idx, platid in enumerate(curr_ids):
+        pid = str(platid)
+        if pid in prev_ids:
+            continue
+        coord = curr_coords[idx] if idx < len(curr_coords) else ''
+        if coordinates_has_lon_in_range(coord, 70.0, 180.0):
+            cnt += 1
+    return cnt
+
+
+def filter_data_by_source(data, include_sources):
+    include_sources = set(include_sources or [])
+    if not isinstance(data, dict):
+        return {
+            'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [], 'RAWMESSAGE': [],
+            'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'CLASSIFY': {}, 'NUM': 0,
+        }
+
+    sources = data.get('SOURCE', []) or []
+    size = min(
+        len(data.get('CODE', []) or []),
+        len(data.get('COORDINATES', []) or []),
+        len(data.get('TIME', []) or []),
+        len(data.get('PLATID', []) or []),
+        len(data.get('RAWMESSAGE', []) or []),
+    )
+
+    out = {
+        'CODE': [],
+        'COORDINATES': [],
+        'TIME': [],
+        'PLATID': [],
+        'RAWMESSAGE': [],
+        'ALTITUDE': [],
+        'SOURCE': [],
+        'FIR': [],
+        'CLASSIFY': {},
+        'NUM': 0,
+    }
+    for i in range(size):
+        src = sources[i] if i < len(sources) else 'NOTAM'
+        src = str(src or 'NOTAM').upper()
+        if src not in include_sources:
+            continue
+        out['CODE'].append(data['CODE'][i])
+        out['COORDINATES'].append(data['COORDINATES'][i])
+        out['TIME'].append(data['TIME'][i])
+        out['PLATID'].append(data['PLATID'][i])
+        out['RAWMESSAGE'].append(data['RAWMESSAGE'][i])
+        altitude_list = data.get('ALTITUDE', []) or []
+        fir_list = data.get('FIR', []) or []
+        out['ALTITUDE'].append(altitude_list[i] if i < len(altitude_list) else 'None')
+        out['SOURCE'].append(src)
+        out['FIR'].append(fir_list[i] if i < len(fir_list) else '')
+
+    out['NUM'] = len(out['CODE'])
+    out['CLASSIFY'] = classify_data(out)
+    return out
+
+
+def compute_data_hash(data, include_sources=None):
+    if not isinstance(data, dict):
+        return ''
+
+    include_sources = set(s.upper() for s in include_sources) if include_sources else None
+    sources = data.get('SOURCE', []) or []
+    size = min(
+        len(data.get('CODE', []) or []),
+        len(data.get('COORDINATES', []) or []),
+        len(data.get('TIME', []) or []),
+        len(data.get('PLATID', []) or []),
+    )
+
+    records = []
+    for i in range(size):
+        src = str(sources[i] if i < len(sources) else 'NOTAM').upper()
+        if include_sources is not None and src not in include_sources:
+            continue
+        records.append('|'.join([
+            str(data['CODE'][i]),
+            str(data['COORDINATES'][i]),
+            str(data['TIME'][i]),
+            str(data['PLATID'][i]),
+            src,
+        ]))
+
+    payload = '\n'.join(sorted(records))
+    return hashlib.sha256(payload.encode('utf-8')).hexdigest()
+
+
+def _is_unknown_fir(fir_value):
+    text = str(fir_value or '').strip().upper()
+    return text in {'', 'UNKNOWN', 'UNK', 'NONE', 'NULL', 'N/A'}
+
+
+def _extract_fir_from_text(raw_message, fir_candidates):
+    text = str(raw_message or '')
+    candidates = {str(x).strip().upper() for x in (fir_candidates or []) if len(str(x).strip()) == 4}
+
+    match = re.search(r'\bA\)\s*([A-Z]{4})\b', text, re.IGNORECASE)
+    if not match:
+        return 'UNKNOWN', 'NO_A_FIELD'
+
+    token = match.group(1).upper()
+    if token in candidates:
+        return token, token
+    return 'UNKNOWN', token
+
+
+def _parse_fir_candidates_from_config(codes_text):
+    tokens = re.findall(r'[A-Z]{4}', str(codes_text or '').upper())
+    out = []
+    seen = set()
+    for token in tokens:
+        if token in seen:
+            continue
+        seen.add(token)
+        out.append(token)
+    return out
+
+
+def backfill_fir_from_text(data, fir_candidates):
+    """
+    Parse FIR from raw message using configured FIR list.
+    Rule: read FIR from `A)` field, then validate against config list.
+    If parse/validation fails -> UNKNOWN.
+    """
+    firs = data.get('FIR', []) or []
+    raws = data.get('RAWMESSAGE', []) or []
+    size = min(len(firs), len(raws))
+    if size == 0:
+        return
+
+    updated = 0
+    for i in range(size):
+        current_fir = str(firs[i] or '').strip()
+        if not _is_unknown_fir(current_fir):
+            continue
+
+        parsed_fir, detail = _extract_fir_from_text(raws[i], fir_candidates)
+        if detail == 'NO_A_FIELD':
+            print(f"FIR match detail idx={i}: no A) field -> UNKNOWN")
+        elif _is_unknown_fir(parsed_fir):
+            print(f"FIR match detail idx={i}: A)={detail} not in config -> UNKNOWN")
+        else:
+            print(f"FIR match detail idx={i}: A)={detail} -> {parsed_fir}")
+
+        if not _is_unknown_fir(parsed_fir):
+            firs[i] = parsed_fir
+            updated += 1
+        else:
+            firs[i] = 'UNKNOWN'
+
+    if updated > 0:
+        print(f"FIR parse backfill: parsed {updated} entries from raw text")
+
+
+def harmonize_fir_by_platid(data):
+    """
+    For the same PLATID, keep a meaningful FIR and prevent UNKNOWN from overriding it.
+    """
+    platids = data.get('PLATID', []) or []
+    firs = data.get('FIR', []) or []
+    size = min(len(platids), len(firs))
+    if size == 0:
+        return
+
+    best_fir_by_platid = {}
+    for i in range(size):
+        pid = str(platids[i] or '').strip()
+        if not pid:
+            continue
+        fir = str(firs[i] or '').strip()
+        if _is_unknown_fir(fir):
+            continue
+        if pid not in best_fir_by_platid:
+            best_fir_by_platid[pid] = fir
+
+    replaced = 0
+    for i in range(size):
+        pid = str(platids[i] or '').strip()
+        if not pid:
+            continue
+        best_fir = best_fir_by_platid.get(pid)
+        if not best_fir:
+            continue
+        if _is_unknown_fir(firs[i]):
+            firs[i] = best_fir
+            replaced += 1
+
+    if replaced > 0:
+        print(f"FIR merge: replaced {replaced} UNKNOWN entries by PLATID priority")
+
+
 EXCLUDE_RECTS = [
     # {'lat_min': 39.303183, 'lat_max': 40.856476, 'lon_min': 101.300003, 'lon_max': 105.242712},
     {'lat_min': 36.263957, 'lat_max': 45.841384, 'lon_min': 73.570446,  'lon_max': 90.944820},
@@ -242,7 +455,6 @@ def get_mail_config():
     }
 
 import logging
-from io import StringIO
 import sys
 
 class LogCapture:
@@ -302,6 +514,7 @@ def fetch():
         current_icao_codes = current_config.get('ICAO', 'codes', fallback=ICAO_CODES)
     except Exception as e:
         current_icao_codes = ICAO_CODES
+    fir_candidates = _parse_fir_candidates_from_config(current_icao_codes)
     
     dataDict = {
         "CODE": [],
@@ -310,6 +523,8 @@ def fetch():
         "PLATID": [],
         "ALTITUDE": [],
         "RAWMESSAGE": [],
+        "SOURCE": [],
+        "FIR": [],
         "CLASSIFY": {},
         "NUM": 0,
     }
@@ -324,6 +539,8 @@ def fetch():
             dataDict["TIME"].extend(dins_data["TIME"])
             dataDict["PLATID"].extend(dins_data["TRANSID"])
             dataDict["RAWMESSAGE"].extend(dins_data["RAWMESSAGE"])
+            dataDict["SOURCE"].extend(dins_data.get("SOURCE", []) or ['MSI'] * len(dins_data["CODE"]))
+            dataDict["FIR"].extend(dins_data.get("FIR", []) or ['DINS'] * len(dins_data["CODE"]))
             print(f"爬取来源{source_num}: dinsQueryWeb, 获取 {len(dins_data['CODE'])} 条航警")
     
     if FNSs:
@@ -335,8 +552,18 @@ def fetch():
             fns_time = []
             fns_id = []
             fns_raw = []
+            fns_source = []
+            fns_fir = []
 
-            for code, coords_str, t, id, raw in zip(FNS_data['CODE'], FNS_data['COORDINATES'], FNS_data['TIME'], FNS_data['TRANSID'], FNS_data['RAWMESSAGE']):
+            for code, coords_str, t, id, raw, source_type, fir in zip(
+                FNS_data['CODE'],
+                FNS_data['COORDINATES'],
+                FNS_data['TIME'],
+                FNS_data['TRANSID'],
+                FNS_data['RAWMESSAGE'],
+                FNS_data.get('SOURCE', []) or ['NOTAM'] * len(FNS_data['CODE']),
+                FNS_data.get('FIR', []) or [''] * len(FNS_data['CODE'])
+            ):
                 pts = []
                 for part in coords_str.split('-'):
                     p = parse_point(part.strip())
@@ -380,6 +607,8 @@ def fetch():
                     fns_time.append(t)
                     fns_id.append(id)
                     fns_raw.append(raw)
+                    fns_source.append(source_type)
+                    fns_fir.append(fir)
 
             if fns_code:
                 dataDict["CODE"].extend(fns_code)
@@ -387,21 +616,60 @@ def fetch():
                 dataDict["TIME"].extend(fns_time)
                 dataDict["PLATID"].extend(fns_id)
                 dataDict["RAWMESSAGE"].extend(fns_raw)
+                dataDict["SOURCE"].extend(fns_source)
+                dataDict["FIR"].extend(fns_fir)
             print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(fns_code)} 条航警")
+
+    if MSIs:
+        msi_data = MSI_FETCH()
+        if msi_data.get('CODE'):
+            source_num += 1
+            dataDict['CODE'].extend(msi_data.get('CODE', []))
+            dataDict['COORDINATES'].extend(msi_data.get('COORDINATES', []))
+            dataDict['TIME'].extend(msi_data.get('TIME', []))
+            dataDict['PLATID'].extend(msi_data.get('TRANSID', []))
+            dataDict['RAWMESSAGE'].extend(msi_data.get('RAWMESSAGE', []))
+            dataDict['SOURCE'].extend(msi_data.get('SOURCE', []) or ['MSI'] * len(msi_data.get('CODE', [])))
+            dataDict['FIR'].extend(msi_data.get('FIR', []) or ['UNKNOWN'] * len(msi_data.get('CODE', [])))
+            print(f"爬取来源{source_num}: MSI_FETCH, 获取 {len(msi_data.get('CODE', []))} 条航警")
+
+    backfill_fir_from_text(dataDict, fir_candidates)
+    harmonize_fir_by_platid(dataDict)
 
     dataDict["NUM"] = len(dataDict["CODE"])
     dataDict["CLASSIFY"] = classify_data(dataDict)
     dataDict["ALTITUDE"] = extract_altitude(dataDict["RAWMESSAGE"])
-    sorted_data = sorted(zip(dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"]), key=lambda x: x[0])
+    sorted_data = sorted(
+        zip(
+            dataDict["CODE"],
+            dataDict["COORDINATES"],
+            dataDict["TIME"],
+            dataDict["PLATID"],
+            dataDict["RAWMESSAGE"],
+            dataDict["ALTITUDE"],
+            dataDict["SOURCE"],
+            dataDict["FIR"],
+        ),
+        key=lambda x: x[0]
+    )
     if (sorted_data == []):
         print("No data fetched.")
-        dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"] = [], [], [], [], []
+        dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"], dataDict["ALTITUDE"], dataDict["SOURCE"], dataDict["FIR"] = [], [], [], [], [], [], [], []
         dataDict["NUM"] = len(dataDict["CODE"])
-        dataDict["HASH"] = sum(int(platid) % 998244353 for platid in dataDict["PLATID"]) % 998244353
     else:
-        dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"] = zip(*sorted_data)
+        (
+            dataDict["CODE"],
+            dataDict["COORDINATES"],
+            dataDict["TIME"],
+            dataDict["PLATID"],
+            dataDict["RAWMESSAGE"],
+            dataDict["ALTITUDE"],
+            dataDict["SOURCE"],
+            dataDict["FIR"],
+        ) = map(list, zip(*sorted_data))
         dataDict["NUM"] = len(dataDict["CODE"])
-        dataDict["HASH"] = sum(int(platid) % 998244353 for platid in dataDict["PLATID"]) % 998244353
+    dataDict["HASH"] = compute_data_hash(dataDict)
+    dataDict["HASH_NOTAM"] = compute_data_hash(dataDict, include_sources={'NOTAM'})
     print(dataDict)
     with open('data_dict.json', 'w', encoding='utf-8') as json_file:
         json.dump(dataDict, json_file, ensure_ascii=False, indent=4)
@@ -412,15 +680,25 @@ if __name__ == '__main__':
     try:
         with open('data_dict.json', 'r', encoding='utf-8') as json_file:
             previous_data = json.load(json_file)
-            before_hash = previous_data.get("HASH", None)
+            before_hash = previous_data.get('HASH') or compute_data_hash(previous_data)
+            before_hash_notam = previous_data.get('HASH_NOTAM') or compute_data_hash(previous_data, include_sources={'NOTAM'})
     except FileNotFoundError:
         before_hash = None
+        before_hash_notam = None
     dataDict = fetch()
     after_hash = dataDict.get("HASH", None)
+    after_hash_notam = dataDict.get('HASH_NOTAM', None)
+
     if before_hash != after_hash:
-        notam_match_archive(dataDict=dataDict)
-        email_draft = generate_change_email_draft(previous_data, dataDict)
-        added_count = int(email_draft.get('added_count', 0) or 0)
+        update_visits()
+        print('检测到数据变化，已执行 update_visits')
+
+    if before_hash_notam != after_hash_notam:
+        current_notam = filter_data_by_source(dataDict, {'NOTAM'})
+        previous_notam = filter_data_by_source(previous_data, {'NOTAM'})
+        notam_match_archive(dataDict=current_notam)
+        email_draft = generate_change_email_draft(previous_notam, current_notam)
+        added_count = count_new_notams_for_mail(previous_notam, current_notam)
         if MAIL_ENABLED and added_count > 0:
             try:
                 send_result = send_email_via_qq_smtp(get_mail_config(), email_draft)
@@ -428,7 +706,8 @@ if __name__ == '__main__':
             except Exception as exc:
                 print(f"邮件发送失败: {exc}")
         elif MAIL_ENABLED:
-            print('无新增航警，已跳过邮件发送')
+            print('无符合经度范围(70~180)的新增航警，已跳过邮件发送')
         else:
             print('MAIL.enabled=false，已跳过邮件发送')
-        update_visits()
+    elif before_hash != after_hash:
+        print('仅MSI或非NOTAM数据变化，已跳过历史匹配与邮件发送')

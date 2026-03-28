@@ -200,6 +200,17 @@ def notam_match_archive(dataDict):
     
     # 2. 收集所有历史航警
     notam_db_dir = 'data/notam_db'
+    blacklist_path = os.path.join('data', 'blacklist.json')
+    blacklisted_codes = set()
+    if os.path.exists(blacklist_path):
+        try:
+            with open(blacklist_path, 'r', encoding='utf-8') as f:
+                raw = json.load(f)
+                if isinstance(raw, list):
+                    blacklisted_codes = set(str(x).strip() for x in raw if str(x).strip())
+        except Exception as e:
+            print(f"读取黑名单失败: {e}")
+
     history_notams = []
     
     if os.path.exists(notam_db_dir):
@@ -210,6 +221,9 @@ def notam_match_archive(dataDict):
                     with open(filepath, 'r', encoding='utf-8') as f:
                         db_data = json.load(f)
                         for i in range(db_data.get('NUM', 0)):
+                            code_value = str(db_data['CODE'][i]) if i < len(db_data.get('CODE', [])) else ''
+                            if code_value in blacklisted_codes:
+                                continue
                             notam = {
                                 "CODE": db_data['CODE'][i],
                                 "COORDINATES": db_data['COORDINATES'][i],
@@ -217,6 +231,8 @@ def notam_match_archive(dataDict):
                                 "PLATID": db_data['PLATID'][i],
                                 "RAWMESSAGE": db_data['RAWMESSAGE'][i],
                                 "ALTITUDE": db_data['ALTITUDE'][i] if 'ALTITUDE' in db_data and i < len(db_data['ALTITUDE']) else 'None',
+                                "SOURCE": db_data['SOURCE'][i] if 'SOURCE' in db_data and i < len(db_data['SOURCE']) else 'NOTAM',
+                                "FIR": db_data['FIR'][i] if 'FIR' in db_data and i < len(db_data['FIR']) else '',
                                 "source_file": filename
                             }
                             # 解析坐标点
@@ -258,7 +274,9 @@ def notam_match_archive(dataDict):
             "TIME": dataDict['TIME'][idx],
             "PLATID": dataDict['PLATID'][idx],
             "RAWMESSAGE": dataDict['RAWMESSAGE'][idx],
-            "ALTITUDE": dataDict['ALTITUDE'][idx]
+            "ALTITUDE": dataDict['ALTITUDE'][idx],
+            "SOURCE": dataDict['SOURCE'][idx] if 'SOURCE' in dataDict and idx < len(dataDict['SOURCE']) else 'NOTAM',
+            "FIR": dataDict['FIR'][idx] if 'FIR' in dataDict and idx < len(dataDict['FIR']) else '',
         }
         
         # 解析当前航警的坐标点
@@ -299,6 +317,8 @@ def notam_match_archive(dataDict):
                             'PLATID': dataDict['PLATID'][rel_idx],
                             'RAWMESSAGE': dataDict['RAWMESSAGE'][rel_idx],
                             'ALTITUDE': dataDict['ALTITUDE'][rel_idx] if 'ALTITUDE' in dataDict and rel_idx < len(dataDict['ALTITUDE']) else 'None',
+                            'SOURCE': dataDict['SOURCE'][rel_idx] if 'SOURCE' in dataDict and rel_idx < len(dataDict['SOURCE']) else 'NOTAM',
+                            'FIR': dataDict['FIR'][rel_idx] if 'FIR' in dataDict and rel_idx < len(dataDict['FIR']) else '',
                             'source_file': 'current_dict',
                             'GroupKey': current_group_key,
                             'IsSameGroup': True,

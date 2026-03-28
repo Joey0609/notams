@@ -251,6 +251,9 @@ function updateSidebar() {
         
         for (let i = 0; i < dict.NUM; i++) {
             const code = dict.CODE[i];
+            const sourceType = (dict.SOURCE?.[i] || 'NOTAM').toUpperCase();
+            const canArchiveMatch = sourceType === 'NOTAM';
+            const copyTitle = sourceType === 'MSI' ? '复制原始海警' : '复制原始航警';
             const rawTime = dict.TIME[i] || '';
             const prettyTime = convertTime(rawTime);
             const rawMessage = dict.RAWMESSAGE?.[i] || '';
@@ -275,6 +278,7 @@ function updateSidebar() {
                             </div>
 
                             <span class="notam-code">${code}</span>
+                            <span style="font-size:11px;padding:1px 6px;border-radius:10px;background:${sourceType === 'MSI' ? '#16a085' : '#34495e'};color:#fff;">${sourceType}</span>
                         </div>
 
                         
@@ -286,7 +290,7 @@ function updateSidebar() {
                 <div class="notam-actions">
                         <button class="icon-btn"
                             onclick="event.stopPropagation(); copyRaw(${i})"
-                            title="复制原始航警">
+                            title="${copyTitle}">
                             <!-- Copy Icon -->
                             <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 12.4316V7.8125C13 6.2592 14.2592 5 15.8125 5H40.1875C41.7408 5 43 6.2592 43 7.8125V32.1875C43 33.7408 41.7408 35 40.1875 35H35.5163" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32.1875 13H7.8125C6.2592 13 5 14.2592 5 15.8125V40.1875C5 41.7408 6.2592 43 7.8125 43H32.1875C33.7408 43 35 41.7408 35 40.1875V15.8125C35 14.2592 33.7408 13 32.1875 13Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>
                         </button>
@@ -303,7 +307,8 @@ function updateSidebar() {
                         </button>   
                         <button class="icon-btn"
                             onclick="event.stopPropagation(); archiveNOTAMmatch(${i})"
-                            title="历史航警匹配">
+                            title="${canArchiveMatch ? '历史航警匹配' : 'MSI不参与历史匹配'}"
+                            ${canArchiveMatch ? '' : 'disabled style="opacity:0.4;cursor:not-allowed;"'}>
                             <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81836 6.72729V14H13.0911" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 24C4 35.0457 12.9543 44 24 44V44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C16.598 4 10.1351 8.02111 6.67677 13.9981" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.005 12L24.0038 24.0088L32.4832 32.4882" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
                     </div>
@@ -562,6 +567,11 @@ function locateToNotam(index) {
 /* 定位历史航警 */
 function archiveNOTAMmatch(index) {
     if (!dict || index >= dict.NUM) return;
+    const sourceType = (dict.SOURCE?.[index] || 'NOTAM').toUpperCase();
+    if (sourceType !== 'NOTAM') {
+        alert('MSI 不参与历史航警匹配');
+        return;
+    }
     console.log('匹配历史航警航警:', index);
     // 跳转到 history 页面并传递 index 参数
     window.open(`match.html?index=${index}`, '_blank');

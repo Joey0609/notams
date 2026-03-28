@@ -36,7 +36,9 @@ function drawAllAutoNotams() {
             i,
             col,
             0,
-            dict.RAWMESSAGE?.[i] || ""
+            dict.RAWMESSAGE?.[i] || "",
+            dict.SOURCE?.[i] || 'NOTAM',
+            dict.FIR?.[i] || ''
         );
         visibleState[i] = true;
     }
