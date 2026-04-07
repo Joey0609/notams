@@ -1,0 +1,312 @@
+[
+    {
+        "CODE": "A3268/23",
+        "COORDINATES": "N0645E11058-N0731E11040-N0728E11124-N0600E11118-N0603E11034-N0731E11040",
+        "TIME": "05 DEC 19:20 2023 UNTIL 05 DEC 20:23 2023",
+        "PLATID": "70369570",
+        "RAWMESSAGE": "A3268/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0645N11059E051\nA) WSJC B) 2312051920 C) 2312052023\nE) UNBURNED DEBRIS IS EXPECTED TO FALL AT 0645N11058E WI 0731N11040E -\n0728N11124E - 0600N11118E - 0603N11034E - 0731N11040E DUE TO\nAEROSPACE FLT ACT. \nRMK/ATS ROUTES N884 AND M768 NOT AVBL IN SINGAPORE FIR\n\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                6.75,
+                110.96666666666667
+            ],
+            [
+                7.516666666666667,
+                110.66666666666667
+            ],
+            [
+                7.466666666666667,
+                111.4
+            ],
+            [
+                6.0,
+                111.3
+            ],
+            [
+                6.05,
+                110.56666666666666
+            ],
+            [
+                7.516666666666667,
+                110.66666666666667
+            ]
+        ],
+        "Overlapping_Area": 46.5,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A1115/26",
+                "COORDINATES": "N0559E11034-N0725E11041-N0722E11124-N0555E11118-N0559E11034",
+                "TIME": "10 APR 11:00 2026 UNTIL 17 APR 14:00 2026",
+                "PLATID": "80645614",
+                "RAWMESSAGE": "A1115/26 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0640N11100E049\nA) WSJC B) 2604101100 C) 2604171400\nD) APR 10-17 1100-1400\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0559N11034E - 0725N11041E -\n0722N11124E - 0555N11118E - 0559N11034E DUE TO AEROSPACE FLT ACT BY\nCHINA.\nRMK/ATS ROUTE M768 BETWEEN AKMON AND ASISU NOT AVBL\n    ATS ROUTE N884 BETWEEN RILRI AND LAXOR NOT AVBL  \nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "WSJC",
+                "source_file": "current_dict",
+                "GroupKey": "c996808015",
+                "IsSameGroup": true,
+                "parent_index": 7
+            }
+        ]
+    },
+    {
+        "CODE": "A3267/23",
+        "COORDINATES": "N0722E11101-N0807E11043-N0804E11127-N0637E11121-N0640E11036-N0807E11043",
+        "TIME": "05 DEC 19:20 2023 UNTIL 05 DEC 20:12 2023",
+        "PLATID": "70369557",
+        "RAWMESSAGE": "A3267/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0722N11102E050\nA) WSJC B) 2312051920 C) 2312052012\nE) UNBURNED DEBRIS IS EXPECTED TO FALL AT 0722N11101E WI 0807N11043E -\n0804N11127E - 0637N11121E - 0640N11036E - 0807N11043E DUE TO\nAEROSPACE FLT ACT. RMK/ATS ROUTES N884 AND M768 NOT AVBL IN\nSINGAPORE FIR\n\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                7.366666666666666,
+                111.01666666666667
+            ],
+            [
+                8.116666666666667,
+                110.71666666666667
+            ],
+            [
+                8.066666666666666,
+                111.45
+            ],
+            [
+                6.616666666666667,
+                111.35
+            ],
+            [
+                6.666666666666667,
+                110.6
+            ],
+            [
+                8.116666666666667,
+                110.71666666666667
+            ]
+        ],
+        "Overlapping_Area": 7.8,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A1115/26",
+                "COORDINATES": "N0559E11034-N0725E11041-N0722E11124-N0555E11118-N0559E11034",
+                "TIME": "10 APR 11:00 2026 UNTIL 17 APR 14:00 2026",
+                "PLATID": "80645614",
+                "RAWMESSAGE": "A1115/26 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0640N11100E049\nA) WSJC B) 2604101100 C) 2604171400\nD) APR 10-17 1100-1400\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0559N11034E - 0725N11041E -\n0722N11124E - 0555N11118E - 0559N11034E DUE TO AEROSPACE FLT ACT BY\nCHINA.\nRMK/ATS ROUTE M768 BETWEEN AKMON AND ASISU NOT AVBL\n    ATS ROUTE N884 BETWEEN RILRI AND LAXOR NOT AVBL  \nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "WSJC",
+                "source_file": "current_dict",
+                "GroupKey": "c996808015",
+                "IsSameGroup": true,
+                "parent_index": 7
+            }
+        ]
+    },
+    {
+        "CODE": "A3507/23",
+        "COORDINATES": "N0549E10824-N0719E10840-N0711E10923-N0541E10906-N0549E10824",
+        "TIME": "25 DEC 22:00 2023 UNTIL 28 DEC 02:00 2023",
+        "PLATID": "70590947",
+        "RAWMESSAGE": "A3507/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0630N10853E052\nA) WSJC B) 2312252200 C) 2312280200\nD) DEC 25 2200-2359, 26 27 0000 - 0200  2200 - 2359, 28 0000-0200\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0549N10824E - 0719N10840E -\n0711N10923E- 0541N10906E - 0549N10824E DUE TO AEROSPACE FLT ACT. \nRMK/ATS ROUTE L625 NOT AVBL IN SINGAPORE FIR\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                5.816666666666666,
+                108.4
+            ],
+            [
+                7.316666666666666,
+                108.66666666666667
+            ],
+            [
+                7.183333333333334,
+                109.38333333333334
+            ],
+            [
+                5.683333333333334,
+                109.1
+            ],
+            [
+                5.816666666666666,
+                108.4
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 235.3,
+        "RelatedItems": [
+            {
+                "CODE": "A1115/26",
+                "COORDINATES": "N0559E11034-N0725E11041-N0722E11124-N0555E11118-N0559E11034",
+                "TIME": "10 APR 11:00 2026 UNTIL 17 APR 14:00 2026",
+                "PLATID": "80645614",
+                "RAWMESSAGE": "A1115/26 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0640N11100E049\nA) WSJC B) 2604101100 C) 2604171400\nD) APR 10-17 1100-1400\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0559N11034E - 0725N11041E -\n0722N11124E - 0555N11118E - 0559N11034E DUE TO AEROSPACE FLT ACT BY\nCHINA.\nRMK/ATS ROUTE M768 BETWEEN AKMON AND ASISU NOT AVBL\n    ATS ROUTE N884 BETWEEN RILRI AND LAXOR NOT AVBL  \nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "WSJC",
+                "source_file": "current_dict",
+                "GroupKey": "c996808015",
+                "IsSameGroup": true,
+                "parent_index": 7
+            }
+        ]
+    },
+    {
+        "CODE": "A3579/23",
+        "COORDINATES": "N0719E10842-N0711E10926-N0541E10909-N0548E10825-N0715E10840-N0719E10842",
+        "TIME": "25 DEC 22:21 2023 UNTIL 25 DEC 23:20 2023",
+        "PLATID": "70663331",
+        "RAWMESSAGE": "A3579/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0630N10855E053\nA) WSJC B) 2312252221 C) 2312252320\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0719N10842E - 0711N10926E -\n0541N10909E - 0548N10825E - 0715N10840E - 0719N10842E DUE TO\nAEROSPACE FLT ACT. RMK/ATS ROUTE L625 BTN LUSMO AND AKMON NOT AVBL IN\nSINGAPORE FIR\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "points": [
+            [
+                7.316666666666666,
+                108.7
+            ],
+            [
+                7.183333333333334,
+                109.43333333333334
+            ],
+            [
+                5.683333333333334,
+                109.15
+            ],
+            [
+                5.8,
+                108.41666666666667
+            ],
+            [
+                7.25,
+                108.66666666666667
+            ],
+            [
+                7.316666666666666,
+                108.7
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 243.7,
+        "RelatedItems": [
+            {
+                "CODE": "A1115/26",
+                "COORDINATES": "N0559E11034-N0725E11041-N0722E11124-N0555E11118-N0559E11034",
+                "TIME": "10 APR 11:00 2026 UNTIL 17 APR 14:00 2026",
+                "PLATID": "80645614",
+                "RAWMESSAGE": "A1115/26 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0640N11100E049\nA) WSJC B) 2604101100 C) 2604171400\nD) APR 10-17 1100-1400\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0559N11034E - 0725N11041E -\n0722N11124E - 0555N11118E - 0559N11034E DUE TO AEROSPACE FLT ACT BY\nCHINA.\nRMK/ATS ROUTE M768 BETWEEN AKMON AND ASISU NOT AVBL\n    ATS ROUTE N884 BETWEEN RILRI AND LAXOR NOT AVBL  \nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "WSJC",
+                "source_file": "current_dict",
+                "GroupKey": "c996808015",
+                "IsSameGroup": true,
+                "parent_index": 7
+            }
+        ]
+    },
+    {
+        "CODE": "A4140/25",
+        "COORDINATES": "N074100E1095000-N074630E1091943-N080657E1095446-N074100E1095000",
+        "TIME": "26 DEC 06:29 2025 UNTIL 26 DEC 07:05 2025",
+        "PLATID": "79166174",
+        "RAWMESSAGE": "A4140/25 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0757N10937E021\nA) WSJC B) 2512260629 C) 2512260705\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 074100N1095000E-\n074630N1091943E - 080657N1095446E - 074100N1095000E.\nDUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 BETWEEN GUTUP\nAND AKMON NOT AVBL.\nACFT ENTERING SINGAPORE FIR VIA ATS ROUTE M768 BETWEEN ASISU AND\nAKMON NOT AVBL\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-12.json",
+        "points": [
+            [
+                7.683333333333334,
+                109.83333333333333
+            ],
+            [
+                7.775,
+                109.3286111111111
+            ],
+            [
+                8.115833333333333,
+                109.91277777777778
+            ],
+            [
+                7.683333333333334,
+                109.83333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 249.8,
+        "RelatedItems": [
+            {
+                "CODE": "A1115/26",
+                "COORDINATES": "N0559E11034-N0725E11041-N0722E11124-N0555E11118-N0559E11034",
+                "TIME": "10 APR 11:00 2026 UNTIL 17 APR 14:00 2026",
+                "PLATID": "80645614",
+                "RAWMESSAGE": "A1115/26 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0640N11100E049\nA) WSJC B) 2604101100 C) 2604171400\nD) APR 10-17 1100-1400\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0559N11034E - 0725N11041E -\n0722N11124E - 0555N11118E - 0559N11034E DUE TO AEROSPACE FLT ACT BY\nCHINA.\nRMK/ATS ROUTE M768 BETWEEN AKMON AND ASISU NOT AVBL\n    ATS ROUTE N884 BETWEEN RILRI AND LAXOR NOT AVBL  \nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "WSJC",
+                "source_file": "current_dict",
+                "GroupKey": "c996808015",
+                "IsSameGroup": true,
+                "parent_index": 7
+            }
+        ]
+    },
+    {
+        "CODE": "A4162/25",
+        "COORDINATES": "N074100E1095000-N074630E1091943-N080657E1095446-N074100E1095000",
+        "TIME": "29 DEC 06:09 2025 UNTIL 29 DEC 07:25 2025",
+        "PLATID": "79192213",
+        "RAWMESSAGE": "A4162/25 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0757N10937E021\nA) WSJC B) 2512290609 C) 2512290725\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 074100N1095000E-\n074630N1091943E - 080657N1095446E - 074100N1095000E.\nDUE TO AEROSPACE FLT ACT BY CHINA.\nRMK/ACFT ENTERING HO CHI MINH FIR VIA ATS ROUTE L625 BETWEEN GUTUP\nAND AKMON NOT AVBL.\nACFT ENTERING SINGAPORE FIR VIA ATS ROUTE M768 BETWEEN ASISU AND\nAKMON NOT AVBL\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-12.json",
+        "points": [
+            [
+                7.683333333333334,
+                109.83333333333333
+            ],
+            [
+                7.775,
+                109.3286111111111
+            ],
+            [
+                8.115833333333333,
+                109.91277777777778
+            ],
+            [
+                7.683333333333334,
+                109.83333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 249.8,
+        "RelatedItems": [
+            {
+                "CODE": "A1115/26",
+                "COORDINATES": "N0559E11034-N0725E11041-N0722E11124-N0555E11118-N0559E11034",
+                "TIME": "10 APR 11:00 2026 UNTIL 17 APR 14:00 2026",
+                "PLATID": "80645614",
+                "RAWMESSAGE": "A1115/26 NOTAMN\nQ) WSJC/QRALW/IV/BO/W/000/999/0640N11100E049\nA) WSJC B) 2604101100 C) 2604171400\nD) APR 10-17 1100-1400\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0559N11034E - 0725N11041E -\n0722N11124E - 0555N11118E - 0559N11034E DUE TO AEROSPACE FLT ACT BY\nCHINA.\nRMK/ATS ROUTE M768 BETWEEN AKMON AND ASISU NOT AVBL\n    ATS ROUTE N884 BETWEEN RILRI AND LAXOR NOT AVBL  \nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "WSJC",
+                "source_file": "current_dict",
+                "GroupKey": "c996808015",
+                "IsSameGroup": true,
+                "parent_index": 7
+            }
+        ]
+    }
+]
