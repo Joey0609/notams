@@ -52,11 +52,12 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+          cache-dependency-path: requirements.txt
 
       # ── 4. 安装依赖 ───────────────────────────────────────────────────
       - name: Install dependencies
         if: env.SKIP != 'true'
-        run: pip install -r requirements.txt
+        run: python -m pip install -r requirements.txt
 
       # ── 5. 确保数据目录存在 ───────────────────────────────────────────
       - name: Ensure data directories exist
