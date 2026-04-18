@@ -1,69 +1,29 @@
 {
-    "CODE": [
-        "B1492/26"
-    ],
-    "COORDINATES": [
-        "N161400E1140800-N153200E1144300-N151500E1142100-N154000E1140000-N160800E1140000-N161400E1140800"
-    ],
-    "TIME": [
-        "28 APR 02:00 2026 UNTIL 30 APR 06:00 2026"
-    ],
-    "PLATID": [
-        "80769103"
-    ],
-    "ALTITUDE": [
-        "0 ~ INF 米"
-    ],
-    "RAWMESSAGE": [
-        "B1492/26 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1545N11415E032\nA) RPHI B) 2604280200 C) 2604300600\nD) 0200-0600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n161400N 1140800E -\n153200N 1144300E -\n151500N 1142100E -\n154000N 1140000E -\n160800N 1140000E -\n161400N 1140800E \n(305NM WEST OF IBA, ZAMBALES).\nF) SFC G) UNL"
-    ],
-    "SOURCE": [
-        "NOTAM"
-    ],
-    "FIR": [
-        "RPHI"
-    ],
-    "CLASSIFY": {
-        "c249829787": [
-            "B1492/26"
-        ]
-    },
-    "NUM": 1,
-    "HASH": "aee241764eee3e64d5e223987f8abda29228950e85543750ecd7f529ac2f0275",
-    "HASH_NOTAM": "aee241764eee3e64d5e223987f8abda29228950e85543750ecd7f529ac2f0275",
+    "CODE": [],
+    "COORDINATES": [],
+    "TIME": [],
+    "PLATID": [],
+    "ALTITUDE": [],
+    "RAWMESSAGE": [],
+    "SOURCE": [],
+    "FIR": [],
+    "CLASSIFY": {},
+    "NUM": 0,
+    "HASH": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "HASH_NOTAM": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "HASH_MSI": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "NOTAM_DATA": {
-        "CODE": [
-            "B1492/26"
-        ],
-        "COORDINATES": [
-            "N161400E1140800-N153200E1144300-N151500E1142100-N154000E1140000-N160800E1140000-N161400E1140800"
-        ],
-        "TIME": [
-            "28 APR 02:00 2026 UNTIL 30 APR 06:00 2026"
-        ],
-        "PLATID": [
-            "80769103"
-        ],
-        "RAWMESSAGE": [
-            "B1492/26 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1545N11415E032\nA) RPHI B) 2604280200 C) 2604300600\nD) 0200-0600\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n161400N 1140800E -\n153200N 1144300E -\n151500N 1142100E -\n154000N 1140000E -\n160800N 1140000E -\n161400N 1140800E \n(305NM WEST OF IBA, ZAMBALES).\nF) SFC G) UNL"
-        ],
-        "ALTITUDE": [
-            "0 ~ INF 米"
-        ],
-        "SOURCE": [
-            "NOTAM"
-        ],
-        "FIR": [
-            "RPHI"
-        ],
-        "CLASSIFY": {
-            "c249829787": [
-                "B1492/26"
-            ]
-        },
-        "NUM": 1,
-        "HASH": "aee241764eee3e64d5e223987f8abda29228950e85543750ecd7f529ac2f0275"
+        "CODE": [],
+        "COORDINATES": [],
+        "TIME": [],
+        "PLATID": [],
+        "RAWMESSAGE": [],
+        "ALTITUDE": [],
+        "SOURCE": [],
+        "FIR": [],
+        "CLASSIFY": {},
+        "NUM": 0,
+        "HASH": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "MSI_DATA": {
         "CODE": [],
