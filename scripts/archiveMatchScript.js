@@ -54,6 +54,13 @@ function getUrlParameter(name) {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
+function getNotamDataSection(data) {
+    if (data && data.NOTAM_DATA && typeof data.NOTAM_DATA === 'object') {
+        return data.NOTAM_DATA;
+    }
+    return data;
+}
+
 // 加载匹配数据
 function loadMatchData(index) {
     const loadingModal = document.getElementById('loadingModal');
@@ -91,19 +98,21 @@ function drawOriginalNotam() {
             return r.json(); 
         })
         .then(data => {
-            if (matchIndex >= data.NUM || matchIndex < 0) {
-                console.error(`Invalid index ${matchIndex}, total NOTAMs: ${data.NUM}`);
+            const notamData = getNotamDataSection(data);
+            const total = Number(notamData?.NUM || 0);
+            if (matchIndex >= total || matchIndex < 0) {
+                console.error(`Invalid index ${matchIndex}, total NOTAMs: ${total}`);
                 return;
             }
             
             const originalNotam = {
-                COORDINATES: data.COORDINATES[matchIndex],
-                TIME: data.TIME[matchIndex],
-                CODE: data.CODE[matchIndex],
-                ALTITUDE: data.ALTITUDE[matchIndex] || 'None',
-                RAWMESSAGE: data.RAWMESSAGE[matchIndex] || '',
-                SOURCE: data.SOURCE?.[matchIndex] || 'NOTAM',
-                FIR: data.FIR?.[matchIndex] || ''
+                COORDINATES: notamData.COORDINATES[matchIndex],
+                TIME: notamData.TIME[matchIndex],
+                CODE: notamData.CODE[matchIndex],
+                ALTITUDE: notamData.ALTITUDE[matchIndex] || 'None',
+                RAWMESSAGE: notamData.RAWMESSAGE[matchIndex] || '',
+                SOURCE: notamData.SOURCE?.[matchIndex] || 'NOTAM',
+                FIR: notamData.FIR?.[matchIndex] || ''
             };
             
             // 绘制原始航警，使用特殊颜色（半透明红色）

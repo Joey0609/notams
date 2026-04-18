@@ -79,8 +79,15 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .help-section {margin-bottom: 10px;padding-bottom: 8px;border-bottom: 1px solid rgba(0, 0, 0, 0.08);}
 .help-section:last-child {border-bottom: none;margin-bottom: 0;padding-bottom: 0;}
 .help-section h4 {margin: 0 0 6px 0;font-size: 13px;font-weight: bold;color: #2c3e50;}
-.help-section a {color: #3498db;text-decoration: none;display: block;margin: 3px 0;font-size: 12px;transition: color 0.2s ease;}
+.help-section a {color: #3498db;text-decoration: none;display: block;margin: 3px 0;font-size: 12px;line-height: 1.45;transition: color 0.2s ease;}
 .help-section a:hover {color: #2980b9;text-decoration: underline;}
+.github-link-row {position: relative;display: flex;align-items: center;gap: 6px;margin: 2px 0 3px 0;max-width: 100%;line-height: 1.45;}
+.github-link-row a {display: inline-block;}
+.github-star-callout {position: relative;display: inline-flex;align-items: center;min-height: 18px;padding: 3px 10px 3px 11px;border-radius: 999px;background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(255, 255, 255, 0.96));border: 1px solid rgba(52, 152, 219, 0.20);box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);font-size: 11px;line-height: 1;color: #1f5d8b;white-space: nowrap;text-decoration: none;transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;}
+.github-star-callout::before {content: "";position: absolute;left: -5px;top: 50%;transform: translateY(-50%);width: 0;height: 0;border-top: 5px solid transparent;border-bottom: 5px solid transparent;border-right: 5px solid rgba(52, 152, 219, 0.20);}
+.github-star-callout::after {content: "";position: absolute;left: -4px;top: 50%;transform: translateY(-50%);width: 0;height: 0;border-top: 4px solid transparent;border-bottom: 4px solid transparent;border-right: 4px solid rgba(255, 255, 255, 0.96);}
+.github-star-callout:hover {transform: translateY(-1px);box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);text-decoration: none;}
+.github-star-callout strong {color: #d48806;}
 .export-section {margin-bottom: 10px;padding-bottom: 8px;border-bottom: 1px solid rgba(0, 0, 0, 0.08);}
 .export-section:last-child {border-bottom: none;margin-bottom: 0;padding-bottom: 0;}
 .export-section h4 {margin: 0 0 6px 0;font-size: 13px;font-weight: bold;color: #2c3e50;}

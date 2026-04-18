@@ -6,8 +6,11 @@ https://msi.nga.mil/
 import json
 import os
 import re
+import hashlib
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
+from html.parser import HTMLParser
 
 import requests
 import urllib3
@@ -47,12 +50,35 @@ BLACKLIST_AREAS = [
 
 
 ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
-CACHE_FILE = os.path.join(ROOT_DIR, "data", "msi_nav_result.json")
 
 # Fallback defaults if external config module is not present.
 MSI_FETCH_EXPIRE_TIME = 1800
 MSI_NAV_AREAS = ["4", "C", "12", "P", "A"]
 MSI_DNC_REGIONS = []
+
+# Extra sources based on NGA Daily Memo / query results.
+TXT_URLS = [
+    "https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemIV.txt",
+    "https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemXII.txt",
+    "https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemLAN.txt",
+    "https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemPAC.txt",
+    "https://msi.nga.mil/api/publications/download?type=view&key=16694640/SFH00000/DailyMemARC.txt",
+]
+
+HTML_URLS = [
+    "https://msi.nga.mil/queryResults?publications/smaps?navArea=4&status=active&category=14&output=html",
+    "https://msi.nga.mil/queryResults?publications/smaps?navArea=C&status=active&category=14&output=html",
+    "https://msi.nga.mil/queryResults?publications/smaps?navArea=12&status=active&category=14&output=html",
+    "https://msi.nga.mil/queryResults?publications/smaps?navArea=P&status=active&category=14&output=html",
+    "https://msi.nga.mil/queryResults?publications/smaps?navArea=A&status=active&category=14&output=html",
+]
+
+MIN_BLOCK_LENGTH = 50
+INTER_REQUEST_DELAY = 1
+AEROSPACE_KEYWORDS = [
+    "ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "REENTRY",
+    "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE", "SPACECRAFT",
+]
 
 try:
     import config as msi_config  # type: ignore
@@ -78,6 +104,48 @@ def make_headers():
 def preprocess_text(text):
     text = re.sub(r"\s+", " ", str(text or ""))
     return text.strip()
+
+
+class _TextExtractor(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self._parts = []
+        self._skip = False
+
+    def handle_starttag(self, tag, attrs):
+        tag = tag.lower()
+        if tag in ("script", "style"):
+            self._skip = True
+        if tag in ("tr", "p", "div", "li", "br"):
+            self._parts.append("\n\n")
+        elif tag in ("td", "th"):
+            self._parts.append(" ")
+
+    def handle_endtag(self, tag):
+        if tag.lower() in ("script", "style"):
+            self._skip = False
+
+    def handle_data(self, data):
+        if not self._skip:
+            self._parts.append(data)
+
+    def get_text(self):
+        return "".join(self._parts)
+
+
+def _is_aerospace_text(text):
+    upper = str(text or "").upper()
+    return any(k in upper for k in AEROSPACE_KEYWORDS)
+
+
+def _split_text_blocks(text):
+    blocks = re.split(r"\n\s*\n", str(text or ""))
+    return [b.strip() for b in blocks if len(b.strip()) >= MIN_BLOCK_LENGTH]
+
+
+def _make_msg_id(prefix, msg_text):
+    digest = hashlib.sha1(str(msg_text or "").encode("utf-8", errors="ignore")).hexdigest()[:16]
+    return f"{prefix}_{digest}"
 
 
 def parse_coordinates_msi(text):
@@ -457,6 +525,133 @@ def fetch_url_with_retry(url, max_retries=3):
     return None
 
 
+def fetch_text_with_retry(url, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, headers=make_headers(), timeout=30, verify=False)
+            if response.status_code == 200:
+                return response.text
+            print(f"[warn] text request failed status={response.status_code}, retry {attempt + 1}/{max_retries}")
+        except Exception as exc:
+            print(f"[error] text request error: {exc}, retry {attempt + 1}/{max_retries}")
+        time.sleep(2 ** attempt)
+    return ""
+
+
+def process_text_block_record(msg_text, source_tag="MSI_TEXT", category=""):
+    local_result = empty_payload()
+
+    msg_text = str(msg_text or "").strip()
+    if len(msg_text) < MIN_BLOCK_LENGTH:
+        return local_result
+
+    if not _is_aerospace_text(msg_text):
+        return local_result
+
+    code = parse_msg_code(msg_text, "NAVAREA")
+    msg_id = _make_msg_id(source_tag, msg_text)
+    base_year = get_base_year("")
+    areas = extract_areas_with_time(msg_text, base_year)
+
+    if not areas:
+        return local_result
+
+    valid_areas = []
+    for area_number, coords, time_str in areas:
+        if len(coords) < 3 or not time_str:
+            continue
+        valid_areas.append((area_number, coords, time_str))
+
+    if not valid_areas:
+        return local_result
+
+    if len(valid_areas) == 1:
+        area_number, coords, time_str = valid_areas[0]
+        _ = area_number
+        local_result["CODE"].append(code)
+        local_result["COORDINATES"].append("-".join(coords))
+        local_result["TIME"].append(time_str)
+        local_result["TRANSID"].append(msg_id)
+        local_result["RAWMESSAGE"].append(msg_text)
+        local_result["SOURCE"].append("MSI")
+        local_result["FIR"].append("")
+        local_result["ALTITUDE"].append("None")
+    else:
+        for area_number, coords, time_str in valid_areas:
+            local_result["CODE"].append(f"{code} AREA {area_number}")
+            local_result["COORDINATES"].append("-".join(coords))
+            local_result["TIME"].append(time_str)
+            local_result["TRANSID"].append(msg_id)
+            local_result["RAWMESSAGE"].append(msg_text)
+            local_result["SOURCE"].append("MSI")
+            local_result["FIR"].append("")
+            local_result["ALTITUDE"].append("None")
+
+    return local_result
+
+
+def fetch_txt_records(url):
+    text = fetch_text_with_retry(url)
+    if not text:
+        return empty_payload()
+
+    local_result = empty_payload()
+    blocks = _split_text_blocks(text)
+    print(f"[progress] txt blocks from {url}: {len(blocks)}", flush=True)
+
+    keyword_kept = 0
+    keyword_skipped = 0
+
+    for block in blocks:
+        if not _is_aerospace_text(block):
+            keyword_skipped += 1
+            continue
+        keyword_kept += 1
+        block_result = process_text_block_record(block, source_tag="MSI_TXT", category="Daily Memo")
+        for key in local_result.keys():
+            local_result[key].extend(block_result[key])
+
+    print(
+        f"[filter] TXT关键词筛选: kept_blocks={keyword_kept}, skipped_blocks={keyword_skipped}, parsed_records={len(local_result['CODE'])}",
+        flush=True,
+    )
+
+    return local_result
+
+
+def fetch_html_records(url):
+    html_text = fetch_text_with_retry(url)
+    if not html_text:
+        return empty_payload()
+
+    extractor = _TextExtractor()
+    extractor.feed(html_text)
+    text = extractor.get_text()
+
+    local_result = empty_payload()
+    blocks = _split_text_blocks(text)
+    print(f"[progress] html blocks from {url}: {len(blocks)}", flush=True)
+
+    keyword_kept = 0
+    keyword_skipped = 0
+
+    for block in blocks:
+        if not _is_aerospace_text(block):
+            keyword_skipped += 1
+            continue
+        keyword_kept += 1
+        block_result = process_text_block_record(block, source_tag="MSI_HTML", category="14")
+        for key in local_result.keys():
+            local_result[key].extend(block_result[key])
+
+    print(
+        f"[filter] HTML关键词筛选: kept_blocks={keyword_kept}, skipped_blocks={keyword_skipped}, parsed_records={len(local_result['CODE'])}",
+        flush=True,
+    )
+
+    return local_result
+
+
 def process_single_url(url):
     local_result = {
         "CODE": [],
@@ -473,15 +668,20 @@ def process_single_url(url):
         print(f"[progress] requesting: {url}", flush=True)
         data = fetch_url_with_retry(url)
         if not data:
+            print("[filter] JSON关键词筛选: no_data_from_source", flush=True)
             return local_result
 
         smaps = data.get("smaps", [])
         print(f"[progress] got {len(smaps)} records", flush=True)
 
+        category_kept = 0
+        keyword_skipped = 0
+
         for smap in smaps:
             category = str(smap.get("category", ""))
             if category not in ["ROCKET LAUNCHING", "SPACE DEBRIS"]:
                 continue
+            category_kept += 1
 
             msg_text = smap.get("msgText", "")
             msg_id = smap.get("msgID", "")
@@ -490,11 +690,9 @@ def process_single_url(url):
             if not msg_text:
                 continue
 
-            if not DEBUG:
-                cancel_time = parse_cancel_time(msg_text, created_on)
-                if cancel_time and cancel_time < datetime.utcnow():
-                    print(f"[filter] expired by cancel time: {msg_id}", flush=True)
-                    continue
+            if not _is_aerospace_text(msg_text):
+                keyword_skipped += 1
+                continue
 
             code = parse_msg_code(msg_text, msg_type)
             base_year = get_base_year(created_on)
@@ -519,8 +717,8 @@ def process_single_url(url):
                 local_result["TIME"].append(time_str)
                 local_result["TRANSID"].append(msg_id)
                 local_result["RAWMESSAGE"].append(msg_text)
-                local_result["SOURCE"].append("MSI_NAV")
-                local_result["FIR"].append("MSI_NAV")
+                local_result["SOURCE"].append("MSI")
+                local_result["FIR"].append("")
                 local_result["ALTITUDE"].append("None")
                 print(f"[progress] parsed: {code}", flush=True)
             else:
@@ -531,10 +729,15 @@ def process_single_url(url):
                     local_result["TIME"].append(time_str)
                     local_result["TRANSID"].append(msg_id)
                     local_result["RAWMESSAGE"].append(msg_text)
-                    local_result["SOURCE"].append("MSI_NAV")
-                    local_result["FIR"].append("MSI_NAV")
+                    local_result["SOURCE"].append("MSI")
+                    local_result["FIR"].append("")
                     local_result["ALTITUDE"].append("None")
                     print(f"[progress] parsed: {area_code}", flush=True)
+
+        print(
+            f"[filter] JSON关键词筛选: category_kept={category_kept}, keyword_skipped={keyword_skipped}, parsed_records={len(local_result['CODE'])}",
+            flush=True,
+        )
 
     except Exception as exc:
         print(f"[error] process URL failed {url}: {exc}", flush=True)
@@ -555,37 +758,67 @@ def empty_payload():
     }
 
 
+def deduplicate_payload(payload):
+    result = empty_payload()
+    seen = {}
+
+    size = min(
+        len(payload.get("CODE", [])),
+        len(payload.get("COORDINATES", [])),
+        len(payload.get("TIME", [])),
+        len(payload.get("TRANSID", [])),
+        len(payload.get("RAWMESSAGE", [])),
+    )
+
+    for i in range(size):
+        code = payload["CODE"][i]
+        coords = payload["COORDINATES"][i]
+        time_text = payload["TIME"][i]
+        transid = payload["TRANSID"][i]
+        raw = preprocess_text(payload["RAWMESSAGE"][i])
+        source = str(payload.get("SOURCE", [""])[i] if i < len(payload.get("SOURCE", [])) else "MSI")
+        fir = str(payload.get("FIR", [""])[i] if i < len(payload.get("FIR", [])) else "")
+        altitude = str(payload.get("ALTITUDE", ["None"])[i] if i < len(payload.get("ALTITUDE", [])) else "None")
+
+        dedupe_key = (coords, time_text, raw)
+        old_idx = seen.get(dedupe_key)
+        if old_idx is None:
+            seen[dedupe_key] = len(result["CODE"])
+            result["CODE"].append(code)
+            result["COORDINATES"].append(coords)
+            result["TIME"].append(time_text)
+            result["TRANSID"].append(transid)
+            result["RAWMESSAGE"].append(raw)
+            result["SOURCE"].append(source or "MSI")
+            result["FIR"].append(fir)
+            result["ALTITUDE"].append(altitude)
+        else:
+            existing = result["SOURCE"][old_idx]
+            source_set = {s for s in str(existing).split("+") if s}
+            source_set.update({s for s in str(source).split("+") if s})
+            result["SOURCE"][old_idx] = "+".join(sorted(source_set)) if source_set else "MSI"
+
+    return result
+
+
 def MSI_NAV_SEARCH():
     print("[progress] start MSI_NAV_SEARCH...", flush=True)
 
-    if os.path.exists(CACHE_FILE) and not DEBUG:
-        try:
-            with open(CACHE_FILE, "r", encoding="utf-8") as f:
-                cache_data = json.load(f)
-            cache_time = datetime.fromisoformat(cache_data.get("timestamp", "2000-01-01"))
-            if (datetime.now() - cache_time).total_seconds() < MSI_FETCH_EXPIRE_TIME:
-                print(f"[progress] use cache (time: {cache_time})", flush=True)
-                result = cache_data.get("data", empty_payload())
-                print(f"[progress] done via cache, got {len(result.get('CODE', []))} records", flush=True)
-                return result
-        except Exception as exc:
-            print(f"[warn] read cache failed: {exc}", flush=True)
-
     result = empty_payload()
-    urls = []
+    nav_urls = []
 
     for nav_area in MSI_NAV_AREAS:
-        urls.append(
+        nav_urls.append(
             f"https://msi.nga.mil/api/publications/smaps?navArea={nav_area}&status=active&category=14&output=json"
         )
 
     for dnc_region in MSI_DNC_REGIONS:
-        urls.append(
+        nav_urls.append(
             f"https://msi.nga.mil/api/publications/smaps?dncRegion={dnc_region}&status=active&category=14&output=json"
         )
 
     with ThreadPoolExecutor(max_workers=5) as executor:
-        future_to_url = {executor.submit(process_single_url, url): url for url in urls}
+        future_to_url = {executor.submit(process_single_url, url): url for url in nav_urls}
         for future in as_completed(future_to_url):
             url = future_to_url[future]
             try:
@@ -595,15 +828,24 @@ def MSI_NAV_SEARCH():
             except Exception as exc:
                 print(f"[error] thread failed {url}: {exc}", flush=True)
 
-    print(f"[progress] MSI_NAV_SEARCH done, got {len(result['CODE'])} records", flush=True)
+    # Extra plain-text and HTML sources.
+    for url in TXT_URLS:
+        print(f"[progress] requesting TXT source: {url}", flush=True)
+        txt_result = fetch_txt_records(url)
+        for key in result.keys():
+            result[key].extend(txt_result[key])
+        time.sleep(INTER_REQUEST_DELAY)
 
-    try:
-        os.makedirs(os.path.dirname(CACHE_FILE), exist_ok=True)
-        with open(CACHE_FILE, "w", encoding="utf-8") as f:
-            json.dump({"timestamp": datetime.now().isoformat(), "data": result}, f, ensure_ascii=False, indent=2)
-        print(f"[progress] cache saved: {CACHE_FILE}", flush=True)
-    except Exception as exc:
-        print(f"[warn] save cache failed: {exc}", flush=True)
+    for url in HTML_URLS:
+        print(f"[progress] requesting HTML source: {url}", flush=True)
+        html_result = fetch_html_records(url)
+        for key in result.keys():
+            result[key].extend(html_result[key])
+        time.sleep(INTER_REQUEST_DELAY)
+
+    result = deduplicate_payload(result)
+
+    print(f"[progress] MSI_NAV_SEARCH done, got {len(result['CODE'])} records", flush=True)
 
     return result
 

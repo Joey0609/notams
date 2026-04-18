@@ -4,7 +4,7 @@ import json
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from fetch.Archive_Notam_Match import notam_match_archive
 from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
@@ -287,6 +287,149 @@ def compute_data_hash(data, include_sources=None):
 
     payload = '\n'.join(sorted(records))
     return hashlib.sha256(payload.encode('utf-8')).hexdigest()
+
+
+def _parse_time_windows(time_text):
+    windows = []
+    for segment in str(time_text or '').split(';'):
+        segment = segment.strip()
+        if not segment or ' UNTIL ' not in segment:
+            continue
+        parts = segment.split(' UNTIL ', 1)
+        if len(parts) != 2:
+            continue
+        try:
+            start = datetime.strptime(parts[0].strip(), "%d %b %H:%M %Y")
+            end = datetime.strptime(parts[1].strip(), "%d %b %H:%M %Y")
+        except Exception:
+            continue
+        windows.append((start, end))
+    return windows
+
+
+def _latest_end_time(time_text):
+    windows = _parse_time_windows(time_text)
+    if not windows:
+        return None
+    return max(end for _, end in windows)
+
+
+def _normalize_coord_key(coord_text):
+    points = [p.strip().upper() for p in str(coord_text or '').split('-') if p.strip()]
+    if not points:
+        return ''
+
+    if len(points) >= 2 and points[0] == points[-1]:
+        points = points[:-1]
+    if len(points) <= 1:
+        return '-'.join(points)
+
+    def min_rotation(seq):
+        items = list(seq)
+        candidates = []
+        n = len(items)
+        for i in range(n):
+            candidates.append(tuple(items[i:] + items[:i]))
+        return min(candidates)
+
+    forward = min_rotation(points)
+    backward = min_rotation(list(reversed(points)))
+    best = min(forward, backward)
+    return '-'.join(best)
+
+
+def _normalize_time_key(time_text):
+    windows = _parse_time_windows(time_text)
+    if not windows:
+        return re.sub(r'\s+', ' ', str(time_text or '').upper()).strip()
+    normalized = sorted((int(s.timestamp()), int(e.timestamp())) for s, e in windows)
+    return ';'.join(f"{s}-{e}" for s, e in normalized)
+
+
+def filter_expired_records(data, grace_hours=24):
+    """
+    Filter out records whose latest end time is older than now - grace_hours.
+    Records with unparseable TIME are kept.
+    """
+    cutoff = datetime.utcnow() - timedelta(hours=grace_hours)
+    size = min(
+        len(data.get('CODE', []) or []),
+        len(data.get('COORDINATES', []) or []),
+        len(data.get('TIME', []) or []),
+        len(data.get('PLATID', []) or []),
+        len(data.get('RAWMESSAGE', []) or []),
+        len(data.get('SOURCE', []) or []),
+        len(data.get('FIR', []) or []),
+    )
+    if size == 0:
+        return
+
+    keep_indices = []
+    expired_count = 0
+    for i in range(size):
+        latest_end = _latest_end_time(data['TIME'][i])
+        if latest_end is not None and latest_end < cutoff:
+            expired_count += 1
+            continue
+        keep_indices.append(i)
+
+    if expired_count == 0:
+        return
+
+    for key in ['CODE', 'COORDINATES', 'TIME', 'PLATID', 'RAWMESSAGE', 'SOURCE', 'FIR']:
+        arr = data.get(key, []) or []
+        data[key] = [arr[i] for i in keep_indices if i < len(arr)]
+
+    print(f"过滤过期数据: 移除 {expired_count} 条（结束时间早于当前时间24h）")
+
+
+def remove_msi_fully_overlapped_by_notam(data):
+    """
+    If MSI and NOTAM are fully overlapped (same coordinates + same time windows),
+    remove MSI and keep NOTAM.
+    """
+    size = min(
+        len(data.get('CODE', []) or []),
+        len(data.get('COORDINATES', []) or []),
+        len(data.get('TIME', []) or []),
+        len(data.get('PLATID', []) or []),
+        len(data.get('RAWMESSAGE', []) or []),
+        len(data.get('SOURCE', []) or []),
+        len(data.get('FIR', []) or []),
+    )
+    if size == 0:
+        return
+
+    notam_keys = set()
+    for i in range(size):
+        src = str(data['SOURCE'][i] or '').upper()
+        if not src.startswith('NOTAM'):
+            continue
+        key = (_normalize_coord_key(data['COORDINATES'][i]), _normalize_time_key(data['TIME'][i]))
+        notam_keys.add(key)
+
+    if not notam_keys:
+        return
+
+    keep_indices = []
+    removed_count = 0
+    for i in range(size):
+        src = str(data['SOURCE'][i] or '').upper()
+        if src.startswith('MSI'):
+            key = (_normalize_coord_key(data['COORDINATES'][i]), _normalize_time_key(data['TIME'][i]))
+            if key in notam_keys:
+                removed_count += 1
+                continue
+        keep_indices.append(i)
+
+    if removed_count == 0:
+        return
+
+    for key in ['CODE', 'COORDINATES', 'TIME', 'PLATID', 'RAWMESSAGE', 'SOURCE', 'FIR']:
+        arr = data.get(key, []) or []
+        data[key] = [arr[i] for i in keep_indices if i < len(arr)]
+
+    print(f"去重重合数据: 移除 {removed_count} 条与NOTAM完全重合的MSI")
 
 
 def _is_unknown_fir(fir_value):
@@ -636,6 +779,11 @@ def fetch():
     backfill_fir_from_text(dataDict, fir_candidates)
     harmonize_fir_by_platid(dataDict)
 
+    # 过滤结束时间已早于当前时间 24h 的记录
+    filter_expired_records(dataDict, grace_hours=24)
+    # 若 MSI 与 NOTAM 完全重合（坐标+时间一致），仅保留 NOTAM
+    remove_msi_fully_overlapped_by_notam(dataDict)
+
     dataDict["NUM"] = len(dataDict["CODE"])
     dataDict["CLASSIFY"] = classify_data(dataDict)
     dataDict["ALTITUDE"] = extract_altitude(dataDict["RAWMESSAGE"])
@@ -670,6 +818,16 @@ def fetch():
         dataDict["NUM"] = len(dataDict["CODE"])
     dataDict["HASH"] = compute_data_hash(dataDict)
     dataDict["HASH_NOTAM"] = compute_data_hash(dataDict, include_sources={'NOTAM'})
+    dataDict["HASH_MSI"] = compute_data_hash(dataDict, include_sources={'MSI'})
+
+    # 将结果拆分为两个部分并保存到同一个 data_dict.json 中
+    notam_data = filter_data_by_source(dataDict, {'NOTAM'})
+    msi_data = filter_data_by_source(dataDict, {'MSI'})
+    notam_data["HASH"] = compute_data_hash(notam_data)
+    msi_data["HASH"] = compute_data_hash(msi_data)
+    dataDict["NOTAM_DATA"] = notam_data
+    dataDict["MSI_DATA"] = msi_data
+
     print(dataDict)
     with open('data_dict.json', 'w', encoding='utf-8') as json_file:
         json.dump(dataDict, json_file, ensure_ascii=False, indent=4)

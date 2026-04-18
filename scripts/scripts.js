@@ -8,6 +8,22 @@ var polygonAuto = [];
 var launchSiteMarkers = [];
 var landingZoneMarkers = [];
 
+const MSI_AEROSPACE_KEYWORDS = ["ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "REENTRY", "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE", "SPACECRAFT"];
+
+// 世界复制数量：左侧 10 个 + 右侧 10 个 + 当前世界
+const WRAP_WORLD_COPIES_PER_SIDE = 10;
+const WRAP_WORLD_LNG_SPAN = 360;
+const WRAP_WORLD_OFFSETS = (() => {
+    const offsets = [];
+    for (let i = -WRAP_WORLD_COPIES_PER_SIDE; i <= WRAP_WORLD_COPIES_PER_SIDE; i++) {
+        offsets.push(i * WRAP_WORLD_LNG_SPAN);
+    }
+    return offsets;
+})();
+
+// 海外发射场开关：0=不绘制，1=绘制
+var drawForeignLaunchSite = 0;
+
 // 海南发射场相关标记（用于缩放级别切换）
 var hainanMergedMarker = null;
 var hainanSeparateMarkers = [];
@@ -235,7 +251,8 @@ function makeMap() {
         minZoom: 3,
         worldCopyJump: false,
         zoomControl: false,  // 关闭默认缩放控件，稍后添加到右下角
-        attributionControl: false  // 关闭默认版权控件
+        attributionControl: false,  // 关闭默认版权控件
+        
     });
 
     map.getPane('overlayPane').style.zIndex = 400;
@@ -484,6 +501,10 @@ function siteInit() {
     landingZones.forEach(function(landingZone) {
         drawLandingZone(landingZone.lat, landingZone.lng, landingZone.name, landingZone.content, landingZone.icon);
     });
+
+    if (Number(drawForeignLaunchSite) === 1) {
+        drawForeignLaunchSites();
+    }
 }
 
 // 绘制发射场标记
@@ -495,16 +516,9 @@ function drawLaunchsite(lat, lng, title, content, iconUrl) {
         popupAnchor: [0, -40]
     });
 
-    var marker = L.marker([lat, lng], {
-        icon: icon
-    }).addTo(map);
-    
-    marker.bindPopup(content, {
-        maxWidth: 300,
-        className: 'launch-site-popup'
-    });
-
-    launchSiteMarkers.push(marker);
+    var markerGroup = createWrappedMarkerGroup(lat, lng, icon, content);
+    markerGroup.addTo(map);
+    launchSiteMarkers.push(markerGroup);
 }
 
 function drawLandingZone(lat, lng, title, content, iconUrl){
@@ -514,16 +528,79 @@ function drawLandingZone(lat, lng, title, content, iconUrl){
         iconAnchor: [10, 10],
         popupAnchor: [0, -40]
     });
-    var marker = L.marker([lat, lng], {
-        icon: icon
-    }).addTo(map);
-    
-    marker.bindPopup(content, {
-        maxWidth: 300,
-        className: 'launch-site-popup'
+
+    var markerGroup = createWrappedMarkerGroup(lat, lng, icon, content);
+    markerGroup.addTo(map);
+    landingZoneMarkers.push(markerGroup);
+}
+
+function drawForeignLaunchSites() {
+    const foreignSites = [
+        { name: '中大西洋区域发射场', lat: 37.84341, lng: -75.478195 },
+        { name: '伍默拉靶场综合体', lat: -30.955278, lng: 136.532222 },
+        { name: '内之浦航天中心', lat: 31.25, lng: 131.08 },
+        { name: '军际特种装备测试中心', lat: 30.778056, lng: -3.055278 },
+        { name: '卡普斯京亚尔', lat: 48.59, lng: 45.72 },
+        { name: '卡纳维拉尔角太空军基地', lat: 28.488889, lng: -80.577778 },
+        { name: '因约克恩机场', lat: 35.658611, lng: -117.829444 },
+        { name: '圭亚那航天中心', lat: 5.28, lng: -52.79 },
+        { name: '塞姆南航天中心', lat: 35.234444, lng: 53.911111 },
+        { name: '多姆巴罗夫斯基空军基地', lat: 51.093889, lng: 59.842222 },
+        { name: '太平洋太空港综合体', lat: 57.435833, lng: -152.337778 },
+        { name: '奥德赛发射平台', lat: null, lng: null },
+        { name: '布罗格里奥航天中心', lat: -2.938333, lng: 40.2125 },
+        { name: '帕尔马希姆空军基地', lat: 31.897778, lng: 34.690556 },
+        { name: '德尔塔级潜艇', lat: null, lng: null },
+        { name: '拜科努尔航天发射场', lat: 45.965, lng: 63.305 },
+        { name: '斯沃博德尼航天发射场', lat: 51.883333, lng: 128.333333 },
+        { name: '普列谢茨克航天发射场', lat: 62.925556, lng: 40.577778 },
+        { name: '东方航天发射场', lat: 51.884553, lng: 128.334778 },
+        { name: '沃洛普斯飞行设施', lat: 37.940194, lng: -75.466389 },
+        { name: '沙赫鲁德导弹测试场', lat: 36, lng: 55 },
+        { name: '火箭实验室发射综合体1号', lat: -39.2615, lng: 177.864876 },
+        { name: '爱德华空军基地', lat: 34.905556, lng: -117.883611 },
+        { name: '甘多空军基地', lat: 27.930278, lng: -15.385 },
+        { name: '种子岛航天中心', lat: 30.4, lng: 130.97 },
+        { name: '罗老航天中心', lat: 34.431867, lng: 127.535069 },
+        { name: '考爱岛导弹试验靶场', lat: 22.083333, lng: -159.5 },
+        { name: '肯尼迪航天中心', lat: 28.524167, lng: -80.650833 },
+        { name: '东海卫星发射场', lat: 40.85, lng: 129.67 },
+        { name: '范登堡空军基地', lat: 34.732778, lng: -120.568056 },
+        { name: '萨迪什·达万航天中心', lat: 13.719939, lng: 80.230425 },
+        { name: '西海卫星发射场', lat: 39.66, lng: 124.705 },
+        { name: '里根试验场', lat: 8.716667, lng: 167.733333 },
+        { name: '阿尔坎塔拉航天中心', lat: -2.333333, lng: -44.4 },
+        { name: '莫哈维航空航天港', lat: 35.06, lng: -118.15 },
+        { name: '康沃尔航天港', lat: 50.440833, lng: -4.995278 },
+        { name: '星港', lat: 25.997, lng: -97.157 },
+        { name: '纪伊太空发射场', lat: 33.544167, lng: 135.889444 }
+    ];
+
+    foreignSites.forEach(site => {
+        if (!isFinite(site.lat) || !isFinite(site.lng)) {
+            console.warn('海外发射场缺少坐标，已跳过:', site.name);
+            return;
+        }
+
+        const popupContent = "<b><large>海外发射场</large></b><br>" +
+            "<b>" + site.name + "</b><br>" +
+            "坐标: " + site.lat.toFixed(6) + ", " + site.lng.toFixed(6);
+
+        drawLaunchsite(site.lat, site.lng, site.name, popupContent, 'statics/launch1.png');
+    });
+}
+
+function createWrappedMarkerGroup(lat, lng, icon, popupContent) {
+    const markers = WRAP_WORLD_OFFSETS.map(offset => {
+        const marker = L.marker([lat, lng + offset], { icon: icon });
+        marker.bindPopup(popupContent, {
+            maxWidth: 300,
+            className: 'launch-site-popup'
+        });
+        return marker;
     });
 
-    landingZoneMarkers.push(marker);
+    return L.layerGroup(markers);
 }
 
 // 初始化海南发射场标记
@@ -551,14 +628,7 @@ function initHainanSites(sites) {
         "<b><a href='https://baike.baidu.com/item/海南商业航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>海南商业航天发射场</a>（Hainan Commercial Spacecraft Launch Site）</b>，" +
         "是我国首个开工建设的商业航天发射场，由海南国际商业航天发射有限公司投建，致力于打造国际一流、市场化运营的航天发射场，进一步提升我国民商运载火箭发射能力。";
     
-    hainanMergedMarker = L.marker([centerLat, centerLng], {
-        icon: mergedIcon
-    });
-    
-    hainanMergedMarker.bindPopup(mergedContent, {
-        maxWidth: 300,
-        className: 'launch-site-popup'
-    });
+    hainanMergedMarker = createWrappedMarkerGroup(centerLat, centerLng, mergedIcon, mergedContent);
     
     // 创建分离的标记（高缩放级别显示）
     const wenchangIcon = L.icon({
@@ -568,14 +638,7 @@ function initHainanSites(sites) {
         popupAnchor: [0, -40]
     });
     
-    const wenchangMarker = L.marker([wenchang.lat, wenchang.lng], {
-        icon: wenchangIcon
-    });
-    
-    wenchangMarker.bindPopup(wenchang.content, {
-        maxWidth: 300,
-        className: 'launch-site-popup'
-    });
+    const wenchangMarker = createWrappedMarkerGroup(wenchang.lat, wenchang.lng, wenchangIcon, wenchang.content);
     
     const commercialIcon = L.icon({
         iconUrl: 'statics/launch.png',
@@ -584,14 +647,7 @@ function initHainanSites(sites) {
         popupAnchor: [0, -40]
     });
     
-    const commercialMarker = L.marker([commercial.lat, commercial.lng], {
-        icon: commercialIcon
-    });
-    
-    commercialMarker.bindPopup(commercial.content, {
-        maxWidth: 300,
-        className: 'launch-site-popup'
-    });
+    const commercialMarker = createWrappedMarkerGroup(commercial.lat, commercial.lng, commercialIcon, commercial.content);
     
     hainanSeparateMarkers = [wenchangMarker, commercialMarker];
     
@@ -694,9 +750,9 @@ function normalizeLngForWrap(lng) {
 function buildWrappedLatLngRings(latlngs) {
     if (!Array.isArray(latlngs) || latlngs.length < 3) return [];
     const normalized = latlngs.map(([lat, lng]) => [lat, normalizeLngForWrap(lng)]);
-    const left = normalized.map(([lat, lng]) => [lat, lng - 360]);
-    const right = normalized.map(([lat, lng]) => [lat, lng + 360]);
-    return [normalized, left, right];
+    return WRAP_WORLD_OFFSETS.map(offset =>
+        normalized.map(([lat, lng]) => [lat, lng + offset])
+    );
 }
 
 window.buildWrappedLatLngRings = buildWrappedLatLngRings;
@@ -768,14 +824,49 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
 
     // 创建弹出窗口内容
     var popupContent;
+
+    function extractMsiKeywords(text) {
+        var upper = String(text || '').toUpperCase();
+        var found = MSI_AEROSPACE_KEYWORDS.filter(function(k) {
+            return upper.indexOf(k) !== -1;
+        });
+        return found.length ? found.join(', ') : '-';
+    }
+
     if (!is_self) {
         var normalizedSource = (sourceType || 'NOTAM').toUpperCase();
-        var isMsi = normalizedSource === 'MSI';
+        var isMsi = normalizedSource.startsWith('MSI');
         var popupTitle = isMsi ? 'MSI 信息' : 'NOTAM 信息';
-        var firLabel = isMsi ? '关键词' : '飞行情报区';
         var codeLabel = isMsi ? '海警编号' : '航警编号';
-        var altitudeLabel = isMsi ? '海警高度' : '航警高度';
         var rawLabel = isMsi ? '复制原始海警' : '复制原始航警';
+                var secondLineLabel = isMsi ? '关键词' : '飞行情报区';
+                var secondLineValue = isMsi ? extractMsiKeywords(rawmessage) : (fir || 'UNKNOWN');
+        var sourceAndSecondLineRow = "<div class='popup-info-row row-horizontal'>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>来源:</span>" +
+            "<span class='popup-value'>" + (sourceType || 'NOTAM') + "</span>" +
+            "</div>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>" + secondLineLabel + ":</span>" +
+            "<span class='popup-value'>" + secondLineValue + "</span>" +
+            "</div>" +
+            "</div>";
+        var codeAndDetailRow = isMsi
+            ? "<div class='popup-info-row'>" +
+              "<span class='popup-label'>" + codeLabel + ":</span>" +
+              "<span class='popup-value'>" + codee + "</span>" +
+              "</div>"
+            : "<div class='popup-info-row row-horizontal'>" +
+              "<div class='popup-col'>" +
+              "<span class='popup-label'>" + codeLabel + ":</span>" +
+              "<span class='popup-value'>" + codee + "</span>" +
+              "</div>" +
+              "<div class='popup-col'>" +
+              "<span class='popup-label'>航警高度:</span>" +
+              "<span class='popup-value'>" + altitude + "</span>" +
+              "</div>" +
+              "</div>";
+
         popupContent = "<div class='notam-popup'>" +
             "<div class='notam-popup-header'>" +
             "<h4>" + popupTitle + "</h4>" +
@@ -785,26 +876,8 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
             "<span class='popup-label'>持续时间:</span>" +
             "<span class='popup-value'>" + timestr + "</span>" +
             "</div>" +
-            "<div class='popup-info-row row-horizontal'>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>来源:</span>" +
-            "<span class='popup-value'>" + (sourceType || 'NOTAM') + "</span>" +
-            "</div>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>" + firLabel + ":</span>" +
-            "<span class='popup-value'>" + (fir || '-') + "</span>" +
-            "</div>" +
-            "</div>" +
-            "<div class='popup-info-row row-horizontal'>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>" + codeLabel + ":</span>" +
-            "<span class='popup-value'>" + codee + "</span>" +
-            "</div>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>" + altitudeLabel + ":</span>" +
-            "<span class='popup-value'>" + altitude + "</span>" +
-            "</div>" +
-            "</div>" +
+            sourceAndSecondLineRow +
+            codeAndDetailRow +
             "<div class='notam-popup-buttons'>" +
             "<button class='copy copy-coord' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
             "<button class='copy copy-raw' data-raw-index='" + numm + "'>" + rawLabel + "</button>" +

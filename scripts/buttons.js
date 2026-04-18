@@ -11,6 +11,10 @@ const customButton = document.getElementById('customButton');
 let isHelpExpanded = false;
 let isExportExpanded = false;
 
+const GITHUB_STAR_URL = 'https://github.com/Joey0609/notams';
+const GITHUB_STAR_THANK_YOU = '❤ 谢谢 ❤';
+const GITHUB_STAR_RESET_DELAY = 30000;
+
 // 日志面板功能
 
 function toggleLogPanel() {
@@ -84,7 +88,34 @@ document.addEventListener('DOMContentLoaded', function() {
             userScrolledUp = !isAtBottom;
         });
     }
+
+    setupGithubStarBubble();
 });
+
+function setupGithubStarBubble() {
+    const starCallout = document.querySelector('.github-star-callout');
+    if (!starCallout) return;
+
+    if (!starCallout.dataset.defaultHtml) {
+        starCallout.dataset.defaultHtml = starCallout.innerHTML;
+    }
+
+    starCallout.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        window.open(GITHUB_STAR_URL, '_blank', 'noopener,noreferrer');
+        starCallout.innerHTML = GITHUB_STAR_THANK_YOU;
+
+        if (starCallout._resetTimer) {
+            clearTimeout(starCallout._resetTimer);
+        }
+
+        starCallout._resetTimer = setTimeout(() => {
+            starCallout.innerHTML = starCallout.dataset.defaultHtml || '求个 <strong>⭐</strong>';
+            starCallout._resetTimer = null;
+        }, GITHUB_STAR_RESET_DELAY);
+    });
+}
 
 function formatLogMessage(text) {
     if (!text) return '';
