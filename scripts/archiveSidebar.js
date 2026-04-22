@@ -201,21 +201,27 @@ let matchGroupColors = {};
 // 同编码分组附属航警显示状态：true=显示（默认），false=隐藏
 const relatedGroupVisibleState = {};
 
-function getMatchGroupKey(item) {
-    if (!item) return '';
-    return item.GroupKey || item.CODE || '';
-}
-
-function getSameGroupIndexes(idx) {
-    // 子项模式下不再依赖主列表索引分组，保留函数以兼容旧调用
-    return [];
-}
-
 function isRelatedGroupVisible(code) {
     if (!(code in relatedGroupVisibleState)) {
         relatedGroupVisibleState[code] = false;
     }
     return relatedGroupVisibleState[code];
+}
+
+function getLayerBaseLatLngs(layer) {
+    if (!layer) return [];
+    if (typeof window.getBaseLatLngsFromLayer === 'function') {
+        return window.getBaseLatLngsFromLayer(layer);
+    }
+
+    const latlngs = typeof layer.getLatLngs === 'function' ? layer.getLatLngs() : [];
+    if (!Array.isArray(latlngs) || latlngs.length === 0) return [];
+
+    if (Array.isArray(latlngs[0]) && Array.isArray(latlngs[0][0])) {
+        return latlngs[Math.floor(latlngs.length / 2)] || [];
+    }
+
+    return latlngs;
 }
 
 function applyRelatedVisibility(idx) {
@@ -237,27 +243,25 @@ function toggleRelatedMatches(idx) {
     updateMatchSidebar();
 }
 
-function fitLayersBounds(layers, padding = [80, 80], maxZoom = 8) {
+function fitLayersBounds(layers, padding = [80, 80], maxZoom = 6) {
     const validLayers = (layers || []).filter((layer) => layer && typeof layer.getBounds === 'function');
     if (validLayers.length === 0) return;
-    const group = L.featureGroup(validLayers);
-    map.fitBounds(group.getBounds(), { padding, maxZoom });
-}
 
-function handleMatchItemClick(idx) {
-    if (!matchData || !Array.isArray(matchData) || !matchData[idx]) return;
+    const points = [];
+    validLayers.forEach((layer) => {
+        const baseLatLngs = getLayerBaseLatLngs(layer);
+        if (Array.isArray(baseLatLngs) && baseLatLngs.length >= 3) {
+            points.push(...baseLatLngs);
+        }
+    });
 
-    const parentLayer = polygonMatch[idx];
-    if (!parentLayer) return;
-
-    const relatedVisible = isRelatedGroupVisible(idx);
-    if (!relatedVisible) {
-        fitLayersBounds([parentLayer]);
+    if (points.length >= 3) {
+        map.fitBounds(L.latLngBounds(points), { padding, maxZoom });
         return;
     }
 
-    const childLayers = (window.relatedChildLayersByParent && window.relatedChildLayersByParent[idx]) || [];
-    fitLayersBounds([parentLayer, ...childLayers]);
+    const group = L.featureGroup(validLayers);
+    map.fitBounds(group.getBounds(), { padding, maxZoom });
 }
 
 function locateRelatedMatchNotam(parentIdx, relIdx) {
@@ -435,7 +439,7 @@ function updateMatchSidebar() {
         <div class="notam-item match-item" style="--group-color:${col}; cursor:pointer;"
             onmouseenter="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightMatchNotam(${i});"
             onmouseleave="this.style.background=''; hoverUnhighlightMatchNotam(${i});"
-            onclick="handleMatchItemClick(${i})">
+            onclick="locateToMatchNotam(${i})">
             <div class="notam-content">
                 <div class="notam-header">
                     <div style="display:flex; align-items:center; gap:10px;">

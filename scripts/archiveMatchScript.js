@@ -61,6 +61,47 @@ function getNotamDataSection(data) {
     return data;
 }
 
+function cloneLatLngs(latlngs) {
+    return (latlngs || []).map((point) => [Number(point[0]), Number(point[1])]);
+}
+
+function getBaseLatLngsFromLayer(layer) {
+    if (!layer) return [];
+    if (Array.isArray(layer.__baseLatLngs) && layer.__baseLatLngs.length >= 3) {
+        return layer.__baseLatLngs;
+    }
+
+    const latlngs = typeof layer.getLatLngs === 'function' ? layer.getLatLngs() : [];
+    if (!Array.isArray(latlngs) || latlngs.length === 0) return [];
+
+    if (Array.isArray(latlngs[0]) && Array.isArray(latlngs[0][0])) {
+        const middleIndex = Math.floor(latlngs.length / 2);
+        return cloneLatLngs(latlngs[middleIndex] || []);
+    }
+
+    return cloneLatLngs(latlngs);
+}
+
+function getBaseBoundsFromLayer(layer) {
+    const baseLatLngs = getBaseLatLngsFromLayer(layer);
+    if (baseLatLngs.length < 3) return null;
+    return L.latLngBounds(baseLatLngs);
+}
+
+function getMergedBaseBounds(layers) {
+    const points = [];
+    (layers || []).forEach((layer) => {
+        const baseLatLngs = getBaseLatLngsFromLayer(layer);
+        if (baseLatLngs.length >= 3) {
+            points.push(...baseLatLngs);
+        }
+    });
+    if (points.length < 3) return null;
+    return L.latLngBounds(points);
+}
+
+window.getBaseLatLngsFromLayer = getBaseLatLngsFromLayer;
+
 // 加载匹配数据
 function loadMatchData(index) {
     const loadingModal = document.getElementById('loadingModal');
@@ -245,8 +286,10 @@ function drawMatchNotams() {
     }
     // 适应所有多边形
     if (polygonMatch.length > 0) {
-        const group = L.featureGroup(polygonMatch.filter(p => p));
-        map.fitBounds(group.getBounds(), { padding: [50, 50], maxZoom: 8 });
+        const bounds = getMergedBaseBounds(polygonMatch.filter((p) => p));
+        if (bounds) {
+            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 8 });
+        }
     }
 }
 
@@ -256,7 +299,17 @@ function locateToMatchNotam(index) {
     try {
         const poly = polygonMatch[index];
         if (poly) {
-            map.fitBounds(poly.getBounds(), { padding: [80, 80], maxZoom: 8 });
+            const wrappedBounds = typeof poly.getBounds === 'function' ? poly.getBounds() : null;
+            const baseBounds = getBaseBoundsFromLayer(poly);
+            console.log('[match-debug] locateToMatchNotam', {
+                index,
+                code: matchData[index]?.CODE,
+                ringCount: typeof poly.getLatLngs === 'function' ? poly.getLatLngs().length : 0,
+                basePointCount: getBaseLatLngsFromLayer(poly).length,
+                wrappedBounds: wrappedBounds ? wrappedBounds.toBBoxString() : null,
+                baseBounds: baseBounds ? baseBounds.toBBoxString() : null,
+            });
+            map.fitBounds(baseBounds || wrappedBounds, { padding: [80, 80], maxZoom: 6 });
         }
     } catch (e) { 
         console.error(e); 
@@ -314,6 +367,7 @@ function closeLoadingModal() {
                             color,
                             fillColor: color,
                         };
+                            layer.__baseLatLngs = cloneLatLngs(latlngs);
                         layers.push(layer);
                     });
                     relatedChildLayersByParent[parentIndex] = layers;
@@ -321,54 +375,6 @@ function closeLoadingModal() {
                 }
 
 // 复制原始航警
-function copyMatchRaw(idx) {
-    const raw = matchData?.[idx]?.RAWMESSAGE || '';
-    if (typeof handleCopy === 'function') {
-        handleCopy(raw);
-    } else {
-        fallbackCopyText(raw);
-    }
-}
-
-// 回退复制方案
-function fallbackCopyText(text) {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.left = '-9999px';
-    textarea.style.top = '0';
-    textarea.setAttribute('readonly', '');
-    document.body.appendChild(textarea);
-    
-    const range = document.createRange();
-    range.selectNodeContents(textarea);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-
-                        // 绘制同组子项（作为子图层，不进入主列表）
-                        drawRelatedChildPolygons(i, item, col);
-    selection.addRange(range);
-    textarea.setSelectionRange(0, text.length);
-    
-    let success = false;
-    try {
-        success = document.execCommand('copy');
-    } catch (e) {
-        console.error('Copy failed:', e);
-    }
-    document.body.removeChild(textarea);
-    
-    if (success) {
-        showNotification('已复制原始航警到剪贴板');
-    } else {
-        showNotification('复制失败，请长按手动复制');
-                        if (typeof highlightSameClassByParent === 'function') {
-                            highlightSameClassByParent(index, true);
-                            setTimeout(() => highlightSameClassByParent(index, false), 1600);
-                        }
-    }
-}
-
 // 绘制NOTAM多边形
 function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, fillopacity = 0.5, sourceType = 'NOTAM', fir = '') {
     var pos = COORstrin;
@@ -401,6 +407,7 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
 
     // 对坐标点排序，确保多边形是凸的或至少是合理的形状
     latlngs = sortPolygonPoints(latlngs);
+    var baseLatLngs = cloneLatLngs(latlngs);
     const wrappedRings = typeof buildWrappedLatLngRings === 'function' ? buildWrappedLatLngRings(latlngs) : [latlngs];
     if (!wrappedRings || wrappedRings.length === 0) return;
 
@@ -412,6 +419,7 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
         fillColor: col,
         fillOpacity: fillopacity
     }).addTo(map);
+    tmpPolygon.__baseLatLngs = baseLatLngs;
 
     // 创建弹出窗口内容
     var popupContent;
