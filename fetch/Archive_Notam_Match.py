@@ -5,6 +5,8 @@ import re
 from math import radians, cos, sin, asin, sqrt
 from datetime import datetime
 
+from fetch.classify_notam_db import rebuild_notam_db_classify
+
 def parse_point(pt):
     m = re.match(r'([NS])(\d{4,6})([WE])(\d{5,7})', pt)
     if not m:
@@ -200,6 +202,11 @@ def notam_match_archive(dataDict):
     
     # 2. 收集所有历史航警
     notam_db_dir = 'data/notam_db'
+    try:
+        rebuild_notam_db_classify(notam_db_dir)
+    except Exception as e:
+        print(f"历史航警分类重建失败，继续使用现有数据: {e}")
+
     blacklist_path = os.path.join('data', 'blacklist.json')
     blacklisted_codes = set()
     if os.path.exists(blacklist_path):
@@ -212,6 +219,7 @@ def notam_match_archive(dataDict):
             print(f"读取黑名单失败: {e}")
 
     history_notams = []
+    history_related_index = {}
     
     if os.path.exists(notam_db_dir):
         for filename in os.listdir(notam_db_dir):
@@ -220,10 +228,13 @@ def notam_match_archive(dataDict):
                 try:
                     with open(filepath, 'r', encoding='utf-8') as f:
                         db_data = json.load(f)
+                        classify_list = db_data.get('classify', []) if isinstance(db_data, dict) else []
+                        file_group_index = history_related_index.setdefault(filename, {})
                         for i in range(db_data.get('NUM', 0)):
                             code_value = str(db_data['CODE'][i]) if i < len(db_data.get('CODE', [])) else ''
                             if code_value in blacklisted_codes:
                                 continue
+                            classify_key = classify_list[i] if i < len(classify_list) else ''
                             notam = {
                                 "CODE": db_data['CODE'][i],
                                 "COORDINATES": db_data['COORDINATES'][i],
@@ -233,7 +244,9 @@ def notam_match_archive(dataDict):
                                 "ALTITUDE": db_data['ALTITUDE'][i] if 'ALTITUDE' in db_data and i < len(db_data['ALTITUDE']) else 'None',
                                 "SOURCE": db_data['SOURCE'][i] if 'SOURCE' in db_data and i < len(db_data['SOURCE']) else 'NOTAM',
                                 "FIR": db_data['FIR'][i] if 'FIR' in db_data and i < len(db_data['FIR']) else '',
-                                "source_file": filename
+                                "source_file": filename,
+                                "source_index": i,
+                                "classify_key": classify_key
                             }
                             # 解析坐标点
                             coords_str = notam['COORDINATES']
@@ -245,26 +258,12 @@ def notam_match_archive(dataDict):
                             if len(pts) >= 3:  # 有效多边形至少3个点
                                 notam['points'] = pts
                                 history_notams.append(notam)
+                                if classify_key:
+                                    file_group_index.setdefault(classify_key, []).append(notam)
                 except Exception as e:
                     print(f"读取历史文件 {filename} 时出错: {str(e)}")
     
     print(f"共加载 {len(history_notams)} 条历史航警")
-    # 2.1 构建当前航警分类索引，用于给每条匹配项补充“同类子项”
-    current_classify = dataDict.get('CLASSIFY', {}) if isinstance(dataDict, dict) else {}
-    code_to_current_group = {}
-    if isinstance(current_classify, dict):
-        for group_key, codes in current_classify.items():
-            if isinstance(codes, list):
-                for code in codes:
-                    code_to_current_group[str(code)] = str(group_key)
-
-    current_group_index = {}
-    for i in range(dataDict.get('NUM', 0)):
-        code = str(dataDict['CODE'][i])
-        group_key = code_to_current_group.get(code)
-        if not group_key:
-            continue
-        current_group_index.setdefault(group_key, []).append(i)
     
     # 3. 为当前dataDict中的每条航警生成匹配文件
     for idx in range(dataDict['NUM']):
@@ -303,24 +302,27 @@ def notam_match_archive(dataDict):
                 match_item['Overlapping_Area'] = round(overlap_ratio * 100, 1)  # 转换为百分比
                 match_item['Center_Distance'] = round(center_distance, 1) if overlap_ratio == 0 else -1.0
 
-                # 为当前匹配项补充“同类子项”（来自当前 dataDict，而不是把它们添加到主列表）
+                # 为历史匹配项补充“同类子项”（来自历史数据库中与它同一 CLASSIFY 的条目）
                 related_items = []
-                current_group_key = code_to_current_group.get(str(current_notam['CODE']))
-                if current_group_key and current_group_key in current_group_index:
-                    for rel_idx in current_group_index[current_group_key]:
-                        if rel_idx == idx:
+                hist_group_key = hist.get('classify_key', '')
+                hist_file = hist.get('source_file', '')
+                group_candidates = history_related_index.get(hist_file, {}).get(hist_group_key, [])
+                if hist_group_key and group_candidates:
+                    for rel_hist in group_candidates:
+                        if rel_hist.get('source_index') == hist.get('source_index'):
                             continue
                         related_items.append({
-                            'CODE': dataDict['CODE'][rel_idx],
-                            'COORDINATES': dataDict['COORDINATES'][rel_idx],
-                            'TIME': dataDict['TIME'][rel_idx],
-                            'PLATID': dataDict['PLATID'][rel_idx],
-                            'RAWMESSAGE': dataDict['RAWMESSAGE'][rel_idx],
-                            'ALTITUDE': dataDict['ALTITUDE'][rel_idx] if 'ALTITUDE' in dataDict and rel_idx < len(dataDict['ALTITUDE']) else 'None',
-                            'SOURCE': dataDict['SOURCE'][rel_idx] if 'SOURCE' in dataDict and rel_idx < len(dataDict['SOURCE']) else 'NOTAM',
-                            'FIR': dataDict['FIR'][rel_idx] if 'FIR' in dataDict and rel_idx < len(dataDict['FIR']) else '',
-                            'source_file': 'current_dict',
-                            'GroupKey': current_group_key,
+                            'CODE': rel_hist['CODE'],
+                            'COORDINATES': rel_hist['COORDINATES'],
+                            'TIME': rel_hist['TIME'],
+                            'PLATID': rel_hist['PLATID'],
+                            'RAWMESSAGE': rel_hist['RAWMESSAGE'],
+                            'ALTITUDE': rel_hist['ALTITUDE'],
+                            'SOURCE': rel_hist.get('SOURCE', 'NOTAM'),
+                            'FIR': rel_hist.get('FIR', ''),
+                            'source_file': rel_hist.get('source_file', ''),
+                            'source_index': rel_hist.get('source_index', -1),
+                            'GroupKey': hist_group_key,
                             'IsSameGroup': True,
                             'parent_index': idx,
                         })
