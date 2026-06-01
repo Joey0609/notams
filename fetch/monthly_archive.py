@@ -26,6 +26,8 @@ import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from classify_notam_db import rebuild_notam_db_classify
+
 # ---------- 路径设置：不论从哪里运行都能正确找到模块 ----------
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _FETCH_DIR = Path(__file__).resolve().parent
@@ -159,6 +161,9 @@ if __name__ == "__main__":
     else:
         year, month = last_month_info()
         print(f"[月度归档] 自动检测到上个月: {year}-{month:02d}")
-
+    stats = rebuild_notam_db_classify("./data/notam_db")
+    print(
+        f"[CLASSIFY] 完成: files={stats['files']}, records={stats['records']}, groups={stats['groups']}"
+    )
     success = fetch_month(year, month)
     sys.exit(0 if success else 1)
