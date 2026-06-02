@@ -1,0 +1,389 @@
+[
+    {
+        "CODE": "A2892/24",
+        "COORDINATES": "N233100E1230000-N232900E1234700-N220300E1234100-N212000E1233700-N212300E1225100-N224900E1225700-N233100E1230000",
+        "TIME": "24 SEP 02:00 2024 UNTIL 27 SEP 06:00 2024",
+        "PLATID": "73694707",
+        "RAWMESSAGE": "A2892/24 NOTAMN \nQ) RCAA/QXXXX/IV/BO/E/000/999/2226N12319E069\nA) RCAA B) 2409240200 C) 2409270600\nD) 0200-0600\nE) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:\n1.AFFECTED RTE:\n  G581 BTN IGURU AND IONIC\n  Q13 BTN IGURU AND PICHU\n  J5 BTN GUMBO AND HCN \n2.FOR DETAILS, CONTACT TAIPEI ACC AT +886 3 3841040.\n3.AREA AS FLW: \n  GEO:\n  233100N 1230000E\n  232900N 1234700E\n  220300N 1234100E\n  212000N 1233700E\n  212300N 1225100E\n  224900N 1225700E\n  233100N 1230000E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2024-09.json",
+        "source_index": 7,
+        "classify_key": "c273087123",
+        "points": [
+            [
+                23.516666666666666,
+                123.0
+            ],
+            [
+                23.483333333333334,
+                123.78333333333333
+            ],
+            [
+                22.05,
+                123.68333333333334
+            ],
+            [
+                21.333333333333332,
+                123.61666666666666
+            ],
+            [
+                21.383333333333333,
+                122.85
+            ],
+            [
+                22.816666666666666,
+                122.95
+            ],
+            [
+                23.516666666666666,
+                123.0
+            ]
+        ],
+        "Overlapping_Area": 67.9,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "N4199/24",
+                "COORDINATES": "S1330E11535-S1200E11552-S1200E11638-S1338E11618",
+                "TIME": "24 SEP 02:00 2024 UNTIL 27 SEP 06:00 2024",
+                "PLATID": "73654966",
+                "RAWMESSAGE": "N4199/24 NOTAMN\nQ) YBBB/QWMLW/IV/BO/W/000/999/1244S11608E060\nA) YBBB\nB) 2409240200 C) 2409270600\nD) DAILY 0200-0600\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\nS13 30 E115 35\nS12 00 E115 52\nS12 00 E116 38\nS13 38 E116 18 TO BEGINNING\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2024-09.json",
+                "source_index": 42,
+                "GroupKey": "c273087123",
+                "IsSameGroup": true,
+                "parent_index": 6
+            }
+        ]
+    },
+    {
+        "CODE": "A2947/24",
+        "COORDINATES": "N233200E1225900-N232900E1234700-N220200E1234100-N211900E1233700-N212200E1225000-N233200E1225900",
+        "TIME": "24 SEP 02:24 2024 UNTIL 24 SEP 03:52 2024",
+        "PLATID": "73727956",
+        "RAWMESSAGE": "A2947/24 NOTAMN \nQ) RCAA/QXXXX/IV/BO/E/000/999/2226N12319E069\nA) RCAA B) 2409240224 C) 2409240352\nE) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:\n1.AFFECTED RTE:\n  G581 BTN IGURU AND IONIC\n  Q13 BTN IGURU AND PICHU\n  J5 BTN GUMBO AND HCN \n2.FOR DETAILS, CONTACT TAIPEI ACC AT +886 3 3841040.\n3.AREA AS FLW: \n  GEO:\n  233200N 1225900E\n  232900N 1234700E\n  220200N 1234100E\n  211900N 1233700E\n  212200N 1225000E\n  233200N 1225900E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2024-09.json",
+        "source_index": 13,
+        "classify_key": "c213100009",
+        "points": [
+            [
+                23.533333333333335,
+                122.98333333333333
+            ],
+            [
+                23.483333333333334,
+                123.78333333333333
+            ],
+            [
+                22.033333333333335,
+                123.68333333333334
+            ],
+            [
+                21.316666666666666,
+                123.61666666666666
+            ],
+            [
+                21.366666666666667,
+                122.83333333333333
+            ],
+            [
+                23.533333333333335,
+                122.98333333333333
+            ]
+        ],
+        "Overlapping_Area": 66.4,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A2932/24",
+                "COORDINATES": "S105100E1160600-S105900E1165000-S120000E1163811",
+                "TIME": "24 SEP 02:25 2024 UNTIL 24 SEP 03:58 2024",
+                "PLATID": "73734668",
+                "RAWMESSAGE": "A2932/24 NOTAMN\nQ) WAAF/QRALW/IV/NBO/W/000/999/1130S11621E043\nA) WAAF\nB) 2409240225\nC) 2409240358\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE FLW \nRECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA : \nDUE TO AEROSPACE FLIGHT ACTIVITIES, \nTHE FLIGHT SAFETY OF THE AIRCRAFT IN \nTHE FOLLOWING AREA MAY BE AFFECTED :    \n105100S1160600E - 105900S1165000E - 120000S1163811E \nTHENCE ALONG FIR BOUNDARY TO 120000S1155212E - 105100S1160600E \nTHESE ATS ROUTES MAY BE AFFECTED : \n-B349 SEGMENT KALIV - BOPLO\n-G578 SEGMENT LIPRA - EGATU\n-L511 SEGMENT SBR - BOPLO\nF) SFC \nG) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2024-09.json",
+                "source_index": 12,
+                "GroupKey": "c213100009",
+                "IsSameGroup": true,
+                "parent_index": 6
+            },
+            {
+                "CODE": "N4353/24",
+                "COORDINATES": "S1331E11534-S1200E11552-S1200E11638-S1339E11619",
+                "TIME": "24 SEP 02:25 2024 UNTIL 24 SEP 03:58 2024",
+                "PLATID": "73739999",
+                "RAWMESSAGE": "N4353/24 NOTAMR N4199/24\nQ) YBBB/QWMLW/IV/BO/W/000/999/1244S11608E060\nA) YBBB\nB) 2409240225 C) 2409240358\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\nS13 31 E115 34\nS12 00 E115 52\nS12 00 E116 38\nS13 39 E116 19 TO BEGINNING\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2024-09.json",
+                "source_index": 43,
+                "GroupKey": "c213100009",
+                "IsSameGroup": true,
+                "parent_index": 6
+            }
+        ]
+    },
+    {
+        "CODE": "A6743/22",
+        "COORDINATES": "N213500E1221800-N230200E1222900-N225700E1231600-N213000E1230500-N213500E1221800",
+        "TIME": "09 DEC 04:00 2022 UNTIL 15 DEC 10:00 2022",
+        "PLATID": "66274784",
+        "RAWMESSAGE": "A6743/22 NOTAMN \nQ) RCAA/QXXXX/IV/BO/E/000/999/2216N12247E050\nA) RCAA B) 2212090400 C) 2212151000\nD) 0400-1000\nE) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:\n1.AFFECTED RTE:\n  G581/Q13/J5 TRANSITION SUSPENDED,\n  G581 BTN IGURU AND HCN,\n  Q13 BTN IGURU AND PICHU,\n  J5 TRANSITION BTN GUMBO AND HCN,\n2.AREA AS FLW:\nGEO:\n213500N 1221800E\n230200N 1222900E\n225700N 1231600E\n213000N 1230500E\n213500N 1221800E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2022-12.json",
+        "source_index": 14,
+        "classify_key": "c961117422",
+        "points": [
+            [
+                21.583333333333332,
+                122.3
+            ],
+            [
+                23.033333333333335,
+                122.48333333333333
+            ],
+            [
+                22.95,
+                123.26666666666667
+            ],
+            [
+                21.5,
+                123.08333333333333
+            ],
+            [
+                21.583333333333332,
+                122.3
+            ]
+        ],
+        "Overlapping_Area": 29.5,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A6744/22",
+                "COORDINATES": "N221600E1222400-N234300E1223400-N233800E1232200-N221100E1231100-N221600E1222400",
+                "TIME": "09 DEC 04:00 2022 UNTIL 15 DEC 10:00 2022",
+                "PLATID": "66274789",
+                "RAWMESSAGE": "A6744/22 NOTAMN \nQ) RCAA/QXXXX/IV/BO/E/000/999/2257N12253E050\nA) RCAA B) 2212090400 C) 2212151000\nD) 0400-1000\nE) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:\n1.AFFECTED RTE:\n  G581/Q13/J5 TRANSITION SUSPENDED,\n  G581 BTN IGURU AND HCN,\n  Q13 BTN IGURU AND PICHU,\n  J5 TRANSITION BTN GUMBO AND HCN,\n2.AREA AS FLW:\nGEO:\n221600N 1222400E\n234300N 1223400E\n233800N 1232200E\n221100N 1231100E\n221600N 1222400E\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2022-12.json",
+                "source_index": 15,
+                "GroupKey": "c961117422",
+                "IsSameGroup": true,
+                "parent_index": 6
+            },
+            {
+                "CODE": "N3766/22",
+                "COORDINATES": "S1554E11806-S1311E11824-S1315E11909-S1558E11852",
+                "TIME": "09 DEC 06:47 2022 UNTIL 15 DEC 10:00 2022",
+                "PLATID": "66379784",
+                "RAWMESSAGE": "N3766/22 NOTAMR N3761/22\nQ) YBBB/QWMLW/IV/BO/W/000/999/1434S11836E090\nA) YBBB\nB) 2212090647 C) 2212151000\nD) 2212090647 TO 2212090800\n   2212100400 TO 2212101000\n   2212110400 TO 2212111000\n   2212120400 TO 2212121000\n   2212130400 TO 2212131000\n   2212140400 TO 2212141000\n   2212150400 TO 2212151000\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\n1554S 11806E\n1311S 11824E\n1315S 11909E \n1558S 11852E\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2022-12.json",
+                "source_index": 19,
+                "GroupKey": "c961117422",
+                "IsSameGroup": true,
+                "parent_index": 6
+            }
+        ]
+    },
+    {
+        "CODE": "A6744/22",
+        "COORDINATES": "N221600E1222400-N234300E1223400-N233800E1232200-N221100E1231100-N221600E1222400",
+        "TIME": "09 DEC 04:00 2022 UNTIL 15 DEC 10:00 2022",
+        "PLATID": "66274789",
+        "RAWMESSAGE": "A6744/22 NOTAMN \nQ) RCAA/QXXXX/IV/BO/E/000/999/2257N12253E050\nA) RCAA B) 2212090400 C) 2212151000\nD) 0400-1000\nE) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:\n1.AFFECTED RTE:\n  G581/Q13/J5 TRANSITION SUSPENDED,\n  G581 BTN IGURU AND HCN,\n  Q13 BTN IGURU AND PICHU,\n  J5 TRANSITION BTN GUMBO AND HCN,\n2.AREA AS FLW:\nGEO:\n221600N 1222400E\n234300N 1223400E\n233800N 1232200E\n221100N 1231100E\n221600N 1222400E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2022-12.json",
+        "source_index": 15,
+        "classify_key": "c961117422",
+        "points": [
+            [
+                22.266666666666666,
+                122.4
+            ],
+            [
+                23.716666666666665,
+                122.56666666666666
+            ],
+            [
+                23.633333333333333,
+                123.36666666666666
+            ],
+            [
+                22.183333333333334,
+                123.18333333333334
+            ],
+            [
+                22.266666666666666,
+                122.4
+            ]
+        ],
+        "Overlapping_Area": 19.2,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A6743/22",
+                "COORDINATES": "N213500E1221800-N230200E1222900-N225700E1231600-N213000E1230500-N213500E1221800",
+                "TIME": "09 DEC 04:00 2022 UNTIL 15 DEC 10:00 2022",
+                "PLATID": "66274784",
+                "RAWMESSAGE": "A6743/22 NOTAMN \nQ) RCAA/QXXXX/IV/BO/E/000/999/2216N12247E050\nA) RCAA B) 2212090400 C) 2212151000\nD) 0400-1000\nE) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:\n1.AFFECTED RTE:\n  G581/Q13/J5 TRANSITION SUSPENDED,\n  G581 BTN IGURU AND HCN,\n  Q13 BTN IGURU AND PICHU,\n  J5 TRANSITION BTN GUMBO AND HCN,\n2.AREA AS FLW:\nGEO:\n213500N 1221800E\n230200N 1222900E\n225700N 1231600E\n213000N 1230500E\n213500N 1221800E\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2022-12.json",
+                "source_index": 14,
+                "GroupKey": "c961117422",
+                "IsSameGroup": true,
+                "parent_index": 6
+            },
+            {
+                "CODE": "N3766/22",
+                "COORDINATES": "S1554E11806-S1311E11824-S1315E11909-S1558E11852",
+                "TIME": "09 DEC 06:47 2022 UNTIL 15 DEC 10:00 2022",
+                "PLATID": "66379784",
+                "RAWMESSAGE": "N3766/22 NOTAMR N3761/22\nQ) YBBB/QWMLW/IV/BO/W/000/999/1434S11836E090\nA) YBBB\nB) 2212090647 C) 2212151000\nD) 2212090647 TO 2212090800\n   2212100400 TO 2212101000\n   2212110400 TO 2212111000\n   2212120400 TO 2212121000\n   2212130400 TO 2212131000\n   2212140400 TO 2212141000\n   2212150400 TO 2212151000\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\n1554S 11806E\n1311S 11824E\n1315S 11909E \n1558S 11852E\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2022-12.json",
+                "source_index": 19,
+                "GroupKey": "c961117422",
+                "IsSameGroup": true,
+                "parent_index": 6
+            }
+        ]
+    },
+    {
+        "CODE": "B3343/25",
+        "COORDINATES": "N210000E1223300-N203000E1223300-N203000E1242000-N210000E1242000-N210000E1223300",
+        "TIME": "22 JUL 03:30 2025 UNTIL 22 JUL 05:30 2025",
+        "PLATID": "77343429",
+        "RAWMESSAGE": "B3343/25 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/2045N12327E054\nA) RPHI B) 2507220330 C) 2507220530\nE) SPECIAL OPS (DROPSONDES FOR TROPICAL DEPRESSION SURVEILLANCE)\nWILL TAKE PLACE WI:\n210000N 1223300E (MEVIN) -\n203000N 1223300E -\n203000N 1242000E -\n210000N 1242000E -\n210000N 1223300E (MEVIN)\n\nRMK:\n1. TYP: ASTRA SPX\n2. ACFT REGISTRY: B20001\n3. CS: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
+        "ALTITUDE": "0 ~ 12500 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-07.json",
+        "source_index": 37,
+        "classify_key": "c341541657",
+        "points": [
+            [
+                21.0,
+                122.55
+            ],
+            [
+                20.5,
+                122.55
+            ],
+            [
+                20.5,
+                124.33333333333333
+            ],
+            [
+                21.0,
+                124.33333333333333
+            ],
+            [
+                21.0,
+                122.55
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 148.4,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1195/25",
+        "COORDINATES": "N232200E1242200-N234000E1232600-N232400E1232100-N230700E1241600-N232200E1242200",
+        "TIME": "12 MAY 16:00 2025 UNTIL 14 MAY 20:00 2025",
+        "PLATID": "76556358",
+        "RAWMESSAGE": "A1195/25 NOTAMN \nQ) RCAA/QXXXX/IV/BO/E/000/999/2324N12352E029\nA) RCAA B) 2505121600 C) 2505142000\nD) 1600-2000\nE) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:\n1.AFFECTED RTE:\n  G581/Q13 BTN TULTO AND IGURU  \n2.FOR DETAILS, CONTACT TAIPEI ACC AT +886 3 3841040.\n3.AREA AS FLW:\n  GEO:\n  232200N 1242200E\n  234000N 1232600E\n  232400N 1232100E\n  230700N 1241600E\n  232200N 1242200E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-05.json",
+        "source_index": 5,
+        "classify_key": "c733059207",
+        "points": [
+            [
+                23.366666666666667,
+                124.36666666666666
+            ],
+            [
+                23.666666666666668,
+                123.43333333333334
+            ],
+            [
+                23.4,
+                123.35
+            ],
+            [
+                23.116666666666667,
+                124.26666666666667
+            ],
+            [
+                23.366666666666667,
+                124.36666666666666
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 153.6,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "B3342/25",
+        "COORDINATES": "N210000E1204500-N201500E1232500-N204500E1242000-N210000E1242000-N210000E1204500",
+        "TIME": "21 JUL 21:30 2025 UNTIL 21 JUL 23:30 2025",
+        "PLATID": "77343366",
+        "RAWMESSAGE": "B3342/25 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/2053N12233E103\nA) RPHI B) 2507212130 C) 2507212330\nE) SPECIAL OPS (DROPSONDES FOR TROPICAL DEPRESSION SURVEILLANCE)\nWILL TAKE PLACE WI:\n210000N 1204500E (POTIB) -\n201500N 1232500E -\n204500N 1242000E -\n210000N 1242000E -\n210000N 1204500E (POTIB)\n\nRMK:\n1. TYP: ASTRA SPX\n2. ACFT REGISTRY: B20001\n3. CS: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
+        "ALTITUDE": "0 ~ 12500 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-07.json",
+        "source_index": 36,
+        "classify_key": "c324764441",
+        "points": [
+            [
+                21.0,
+                120.75
+            ],
+            [
+                20.25,
+                123.41666666666667
+            ],
+            [
+                20.75,
+                124.33333333333333
+            ],
+            [
+                21.0,
+                124.33333333333333
+            ],
+            [
+                21.0,
+                120.75
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 160.8,
+        "RelatedItems": []
+    }
+]
