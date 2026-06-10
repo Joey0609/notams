@@ -10,8 +10,14 @@ import pandas as pd
 import requests
 
 ICAO_CODES = [
-    "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
-    "VHHK", "FUCK", "双曲线你为什么要特立独行",
+    'AGGG', 'ANAU', 'AYPM', 'KZAK', 'NFFF', 
+    'NZZO', 'RCAA', 'RCSP', 'RJJJ', 'RJTG', 
+    'RPHI', 'VCCC', 'VCCF', 'VECF', 'VHHK', 
+    'VOMF', 'VVGL', 'VVHM', 'VVHN', 'VVTS', 
+    'VLVT', 'VTBB', 'VYYF', 'WAAF', 'WIIF', 
+    'WMFC', 'WSJC', 'YBBB', 'YMMM', 'ZBPE', 
+    'ZGZU', 'ZHWH', 'ZJSA', 'ZLHW', 'ZPKM', 
+    'ZSHA', 'ZWUQ', 'ZYSH', "FUCK", "双曲线你为什么要特立独行",
 ]
 
 
@@ -128,7 +134,7 @@ def fetch():
     results = {}
     success_cnt = 0
     fail_cnt = 0
-    with ThreadPoolExecutor(max_workers=8) as executor:
+    with ThreadPoolExecutor(max_workers=4) as executor:
         future_to_icao = {executor.submit(fetch_one_with_retry, icao): icao for icao in ICAO_CODES}
         for future in as_completed(future_to_icao):
             icao = future_to_icao[future]
@@ -284,7 +290,9 @@ def FNS_NOTAM_SEARCH():
     for icao, notams in results.items():
         for notam in notams:
             message = notam.get('Message', '')
-            if ("A TEMPORARY" in message and "-" in message) or ("AEROSPACE" in message) or (
+            if ("A TEMPORARY" in message and "-" in message) or (
+                    "AEROSPACE" in message) or (
+                    "AER0SPACE" in message) or (            # 某次航警AEROSPACE被打成了AER0SPACE......
                     "CHINA" in message and "DNG ZONE" in message and "AERIAL" in message):
                 raw_message = message
                 message = message.replace(" ", "")
