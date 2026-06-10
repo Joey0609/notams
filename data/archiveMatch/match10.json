@@ -1,59 +1,5 @@
 [
     {
-        "CODE": "B6412/25",
-        "COORDINATES": "N191100E1241800-N190600E1251600-N183800E1251300-N184300E1241500-N191100E1241800",
-        "TIME": "20 DEC 12:25 2025 UNTIL 20 DEC 13:45 2025",
-        "PLATID": "79107364",
-        "RAWMESSAGE": "B6412/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E032\nA) RPHI B) 2512201225 C) 2512201345\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n191100N 1241800E -\n190600N 1251600E -\n183800N 1251300E -\n184300N 1241500E -\n191100N 1241800E\n(158NM NORTHEAST OF TUGUEGARAO AP).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-12.json",
-        "source_index": 68,
-        "classify_key": "c125420660",
-        "points": [
-            [
-                19.183333333333334,
-                124.3
-            ],
-            [
-                19.1,
-                125.26666666666667
-            ],
-            [
-                18.633333333333333,
-                125.21666666666667
-            ],
-            [
-                18.716666666666665,
-                124.25
-            ],
-            [
-                19.183333333333334,
-                124.3
-            ]
-        ],
-        "Overlapping_Area": 95.1,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "B6410/25",
-                "COORDINATES": "N193700E1183100-N193300E1193500-N190500E1193300-N190900E1182900-N193700E1183100",
-                "TIME": "20 DEC 12:22 2025 UNTIL 20 DEC 13:40 2025",
-                "PLATID": "79107321",
-                "RAWMESSAGE": "B6410/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11902E034\nA) RPHI B) 2512201222 C) 2512201340\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n193700N 1183100E -\n193300N 1193500E -\n190500N 1193300E -\n190900N 1182900E -\n193700N 1183100E\n(78NM NORTHWEST OF LAOAG AP).\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-12.json",
-                "source_index": 67,
-                "GroupKey": "c125420660",
-                "IsSameGroup": true,
-                "parent_index": 10
-            }
-        ]
-    },
-    {
         "CODE": "B5216/25",
         "COORDINATES": "N191100E1241800-N190600E1251600-N183800E1251300-N184300E1241500-N191100E1241800",
         "TIME": "23 OCT 14:25 2025 UNTIL 23 OCT 15:45 2025",
@@ -108,54 +54,54 @@
         ]
     },
     {
-        "CODE": "B6044/25",
-        "COORDINATES": "N191100E1241800-N190500E1251500-N183900E1251200-N184400E1241600-N191100E1241800",
-        "TIME": "20 DEC 11:00 2025 UNTIL 22 DEC 15:00 2025",
-        "PLATID": "78750551",
-        "RAWMESSAGE": "B6044/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E031\nA) RPHI B) 2512201100 C) 2512221500\nD) 1100-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n191100N 1241800E -\n190500N 1251500E -\n183900N 1251200E -\n184400N 1241600E -\n191100N 1241800E\n(158NM NORTHEAST OF TUGUEGARAO AP).\nF) SFC G) UNL",
+        "CODE": "B6412/25",
+        "COORDINATES": "N191100E1241800-N190600E1251600-N183800E1251300-N184300E1241500-N191100E1241800",
+        "TIME": "20 DEC 12:25 2025 UNTIL 20 DEC 13:45 2025",
+        "PLATID": "79107364",
+        "RAWMESSAGE": "B6412/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E032\nA) RPHI B) 2512201225 C) 2512201345\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n191100N 1241800E -\n190600N 1251600E -\n183800N 1251300E -\n184300N 1241500E -\n191100N 1241800E\n(158NM NORTHEAST OF TUGUEGARAO AP).\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "SOURCE": "NOTAM",
         "FIR": "",
         "source_file": "2025-12.json",
-        "source_index": 62,
-        "classify_key": "c648117065",
+        "source_index": 68,
+        "classify_key": "c125420660",
         "points": [
             [
                 19.183333333333334,
                 124.3
             ],
             [
-                19.083333333333332,
-                125.25
+                19.1,
+                125.26666666666667
             ],
             [
-                18.65,
-                125.2
+                18.633333333333333,
+                125.21666666666667
             ],
             [
-                18.733333333333334,
-                124.26666666666667
+                18.716666666666665,
+                124.25
             ],
             [
                 19.183333333333334,
                 124.3
             ]
         ],
-        "Overlapping_Area": 90.6,
+        "Overlapping_Area": 95.1,
         "Center_Distance": -1.0,
         "RelatedItems": [
             {
-                "CODE": "B6043/25",
-                "COORDINATES": "N193600E1183100-N193300E1193400-N190600E1193300-N190900E1183000-N193600E1183100",
-                "TIME": "20 DEC 11:00 2025 UNTIL 22 DEC 15:00 2025",
-                "PLATID": "78750502",
-                "RAWMESSAGE": "B6043/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11902E034\nA) RPHI B) 2512201100 C) 2512221500\nD) 1100-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n193600N 1183100E -\n193300N 1193400E -\n190600N 1193300E -\n190900N 1183000E -\n193600N 1183100E\n(78NM NORTHWEST OF LAOAG AP).\nF) SFC G) UNL",
+                "CODE": "B6410/25",
+                "COORDINATES": "N193700E1183100-N193300E1193500-N190500E1193300-N190900E1182900-N193700E1183100",
+                "TIME": "20 DEC 12:22 2025 UNTIL 20 DEC 13:40 2025",
+                "PLATID": "79107321",
+                "RAWMESSAGE": "B6410/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11902E034\nA) RPHI B) 2512201222 C) 2512201340\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n193700N 1183100E -\n193300N 1193500E -\n190500N 1193300E -\n190900N 1182900E -\n193700N 1183100E\n(78NM NORTHWEST OF LAOAG AP).\nF) SFC G) UNL",
                 "ALTITUDE": "0 ~ INF 米",
                 "SOURCE": "NOTAM",
                 "FIR": "",
                 "source_file": "2025-12.json",
-                "source_index": 61,
-                "GroupKey": "c648117065",
+                "source_index": 67,
+                "GroupKey": "c125420660",
                 "IsSameGroup": true,
                 "parent_index": 10
             }
@@ -210,6 +156,60 @@
                 "source_file": "2025-10.json",
                 "source_index": 25,
                 "GroupKey": "c893451141",
+                "IsSameGroup": true,
+                "parent_index": 10
+            }
+        ]
+    },
+    {
+        "CODE": "B6044/25",
+        "COORDINATES": "N191100E1241800-N190500E1251500-N183900E1251200-N184400E1241600-N191100E1241800",
+        "TIME": "20 DEC 11:00 2025 UNTIL 22 DEC 15:00 2025",
+        "PLATID": "78750551",
+        "RAWMESSAGE": "B6044/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1855N12445E031\nA) RPHI B) 2512201100 C) 2512221500\nD) 1100-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n191100N 1241800E -\n190500N 1251500E -\n183900N 1251200E -\n184400N 1241600E -\n191100N 1241800E\n(158NM NORTHEAST OF TUGUEGARAO AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-12.json",
+        "source_index": 62,
+        "classify_key": "c648117065",
+        "points": [
+            [
+                19.183333333333334,
+                124.3
+            ],
+            [
+                19.083333333333332,
+                125.25
+            ],
+            [
+                18.65,
+                125.2
+            ],
+            [
+                18.733333333333334,
+                124.26666666666667
+            ],
+            [
+                19.183333333333334,
+                124.3
+            ]
+        ],
+        "Overlapping_Area": 90.6,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "B6043/25",
+                "COORDINATES": "N193600E1183100-N193300E1193400-N190600E1193300-N190900E1183000-N193600E1183100",
+                "TIME": "20 DEC 11:00 2025 UNTIL 22 DEC 15:00 2025",
+                "PLATID": "78750502",
+                "RAWMESSAGE": "B6043/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11902E034\nA) RPHI B) 2512201100 C) 2512221500\nD) 1100-1500\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\nEST FALL AREA OF UNBURNED DEBRIS WI:\n193600N 1183100E -\n193300N 1193400E -\n190600N 1193300E -\n190900N 1183000E -\n193600N 1183100E\n(78NM NORTHWEST OF LAOAG AP).\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2025-12.json",
+                "source_index": 61,
+                "GroupKey": "c648117065",
                 "IsSameGroup": true,
                 "parent_index": 10
             }
