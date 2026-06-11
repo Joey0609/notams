@@ -10,14 +10,8 @@ import pandas as pd
 import requests
 
 ICAO_CODES = [
-    'AGGG', 'ANAU', 'AYPM', 'KZAK', 'NFFF', 
-    'NZZO', 'RCAA', 'RCSP', 'RJJJ', 'RJTG', 
-    'RPHI', 'VCCC', 'VCCF', 'VECF', 'VHHK', 
-    'VOMF', 'VVGL', 'VVHM', 'VVHN', 'VVTS', 
-    'VLVT', 'VTBB', 'VYYF', 'WAAF', 'WIIF', 
-    'WMFC', 'WSJC', 'YBBB', 'YMMM', 'ZBPE', 
-    'ZGZU', 'ZHWH', 'ZJSA', 'ZLHW', 'ZPKM', 
-    'ZSHA', 'ZWUQ', 'ZYSH', "FUCK", "双曲线你为什么要特立独行",
+    "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
+    "VHHK", "FUCK", "双曲线你为什么要特立独行",
 ]
 
 
