@@ -134,7 +134,7 @@ def fetch():
     results = {}
     success_cnt = 0
     fail_cnt = 0
-    with ThreadPoolExecutor(max_workers=4) as executor:
+    with ThreadPoolExecutor(max_workers=2) as executor:
         future_to_icao = {executor.submit(fetch_one_with_retry, icao): icao for icao in ICAO_CODES}
         for future in as_completed(future_to_icao):
             icao = future_to_icao[future]
@@ -156,6 +156,7 @@ def fetch():
                 fail_cnt += 1
                 print(f"处理 [{icao}] 的 future 时发生意外错误: {e}")
                 results[icao] = []  # 确保即使出错，结果字典中也有这个键
+        time.sleep(5)  # 等待所有线程完全结束
 
     output_data = {
         # "timestamp": start,
