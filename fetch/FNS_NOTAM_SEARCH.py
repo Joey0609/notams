@@ -284,7 +284,7 @@ def FNS_NOTAM_SEARCH():
 
     def normalize_fir(icao_value):
         value = str(icao_value or "").strip()
-        if value in {"FUCK", "双曲线你为什么要特立独行"}:
+        if value in {"FUCK", "双曲线你为什么要特立独行", "FUCK2"}:
             return "UNKNOWN"
         return value
 

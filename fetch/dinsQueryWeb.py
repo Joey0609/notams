@@ -131,7 +131,7 @@ def dinsQueryWeb(icao_codes):
         if pre_tag:
             text_content = pre_tag.get_text(strip=True)
             text_content = removeC(text_content)
-            if "A TEMPORARY" in text_content or "AEROSPACE" in text_content:
+            if "A TEMPORARY" in text_content or "AEROSPACE" in text_content or "AER0SPACE" in text_content:
                 fuck = removeC2(text_content)
                 coordinate_groups = extract_coordinate_groups(fuck)
                 time_pattern = r"\d{2} [A-Z]{3} \d{2}:\d{2} \d{4} UNTIL \d{2} [A-Z]{3} \d{2}:\d{2} \d{4}"

@@ -307,6 +307,7 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0, progress_filepath="./data/progr
         for notam in notams:
             message = notam.get('Message', '')
             if ("A TEMPORARY" in message and "-" in message) or "AEROSPACE" in message or (
+                    "AER0SPACE" in message) or (
                     "CHINA" in message and "AERIAL" in message and "DNG ZONE" in message):
                 raw_message = message
                 message = message.replace(" ", "")
