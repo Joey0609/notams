@@ -11,7 +11,7 @@ import requests
 
 ICAO_CODES = [
     "ZBPE", "ZGZU", "ZHWH", "ZJSA", "ZLHW", "ZPKM", "ZSHA", "ZWUQ", "ZYSH",
-    "VHHK", "FUCK", "双曲线你为什么要特立独行",
+    "VHHK", "FUCK", "FUCK2", "双曲线你为什么要特立独行",
 ]
 
 
@@ -59,10 +59,18 @@ def fetch_one(icao):
         "freeFormText": "DNG ZONE",
         "notamsOnly": "false"
     }
+    payload3 = {
+        "searchType": "4",
+        "offset": "0",
+        "freeFormText": "AER0SPACE",
+        "notamsOnly": "false"
+    }
     if icao == "FUCK":
         payload = payload1
     if icao == "双曲线你为什么要特立独行":
         payload = payload2
+    if icao == "FUCK2":
+        payload = payload3
     session = requests.Session()
     session.headers.update(make_headers())
     session.get("https://notams.aim.faa.gov/notamSearch/nsapp.html", timeout=7)
