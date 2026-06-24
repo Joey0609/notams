@@ -11,6 +11,7 @@ from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
 from fetch.MSI_FETCH import MSI_FETCH
 from fetch.dinsQueryWeb import dinsQueryWeb
 from fetch.mail_draft import generate_change_email_draft
+from fetch.notam_bot import send_notification as bot_send_notification
 from fetch.sendcloud_email import send_email_via_qq_smtp
 from fetch.visits import update_visits
 
@@ -581,6 +582,7 @@ AUTO_OPEN = config.getboolean('SERVER', 'auto_open_browser', fallback=True)
 MAIL_ENABLED = config.getboolean('MAIL', 'enabled', fallback=False)
 
 
+
 def get_mail_config():
     smtp_user = os.getenv('NOTAM_SMTP_USER', '').strip() or config.get('MAIL', 'smtp_user', fallback='').strip()
     smtp_auth_code = os.getenv('NOTAM_SMTP_AUTH_CODE', '').strip() or config.get('MAIL', 'smtp_auth_code', fallback='').strip()
@@ -835,6 +837,7 @@ def fetch():
 
 if __name__ == '__main__':
     previous_data = {}
+
     try:
         with open('data_dict.json', 'r', encoding='utf-8') as json_file:
             previous_data = json.load(json_file)
@@ -856,6 +859,7 @@ if __name__ == '__main__':
         previous_notam = filter_data_by_source(previous_data, {'NOTAM'})
         notam_match_archive(dataDict=current_notam)
         email_draft = generate_change_email_draft(previous_notam, current_notam)
+        qqbot_draft = generate_change_email_draft(previous_notam, current_notam, include_match=False, include_website=False)
         added_count = count_new_notams_for_mail(previous_notam, current_notam)
         if MAIL_ENABLED and added_count > 0:
             try:
@@ -867,5 +871,11 @@ if __name__ == '__main__':
             print('无符合经度范围(70~180)的新增航警，已跳过邮件发送')
         else:
             print('MAIL.enabled=false，已跳过邮件发送')
+        # QQ Bot 通知独立于邮件发送
+        if added_count > 0:
+            try:
+                bot_send_notification(qqbot_draft)
+            except Exception as exc:
+                print(f"QQ Bot 通知发送失败: {exc}")
     elif before_hash != after_hash:
         print('仅MSI或非NOTAM数据变化，已跳过历史匹配与邮件发送')

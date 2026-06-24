@@ -394,7 +394,7 @@ def _render_tiles_map(
     return output.getvalue()
 
 
-def generate_change_email_draft(previous_data, current_data):
+def generate_change_email_draft(previous_data, current_data, include_match=True, include_website=True):
     prev_map = _build_notam_map(previous_data or {})
     curr_map = _build_notam_map(current_data or {})
 
@@ -427,9 +427,10 @@ def generate_change_email_draft(previous_data, current_data):
             lines.append(f"- {item['CODE']}")
             lines.append(f"  航警时间: {_time_of(item)}")
             lines.append(f"  航警坐标: {item['COORDINATES']}")
-            lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
-            for match_line in _format_match_summary(item['index']):
-                lines.append(f'  - {match_line}')
+            if include_match:
+                lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
+                for match_line in _format_match_summary(item['index']):
+                    lines.append(f'  - {match_line}')
     else:
         lines.append('- 无新增航警')
 
@@ -450,9 +451,10 @@ def generate_change_email_draft(previous_data, current_data):
             lines.append(f"- {item['CODE']}")
             lines.append(f"  航警时间: {_time_of(item)}")
             lines.append(f"  航警坐标: {item['COORDINATES']}")
-            lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
-            for match_line in _format_match_summary(item['index']):
-                lines.append(f'  - {match_line}')
+            if include_match:
+                lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
+                for match_line in _format_match_summary(item['index']):
+                    lines.append(f'  - {match_line}')
     else:
         lines.append('- 无保留航警')
 
@@ -478,7 +480,8 @@ def generate_change_email_draft(previous_data, current_data):
     if image_bytes:
         body_html += '<div style="margin: 2px 0 10px 0;"><img src="cid:notam_overview_x1" alt="NOTAM落区总览图" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;"/></div>'
 
-    body_html += '<div style="margin: 4px 0 8px 0;">' + home_link() + '</div>'
+    if include_website:
+        body_html += '<div style="margin: 4px 0 8px 0;">' + home_link() + '</div>'
 
     body_html += '<div style="font-weight:700; font-size:1.08em; margin:6px 0;">新增航警：</div>'
     if added_ids:
@@ -486,11 +489,14 @@ def generate_change_email_draft(previous_data, current_data):
         for pid in added_ids:
             item = curr_map[pid]
             code_html = f'<strong>{e(item["CODE"])}</strong>'
-            body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}<br/>{match_link(item["index"])}：</div>'
-            body_html += '<ul style="margin:2px 0 4px 6px; padding-left:10px;">'
-            for match_line in _format_match_summary(item['index']):
-                body_html += f'<li>{nl2br(match_line)}</li>'
-            body_html += '</ul></li>'
+            tmp_link = match_link(item['index']) if include_match else ''
+            body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}<br/>{tmp_link}</div>'
+            if include_match:
+                body_html += '<ul style="margin:2px 0 4px 6px; padding-left:10px;">'
+                for match_line in _format_match_summary(item['index']):
+                    body_html += f'<li>{nl2br(match_line)}</li>'
+                body_html += '</ul>'
+            body_html += '</li>'
         body_html += '</ul>'
     else:
         body_html += '<div style="margin-left:8px;">- 无新增航警</div>'
@@ -511,11 +517,14 @@ def generate_change_email_draft(previous_data, current_data):
         for pid in kept_ids:
             item = curr_map[pid]
             code_html = f'<strong>{e(item["CODE"])}</strong>'
-            body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}<br/>{match_link(item["index"])}：</div>'
-            body_html += '<ul style="margin:2px 0 4px 6px; padding-left:10px;">'
-            for match_line in _format_match_summary(item['index']):
-                body_html += f'<li>{nl2br(match_line)}</li>'
-            body_html += '</ul></li>'
+            tmp_link = match_link(item['index']) if include_match else ''
+            body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}<br/>{tmp_link}</div>'
+            if include_match:
+                body_html += '<ul style="margin:2px 0 4px 6px; padding-left:10px;">'
+                for match_line in _format_match_summary(item['index']):
+                    body_html += f'<li>{nl2br(match_line)}</li>'
+                body_html += '</ul>'
+            body_html += '</li>'
         body_html += '</ul>'
     else:
         body_html += '<div style="margin-left:8px;">- 无保留航警</div>'
