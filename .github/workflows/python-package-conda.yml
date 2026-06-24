@@ -25,12 +25,6 @@ jobs:
       NOTAM_FROM_EMAIL: ${{ secrets.NOTAM_FROM_EMAIL }}
       NOTAM_TO_EMAILS: ${{ secrets.NOTAM_TO_EMAILS }}
     steps:
-      - name: Get runner IP
-        id: ip
-        run: |
-          IPV4=$(curl -s https://api.ipify.org)
-          echo "ipv4=$IPV4" >> $GITHUB_OUTPUT
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
