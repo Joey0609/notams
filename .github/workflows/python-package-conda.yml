@@ -24,13 +24,9 @@ jobs:
       NOTAM_SMTP_AUTH_CODE: ${{ secrets.NOTAM_SMTP_AUTH_CODE }}
       NOTAM_FROM_EMAIL: ${{ secrets.NOTAM_FROM_EMAIL }}
       NOTAM_TO_EMAILS: ${{ secrets.NOTAM_TO_EMAILS }}
+      QQ_BOT_SERVER_IP: ${{ secrets.QQ_BOT_SERVER_IP }}
+      QQ_BOT_SERVER_PORT: ${{ secrets.QQ_BOT_SERVER_PORT }}
     steps:
-      - name: Get runner IP
-        id: ip
-        run: |
-          IPV4=$(curl -s https://api.ipify.org)
-          echo "ipv4=$IPV4" >> $GITHUB_OUTPUT
-          
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -47,9 +43,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install -r requirements.txt
-
-      - name: Echo runner IP
-        run: echo "${{ steps.ip.outputs.ipv4 }}"
 
       - name: Update NOTAM list
         run: |

@@ -20,16 +20,18 @@ MAIL_LAUNCH_SITES = [
     {'name': '海阳东方航天港', 'lat': 36.688761, 'lon': 121.259377, 'icon': 'statics/launch1.png'},
 ]
 
-# 与网页 scripts.js 保持一致的颜色池
+# 自定义颜色池 🟥🟦🟩🟫🟧🟪🟨
 COLOR_POOL_VECTOR = [
-    '#a70000ff', '#1a2cd1', '#006d1bff', '#806800ff', '#6a009bff',
-    '#548100ff', '#a74e00ff', '#313131', '#a0008bff', '#006b79ff'
+    '#E53E30', '#007AC1', '#00A650', '#8B5A2B', '#F77F00',
+    '#8B5CF6', '#FFD700',
 ]
 
 COLOR_POOL_SATELLITE = [
-    '#ff3b3b', '#00d9ff', '#00ff41', '#ffea00', '#c300ffff',
-    '#7dff00', '#ff8c00', '#ffffff', '#ff1493', '#00ffff'
+    '#E53E30', '#007AC1', '#00A650', '#8B5A2B', '#F77F00',
+    '#8B5CF6', '#FFD700',
 ]
+
+COLOR_EMOJIS = ['🟥', '🟦', '🟩', '🟫', '🟧', '🟪', '🟨']
 
 
 def parse_point(pt):
@@ -194,6 +196,18 @@ def _build_code_class_map(data):
     return code_to_class
 
 
+def _build_code_emoji_map(data):
+    """构建 CODE → emoji 的映射，基于 CLASSIFY 分组索引。"""
+    classify = data.get('CLASSIFY', {}) if isinstance(data, dict) else {}
+    code_emoji = {}
+    if isinstance(classify, dict):
+        for idx, (class_key, codes) in enumerate(classify.items()):
+            emoji = COLOR_EMOJIS[idx % len(COLOR_EMOJIS)]
+            for code in codes:
+                code_emoji[str(code)] = emoji
+    return code_emoji
+
+
 def _hex_to_rgb(hex_color):
     hex_color = hex_color.lstrip('#')
     return tuple(int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
@@ -340,8 +354,6 @@ def _render_tiles_map(
             offset_y = int(tile_y * 256 - min_world_y)
             canvas.alpha_composite(tile, (offset_x, offset_y))
 
-    draw = ImageDraw.Draw(canvas, 'RGBA')
-
     def to_canvas_px(lat, lon):
         world_x, world_y = _lonlat_to_world_px(lat, lon, chosen_zoom)
         return world_x - min_world_x, world_y - min_world_y
@@ -355,11 +367,18 @@ def _render_tiles_map(
     group_color_map = _build_group_color_map(data, provider=provider)
     fallback_rgb = _hex_to_rgb((COLOR_POOL_VECTOR if provider in ('gaode_vec', 'tianditu_vec') else COLOR_POOL_SATELLITE)[0])
 
+    # 先在独立透明 overlay 层绘制多边形，再合成到画布
+    # 避免 Pillow ImageDraw 直接画在 RGBA 上时 alpha 变黑的问题
+    overlay = Image.new('RGBA', canvas.size, (0, 0, 0, 0))
+    overlay_draw = ImageDraw.Draw(overlay, 'RGBA')
+
     for group_key, code, poly in polygon_groups:
         color = group_color_map.get(group_key, fallback_rgb)
         points = [to_canvas_px(lat, lon) for lat, lon in poly]
-        draw.polygon(points, fill=color + (250,), outline=color + (140,))
-        draw.line(points + [points[0]], fill=color + (140,), width=1)
+        overlay_draw.polygon(points, fill=color + (128,), outline=color + (255,))
+        overlay_draw.line(points + [points[0]], fill=color + (255,), width=1)
+
+    canvas.alpha_composite(overlay)
 
     # 叠加发射场图标（与网站主地图保持一致）
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -402,6 +421,9 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
     removed_ids = sorted(set(prev_map.keys()) - set(curr_map.keys()))
     kept_ids = sorted(set(curr_map.keys()) & set(prev_map.keys()))
 
+    # 构建 CODE → emoji 映射
+    code_emoji_map = _build_code_emoji_map(current_data or {})
+
     polys = _collect_polygons(current_data or {})
     image_bytes = None
     if polys:
@@ -420,11 +442,15 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
         except Exception:
             return item.get('TIME', '')
 
+    def _code_with_emoji(code_str):
+        emoji = code_emoji_map.get(str(code_str), '')
+        return f"{emoji} {code_str}" if emoji else str(code_str)
+
     lines.append('新增航警：')
     if added_ids:
         for pid in added_ids:
             item = curr_map[pid]
-            lines.append(f"- {item['CODE']}")
+            lines.append(f"- {_code_with_emoji(item['CODE'])}")
             lines.append(f"  航警时间: {_time_of(item)}")
             lines.append(f"  航警坐标: {item['COORDINATES']}")
             if include_match:
@@ -438,7 +464,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
     if removed_ids:
         for pid in removed_ids:
             item = prev_map[pid]
-            lines.append(f"- {item['CODE']}")
+            lines.append(f"- {_code_with_emoji(item['CODE'])}")
             lines.append(f"  航警时间: {_time_of(item)}")
             lines.append(f"  航警坐标: {item['COORDINATES']}")
     else:
@@ -448,7 +474,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
     if kept_ids:
         for pid in kept_ids:
             item = curr_map[pid]
-            lines.append(f"- {item['CODE']}")
+            lines.append(f"- {_code_with_emoji(item['CODE'])}")
             lines.append(f"  航警时间: {_time_of(item)}")
             lines.append(f"  航警坐标: {item['COORDINATES']}")
             if include_match:
@@ -488,7 +514,8 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
         body_html += '<ul style="margin:0 0 6px 8px; padding-left:10px;">'
         for pid in added_ids:
             item = curr_map[pid]
-            code_html = f'<strong>{e(item["CODE"])}</strong>'
+            emoji_code = _code_with_emoji(item['CODE'])
+            code_html = f'<strong>{e(emoji_code)}</strong>'
             tmp_link = match_link(item['index']) if include_match else ''
             body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}<br/>{tmp_link}</div>'
             if include_match:
@@ -506,7 +533,8 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
         body_html += '<ul style="margin:0 0 6px 8px; padding-left:10px;">'
         for pid in removed_ids:
             item = prev_map[pid]
-            body_html += f'<li><strong>{e(item["CODE"])}</strong><div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}</div></li>'
+            emoji_code = _code_with_emoji(item['CODE'])
+            body_html += f'<li><strong>{e(emoji_code)}</strong><div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}</div></li>'
         body_html += '</ul>'
     else:
         body_html += '<div style="margin-left:8px;">- 无移除航警</div>'
@@ -516,7 +544,8 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
         body_html += '<ul style="margin:0 0 6px 8px; padding-left:10px;">'
         for pid in kept_ids:
             item = curr_map[pid]
-            code_html = f'<strong>{e(item["CODE"])}</strong>'
+            emoji_code = _code_with_emoji(item['CODE'])
+            code_html = f'<strong>{e(emoji_code)}</strong>'
             tmp_link = match_link(item['index']) if include_match else ''
             body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}<br/>{tmp_link}</div>'
             if include_match:
