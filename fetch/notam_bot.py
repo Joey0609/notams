@@ -33,6 +33,9 @@ def _build_message_text(email_draft: dict) -> str:
         if skip and (line.strip().startswith('- 重叠') or line.startswith('  -')):
             continue
         skip = False
+        # QQ 消息中去掉坐标行
+        if '航警坐标' in line:
+            continue
         filtered.append(line)
     return '\n'.join(filtered)
 
