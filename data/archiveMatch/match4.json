@@ -1,1420 +1,2062 @@
 [
     {
-        "CODE": "A4087/24",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "02 DEC 04:45 2024 UNTIL 02 DEC 05:06 2024",
-        "PLATID": "74399311",
-        "RAWMESSAGE": "A4087/24 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2412020445 C) 2412020506 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,BAC\nK TO START. \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2024-12.json",
-        "source_index": 8,
-        "classify_key": "c891241647",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A4088/24",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "02 DEC 04:47 2024 UNTIL 02 DEC 05:13 2024",
-                "PLATID": "74399332",
-                "RAWMESSAGE": "A4088/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2854N11237E021\nA) ZGZU B) 2412020447 C) 2412020513 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700,BAC\nK TO START. \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-12.json",
-                "source_index": 9,
-                "GroupKey": "c891241647",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A4089/24",
-                "COORDINATES": "N183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900",
-                "TIME": "02 DEC 04:47 2024 UNTIL 02 DEC 05:14 2024",
-                "PLATID": "74399390",
-                "RAWMESSAGE": "A4089/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11214E027\nA) ZJSA B) 2412020447 C) 2412020514 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900,BAC\nK TO START.(FIR ZJSA,FIR VHHK). \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-12.json",
-                "source_index": 10,
-                "GroupKey": "c891241647",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A4184/24",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "05 DEC 04:32 2024 UNTIL 05 DEC 04:58 2024",
-        "PLATID": "74499821",
-        "RAWMESSAGE": "A4184/24 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2412050432 C) 2412050458 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2024-12.json",
-        "source_index": 15,
-        "classify_key": "c737273853",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A4185/24",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "05 DEC 04:34 2024 UNTIL 05 DEC 05:05 2024",
-                "PLATID": "74499822",
-                "RAWMESSAGE": "A4185/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2854N11237E021\nA) ZGZU B) 2412050434 C) 2412050505 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-12.json",
-                "source_index": 16,
-                "GroupKey": "c737273853",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A4186/24",
-                "COORDINATES": "N183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900",
-                "TIME": "05 DEC 04:34 2024 UNTIL 05 DEC 05:06 2024",
-                "PLATID": "74499850",
-                "RAWMESSAGE": "A4186/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11214E027\nA) ZJSA B) 2412050434 C) 2412050506 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.(FIR ZJSA,FIR VHHK).\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-12.json",
-                "source_index": 17,
-                "GroupKey": "c737273853",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A1008/26",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "08 APR 19:30 2026 UNTIL 08 APR 19:46 2026",
-        "PLATID": "80627529",
-        "RAWMESSAGE": "A1008/26 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2604081930 C) 2604081946 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400, \n,BACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2026-04.json",
-        "source_index": 6,
-        "classify_key": "c377839648",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A1009/26",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "08 APR 19:31 2026 UNTIL 08 APR 19:52 2026",
-                "PLATID": "80627530",
-                "RAWMESSAGE": "A1009/26 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2604081931 C) 2604081952 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700, \n,BACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2026-04.json",
-                "source_index": 7,
-                "GroupKey": "c377839648",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A0203/25",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "23 JAN 05:04 2025 UNTIL 23 JAN 05:24 2025",
-        "PLATID": "75167568",
-        "RAWMESSAGE": "A0203/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2501230504 C) 2501230524 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-01.json",
-        "source_index": 8,
-        "classify_key": "c958012228",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A0204/25",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "23 JAN 05:05 2025 UNTIL 23 JAN 05:30 2025",
-                "PLATID": "75167587",
-                "RAWMESSAGE": "A0204/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2854N11237E021\nA) ZGZU B) 2501230505 C) 2501230530 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-01.json",
-                "source_index": 9,
-                "GroupKey": "c958012228",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A0205/25",
-                "COORDINATES": "N183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900",
-                "TIME": "23 JAN 05:06 2025 UNTIL 23 JAN 05:31 2025",
-                "PLATID": "75167628",
-                "RAWMESSAGE": "A0205/25 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11214E027\nA) ZJSA B) 2501230506 C) 2501230531 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900,\nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.(FIR ZJSA,FIR VHHK).\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-01.json",
-                "source_index": 10,
-                "GroupKey": "c958012228",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A1555/25",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "05 JUN 20:36 2025 UNTIL 05 JUN 20:56 2025",
-        "PLATID": "76861454",
-        "RAWMESSAGE": "A1555/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2506052036 C) 2506052056 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-06.json",
-        "source_index": 0,
-        "classify_key": "c356164010",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A1556/25",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "05 JUN 20:37 2025 UNTIL 05 JUN 21:02 2025",
-                "PLATID": "76861484",
-                "RAWMESSAGE": "A1556/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2506052037 C) 2506052102 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-06.json",
-                "source_index": 1,
-                "GroupKey": "c356164010",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A3355/25",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "27 SEP 12:31 2025 UNTIL 27 SEP 12:47 2025",
-        "PLATID": "78008307",
-        "RAWMESSAGE": "A3355/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2509271231 C) 2509271247 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-09.json",
-        "source_index": 15,
-        "classify_key": "c361144947",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A3356/25",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "27 SEP 12:32 2025 UNTIL 27 SEP 12:53 2025",
-                "PLATID": "78008345",
-                "RAWMESSAGE": "A3356/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2509271232 C) 2509271253 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-09.json",
-                "source_index": 16,
-                "GroupKey": "c361144947",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A2321/25",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "27 JUL 09:55 2025 UNTIL 27 JUL 10:11 2025",
-        "PLATID": "77374229",
-        "RAWMESSAGE": "A2321/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2507270955 C) 2507271011 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-07.json",
-        "source_index": 22,
-        "classify_key": "c382852486",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A2322/25",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "27 JUL 09:56 2025 UNTIL 27 JUL 10:17 2025",
-                "PLATID": "77374247",
-                "RAWMESSAGE": "A2322/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2507270956 C) 2507271017 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA. \nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-07.json",
-                "source_index": 23,
-                "GroupKey": "c382852486",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A3665/25",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "17 OCT 06:59 2025 UNTIL 17 OCT 07:19 2025",
-        "PLATID": "78238892",
-        "RAWMESSAGE": "A3665/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2510170659 C) 2510170719 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-10.json",
-        "source_index": 9,
-        "classify_key": "c492013848",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A3666/25",
-                "COORDINATES": "N291000E1122200-N291200E1124500-N283600E1124800-N283400E1122500",
-                "TIME": "17 OCT 07:00 2025 UNTIL 17 OCT 07:25 2025",
-                "PLATID": "78238895",
-                "RAWMESSAGE": "A3666/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2852N11234E021\nA) ZGZU B) 2510170700 C) 2510170725 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291000E1122200-N291200E1124500-N283600E1124800-N283400E1122500,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-10.json",
-                "source_index": 10,
-                "GroupKey": "c492013848",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A3667/25",
-                "COORDINATES": "N190300E1115200-N190300E1122700-N175200E1122900-N175100E1115400",
-                "TIME": "17 OCT 07:01 2025 UNTIL 17 OCT 07:26 2025",
-                "PLATID": "78238911",
-                "RAWMESSAGE": "A3667/25 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1827N11210E040\nA) ZJSA B) 2510170701 C) 2510170726 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN190300E1115200-N190300E1122700-N175200E1122900-N175100E1115400,BAC\nK TO START.(FIR ZJSA,FIR VHHK).VERTICAL LIMITS:SFC-UNL.\nCONCERNED WITH HONGKONG ATC OPERATION.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-10.json",
-                "source_index": 11,
-                "GroupKey": "c492013848",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A4555/25",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "08 DEC 22:03 2025 UNTIL 08 DEC 22:19 2025",
-        "PLATID": "78873340",
-        "RAWMESSAGE": "A4555/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2512082203 C) 2512082219 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "CODE": "A4557/25",
+        "COORDINATES": "N354900E0982000-N354500E0983400-N352400E0982700-N352700E0981300",
+        "TIME": "09 DEC 03:33 2025 UNTIL 09 DEC 03:56 2025",
+        "PLATID": "78873614",
+        "RAWMESSAGE": "A4557/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3536N09823E013\nA) ZLHW B) 2512090333 C) 2512090356 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN354900E0982000-N354500E0983400-N352400E0982700-N352700E0981300,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "SOURCE": "NOTAM",
         "FIR": "",
         "source_file": "2025-12.json",
-        "source_index": 12,
-        "classify_key": "c354721548",
+        "source_index": 13,
+        "classify_key": "c388275980",
         "points": [
             [
-                36.083333333333336,
-                112.0
+                35.81666666666667,
+                98.33333333333333
             ],
             [
-                36.1,
-                112.23333333333333
+                35.75,
+                98.56666666666666
             ],
             [
-                35.733333333333334,
-                112.3
+                35.4,
+                98.45
             ],
             [
-                35.7,
-                112.06666666666666
+                35.45,
+                98.21666666666667
             ]
         ],
-        "Overlapping_Area": 95.8,
+        "Overlapping_Area": 83.8,
         "Center_Distance": -1.0,
         "RelatedItems": []
     },
     {
-        "CODE": "A2619/25",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "17 AUG 14:07 2025 UNTIL 17 AUG 14:23 2025",
-        "PLATID": "77589033",
-        "RAWMESSAGE": "A2619/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2508171407 C) 2508171423 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "CODE": "A4809/25",
+        "COORDINATES": "N354600E0982400-N354300E0983800-N352100E0983100-N352400E0981700",
+        "TIME": "30 DEC 04:04 2025 UNTIL 30 DEC 04:32 2025",
+        "PLATID": "79290195",
+        "RAWMESSAGE": "A4809/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3533N09827E013\nA) ZLHW B) 2512300404 C) 2512300432 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN354600E0982400-N354300E0983800-N352100E0983100-N352400E0981700,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "SOURCE": "NOTAM",
         "FIR": "",
-        "source_file": "2025-08.json",
-        "source_index": 10,
-        "classify_key": "c187808831",
+        "source_file": "2025-12.json",
+        "source_index": 50,
+        "classify_key": "c562334546",
         "points": [
             [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A2620/25",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "17 AUG 14:08 2025 UNTIL 17 AUG 14:29 2025",
-                "PLATID": "77589037",
-                "RAWMESSAGE": "A2620/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2508171408 C) 2508171429 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-08.json",
-                "source_index": 11,
-                "GroupKey": "c187808831",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A2640/25",
-                "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-                "TIME": "17 AUG 14:07 2025 UNTIL 17 AUG 14:23 2025",
-                "PLATID": "77598373",
-                "RAWMESSAGE": "A2640/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2508171407 C) 2508171423 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-08.json",
-                "source_index": 16,
-                "GroupKey": "c187808831",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A2641/25",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "17 AUG 14:08 2025 UNTIL 17 AUG 14:29 2025",
-                "PLATID": "77598374",
-                "RAWMESSAGE": "A2641/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2508171408 C) 2508171429 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-08.json",
-                "source_index": 17,
-                "GroupKey": "c187808831",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A2640/25",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "17 AUG 14:07 2025 UNTIL 17 AUG 14:23 2025",
-        "PLATID": "77598373",
-        "RAWMESSAGE": "A2640/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2508171407 C) 2508171423 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-08.json",
-        "source_index": 16,
-        "classify_key": "c187808831",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A2619/25",
-                "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-                "TIME": "17 AUG 14:07 2025 UNTIL 17 AUG 14:23 2025",
-                "PLATID": "77589033",
-                "RAWMESSAGE": "A2619/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2508171407 C) 2508171423 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-08.json",
-                "source_index": 10,
-                "GroupKey": "c187808831",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A2620/25",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "17 AUG 14:08 2025 UNTIL 17 AUG 14:29 2025",
-                "PLATID": "77589037",
-                "RAWMESSAGE": "A2620/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2508171408 C) 2508171429 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-08.json",
-                "source_index": 11,
-                "GroupKey": "c187808831",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A2641/25",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "17 AUG 14:08 2025 UNTIL 17 AUG 14:29 2025",
-                "PLATID": "77598374",
-                "RAWMESSAGE": "A2641/25 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2508171408 C) 2508171429 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-08.json",
-                "source_index": 17,
-                "GroupKey": "c187808831",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A3245/24",
-        "COORDINATES": "N360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400",
-        "TIME": "15 OCT 11:14 2024 UNTIL 15 OCT 11:36 2024",
-        "PLATID": "73854023",
-        "RAWMESSAGE": "A3245/24 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2410151114 C) 2410151136 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1120000-N360600E1121400-N354400E1121800-N354200E1120400,BAC\nK TO START. VERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2024-10.json",
-        "source_index": 2,
-        "classify_key": "c387973107",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A3246/24",
-                "COORDINATES": "N291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700",
-                "TIME": "15 OCT 11:15 2024 UNTIL 15 OCT 11:42 2024",
-                "PLATID": "73854040",
-                "RAWMESSAGE": "A3246/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2410151115 C) 2410151142 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291100E1122400-N291200E1124600-N283600E1124900-N283500E1122700,BAC\nK TO START. VERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-10.json",
-                "source_index": 3,
-                "GroupKey": "c387973107",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A3248/24",
-                "COORDINATES": "N183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900",
-                "TIME": "15 OCT 11:16 2024 UNTIL 15 OCT 11:43 2024",
-                "PLATID": "73854100",
-                "RAWMESSAGE": "A3248/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11213E027\nA) ZJSA B) 2410151116 C) 2410151143 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183800E1115800-N183800E1122800-N175400E1122800-N175300E1115900\nBACK TO START. (FIR ZJSA,FIR VHHK). VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-10.json",
-                "source_index": 4,
-                "GroupKey": "c387973107",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A3345/24",
-        "COORDINATES": "N3605E11200-N3606E11214-N3544E11218-N3542E11204",
-        "TIME": "15 OCT 10:58 2024 UNTIL 15 OCT 11:18 2024",
-        "PLATID": "73948092",
-        "RAWMESSAGE": "A3345/24 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11209E013\nA) ZBPE B) 2410151058 C) 2410151118 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3605E11200-N3606E11214-N3544E11218-N3542E11204 BACK TO START. \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2024-10.json",
-        "source_index": 9,
-        "classify_key": "c927994429",
-        "points": [
-            [
-                36.083333333333336,
-                112.0
-            ],
-            [
-                36.1,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 95.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A3347/24",
-                "COORDINATES": "N2911E11224-N2912E11246-N2836E11249-N2835E11227",
-                "TIME": "15 OCT 10:58 2024 UNTIL 15 OCT 11:24 2024",
-                "PLATID": "73948111",
-                "RAWMESSAGE": "A3347/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E021\nA) ZGZU B) 2410151058 C) 2410151124 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN2911E11224-N2912E11246-N2836E11249-N2835E11227 BACK TO START. \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-10.json",
-                "source_index": 10,
-                "GroupKey": "c927994429",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A3349/24",
-                "COORDINATES": "N1838E11158-N1838E11228-N1754E11228-N1753E11159",
-                "TIME": "15 OCT 10:58 2024 UNTIL 15 OCT 11:25 2024",
-                "PLATID": "73948147",
-                "RAWMESSAGE": "A3349/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11213E027\nA) ZJSA B) 2410151058 C) 2410151125 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN1838E11158-N1838E11228-N1754E11228-N1753E11159 BACK TO START. \n(FIR ZJSA,FIR VHHK). VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-10.json",
-                "source_index": 11,
-                "GroupKey": "c927994429",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A2890/25",
-        "COORDINATES": "N360200E1120100-N360400E1121500-N354400E1121800-N354200E1120400",
-        "TIME": "06 SEP 16:26 2025 UNTIL 06 SEP 16:52 2025",
-        "PLATID": "77788215",
-        "RAWMESSAGE": "A2890/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3553N11209E012\nA) ZBPE B) 2509061626 C) 2509061652 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N360200E1120100-N360400E1121500-N354400E1121800-N354200E1120400,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-09.json",
-        "source_index": 3,
-        "classify_key": "c229263898",
-        "points": [
-            [
-                36.03333333333333,
-                112.01666666666667
-            ],
-            [
-                36.06666666666667,
-                112.25
-            ],
-            [
-                35.733333333333334,
-                112.3
-            ],
-            [
-                35.7,
-                112.06666666666666
-            ]
-        ],
-        "Overlapping_Area": 90.3,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A2891/25",
-                "COORDINATES": "N182400E1115400-N182400E1122900-N171300E1123100-N171200E1115600",
-                "TIME": "06 SEP 16:27 2025 UNTIL 06 SEP 17:01 2025",
-                "PLATID": "77788235",
-                "RAWMESSAGE": "A2891/25 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1748N11212E040\nA) ZJSA B) 2509061627 C) 2509061701 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N182400E1115400-N182400E1122900-N171300E1123100-N171200E1115600,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-09.json",
-                "source_index": 4,
-                "GroupKey": "c229263898",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A2241/24",
-        "COORDINATES": "N360200E1120100-N360300E1121400-N354400E1121800-N354300E1120500",
-        "TIME": "06 AUG 06:51 2024 UNTIL 06 AUG 07:17 2024",
-        "PLATID": "73194927",
-        "RAWMESSAGE": "A2241/24 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3552N11209E011\nA) ZBPE B) 2408060651 C) 2408060717 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360200E1120100-N360300E1121400-N354400E1121800-N354300E1120500 \nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2024-08.json",
-        "source_index": 0,
-        "classify_key": "c251049989",
-        "points": [
-            [
-                36.03333333333333,
-                112.01666666666667
-            ],
-            [
-                36.05,
-                112.23333333333333
-            ],
-            [
-                35.733333333333334,
-                112.3
+                35.766666666666666,
+                98.4
             ],
             [
                 35.71666666666667,
-                112.08333333333333
+                98.63333333333334
+            ],
+            [
+                35.35,
+                98.51666666666667
+            ],
+            [
+                35.4,
+                98.28333333333333
             ]
         ],
-        "Overlapping_Area": 82.1,
+        "Overlapping_Area": 78.9,
         "Center_Distance": -1.0,
         "RelatedItems": [
             {
-                "CODE": "A2242/24",
-                "COORDINATES": "N291000E1122400-N291200E1124600-N283700E1124900-N283500E1122700",
-                "TIME": "06 AUG 06:52 2024 UNTIL 06 AUG 07:24 2024",
-                "PLATID": "73194965",
-                "RAWMESSAGE": "A2242/24 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2853N11236E020\nA) ZGZU B) 2408060652 C) 2408060724 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN291000E1122400-N291200E1124600-N283700E1124900-N283500E1122700 \nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "CODE": "A4810/25",
+                "COORDINATES": "N332700E0973600-N332300E0975900-N324500E0974800-N325000E0972500",
+                "TIME": "30 DEC 04:05 2025 UNTIL 30 DEC 04:36 2025",
+                "PLATID": "79290196",
+                "RAWMESSAGE": "A4810/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3306N09742E022\nA) ZLHW B) 2512300405 C) 2512300436 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN332700E0973600-N332300E0975900-N324500E0974800-N325000E0972500, \nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
                 "ALTITUDE": "0 ~ INF 米",
                 "SOURCE": "NOTAM",
                 "FIR": "",
-                "source_file": "2024-08.json",
-                "source_index": 1,
-                "GroupKey": "c251049989",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A2243/24",
-                "COORDINATES": "N183700E1115800-N183800E1122700-N175400E1122800-N175400E1115900",
-                "TIME": "06 AUG 06:53 2024 UNTIL 06 AUG 07:25 2024",
-                "PLATID": "73194983",
-                "RAWMESSAGE": "A2243/24 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1815N11213E026\nA) ZJSA B) 2408060653 C) 2408060725 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN183700E1115800-N183800E1122700-N175400E1122800-N175400E1115900 \nBACK TO START(FIR ZJSA,FIR VHHK). \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-08.json",
-                "source_index": 2,
-                "GroupKey": "c251049989",
+                "source_file": "2025-12.json",
+                "source_index": 51,
+                "GroupKey": "c562334546",
                 "IsSameGroup": true,
                 "parent_index": 4
             }
         ]
     },
     {
-        "CODE": "A1164/25",
-        "COORDINATES": "N360400E1115700-N360600E1121100-N354300E1121400-N354200E1120000",
-        "TIME": "11 MAY 13:12 2025 UNTIL 11 MAY 13:43 2025",
-        "PLATID": "76582842",
-        "RAWMESSAGE": "A1164/25 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3554N11205E013\nA) ZBPE B) 2505111312 C) 2505111343 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N360400E1115700-N360600E1121100-N354300E1121400-N354200E1120000,\nBACK TO START.  VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "CODE": "A0568/25",
+        "COORDINATES": "N354500E0982400-N354300E0983800-N352100E0983100-N352300E0981800",
+        "TIME": "15 MAR 04:03 2025 UNTIL 15 MAR 04:26 2025",
+        "PLATID": "75947445",
+        "RAWMESSAGE": "A0568/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3533N09828E013\nA) ZLHW B) 2503150403 C) 2503150426 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N354500E0982400-N354300E0983800-N352100E0983100-N352300E0981800,\nBACK TO START. \nVERTICAL LIMITS:SFC-UNL,ALL ACFT ARE PROHIBITED TO FLY INTO THE \nAREA.\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "SOURCE": "NOTAM",
         "FIR": "",
-        "source_file": "2025-05.json",
-        "source_index": 1,
-        "classify_key": "c792891325",
+        "source_file": "2025-03.json",
+        "source_index": 7,
+        "classify_key": "c641062096",
         "points": [
             [
-                36.06666666666667,
-                111.95
-            ],
-            [
-                36.1,
-                112.18333333333334
+                35.75,
+                98.4
             ],
             [
                 35.71666666666667,
-                112.23333333333333
+                98.63333333333334
             ],
             [
-                35.7,
-                112.0
+                35.35,
+                98.51666666666667
+            ],
+            [
+                35.38333333333333,
+                98.3
             ]
         ],
-        "Overlapping_Area": 77.8,
+        "Overlapping_Area": 77.4,
         "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A1165/25",
-                "COORDINATES": "N315300E1122900-N315500E1125000-N311600E1125500-N311400E1123400",
-                "TIME": "11 MAY 13:13 2025 UNTIL 11 MAY 13:51 2025",
-                "PLATID": "76582853",
-                "RAWMESSAGE": "A1165/25 NOTAMN\nQ) ZHWH/QRDCA/IV/BO/W/000/999/3134N11242E022\nA) ZHWH B) 2505111313 C) 2505111351 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N315300E1122900-N315500E1125000-N311600E1125500-N311400E1123400,\nBACK TO START. VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-05.json",
-                "source_index": 2,
-                "GroupKey": "c792891325",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A1166/25",
-                "COORDINATES": "N183100E1120300-N183200E1123800-N172000E1124000-N171900E1120500",
-                "TIME": "11 MAY 13:14 2025 UNTIL 11 MAY 13:52 2025",
-                "PLATID": "76582877",
-                "RAWMESSAGE": "A1166/25 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1755N11221E040\nA) ZJSA B) 2505111314 C) 2505111352 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N183100E1120300-N183200E1123800-N172000E1124000-N171900E1120500,\nBACK TO START. (FIR ZJSA,FIR VHHK),VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-05.json",
-                "source_index": 3,
-                "GroupKey": "c792891325",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
+        "RelatedItems": []
     },
     {
-        "CODE": "A2549/23",
-        "COORDINATES": "N360500E1115700-N360600E1121200-N354300E1121500-N354100E1120000",
-        "TIME": "10 SEP 04:21 2023 UNTIL 10 SEP 04:59 2023",
-        "PLATID": "69499124",
-        "RAWMESSAGE": "A2549/23 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3553N11206E014\nA) ZBPE B) 2309100421 C) 2309100459 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN360500E1115700-N360600E1121200-N354300E1121500-N354100E1120000,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "CODE": "A2950/21",
+        "COORDINATES": "N352013E0982450-N352302E0981204-N354359E0981858-N354106E0983144",
+        "TIME": "22 NOV 23:37 2021 UNTIL 23 NOV 00:04 2021",
+        "PLATID": "62202223",
+        "RAWMESSAGE": "A2950/21 NOTAMN\nQ) ZLHW/QRTCA/IV/BO/W/000/999/3532N09821E012\nA) ZLHW B) 2111222337 C) 2111230004 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY: \nN352013E0982450-N352302E0981204-N354359E0981858-N354106E0983144 \nBACK TO START. ALL ACFT ARE FORBIDDEN TO FLY INTO THE TEMPORARY \nRESTRICTED AREA. VERTICAL LIMITS:GND-UNL.\nF) GND G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "SOURCE": "NOTAM",
         "FIR": "",
-        "source_file": "2023-09.json",
-        "source_index": 4,
-        "classify_key": "c504436278",
+        "source_file": "2021-11.json",
+        "source_index": 2,
+        "classify_key": "c19736758",
         "points": [
             [
-                36.083333333333336,
-                111.95
+                35.33694444444445,
+                98.41388888888889
             ],
             [
-                36.1,
-                112.2
+                35.38388888888889,
+                98.20111111111112
             ],
             [
-                35.71666666666667,
-                112.25
+                35.73305555555556,
+                98.31611111111111
             ],
             [
-                35.68333333333333,
-                112.0
+                35.684999999999995,
+                98.52888888888889
             ]
         ],
-        "Overlapping_Area": 76.7,
+        "Overlapping_Area": 77.0,
         "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A0875/23",
-                "COORDINATES": "N1806E11224-N1807E11300-N1655E11303-N1654E11227",
-                "TIME": "10 SEP 04:23 2023 UNTIL 10 SEP 05:09 2023",
-                "PLATID": "69573675",
-                "RAWMESSAGE": "A0875/23 NOTAMN\nQ) VHHK/QRTCA/IV/BO /W /000/999/1731N11243E041\nA) VHHK B) 2309100423 C) 2309100509\nE) DUE TO AEROSPACE FLIGHT ACTIVITY (REFER TO MSG SVC0328/23\nDTG 310933 ORIGINATED BY ZBBBYNYX), A TEMPO DANGER AREA ESTABLISHED \nBOUNDED BY:\n\n1806N11224E\n1807N11300E\n1655N11303E\n1654N11227E\n\nALL TFC MUST REMAIN CLEAR OF THE AREA.\n\nALL TFC ROUTING VIA EPKAL L642 AND ESTIMATING TO CROSS THE DANGER \nAREA DURING THE ACTIVATION PERIOD SHALL REROUTE VIA IKELA A1 AND \nFILE FPL RTE AS STIPULATED IN AIP HONG KONG.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2023-09.json",
-                "source_index": 3,
-                "GroupKey": "c504436278",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A2550/23",
-                "COORDINATES": "N180600E1122400-N180700E1130000-N165500E1130300-N165400E1122700",
-                "TIME": "10 SEP 04:23 2023 UNTIL 10 SEP 05:09 2023",
-                "PLATID": "69499144",
-                "RAWMESSAGE": "A2550/23 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1730N11243E040\nA) ZJSA B) 2309100423 C) 2309100509 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN180600E1122400-N180700E1130000-N165500E1130300-N165400E1122700,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2023-09.json",
-                "source_index": 5,
-                "GroupKey": "c504436278",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A0630/23",
-        "COORDINATES": "N3457E11206-N3448E11158-N3513E11121-N3521E11129",
-        "TIME": "27 MAR 02:23 2023 UNTIL 27 MAR 02:54 2023",
-        "PLATID": "67943307",
-        "RAWMESSAGE": "A0630/23 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/3504N11143E020\nA) ZBPE ZHWH B) 2303270223 C) 2303270254 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3457E11206-N3448E11158-N3513E11121-N3521E11129,BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2023-03.json",
-        "source_index": 9,
-        "classify_key": "c45469837",
-        "points": [
-            [
-                34.95,
-                112.1
-            ],
-            [
-                34.8,
-                111.96666666666667
-            ],
-            [
-                35.21666666666667,
-                111.35
-            ],
-            [
-                35.35,
-                111.48333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 98.6,
         "RelatedItems": []
     },
     {
-        "CODE": "A1351/23",
-        "COORDINATES": "N3457E11206-N3448E11158-N3513E11121-N3521E11129",
-        "TIME": "09 JUN 02:23 2023 UNTIL 09 JUN 02:54 2023",
-        "PLATID": "68670737",
-        "RAWMESSAGE": "A1351/23 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/3505N11144E020\nA) ZBPE ZHWH B) 2306090223 C) 2306090254 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3457E11206-N3448E11158-N3513E11121-N3521E11129,BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2023-06.json",
-        "source_index": 2,
-        "classify_key": "c347181051",
-        "points": [
-            [
-                34.95,
-                112.1
-            ],
-            [
-                34.8,
-                111.96666666666667
-            ],
-            [
-                35.21666666666667,
-                111.35
-            ],
-            [
-                35.35,
-                111.48333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 98.6,
-        "RelatedItems": []
-    },
-    {
-        "CODE": "A2501/22",
-        "COORDINATES": "N3457E11206-N3448E11158-N3512E11121-N3521E11129",
-        "TIME": "06 SEP 02:13 2022 UNTIL 06 SEP 02:49 2022",
-        "PLATID": "65388135",
-        "RAWMESSAGE": "A2501/22 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/3505N11144E020\nA) ZHWH ZBPE B) 2209060213 C) 2209060249 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3457E11206-N3448E11158-N3512E11121-N3521E11129 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2022-09.json",
-        "source_index": 2,
-        "classify_key": "c741161475",
-        "points": [
-            [
-                34.95,
-                112.1
-            ],
-            [
-                34.8,
-                111.96666666666667
-            ],
-            [
-                35.2,
-                111.35
-            ],
-            [
-                35.35,
-                111.48333333333333
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 99.1,
-        "RelatedItems": []
-    },
-    {
-        "CODE": "A0841/23",
-        "COORDINATES": "N3620E11051-N3605E11040-N3626E11000-N3641E11011",
-        "TIME": "16 APR 01:28 2023 UNTIL 16 APR 01:56 2023",
-        "PLATID": "68148488",
-        "RAWMESSAGE": "A0841/23 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/3623N11025E021\nA) ZLHW ZBPE B) 2304160128 C) 2304160156 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3620E11051-N3605E11040-N3626E11000-N3641E11011 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2023-04.json",
-        "source_index": 5,
-        "classify_key": "c793685438",
-        "points": [
-            [
-                36.333333333333336,
-                110.85
-            ],
-            [
-                36.083333333333336,
-                110.66666666666667
-            ],
-            [
-                36.43333333333333,
-                110.0
-            ],
-            [
-                36.68333333333333,
-                110.18333333333334
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 164.1,
-        "RelatedItems": [
-            {
-                "CODE": "A0840/23",
-                "COORDINATES": "N3818E10713-N3808E10706-N3817E10643-N3828E10650",
-                "TIME": "16 APR 01:28 2023 UNTIL 16 APR 01:51 2023",
-                "PLATID": "68148471",
-                "RAWMESSAGE": "A0840/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3818N10657E012\nA) ZLHW B) 2304160128 C) 2304160151 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3818E10713-N3808E10706-N3817E10643-N3828E10650 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2023-04.json",
-                "source_index": 4,
-                "GroupKey": "c793685438",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A1395/23",
-                "COORDINATES": "N260600E1232100-N254200E1225600-N263200E1215700-N265700E1222200-N260600E1232100",
-                "TIME": "16 APR 01:30 2023 UNTIL 16 APR 01:57 2023",
-                "PLATID": "68163388",
-                "RAWMESSAGE": "A1395/23 NOTAMN \nQ) RCAA/QXXXX/IV/BO/E/000/999/2620N12239E041\nA) RCAA B) 2304160130 C) 2304160157\nE) AIRSPACE BLOCKED DUE TO AEROSPACE FLIGHT ACTIVITY:\n1.AFFECTED RTE:\nL3 BTN BYWAY AND CUBIT\nB591/B576 BTN BESTO AND FITCH\nL2 BTN DRAKE AND AROMA\nQ11 BTN DRAKE AND MUNNA\nA1 BTN AISAR AND BULAN\nM750 BTN LEKOS AND MOLKA\nR583 BTN PABSO AND ANGUS\n2.FOR DETAILS, CONTACT TAIPEI ACC AT +886 3 3841040.\n3.AREA AS FLW: \nGEO:\n260600N 1232100E\n254200N 1225600E\n263200N 1215700E\n265700N 1222200E\n260600N 1232100E\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2023-04.json",
-                "source_index": 9,
-                "GroupKey": "c793685438",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A0538/24",
-        "COORDINATES": "N360500E1094500-N353900E1102500-N352600E1101300-N355200E1093300",
-        "TIME": "21 MAR 05:20 2024 UNTIL 21 MAR 05:57 2024",
-        "PLATID": "71787040",
-        "RAWMESSAGE": "A0538/24 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/3545N10959E023\nA) ZLHW ZBPE B) 2403210520 C) 2403210557 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN360500E1094500-N353900E1102500-N352600E1101300-N355200E1093300,BAC\nK TO START. VERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2024-03.json",
-        "source_index": 3,
-        "classify_key": "c332880047",
-        "points": [
-            [
-                36.083333333333336,
-                109.75
-            ],
-            [
-                35.65,
-                110.41666666666667
-            ],
-            [
-                35.43333333333333,
-                110.21666666666667
-            ],
-            [
-                35.86666666666667,
-                109.55
-            ]
-        ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 195.9,
-        "RelatedItems": [
-            {
-                "CODE": "A0537/24",
-                "COORDINATES": "N383000E1052900-N381700E1055300-N380800E1054500-N382100E1052100",
-                "TIME": "21 MAR 05:19 2024 UNTIL 21 MAR 05:52 2024",
-                "PLATID": "71787039",
-                "RAWMESSAGE": "A0537/24 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3819N10537E013\nA) ZLHW B) 2403210519 C) 2403210552 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN383000E1052900-N381700E1055300-N380800E1054500-N382100E1052100,\nBACK TO START. VERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-03.json",
-                "source_index": 2,
-                "GroupKey": "c332880047",
-                "IsSameGroup": true,
-                "parent_index": 4
-            }
-        ]
-    },
-    {
-        "CODE": "A0866/24",
-        "COORDINATES": "N395035E1060947-N371214E1155429-N355443E1204041-N350047E1200943-N361905E1152505-N385501E1055837-N403105E1000932",
-        "TIME": "25 APR 12:49 2024 UNTIL 25 APR 13:29 2024",
-        "PLATID": "72120174",
-        "RAWMESSAGE": "A0866/24 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/3812N11017E516\nA) ZLHW ZBPE ZHWH ZSHA B) 2404251249 C) 2404251329 \nE) A TEMPORARY DANGER AREA ESTABLISHED,THE UNBURNED DEBRIS IS  \nEXPECTED TO FALL IN THE N412353E1002512,THE POSSIBLE FALLING AREA \nWILL  \nNOT EXCEED THE RANGE WITHIN THE  \nN395035E1060947-N371214E1155429-N355443E1204041-\n  N350047E1200943-N361905E1152505-N385501E1055837-N403105E1000932\n,POINT CONNECTION RANGE. VERTICAL LIMIT:SFC-UNL.\nF) SFC G) UNL",
+        "CODE": "A0806/24",
+        "COORDINATES": "N354300E0983800-N352300E0983200-N352600E0981900-N354600E0982400",
+        "TIME": "15 APR 04:03 2024 UNTIL 15 APR 04:28 2024",
+        "PLATID": "72075049",
+        "RAWMESSAGE": "A0806/24 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3535N09828E012\nA) ZLHW B) 2404150403 C) 2404150428 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN354300E0983800-N352300E0983200-N352600E0981900-N354600E0982400 \nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "SOURCE": "NOTAM",
         "FIR": "",
         "source_file": "2024-04.json",
-        "source_index": 6,
-        "classify_key": "c921106908",
+        "source_index": 2,
+        "classify_key": "c129353728",
         "points": [
             [
-                39.84305555555556,
-                106.16305555555556
+                35.71666666666667,
+                98.63333333333334
             ],
             [
-                37.20388888888889,
-                115.90805555555556
+                35.38333333333333,
+                98.53333333333333
             ],
             [
-                35.911944444444444,
-                120.67805555555556
+                35.43333333333333,
+                98.31666666666666
             ],
             [
-                35.01305555555555,
-                120.16194444444444
-            ],
-            [
-                36.31805555555556,
-                115.41805555555555
-            ],
-            [
-                38.91694444444444,
-                105.97694444444444
-            ],
-            [
-                40.518055555555556,
-                100.1588888888889
+                35.766666666666666,
+                98.4
             ]
         ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 198.0,
+        "Overlapping_Area": 76.2,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1111/26",
+        "COORDINATES": "N354800E0982500-N354500E0983900-N352300E0983200-N352600E0981800",
+        "TIME": "17 APR 04:02 2026 UNTIL 17 APR 04:24 2026",
+        "PLATID": "80719330",
+        "RAWMESSAGE": "A1111/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3535N09828E013\nA) ZLHW B) 2604170402 C) 2604170424 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN354800E0982500-N354500E0983900-N352300E0983200-N352600E0981800\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-04.json",
+        "source_index": 13,
+        "classify_key": "c246519978",
+        "points": [
+            [
+                35.8,
+                98.41666666666667
+            ],
+            [
+                35.75,
+                98.65
+            ],
+            [
+                35.38333333333333,
+                98.53333333333333
+            ],
+            [
+                35.43333333333333,
+                98.3
+            ]
+        ],
+        "Overlapping_Area": 74.5,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1102/24",
+        "COORDINATES": "N3523E09832-N3526E09819-N3545E09824-N3543E09838",
+        "TIME": "11 MAY 23:34 2024 UNTIL 12 MAY 00:08 2024",
+        "PLATID": "72344968",
+        "RAWMESSAGE": "A1102/24 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3534N09828E012\nA) ZLHW B) 2405112334 C) 2405120008 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3523E09832-N3526E09819-N3545E09824-N3543E098383.\nBACK TO START. VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2024-05.json",
+        "source_index": 7,
+        "classify_key": "c102318345",
+        "points": [
+            [
+                35.38333333333333,
+                98.53333333333333
+            ],
+            [
+                35.43333333333333,
+                98.31666666666666
+            ],
+            [
+                35.75,
+                98.4
+            ],
+            [
+                35.71666666666667,
+                98.63333333333334
+            ]
+        ],
+        "Overlapping_Area": 72.9,
+        "Center_Distance": -1.0,
         "RelatedItems": [
             {
-                "CODE": "A0868/24",
-                "COORDINATES": "N412353E1002512-N395035E1060947-N371214E1155429-N355443E1204041-N350047E1200943-N361905E1152505-N385501E1055837-N403105E1000932",
-                "TIME": "25 APR 12:49 2024 UNTIL 25 APR 13:29 2024",
-                "PLATID": "72120325",
-                "RAWMESSAGE": "A0868/24 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/3812N11017E516\nA) ZLHW ZBPE ZHWH ZSHA B) 2404251249 C) 2404251329 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN412353E1002512-N395035E1060947-N371214E1155429-N355443E1204041-\n  N350047E1200943-N361905E1152505-N385501E1055837-N403105E1000932 \nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "CODE": "A0102/24",
+                "COORDINATES": "N1636E09351-N1642E09323-N1736E09334-N1730E09403",
+                "TIME": "11 MAY 23:37 2024 UNTIL 12 MAY 00:14 2024",
+                "PLATID": "72356913",
+                "RAWMESSAGE": "A0102/24 NOTAMR A0101/24\nQ) VYYF/QWELW/IV/NBO/A/000/999/1636N09351E010\nA) VYYF B) 2405112337 C) 2405120014\nD) 2337-0014  \nE) OWING TO CHINA AEROSPACE FLIGHT ACTIVITIES.\nDUE TO AEROSPACE FLIGHT ACTIVITIES,THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREAS MAY BE AFFECTED ON 2337 UTC MAY 11 -0014 UTC\nMAY 12,2024.\nAREA:\nTHE UNBURNED DEBRIS IS FALLING AREA WILL NOT EXCEED THE RANGE WITHIN \nTHE N1636E09351-N1642E09323-N1736E09334-N1730E09403,POINT CONNECTION \nRANGE. VERTICAL ALTITUDE:SFC-UNL.\nNO OVF ACTIVITIY IS PERMISSIBLE WITHIN ABV MENTIONED AREA,DURING \nHOURS OF SPACEFLIGHT ACTIVITIES(CHINA).\nTHE FOLLOWING ATS ROUTES ARE REROUTED NOT AVBL IN YANGON FIR.\n1)P-646-NOT AVBL,BTN PTN VOR AND IBITA(BIDIRECTIONAL)\n2)N895/G472-NOT AVBL BTN PTN VOR AND SAGOD(BIDIRECTIONAL)\nF) GND G) UNL",
                 "ALTITUDE": "0 ~ INF 米",
                 "SOURCE": "NOTAM",
                 "FIR": "",
-                "source_file": "2024-04.json",
-                "source_index": 7,
-                "GroupKey": "c921106908",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A0869/24",
-                "COORDINATES": "N361240E1211236-N350524E1240000-N325506E1240000-N342956E1201258",
-                "TIME": "25 APR 12:49 2024 UNTIL 25 APR 13:31 2024",
-                "PLATID": "72120338",
-                "RAWMESSAGE": "A0869/24 NOTAMN\nQ) ZSHA/QRDCA/IV/BO/W/000/999/3434N12236E121\nA) ZSHA B) 2404251249 C) 2404251331 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN361240E1211236-N350524E1240000-N325506E1240000-N342956E1201258 \nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-04.json",
-                "source_index": 8,
-                "GroupKey": "c921106908",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A0877/24",
-                "COORDINATES": "N412353E1002512-N395035E1060947-N371214E1155429-N355443E1204041-N350047E1200943-N361905E1152505-N385501E1055837-N403105E1000932",
-                "TIME": "25 APR 12:49 2024 UNTIL 25 APR 13:29 2024",
-                "PLATID": "72121754",
-                "RAWMESSAGE": "A0877/24 NOTAMN\nQ) ZXXX/QRTCA/IV/BO/W/000/999/3812N11017E516\nA) ZLHW ZBPE ZHWH ZSHA B) 2404251249 C) 2404251329 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\nN412353E1002512-N395035E1060947-N371214E1155429-N355443E1204041-\n  N350047E1200943-N361905E1152505-N385501E1055837-N403105E1000932 \n,BACK TO START. \nVERTICAL LIMITS: GND-UNL.ALL ACFT ARE PROHIBITED TO FLY INTO THE \nAREA.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-04.json",
-                "source_index": 9,
-                "GroupKey": "c921106908",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "A0878/24",
-                "COORDINATES": "N361240E1211236-N350524E1240000-N325506E1240000-N342956E1201258",
-                "TIME": "25 APR 12:49 2024 UNTIL 25 APR 13:31 2024",
-                "PLATID": "72121791",
-                "RAWMESSAGE": "A0878/24 NOTAMN\nQ) ZSHA/QRTCA/IV/BO/W/000/999/3434N12236E121\nA) ZSHA B) 2404251249 C) 2404251331 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\nN361240E1211236-N350524E1240000-N325506E1240000-N342956E1201258,BAC\nK TO START. \nVERTICAL LIMITS: GND-UNL.ALL ACFT ARE PROHIBITED TO FLY INTO THE \nAREA.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2024-04.json",
-                "source_index": 10,
-                "GroupKey": "c921106908",
+                "source_file": "2024-05.json",
+                "source_index": 2,
+                "GroupKey": "c102318345",
                 "IsSameGroup": true,
                 "parent_index": 4
             }
         ]
     },
     {
-        "CODE": "A2670/22",
-        "COORDINATES": "N3750E11119-N3749E11127-N3734E11124-N3735E11116",
-        "TIME": "24 SEP 22:42 2022 UNTIL 24 SEP 23:04 2022",
-        "PLATID": "65570454",
-        "RAWMESSAGE": "A2670/22 NOTAMN\nQ) ZBPE/QRDCA/IV/BO/W/000/999/3742N11122E008\nA) ZBPE B) 2209242242 C) 2209242304 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED :\nN3750E11119-N3749E11127-N3734E11124-N3735E11116,\nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "CODE": "A0380/22",
+        "COORDINATES": "N352508E0982310-N352801E0981026-N354850E0981731-N354558E0983018",
+        "TIME": "26 FEB 23:33 2022 UNTIL 26 FEB 23:58 2022",
+        "PLATID": "63522210",
+        "RAWMESSAGE": "A0380/22 NOTAMN\nQ) ZLHW/QRTCA/IV/BO/W/000/999/3536N09820E012\nA) ZLHW B) 2202262333 C) 2202262358 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED \nBY:N352508E0982310,N352801E0981026,N354850E0981731,N354558E0983018 \nBACK TO START. \nALL ACFT SHALL BE FORBIDDEN TO FLY INTO THE RESTRICTED AREA. \nVERTICAL LIMITS:GND-UNL.\nF) GND G) UNL",
         "ALTITUDE": "0 ~ INF 米",
         "SOURCE": "NOTAM",
         "FIR": "",
-        "source_file": "2022-09.json",
-        "source_index": 4,
-        "classify_key": "c122632554",
+        "source_file": "2022-02.json",
+        "source_index": 3,
+        "classify_key": "c164049739",
         "points": [
             [
-                37.833333333333336,
-                111.31666666666666
+                35.41888888888889,
+                98.38611111111112
             ],
             [
-                37.81666666666667,
-                111.45
+                35.466944444444444,
+                98.1738888888889
             ],
             [
-                37.56666666666667,
-                111.4
+                35.81388888888888,
+                98.29194444444444
             ],
             [
-                37.583333333333336,
-                111.26666666666667
+                35.76611111111111,
+                98.505
             ]
         ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 212.6,
+        "Overlapping_Area": 70.4,
+        "Center_Distance": -1.0,
         "RelatedItems": [
             {
-                "CODE": "A2671/22",
-                "COORDINATES": "N2928E10938-N2926E10951-N2850E10943-N2852E10930",
-                "TIME": "24 SEP 22:43 2022 UNTIL 24 SEP 23:09 2022",
-                "PLATID": "65570455",
-                "RAWMESSAGE": "A2671/22 NOTAMN\nQ) ZGZU/QRDCA/IV/BO/W/000/999/2909N10941E019\nA) ZGZU B) 2209242243 C) 2209242309 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED :\nN2928E10938-N2926E10951-N2850E10943-N2852E10930,VERTICAL \nLIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "CODE": "A0039/22",
+                "COORDINATES": "N170231E0934207-N170936E0930907-N182103E0932544-N181351E0935858",
+                "TIME": "26 FEB 23:36 2022 UNTIL 27 FEB 00:05 2022",
+                "PLATID": "63533594",
+                "RAWMESSAGE": "A0039/22 NOTAMR A0013/22\nQ) VYYF/QWELW/IV/NBO/W/000/999/1702N09342E010\nA) VYYF B) 2202262336 C) 2202270005\nD) 2336-0005\nE) OWING TO CHINA AEROSPACE FLIGHT ACTIVITIES:\nDUE TO AREOSPACE FLIGHT ACTIVITIES,THE FLIGHT SAFETY OF THE\nAIRCRAFT IN FOLLOWING AREAS MAY BE AFFECTED ON 26-27 FEB 2022\nDETAILS ARE AS FOLLOWS:\nFROM 2336 UTC 26 FEB 2022 TO 0005 UTC 27 FEB 2022.\nAREA:N170231E0934207-N170936E0930907-N182103E0932544-N181351E\n0935858:FOUR-POINT CONNECTION RANGE:VERTICLE ALTITUDE:GND-UNL.\nNO OVF ACTIVITY IS PERMISSIBE WITHIN ABV MENTIONED AREA,DURING HOURS\nOF SPACEFLIGHT ACTIVITIES(CHINA).\nTHE FOLLOWING ATS ROUTES ARE REROUTED,NOT AVBL IN YANGON FIR.\n1)P646-NOT AVBL BTN PTN VOR AND IBITA(BIDIRECTIONAL)\n2)N895/G472-NOT AVBL BTN PTN VOR AND SAGOD(BIDIRECTIONAL)\nF) GND G) UNL",
                 "ALTITUDE": "0 ~ INF 米",
                 "SOURCE": "NOTAM",
                 "FIR": "",
-                "source_file": "2022-09.json",
-                "source_index": 5,
-                "GroupKey": "c122632554",
-                "IsSameGroup": true,
-                "parent_index": 4
-            },
-            {
-                "CODE": "F2925/22",
-                "COORDINATES": "S405300E0942300-S405800E0945200-S415200E0943600-S414700E0940700",
-                "TIME": "24 SEP 22:46 2022 UNTIL 24 SEP 23:22 2022",
-                "PLATID": "65573370",
-                "RAWMESSAGE": "F2925/22 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/4122S09429E032\nA) YMMM\nB) 2209242246 C) 2209242322\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\nS40 53 00 E 094 23 00 \nS40 58 00 E 094 52 00\nS41 52 00 E 094 36 00\nS41 47 00 E 094 07 00\nFOUR POINT CONNECTION RANGE.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2022-09.json",
-                "source_index": 10,
-                "GroupKey": "c122632554",
+                "source_file": "2022-02.json",
+                "source_index": 0,
+                "GroupKey": "c164049739",
                 "IsSameGroup": true,
                 "parent_index": 4
             }
         ]
+    },
+    {
+        "CODE": "A1423/25",
+        "COORDINATES": "N355200E0981600-N354900E0983000-N352700E0982200-N353000E0980900",
+        "TIME": "29 MAY 04:03 2025 UNTIL 29 MAY 04:32 2025",
+        "PLATID": "76754423",
+        "RAWMESSAGE": "A1423/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3539N09820E013\nA) ZLHW B) 2505290403 C) 2505290432 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N355200E0981600-N354900E0983000-N352700E0982200-N353000E0980900,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-05.json",
+        "source_index": 22,
+        "classify_key": "c848154718",
+        "points": [
+            [
+                35.86666666666667,
+                98.26666666666667
+            ],
+            [
+                35.81666666666667,
+                98.5
+            ],
+            [
+                35.45,
+                98.36666666666666
+            ],
+            [
+                35.5,
+                98.15
+            ]
+        ],
+        "Overlapping_Area": 57.9,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A1424/25",
+                "COORDINATES": "N332900E0972700-N332400E0975000-N324900E0973800-N325400E0971500",
+                "TIME": "29 MAY 04:04 2025 UNTIL 29 MAY 04:36 2025",
+                "PLATID": "76754434",
+                "RAWMESSAGE": "A1424/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3309N09732E021\nA) ZLHW B) 2505290404 C) 2505290436 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N332900E0972700-N332400E0975000-N324900E0973800-N325400E0971500,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2025-05.json",
+                "source_index": 23,
+                "GroupKey": "c848154718",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A3095/21",
+        "COORDINATES": "N352013E0982006-N352306E0980723-N354359E0981431-N354102E0982718",
+        "TIME": "10 DEC 00:03 2021 UNTIL 10 DEC 00:27 2021",
+        "PLATID": "62390427",
+        "RAWMESSAGE": "A3095/21 NOTAMN\nQ) ZLHW/QRTCA/IV/BO/W/000/999/3532N09817E012\nA) ZLHW B) 2112100003 C) 2112100027 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY: \nN352013E0982006-N352306E0980723-N354359E0981431-N354102E0982718 \nBACK TO START. ALL ACFT ARE FORBIDDEN TO FLY INTO THE TEMPORARY \nRESTRICTED AREA. VERTICAL LIMITS:GND-UNL.\nF) GND G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2021-12.json",
+        "source_index": 1,
+        "classify_key": "c786112350",
+        "points": [
+            [
+                35.33694444444445,
+                98.335
+            ],
+            [
+                35.385,
+                98.12305555555555
+            ],
+            [
+                35.73305555555556,
+                98.24194444444444
+            ],
+            [
+                35.68388888888889,
+                98.455
+            ]
+        ],
+        "Overlapping_Area": 57.8,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A3096/21",
+                "COORDINATES": "N324749E0973412-N325252E0971232-N332924E0972425-N332422E0974612",
+                "TIME": "10 DEC 00:04 2021 UNTIL 10 DEC 00:33 2021",
+                "PLATID": "62390498",
+                "RAWMESSAGE": "A3096/21 NOTAMN\nQ) ZLHW/QRTCA/IV/BO/W/000/999/3309N09729E021\nA) ZLHW B) 2112100004 C) 2112100033 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY: \nN324749E0973412-N325252E0971232-N332924E0972425-N332422E0974612 \nBACK TO START. ALL ACFT ARE FORBIDDEN TO FLY INTO THE TEMPORARY \nRESTRICTED AREA. \nVERTICAL LIMITS:GND-UNL.\nF) GND G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2021-12.json",
+                "source_index": 2,
+                "GroupKey": "c786112350",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0524/21",
+        "COORDINATES": "N351811E0983155-N352216E0981247-N354550E0982013-N354023E0984550",
+        "TIME": "30 MAR 22:38 2021 UNTIL 30 MAR 22:59 2021",
+        "PLATID": "60152726",
+        "RAWMESSAGE": "A0524/21 NOTAMN\nQ) ZLHW/QRTCA/IV/BO/W/000/999/3531N09829E016\nA) ZLHW B) 2103302238 C) 2103302259 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\nN351811E0983155-N352216E0981247-N354550E0982013-N354023E0984550\nBACK TO START. ALL ACFT SHALL BE FORBIDDEN TO FLY INTO THE \nRESTRICTED AREA.\nVERTICAL LIMITS:GND-UNL.\n\nF) GND G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2021-03.json",
+        "source_index": 1,
+        "classify_key": "c364238045",
+        "points": [
+            [
+                35.30305555555555,
+                98.53194444444445
+            ],
+            [
+                35.37111111111111,
+                98.21305555555556
+            ],
+            [
+                35.763888888888886,
+                98.33694444444444
+            ],
+            [
+                35.67305555555555,
+                98.76388888888889
+            ]
+        ],
+        "Overlapping_Area": 52.5,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1615/25",
+        "COORDINATES": "N353800E0981700-N353500E0983100-N351300E0982400-N351600E0981000",
+        "TIME": "13 JUN 07:48 2025 UNTIL 13 JUN 08:11 2025",
+        "PLATID": "76886463",
+        "RAWMESSAGE": "A1615/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3525N09820E013\nA) ZLHW B) 2506130748 C) 2506130811 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN353800E0981700-N353500E0983100-N351300E0982400-N351600E0981000\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-06.json",
+        "source_index": 2,
+        "classify_key": "c540115750",
+        "points": [
+            [
+                35.63333333333333,
+                98.28333333333333
+            ],
+            [
+                35.583333333333336,
+                98.51666666666667
+            ],
+            [
+                35.21666666666667,
+                98.4
+            ],
+            [
+                35.266666666666666,
+                98.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 48.6,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1692/25",
+        "COORDINATES": "N353800E0981700-N353500E0983100-N351300E0982400-N351600E0981000",
+        "TIME": "14 JUN 07:48 2025 UNTIL 14 JUN 08:22 2025",
+        "PLATID": "76948317",
+        "RAWMESSAGE": "A1692/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3525N09820E013\nA) ZLHW B) 2506140748 C) 2506140822 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN353800E0981700-N353500E0983100-N351300E0982400-N351600E0981000\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-06.json",
+        "source_index": 5,
+        "classify_key": "c909214468",
+        "points": [
+            [
+                35.63333333333333,
+                98.28333333333333
+            ],
+            [
+                35.583333333333336,
+                98.51666666666667
+            ],
+            [
+                35.21666666666667,
+                98.4
+            ],
+            [
+                35.266666666666666,
+                98.16666666666667
+            ]
+        ],
+        "Overlapping_Area": 48.6,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A2315/23",
+        "COORDINATES": "N355900E0982100-N355600E0983600-N353300E0982900-N353600E0981400",
+        "TIME": "20 AUG 17:37 2023 UNTIL 20 AUG 18:00 2023",
+        "PLATID": "69343744",
+        "RAWMESSAGE": "A2315/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3546N09824E013\nA) ZLHW B) 2308201737 C) 2308201800 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN355900E0982100-N355600E0983600-N353300E0982900-N353600E0981400,BAC\nK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-08.json",
+        "source_index": 13,
+        "classify_key": "c323244239",
+        "points": [
+            [
+                35.983333333333334,
+                98.35
+            ],
+            [
+                35.93333333333333,
+                98.6
+            ],
+            [
+                35.55,
+                98.48333333333333
+            ],
+            [
+                35.6,
+                98.23333333333333
+            ]
+        ],
+        "Overlapping_Area": 47.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A0199/23",
+                "COORDINATES": "N174500E0932900-N173900E0935800-N165600E0934900-N170200E0931900",
+                "TIME": "20 AUG 17:39 2023 UNTIL 20 AUG 18:05 2023",
+                "PLATID": "69352998",
+                "RAWMESSAGE": "A0199/23 NOTAMR A0188/23\nQ) VYYF/QWELW/IV/NBO/W/000/999/1745N09329E010\nA) VYYF B) 2308201739 C) 2308201805\nD) 1739-1805\nE) OWING TO CHINA AEROSPACE FLIGHT ACTIVITIES.\nDUE TO AEROSPACE FLIGHT ACTIVITIES,THE FLIGHT SAFETY\nOF THE AIRCRAFT IN THE FOLLOWING AREAS MAY BE AFFECTED\nON 20 AUG 2023,FROM 1739 UTC TO 1805 UTC.\nAREA:THE UNBURNED DEBRIS IS FALLING AREA WILL NOT EXCEED THE\nRANGE WITHIN THE:\nN174500E0932900,N173900E0935800-N165600E0934900-N170200E0931900E,\nPOINT CONNECTION RANGE. \nVERTICAL ALTITUDE:SFC-UNL.\nNO OVF ACTIVITY IS PERMISSIBLE WITHIN ABV MENTIONED AREA,\nDURING HOURS OF SPACEFLIGHT ACTIVITIES(CHINA).\nTHE FOLLOWING ATS ROUTES ARE REROUTED,NOT AVBL IN YANGON FIR.\n 1)P646- NOT AVBL BTN PTN VOR AND IBITA(BIDIRECTIONAL).\n 2)N895/G472- NOT AVBL BTN PTN VOR AND SAGOD(BIDIRECTIONAL). \nF) GND G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-08.json",
+                "source_index": 3,
+                "GroupKey": "c323244239",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A1540/22",
+        "COORDINATES": "N3534E09829-N3537E09816-N3558E09823-N3555E09836",
+        "TIME": "27 JUN 15:37 2022 UNTIL 27 JUN 16:01 2022",
+        "PLATID": "64745337",
+        "RAWMESSAGE": "A1540/22 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3546N09826E012\nA) ZLHW B) 2206271537 C) 2206271601 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N3534E09829-N3537E09816-N3558E09823-N3555E09836,BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2022-06.json",
+        "source_index": 6,
+        "classify_key": "c216115760",
+        "points": [
+            [
+                35.56666666666667,
+                98.48333333333333
+            ],
+            [
+                35.61666666666667,
+                98.26666666666667
+            ],
+            [
+                35.96666666666667,
+                98.38333333333334
+            ],
+            [
+                35.916666666666664,
+                98.6
+            ]
+        ],
+        "Overlapping_Area": 47.2,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A0147/22",
+                "COORDINATES": "N1654E09350-N1701E09317-N1754E09329-N1747E09403",
+                "TIME": "27 JUN 15:39 2022 UNTIL 27 JUN 16:05 2022",
+                "PLATID": "64761408",
+                "RAWMESSAGE": "A0147/22 NOTAMR A0146/22\nQ) VYYF/QWMLW/IV/NBO/W/000/999/1654N09350E010\nA) VYYF B) 2206271539 C) 2206271605\nD) 1539-1605\nE) OWING TO CHINA AEROPSACE FLIGHT ACTIVITIES:\nDUE TO AEROSPACE FLIGHT ACTIVITIES,THE FLIGHT SAFETY OF THE \nAIRCRAFT IN THE FOLLOWING AREA MAY BE\nAFFECTED ON 27 JUN 2022 DETAILS ARE AS FOLLOWS:\nON 27 JUN 2022 FROM 1539UTC-1605UTC.\nAREA: THE UNBURNED DEBRIS IS EXPECTED TO FALL IN THE N1654E09350,\nTHE POSSIBLE FALLING AREA WILL NOT EXCEED THE RANGE WITHIN:\nN1654E09350-N1701E09317-N1754E09329-N1747E09403.FOUR POINT\nCONNECTION RANGE VERTICLE ALTITUDE:SFC-UNL\nNO OVF ACTTIVITY IS PERMISSIBLE WITHIN ABV MENTIONED AREA.DURING\nHOURS OF SPACEFLIGHT ACTIVITIES(CHINA)THE FOLLOWING ATS ROUTES\nARE REROUTED,NOT AVBL IN YANGON FIR.\n1)P646-NOT AVBL BTN PTN VOR AND IBITA(BIDIRECTIONAL)\n2)N895/G472-NOT AVBL BTN PTN VOR AND SAGOD(BIDIRECTIONAL)\nF) GND G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2022-06.json",
+                "source_index": 1,
+                "GroupKey": "c216115760",
+                "IsSameGroup": true,
+                "parent_index": 4
+            },
+            {
+                "CODE": "A1541/22",
+                "COORDINATES": "N3118E09718-N3123E09656-N3159E09707-N3155E09729",
+                "TIME": "27 JUN 15:38 2022 UNTIL 27 JUN 16:05 2022",
+                "PLATID": "64745351",
+                "RAWMESSAGE": "A1541/22 NOTAMN\nQ) ZPKM/QRDCA/IV/BO/W/000/999/3139N09712E022\nA) ZPKM B) 2206271538 C) 2206271605 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N3118E09718-N3123E09656-N3159E09707-N3155E09729,BACK TO \nSTART.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2022-06.json",
+                "source_index": 7,
+                "GroupKey": "c216115760",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A2587/23",
+        "COORDINATES": "N3538E09816-N3535E09831-N3513E09824-N3515E09809",
+        "TIME": "06 SEP 18:06 2023 UNTIL 06 SEP 18:29 2023",
+        "PLATID": "69522204",
+        "RAWMESSAGE": "A2587/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3525N09820E013\nA) ZLHW B) 2309061806 C) 2309061829 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3538E09816-N3535E09831-N3513E09824-N3515E09809 BACK TO START. \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-09.json",
+        "source_index": 7,
+        "classify_key": "c263010785",
+        "points": [
+            [
+                35.63333333333333,
+                98.26666666666667
+            ],
+            [
+                35.583333333333336,
+                98.51666666666667
+            ],
+            [
+                35.21666666666667,
+                98.4
+            ],
+            [
+                35.25,
+                98.15
+            ]
+        ],
+        "Overlapping_Area": 46.4,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A2588/23",
+        "COORDINATES": "N3538E09816-N3535E09831-N3513E09824-N3515E09809",
+        "TIME": "26 SEP 20:06 2023 UNTIL 26 SEP 20:29 2023",
+        "PLATID": "69522205",
+        "RAWMESSAGE": "A2588/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3525N09820E013\nA) ZLHW B) 2309262006 C) 2309262029 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3538E09816-N3535E09831-N3513E09824-N3515E09809 BACK TO START. \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-09.json",
+        "source_index": 8,
+        "classify_key": "c279788001",
+        "points": [
+            [
+                35.63333333333333,
+                98.26666666666667
+            ],
+            [
+                35.583333333333336,
+                98.51666666666667
+            ],
+            [
+                35.21666666666667,
+                98.4
+            ],
+            [
+                35.25,
+                98.15
+            ]
+        ],
+        "Overlapping_Area": 46.4,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A0104/25",
+        "COORDINATES": "N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500",
+        "TIME": "17 JAN 03:59 2025 UNTIL 17 JAN 04:21 2025",
+        "PLATID": "75000721",
+        "RAWMESSAGE": "A0104/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3547N09826E013\nA) ZLHW B) 2501170359 C) 2501170421 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-01.json",
+        "source_index": 5,
+        "classify_key": "c976610848",
+        "points": [
+            [
+                35.983333333333334,
+                98.36666666666666
+            ],
+            [
+                35.93333333333333,
+                98.6
+            ],
+            [
+                35.56666666666667,
+                98.48333333333333
+            ],
+            [
+                35.61666666666667,
+                98.25
+            ]
+        ],
+        "Overlapping_Area": 45.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1167/25",
+        "COORDINATES": "N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500",
+        "TIME": "13 MAY 04:03 2025 UNTIL 13 MAY 05:21 2025",
+        "PLATID": "76583022",
+        "RAWMESSAGE": "A1167/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3546N09825E013\nA) ZLHW B) 2505130403 C) 2505130521 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-05.json",
+        "source_index": 4,
+        "classify_key": "c858888340",
+        "points": [
+            [
+                35.983333333333334,
+                98.36666666666666
+            ],
+            [
+                35.93333333333333,
+                98.6
+            ],
+            [
+                35.56666666666667,
+                98.48333333333333
+            ],
+            [
+                35.61666666666667,
+                98.25
+            ]
+        ],
+        "Overlapping_Area": 45.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1243/25",
+        "COORDINATES": "N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500",
+        "TIME": "14 MAY 04:03 2025 UNTIL 14 MAY 05:21 2025",
+        "PLATID": "76628129",
+        "RAWMESSAGE": "A1243/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3546N09825E013\nA) ZLHW B) 2505140403 C) 2505140521 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-05.json",
+        "source_index": 11,
+        "classify_key": "c632394831",
+        "points": [
+            [
+                35.983333333333334,
+                98.36666666666666
+            ],
+            [
+                35.93333333333333,
+                98.6
+            ],
+            [
+                35.56666666666667,
+                98.48333333333333
+            ],
+            [
+                35.61666666666667,
+                98.25
+            ]
+        ],
+        "Overlapping_Area": 45.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A3290/24",
+        "COORDINATES": "N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500",
+        "TIME": "15 OCT 23:31 2024 UNTIL 15 OCT 23:59 2024",
+        "PLATID": "73916596",
+        "RAWMESSAGE": "A3290/24 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3547N09826E013\nA) ZLHW B) 2410152331 C) 2410152359 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500,\nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2024-10.json",
+        "source_index": 8,
+        "classify_key": "c70718816",
+        "points": [
+            [
+                35.983333333333334,
+                98.36666666666666
+            ],
+            [
+                35.93333333333333,
+                98.6
+            ],
+            [
+                35.56666666666667,
+                98.48333333333333
+            ],
+            [
+                35.61666666666667,
+                98.25
+            ]
+        ],
+        "Overlapping_Area": 45.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A0244/24",
+                "COORDINATES": "N1745E09330-N1739E09358-N1657E09349-N1703E09320",
+                "TIME": "15 OCT 23:34 2024 UNTIL 16 OCT 00:05 2024",
+                "PLATID": "73922829",
+                "RAWMESSAGE": "A0244/24 NOTAMR A0215/24\nQ) VYYF/QWELW/IV/NBO/A/000/999/1745N09330E010\nA) VYYF B) 2410152334 C) 2410160005\nD) 2334-0005\nE) OWING TO CHINA AEROSPACE FLIGHT ACTIVITIES.\n  DUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE\n  AIRCRAFT IN THE FOLLOWING AREAS MAY BE AFFECTED ON OCT 15,2024\n  2334-0005(NEXT DATE).\n  AREA:\n  THE UNBURNED DEBRIS IS FALLING AREA WILL NOT EXCEED THE RANGE\n  WITHIN THE N1745E09330,N1739E09358,N1657E09349,N1703E09320,\n  POINT CONNECTION RANGE. VERTICAL ALTITUDE:SFC-UNL.\n  NO OVF ACTTIVITY IS PERMISSIBLE WITHIN ABV MENTIONED AREA,\n  DURING HOURS OF SPACEFLIGHT ACTIVITIES(CHINA).\n  THE FOLLOWING ATS ROUTES ARE REROUTED,NOT AVBL IN YANGON FIR.\n  1)P646 -NOT AVBL BTN PTN VOR AND IBITA (BIDIRECTIONAL).\n  2)N895/G472-NOT AVBL BTN PTN VOR AND SAGOD (BIDIRECTIONAL).\nF) GND G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2024-10.json",
+                "source_index": 1,
+                "GroupKey": "c70718816",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A3264/25",
+        "COORDINATES": "N354100E0981200-N353800E0982600-N351600E0981900-N351900E0980500",
+        "TIME": "26 SEP 19:15 2025 UNTIL 26 SEP 19:44 2025",
+        "PLATID": "77987736",
+        "RAWMESSAGE": "A3264/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3528N09815E013\nA) ZLHW B) 2509261915 C) 2509261944 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N354100E0981200-N353800E0982600-N351600E0981900-N351900E0980500,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-09.json",
+        "source_index": 14,
+        "classify_key": "c287897954",
+        "points": [
+            [
+                35.68333333333333,
+                98.2
+            ],
+            [
+                35.63333333333333,
+                98.43333333333334
+            ],
+            [
+                35.266666666666666,
+                98.31666666666666
+            ],
+            [
+                35.31666666666667,
+                98.08333333333333
+            ]
+        ],
+        "Overlapping_Area": 41.1,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1200/25",
+        "COORDINATES": "N361800E0984900-N361600E0990300-N355300E0985800-N355600E0984400",
+        "TIME": "15 MAY 04:04 2025 UNTIL 15 MAY 04:40 2025",
+        "PLATID": "76607959",
+        "RAWMESSAGE": "A1200/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3605N09853E013\nA) ZLHW B) 2505150404 C) 2505150440 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N361800E0984900-N361600E0990300-N355300E0985800-N355600E0984400,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-05.json",
+        "source_index": 6,
+        "classify_key": "c749444979",
+        "points": [
+            [
+                36.3,
+                98.81666666666666
+            ],
+            [
+                36.266666666666666,
+                99.05
+            ],
+            [
+                35.88333333333333,
+                98.96666666666667
+            ],
+            [
+                35.93333333333333,
+                98.73333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 72.5,
+        "RelatedItems": [
+            {
+                "CODE": "A1201/25",
+                "COORDINATES": "N340300E0980700-N335900E0983300-N332100E0982400-N332500E0975800",
+                "TIME": "15 MAY 04:05 2025 UNTIL 15 MAY 04:47 2025",
+                "PLATID": "76607968",
+                "RAWMESSAGE": "A1201/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3342N09815E022\nA) ZLHW B) 2505150405 C) 2505150447 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N340300E0980700-N335900E0983300-N332100E0982400-N332500E0975800,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2025-05.json",
+                "source_index": 7,
+                "GroupKey": "c749444979",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A1312/25",
+        "COORDINATES": "N361800E0984900-N361600E0990300-N355300E0985800-N355600E0984400",
+        "TIME": "17 MAY 04:04 2025 UNTIL 17 MAY 04:40 2025",
+        "PLATID": "76678357",
+        "RAWMESSAGE": "A1312/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3605N09853E013\nA) ZLHW B) 2505170404 C) 2505170440 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN361800E0984900-N361600E0990300-N355300E0985800-N355600E0984400,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-05.json",
+        "source_index": 15,
+        "classify_key": "c291845303",
+        "points": [
+            [
+                36.3,
+                98.81666666666666
+            ],
+            [
+                36.266666666666666,
+                99.05
+            ],
+            [
+                35.88333333333333,
+                98.96666666666667
+            ],
+            [
+                35.93333333333333,
+                98.73333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 72.5,
+        "RelatedItems": [
+            {
+                "CODE": "A1313/25",
+                "COORDINATES": "N340300E0980700-N335900E0983300-N332100E0982400-N332500E0975800",
+                "TIME": "17 MAY 04:05 2025 UNTIL 17 MAY 04:47 2025",
+                "PLATID": "76678361",
+                "RAWMESSAGE": "A1313/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3342N09815E022\nA) ZLHW B) 2505170405 C) 2505170447 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN340300E0980700-N335900E0983300-N332100E0982400-N332500E0975800,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2025-05.json",
+                "source_index": 16,
+                "GroupKey": "c291845303",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A3774/23",
+        "COORDINATES": "N3621E09845-N3617E09909-N3552E09903-N3557E09839",
+        "TIME": "03 DEC 04:02 2023 UNTIL 03 DEC 04:25 2023",
+        "PLATID": "70367803",
+        "RAWMESSAGE": "A3774/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3606N09854E016\nA) ZLHW B) 2312030402 C) 2312030425 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3621E09845-N3617E09909-N3552E09903-N3557E09839 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "source_index": 8,
+        "classify_key": "c834993507",
+        "points": [
+            [
+                36.35,
+                98.75
+            ],
+            [
+                36.28333333333333,
+                99.15
+            ],
+            [
+                35.86666666666667,
+                99.05
+            ],
+            [
+                35.95,
+                98.65
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 74.4,
+        "RelatedItems": [
+            {
+                "CODE": "A3775/23",
+                "COORDINATES": "N3303E09737-N3252E09831-N3209E09820-N3218E09726",
+                "TIME": "03 DEC 04:02 2023 UNTIL 03 DEC 04:32 2023",
+                "PLATID": "70367809",
+                "RAWMESSAGE": "A3775/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3236N09758E033\nA) ZLHW B) 2312030402 C) 2312030432 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N3303E09737-N3252E09831-N3209E09820-N3218E09726, BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-12.json",
+                "source_index": 9,
+                "GroupKey": "c834993507",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A3826/23",
+        "COORDINATES": "N3621E09845-N3617E09909-N3552E09903-N3557E09839",
+        "TIME": "04 DEC 04:02 2023 UNTIL 04 DEC 04:25 2023",
+        "PLATID": "70412236",
+        "RAWMESSAGE": "A3826/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3606N09854E016\nA) ZLHW B) 2312040402 C) 2312040425 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3621E09845-N3617E09909-N3552E09903-N3557E09839 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "source_index": 10,
+        "classify_key": "c480566927",
+        "points": [
+            [
+                36.35,
+                98.75
+            ],
+            [
+                36.28333333333333,
+                99.15
+            ],
+            [
+                35.86666666666667,
+                99.05
+            ],
+            [
+                35.95,
+                98.65
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 74.4,
+        "RelatedItems": [
+            {
+                "CODE": "A3827/23",
+                "COORDINATES": "N3303E09737-N3252E09831-N3209E09820-N3218E09726",
+                "TIME": "04 DEC 04:02 2023 UNTIL 04 DEC 04:32 2023",
+                "PLATID": "70412242",
+                "RAWMESSAGE": "A3827/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3236N09758E033\nA) ZLHW B) 2312040402 C) 2312040432 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N3303E09737-N3252E09831-N3209E09820-N3218E09726, BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-12.json",
+                "source_index": 11,
+                "GroupKey": "c480566927",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0488/23",
+        "COORDINATES": "N3552E09903-N3557E09839-N3621E09845-N3617E09909",
+        "TIME": "13 MAR 03:53 2023 UNTIL 13 MAR 04:17 2023",
+        "PLATID": "67736793",
+        "RAWMESSAGE": "A0488/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3606N09854E016\nA) ZLHW B) 2303130353 C) 2303130417 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3552E09903-N3557E09839-N3621E09845-N3617E09909 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-03.json",
+        "source_index": 3,
+        "classify_key": "c706504855",
+        "points": [
+            [
+                35.86666666666667,
+                99.05
+            ],
+            [
+                35.95,
+                98.65
+            ],
+            [
+                36.35,
+                98.75
+            ],
+            [
+                36.28333333333333,
+                99.15
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 74.4,
+        "RelatedItems": [
+            {
+                "CODE": "A0489/23",
+                "COORDINATES": "N3209E09820-N3218E09726-N3302E09737-N3252E09831",
+                "TIME": "13 MAR 03:54 2023 UNTIL 13 MAR 04:25 2023",
+                "PLATID": "67736798",
+                "RAWMESSAGE": "A0489/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3234N09758E033\nA) ZLHW B) 2303130354 C) 2303130425 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3209E09820-N3218E09726-N3302E09737-N3252E09831 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-03.json",
+                "source_index": 4,
+                "GroupKey": "c706504855",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0114/26",
+        "COORDINATES": "N362100E0984500-N361700E0990900-N355200E0990300-N355700E0983900",
+        "TIME": "15 JAN 03:53 2026 UNTIL 15 JAN 04:17 2026",
+        "PLATID": "79448625",
+        "RAWMESSAGE": "A0114/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3606N09854E016\nA) ZLHW B) 2601150353 C) 2601150417 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN362100E0984500-N361700E0990900-N355200E0990300-N355700E0983900,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-01.json",
+        "source_index": 11,
+        "classify_key": "c919934792",
+        "points": [
+            [
+                36.35,
+                98.75
+            ],
+            [
+                36.28333333333333,
+                99.15
+            ],
+            [
+                35.86666666666667,
+                99.05
+            ],
+            [
+                35.95,
+                98.65
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 74.4,
+        "RelatedItems": [
+            {
+                "CODE": "A0115/26",
+                "COORDINATES": "N330200E0973700-N325200E0983100-N320900E0982000-N321800E0972600",
+                "TIME": "15 JAN 03:54 2026 UNTIL 15 JAN 04:25 2026",
+                "PLATID": "79448630",
+                "RAWMESSAGE": "A0115/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3235N09758E033\nA) ZLHW B) 2601150354 C) 2601150425 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN330200E0973700-N325200E0983100-N320900E0982000-N321800E0972600,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-01.json",
+                "source_index": 12,
+                "GroupKey": "c919934792",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A3270/21",
+        "COORDINATES": "N351214E0994012-N351319E0992703-N353452E0992935-N353347E0994247",
+        "TIME": "29 DEC 11:05 2021 UNTIL 29 DEC 11:53 2021",
+        "PLATID": "62618310",
+        "RAWMESSAGE": "A3270/21 NOTAMN\nQ) ZLHW/QRTCA/IV/BO/W/000/999/3523N09934E012\nA) ZLHW B) 2112291105 C) 2112291153 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED \nBY:N351214E0994012-N351319E0992703-N353452E0992935-N353347E0994247,\n\nBACK TO START. ALL ACFT ARE FORBIDDEN TO FLY INTO THE TEMPORARY \nRESTRICTED AREA. \nVERTICAL LIMITS:GND-UNL.\nF) GND G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2021-12.json",
+        "source_index": 4,
+        "classify_key": "c80677704",
+        "points": [
+            [
+                35.20388888888889,
+                99.67
+            ],
+            [
+                35.221944444444446,
+                99.45083333333334
+            ],
+            [
+                35.58111111111111,
+                99.49305555555556
+            ],
+            [
+                35.56305555555555,
+                99.71305555555556
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 108.2,
+        "RelatedItems": [
+            {
+                "CODE": "A3271/21",
+                "COORDINATES": "N323741E0992645-N323932E0990430-N331713E0990849-N331522E0993112",
+                "TIME": "29 DEC 11:05 2021 UNTIL 29 DEC 12:00 2021",
+                "PLATID": "62618313",
+                "RAWMESSAGE": "A3271/21 NOTAMN\nQ) ZLHW/QRTCA/IV/BO/W/000/999/3257N09917E021\nA) ZLHW B) 2112291105 C) 2112291200 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED \nBY:N323741E0992645-N323932E0990430-N331713E0990849-N331522E0993112,\n\nBACK TO START. ALL ACFT ARE FORBIDDEN TO FLY INTO THE TEMPORARY \nRESTRICTED AREA. \nVERTICAL LIMITS:GND-UNL.\nF) GND G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2021-12.json",
+                "source_index": 5,
+                "GroupKey": "c80677704",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0907/26",
+        "COORDINATES": "N345500E0982700-N345100E0985400-N341900E0984700-N342200E0982000",
+        "TIME": "02 APR 03:52 2026 UNTIL 02 APR 06:09 2026",
+        "PLATID": "80580552",
+        "RAWMESSAGE": "A0907/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3436N09837E020\nA) ZLHW B) 2604020352 C) 2604020609 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN345500E0982700-N345100E0985400-N341900E0984700-N342200E0982000\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-04.json",
+        "source_index": 2,
+        "classify_key": "c612271681",
+        "points": [
+            [
+                34.916666666666664,
+                98.45
+            ],
+            [
+                34.85,
+                98.9
+            ],
+            [
+                34.31666666666667,
+                98.78333333333333
+            ],
+            [
+                34.36666666666667,
+                98.33333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 108.7,
+        "RelatedItems": [
+            {
+                "CODE": "A0908/26",
+                "COORDINATES": "N342600E0982100-N342200E0985400-N333800E0984500-N334300E0981200",
+                "TIME": "02 APR 03:52 2026 UNTIL 02 APR 06:17 2026",
+                "PLATID": "80580556",
+                "RAWMESSAGE": "A0908/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3402N09833E026\nA) ZLHW B) 2604020352 C) 2604020617 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN342600E0982100-N342200E0985400-N333800E0984500-N334300E0981200\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-04.json",
+                "source_index": 3,
+                "GroupKey": "c612271681",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0940/26",
+        "COORDINATES": "N345500E0982700-N345100E0985400-N341900E0984700-N342200E0982000",
+        "TIME": "03 APR 03:52 2026 UNTIL 03 APR 06:09 2026",
+        "PLATID": "80594170",
+        "RAWMESSAGE": "A0940/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3436N09837E020\nA) ZLHW B) 2604030352 C) 2604030609 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN345500E0982700-N345100E0985400-N341900E0984700-N342200E0982000\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-04.json",
+        "source_index": 4,
+        "classify_key": "c669919999",
+        "points": [
+            [
+                34.916666666666664,
+                98.45
+            ],
+            [
+                34.85,
+                98.9
+            ],
+            [
+                34.31666666666667,
+                98.78333333333333
+            ],
+            [
+                34.36666666666667,
+                98.33333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 108.7,
+        "RelatedItems": [
+            {
+                "CODE": "A0942/26",
+                "COORDINATES": "N342600E0982100-N342200E0985400-N333800E0984500-N334300E0981200",
+                "TIME": "03 APR 03:52 2026 UNTIL 03 APR 06:17 2026",
+                "PLATID": "80594197",
+                "RAWMESSAGE": "A0942/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3402N09833E026\nA) ZLHW B) 2604030352 C) 2604030617 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN342600E0982100-N342200E0985400-N333800E0984500-N334300E0981200\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-04.json",
+                "source_index": 5,
+                "GroupKey": "c669919999",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A3732/24",
+        "COORDINATES": "N364200E0985000-N363800E0991400-N361300E0990700-N361700E0984300",
+        "TIME": "09 NOV 03:29 2024 UNTIL 09 NOV 03:53 2024",
+        "PLATID": "74154211",
+        "RAWMESSAGE": "A3732/24 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3627N09859E016\nA) ZLHW B) 2411090329 C) 2411090353 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN364200E0985000-N363800E0991400-N361300E0990700-N361700E0984300 \nBACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2024-11.json",
+        "source_index": 3,
+        "classify_key": "c573105131",
+        "points": [
+            [
+                36.7,
+                98.83333333333333
+            ],
+            [
+                36.63333333333333,
+                99.23333333333333
+            ],
+            [
+                36.21666666666667,
+                99.11666666666666
+            ],
+            [
+                36.28333333333333,
+                98.71666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 110.7,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A3343/22",
+        "COORDINATES": "N3359E09828-N3437E09840-N3442E09814-N3404E09802",
+        "TIME": "14 DEC 08:22 2022 UNTIL 14 DEC 10:44 2022",
+        "PLATID": "66386366",
+        "RAWMESSAGE": "A3343/22 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3421N09821E023\nA) ZLHW B) 2212140822 C) 2212141044 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3359E09828-N3437E09840-N3442E09814-N3404E09802 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2022-12.json",
+        "source_index": 9,
+        "classify_key": "c111736090",
+        "points": [
+            [
+                33.983333333333334,
+                98.46666666666667
+            ],
+            [
+                34.61666666666667,
+                98.66666666666667
+            ],
+            [
+                34.7,
+                98.23333333333333
+            ],
+            [
+                34.06666666666667,
+                98.03333333333333
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 137.2,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A0659/26",
+        "COORDINATES": "N351800E0995600-N351800E1001100-N345600E1001000-N345600E0995600",
+        "TIME": "19 MAR 03:52 2026 UNTIL 19 MAR 06:08 2026",
+        "PLATID": "80414120",
+        "RAWMESSAGE": "A0659/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3506N10003E013\nA) ZLHW B) 2603190352 C) 2603190608 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN351800E0995600-N351800E1001100-N345600E1001000-N345600E0995600,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-03.json",
+        "source_index": 4,
+        "classify_key": "c858162048",
+        "points": [
+            [
+                35.3,
+                99.93333333333334
+            ],
+            [
+                35.3,
+                100.18333333333334
+            ],
+            [
+                34.93333333333333,
+                100.16666666666667
+            ],
+            [
+                34.93333333333333,
+                99.93333333333334
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 157.7,
+        "RelatedItems": [
+            {
+                "CODE": "A0660/26",
+                "COORDINATES": "N294400E0993000-N294300E0995600-N290500E0995400-N290500E0992900",
+                "TIME": "19 MAR 03:54 2026 UNTIL 19 MAR 06:16 2026",
+                "PLATID": "80414129",
+                "RAWMESSAGE": "A0660/26 NOTAMN\nQ) ZPKM/QRDCA/IV/BO/W/000/999/2924N09942E023\nA) ZPKM B) 2603190354 C) 2603190616 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN294400E0993000-N294300E0995600-N290500E0995400-N290500E0992900,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-03.json",
+                "source_index": 5,
+                "GroupKey": "c858162048",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0908/26",
+        "COORDINATES": "N342600E0982100-N342200E0985400-N333800E0984500-N334300E0981200",
+        "TIME": "02 APR 03:52 2026 UNTIL 02 APR 06:17 2026",
+        "PLATID": "80580556",
+        "RAWMESSAGE": "A0908/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3402N09833E026\nA) ZLHW B) 2604020352 C) 2604020617 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN342600E0982100-N342200E0985400-N333800E0984500-N334300E0981200\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-04.json",
+        "source_index": 3,
+        "classify_key": "c612271681",
+        "points": [
+            [
+                34.43333333333333,
+                98.35
+            ],
+            [
+                34.36666666666667,
+                98.9
+            ],
+            [
+                33.63333333333333,
+                98.75
+            ],
+            [
+                33.71666666666667,
+                98.2
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 171.5,
+        "RelatedItems": [
+            {
+                "CODE": "A0907/26",
+                "COORDINATES": "N345500E0982700-N345100E0985400-N341900E0984700-N342200E0982000",
+                "TIME": "02 APR 03:52 2026 UNTIL 02 APR 06:09 2026",
+                "PLATID": "80580552",
+                "RAWMESSAGE": "A0907/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3436N09837E020\nA) ZLHW B) 2604020352 C) 2604020609 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN345500E0982700-N345100E0985400-N341900E0984700-N342200E0982000\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-04.json",
+                "source_index": 2,
+                "GroupKey": "c612271681",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0942/26",
+        "COORDINATES": "N342600E0982100-N342200E0985400-N333800E0984500-N334300E0981200",
+        "TIME": "03 APR 03:52 2026 UNTIL 03 APR 06:17 2026",
+        "PLATID": "80594197",
+        "RAWMESSAGE": "A0942/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3402N09833E026\nA) ZLHW B) 2604030352 C) 2604030617 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN342600E0982100-N342200E0985400-N333800E0984500-N334300E0981200\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-04.json",
+        "source_index": 5,
+        "classify_key": "c669919999",
+        "points": [
+            [
+                34.43333333333333,
+                98.35
+            ],
+            [
+                34.36666666666667,
+                98.9
+            ],
+            [
+                33.63333333333333,
+                98.75
+            ],
+            [
+                33.71666666666667,
+                98.2
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 171.5,
+        "RelatedItems": [
+            {
+                "CODE": "A0940/26",
+                "COORDINATES": "N345500E0982700-N345100E0985400-N341900E0984700-N342200E0982000",
+                "TIME": "03 APR 03:52 2026 UNTIL 03 APR 06:09 2026",
+                "PLATID": "80594170",
+                "RAWMESSAGE": "A0940/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3436N09837E020\nA) ZLHW B) 2604030352 C) 2604030609 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN345500E0982700-N345100E0985400-N341900E0984700-N342200E0982000\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-04.json",
+                "source_index": 4,
+                "GroupKey": "c669919999",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0632/23",
+        "COORDINATES": "N3416E09837-N3444E09844-N3447E09824-N3419E09817-N3312E09829-N3344E09836-N3349E09810-N3316E09803",
+        "TIME": "29 MAR 06:42 2023 UNTIL 29 MAR 08:07 2023",
+        "PLATID": "67943674",
+        "RAWMESSAGE": "A0632/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3359N09826E048\nA) ZLHW B) 2303290642 C) 2303290807 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3416E09837-N3444E09844-N3447E09824-N3419E09817,BACK TO START \nAND N3312E09829-N3344E09836-N3349E09810-N3316E09803,BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-03.json",
+        "source_index": 10,
+        "classify_key": "c409367541",
+        "points": [
+            [
+                34.266666666666666,
+                98.61666666666666
+            ],
+            [
+                34.733333333333334,
+                98.73333333333333
+            ],
+            [
+                34.78333333333333,
+                98.4
+            ],
+            [
+                34.31666666666667,
+                98.28333333333333
+            ],
+            [
+                33.2,
+                98.48333333333333
+            ],
+            [
+                33.733333333333334,
+                98.6
+            ],
+            [
+                33.81666666666667,
+                98.16666666666667
+            ],
+            [
+                33.266666666666666,
+                98.05
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 173.5,
+        "RelatedItems": [
+            {
+                "CODE": "F1044/23",
+                "COORDINATES": "S0952E08844-S0909E08852-S0917E08935-S1000E08927",
+                "TIME": "29 MAR 06:46 2023 UNTIL 29 MAR 08:15 2023",
+                "PLATID": "67945218",
+                "RAWMESSAGE": "F1044/23 NOTAMR F0892/23\nQ) YMMM/QWMLW/IV/BO/W/000/999/0932S08909E035\nA) YMMM\nB) 2303290646 C) 2303290815\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\nS0952E08844\nS0909E08852\nS0917E08935\nS1000E08927\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-03.json",
+                "source_index": 25,
+                "GroupKey": "c409367541",
+                "IsSameGroup": true,
+                "parent_index": 4
+            },
+            {
+                "CODE": "F1090/23",
+                "COORDINATES": "S1000E08927-S0917E08935-S0909E08851-S0952E08843",
+                "TIME": "29 MAR 06:46 2023 UNTIL 29 MAR 08:15 2023",
+                "PLATID": "67971756",
+                "RAWMESSAGE": "F1090/23 NOTAMR F1044/23\nQ) YMMM/QWMLW/IV/BO/W/000/999/0932S08909E035\nA) YMMM\nB) 2303290646 C) 2303290815\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\nS1000 E08927\nS0917 E08935\nS0909 E08851\nS0952 E08843\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-03.json",
+                "source_index": 26,
+                "GroupKey": "c409367541",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A0710/23",
+        "COORDINATES": "N3416E09837-N3444E09844-N3447E09824-N3419E09817-N3312E09829-N3344E09836-N3349E09810-N3316E09803",
+        "TIME": "31 MAR 10:53 2023 UNTIL 31 MAR 12:17 2023",
+        "PLATID": "67998982",
+        "RAWMESSAGE": "A0710/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3359N09826E048\nA) ZLHW B) 2303311053 C) 2303311217 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3416E09837-N3444E09844-N3447E09824-N3419E09817 BACK TO START \nAND N3312E09829-N3344E09836-N3349E09810-N3316E09803 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-03.json",
+        "source_index": 13,
+        "classify_key": "c884329545",
+        "points": [
+            [
+                34.266666666666666,
+                98.61666666666666
+            ],
+            [
+                34.733333333333334,
+                98.73333333333333
+            ],
+            [
+                34.78333333333333,
+                98.4
+            ],
+            [
+                34.31666666666667,
+                98.28333333333333
+            ],
+            [
+                33.2,
+                98.48333333333333
+            ],
+            [
+                33.733333333333334,
+                98.6
+            ],
+            [
+                33.81666666666667,
+                98.16666666666667
+            ],
+            [
+                33.266666666666666,
+                98.05
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 173.5,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A0742/23",
+        "COORDINATES": "N3416E09837-N3444E09844-N3447E09824-N3419E09817-N3312E09829-N3344E09836-N3349E09810-N3316E09803",
+        "TIME": "02 APR 08:23 2023 UNTIL 02 APR 09:47 2023",
+        "PLATID": "68023844",
+        "RAWMESSAGE": "A0742/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3359N09826E048\nA) ZLHW B) 2304020823 C) 2304020947 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3416E09837-N3444E09844-N3447E09824-N3419E09817,BACK TO START \nAND N3312E09829-N3344E09836-N3349E09810-N3316E09803,BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-04.json",
+        "source_index": 2,
+        "classify_key": "c825609276",
+        "points": [
+            [
+                34.266666666666666,
+                98.61666666666666
+            ],
+            [
+                34.733333333333334,
+                98.73333333333333
+            ],
+            [
+                34.78333333333333,
+                98.4
+            ],
+            [
+                34.31666666666667,
+                98.28333333333333
+            ],
+            [
+                33.2,
+                98.48333333333333
+            ],
+            [
+                33.733333333333334,
+                98.6
+            ],
+            [
+                33.81666666666667,
+                98.16666666666667
+            ],
+            [
+                33.266666666666666,
+                98.05
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 173.5,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A0763/26",
+        "COORDINATES": "N341200E0975200-N340200E0984700-N331900E0983600-N332900E0974100",
+        "TIME": "27 MAR 04:04 2026 UNTIL 27 MAR 04:38 2026",
+        "PLATID": "80482281",
+        "RAWMESSAGE": "A0763/26 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3345N09813E032\nA) ZLHW B) 2603270404 C) 2603270438 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN341200E0975200-N340200E0984700-N331900E0983600-N332900E0974100\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA. \nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-03.json",
+        "source_index": 12,
+        "classify_key": "c298901034",
+        "points": [
+            [
+                34.2,
+                97.86666666666666
+            ],
+            [
+                34.03333333333333,
+                98.78333333333333
+            ],
+            [
+                33.31666666666667,
+                98.6
+            ],
+            [
+                33.483333333333334,
+                97.68333333333334
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 202.6,
+        "RelatedItems": [
+            {
+                "CODE": "F1145/26",
+                "COORDINATES": "S2232E08521-S2251E08659-S2809E08546-S2750E08404-S2232E08521",
+                "TIME": "27 MAR 04:08 2026 UNTIL 27 MAR 04:51 2026",
+                "PLATID": "80516799",
+                "RAWMESSAGE": "F1145/26 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/2520S08533E185\nA) YMMM\nB) 2603270408 C) 2603270451\nE) CHINESE AEROSPACE ACTIVITIES WILL TAKE PLACE\nFLW ADVICE RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nTHE FLIGHT SAFETY OF ACFT IN THE FOLLOWING &apos;AREA PW&apos; MAY BE AFFECTED\nBOUNDED BY: 2232S 08521E - 2251S 08659E - 2809S 08546E - 2750S 08404E\n- 2232S 08521E.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-03.json",
+                "source_index": 23,
+                "GroupKey": "c298901034",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A3854/23",
+        "COORDINATES": "N3321E09824-N3359E09833-N3403E09807-N3325E09758",
+        "TIME": "06 DEC 23:31 2023 UNTIL 07 DEC 00:53 2023",
+        "PLATID": "70451947",
+        "RAWMESSAGE": "A3854/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3342N09815E022\nA) ZLHW B) 2312062331 C) 2312070053 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3321E09824-N3359E09833-N3403E09807-N3325E09758 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "source_index": 12,
+        "classify_key": "c656990100",
+        "points": [
+            [
+                33.35,
+                98.4
+            ],
+            [
+                33.983333333333334,
+                98.55
+            ],
+            [
+                34.05,
+                98.11666666666666
+            ],
+            [
+                33.416666666666664,
+                97.96666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 208.9,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A3885/23",
+        "COORDINATES": "N3321E09824-N3359E09833-N3403E09807-N3325E09758",
+        "TIME": "08 DEC 23:31 2023 UNTIL 09 DEC 00:53 2023",
+        "PLATID": "70482975",
+        "RAWMESSAGE": "A3885/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3342N09815E022\nA) ZLHW B) 2312082331 C) 2312090053 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3321E09824-N3359E09833-N3403E09807-N3325E09758 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "source_index": 14,
+        "classify_key": "c581492615",
+        "points": [
+            [
+                33.35,
+                98.4
+            ],
+            [
+                33.983333333333334,
+                98.55
+            ],
+            [
+                34.05,
+                98.11666666666666
+            ],
+            [
+                33.416666666666664,
+                97.96666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 208.9,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1201/25",
+        "COORDINATES": "N340300E0980700-N335900E0983300-N332100E0982400-N332500E0975800",
+        "TIME": "15 MAY 04:05 2025 UNTIL 15 MAY 04:47 2025",
+        "PLATID": "76607968",
+        "RAWMESSAGE": "A1201/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3342N09815E022\nA) ZLHW B) 2505150405 C) 2505150447 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N340300E0980700-N335900E0983300-N332100E0982400-N332500E0975800,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-05.json",
+        "source_index": 7,
+        "classify_key": "c749444979",
+        "points": [
+            [
+                34.05,
+                98.11666666666666
+            ],
+            [
+                33.983333333333334,
+                98.55
+            ],
+            [
+                33.35,
+                98.4
+            ],
+            [
+                33.416666666666664,
+                97.96666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 208.9,
+        "RelatedItems": [
+            {
+                "CODE": "A1200/25",
+                "COORDINATES": "N361800E0984900-N361600E0990300-N355300E0985800-N355600E0984400",
+                "TIME": "15 MAY 04:04 2025 UNTIL 15 MAY 04:40 2025",
+                "PLATID": "76607959",
+                "RAWMESSAGE": "A1200/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3605N09853E013\nA) ZLHW B) 2505150404 C) 2505150440 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N361800E0984900-N361600E0990300-N355300E0985800-N355600E0984400,\nBACK TO START.  \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2025-05.json",
+                "source_index": 6,
+                "GroupKey": "c749444979",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A1313/25",
+        "COORDINATES": "N340300E0980700-N335900E0983300-N332100E0982400-N332500E0975800",
+        "TIME": "17 MAY 04:05 2025 UNTIL 17 MAY 04:47 2025",
+        "PLATID": "76678361",
+        "RAWMESSAGE": "A1313/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3342N09815E022\nA) ZLHW B) 2505170405 C) 2505170447 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN340300E0980700-N335900E0983300-N332100E0982400-N332500E0975800,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-05.json",
+        "source_index": 16,
+        "classify_key": "c291845303",
+        "points": [
+            [
+                34.05,
+                98.11666666666666
+            ],
+            [
+                33.983333333333334,
+                98.55
+            ],
+            [
+                33.35,
+                98.4
+            ],
+            [
+                33.416666666666664,
+                97.96666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 208.9,
+        "RelatedItems": [
+            {
+                "CODE": "A1312/25",
+                "COORDINATES": "N361800E0984900-N361600E0990300-N355300E0985800-N355600E0984400",
+                "TIME": "17 MAY 04:04 2025 UNTIL 17 MAY 04:40 2025",
+                "PLATID": "76678357",
+                "RAWMESSAGE": "A1312/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3605N09853E013\nA) ZLHW B) 2505170404 C) 2505170440 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN361800E0984900-N361600E0990300-N355300E0985800-N355600E0984400,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2025-05.json",
+                "source_index": 15,
+                "GroupKey": "c291845303",
+                "IsSameGroup": true,
+                "parent_index": 4
+            }
+        ]
+    },
+    {
+        "CODE": "A1721/23",
+        "COORDINATES": "N3321E09823-N3358E09832-N3402E09807-N3325E09758",
+        "TIME": "12 JUL 05:53 2023 UNTIL 12 JUL 08:14 2023",
+        "PLATID": "68971450",
+        "RAWMESSAGE": "A1721/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3341N09815E022\nA) ZLHW B) 2307120553 C) 2307120814 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3321E09823-N3358E09832-N3402E09807-N3325E09758 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-07.json",
+        "source_index": 3,
+        "classify_key": "c221347538",
+        "points": [
+            [
+                33.35,
+                98.38333333333334
+            ],
+            [
+                33.96666666666667,
+                98.53333333333333
+            ],
+            [
+                34.03333333333333,
+                98.11666666666666
+            ],
+            [
+                33.416666666666664,
+                97.96666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 209.9,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A1751/23",
+        "COORDINATES": "N3321E09823-N3358E09832-N3402E09807-N3325E09758",
+        "TIME": "12 JUL 00:53 2023 UNTIL 12 JUL 03:14 2023",
+        "PLATID": "69003160",
+        "RAWMESSAGE": "A1751/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3341N09815E022\nA) ZLHW B) 2307120053 C) 2307120314 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY: \nN3321E09823-N3358E09832-N3402E09807-N3325E09758 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-07.json",
+        "source_index": 4,
+        "classify_key": "c129072837",
+        "points": [
+            [
+                33.35,
+                98.38333333333334
+            ],
+            [
+                33.96666666666667,
+                98.53333333333333
+            ],
+            [
+                34.03333333333333,
+                98.11666666666666
+            ],
+            [
+                33.416666666666664,
+                97.96666666666667
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 209.9,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A2271/21",
+        "COORDINATES": "N325948E0982421-N330908E0973403-N334603E0974342-N333639E0983420",
+        "TIME": "13 SEP 07:36 2021 UNTIL 13 SEP 08:04 2021",
+        "PLATID": "61538640",
+        "RAWMESSAGE": "A2271/21 NOTAMN\nQ) ZLHW/QRTCA/IV/BO/W/000/999/3322N09804E029\nA) ZLHW B) 2109130736 C) 2109130804 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY: \nN325948E0982421-N330908E0973403-N334603E0974342-N333639E0983420 \nBACK TO START. ALL ACFT ARE FORBIDDEN TO FLY INTO THE TEMPORARY \nRESTRICTED AREA. VERTICAL LIMITS:GND-UNL.\nF) GND G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2021-09.json",
+        "source_index": 2,
+        "classify_key": "c523060940",
+        "points": [
+            [
+                32.99666666666667,
+                98.40583333333333
+            ],
+            [
+                33.15222222222222,
+                97.5675
+            ],
+            [
+                33.7675,
+                97.72833333333334
+            ],
+            [
+                33.61083333333333,
+                98.57222222222222
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 245.9,
+        "RelatedItems": []
     }
 ]
