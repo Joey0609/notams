@@ -243,6 +243,18 @@ def _build_group_color_map(data, provider='gaode_vec'):
     return group_color_map
 
 
+def _build_code_to_color_map(data, provider='gaode_vec'):
+    """构建 CODE → RGB 颜色映射，用于跨渲染保持颜色一致。"""
+    code_to_class = _build_code_class_map(data)
+    group_color_map = _build_group_color_map(data, provider=provider)
+    pool = COLOR_POOL_VECTOR if provider in ('gaode_vec', 'tianditu_vec') else COLOR_POOL_SATELLITE
+    fallback_rgb = _hex_to_rgb(pool[0])
+    code_to_color = {}
+    for code, class_key in code_to_class.items():
+        code_to_color[code] = group_color_map.get(class_key, fallback_rgb)
+    return code_to_color
+
+
 def _lonlat_to_world_px(lat, lon, zoom):
     lat = max(min(lat, 85.05112878), -85.05112878)
     sin_lat = math.sin(math.radians(lat))
@@ -286,6 +298,8 @@ def _render_tiles_map(
     max_height=1600,
     padding=100,
     provider='gaode_vec',
+    code_to_color=None,
+    max_zoom=14,
 ):
     if not polys:
         return None
@@ -306,11 +320,11 @@ def _render_tiles_map(
     center_lat = (min_lat + max_lat) / 2.0
     center_lon = (min_lon + max_lon) / 2.0
 
-    # 按最大画布约束选缩放级别，确保所有落区可完整容纳
+    # 按最大画布约束和 max_zoom 选缩放级别
     chosen_zoom = 3
     span_x = 0.0
     span_y = 0.0
-    for zoom in range(3, 14):
+    for zoom in range(3, min(14, max_zoom + 1)):
         x1, y1 = _lonlat_to_world_px(max_lat, min_lon, zoom)
         x2, y2 = _lonlat_to_world_px(min_lat, max_lon, zoom)
         cur_span_x = abs(x2 - x1)
@@ -364,16 +378,25 @@ def _render_tiles_map(
         class_key = code_to_class.get(code, code)
         polygon_groups.append((class_key, code, poly))
 
-    group_color_map = _build_group_color_map(data, provider=provider)
-    fallback_rgb = _hex_to_rgb((COLOR_POOL_VECTOR if provider in ('gaode_vec', 'tianditu_vec') else COLOR_POOL_SATELLITE)[0])
+    pool = COLOR_POOL_VECTOR if provider in ('gaode_vec', 'tianditu_vec') else COLOR_POOL_SATELLITE
+    fallback_rgb = _hex_to_rgb(pool[0])
+
+    # 颜色来源：优先使用外部传入的 code_to_color，其次自行计算
+    if code_to_color is None:
+        group_color_map = _build_group_color_map(data, provider=provider)
+        code_to_color = {}
+        for ck, cd, _ in polygon_groups:
+            code_to_color[cd] = group_color_map.get(ck, fallback_rgb)
+    else:
+        # 外部传入时只用作参考，缺失的颜色用 fallback
+        pass
 
     # 先在独立透明 overlay 层绘制多边形，再合成到画布
-    # 避免 Pillow ImageDraw 直接画在 RGBA 上时 alpha 变黑的问题
     overlay = Image.new('RGBA', canvas.size, (0, 0, 0, 0))
     overlay_draw = ImageDraw.Draw(overlay, 'RGBA')
 
     for group_key, code, poly in polygon_groups:
-        color = group_color_map.get(group_key, fallback_rgb)
+        color = code_to_color.get(code, fallback_rgb)
         points = [to_canvas_px(lat, lon) for lat, lon in poly]
         overlay_draw.polygon(points, fill=color + (128,), outline=color + (255,))
         overlay_draw.line(points + [points[0]], fill=color + (255,), width=1)
@@ -413,7 +436,8 @@ def _render_tiles_map(
     return output.getvalue()
 
 
-def generate_change_email_draft(previous_data, current_data, include_match=True, include_website=True):
+def generate_change_email_draft(previous_data, current_data, include_match=True, include_website=True,
+                                 code_to_color=None, code_emoji_map=None, max_zoom=14, section_mode='all'):
     prev_map = _build_notam_map(previous_data or {})
     curr_map = _build_notam_map(current_data or {})
 
@@ -421,8 +445,9 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
     removed_ids = sorted(set(prev_map.keys()) - set(curr_map.keys()))
     kept_ids = sorted(set(curr_map.keys()) & set(prev_map.keys()))
 
-    # 构建 CODE → emoji 映射
-    code_emoji_map = _build_code_emoji_map(current_data or {})
+    # 构建 CODE → emoji 映射（优先使用外部传入，保证两条消息一致）
+    if code_emoji_map is None:
+        code_emoji_map = _build_code_emoji_map(current_data or {})
 
     polys = _collect_polygons(current_data or {})
     image_bytes = None
@@ -432,6 +457,8 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
             current_data or {},
             padding=100,
             provider='gaode_vec',
+            code_to_color=code_to_color,
+            max_zoom=max_zoom,
         )
 
     lines = []
@@ -446,43 +473,64 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
         emoji = code_emoji_map.get(str(code_str), '')
         return f"{emoji} {code_str}" if emoji else str(code_str)
 
-    lines.append('新增航警：')
-    if added_ids:
-        for pid in added_ids:
-            item = curr_map[pid]
-            lines.append(f"- {_code_with_emoji(item['CODE'])}")
-            lines.append(f"  航警时间: {_time_of(item)}")
-            lines.append(f"  航警坐标: {item['COORDINATES']}")
-            if include_match:
-                lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
-                for match_line in _format_match_summary(item['index']):
-                    lines.append(f'  - {match_line}')
-    else:
-        lines.append('- 无新增航警')
+    if section_mode in ('all', 'added_only'):
+        lines.append('新增航警：')
+        if added_ids:
+            for pid in added_ids:
+                item = curr_map[pid]
+                lines.append(f"- {_code_with_emoji(item['CODE'])}")
+                lines.append(f"  航警时间: {_time_of(item)}")
+                if section_mode == 'added_only':
+                    pass  # 新增消息不要坐标
+                else:
+                    lines.append(f"  航警坐标: {item['COORDINATES']}")
+                if include_match and section_mode != 'added_only':
+                    lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
+                    for match_line in _format_match_summary(item['index']):
+                        lines.append(f'  - {match_line}')
+        else:
+            lines.append('- 无新增航警')
 
-    lines.append('移除航警：')
-    if removed_ids:
-        for pid in removed_ids:
-            item = prev_map[pid]
-            lines.append(f"- {_code_with_emoji(item['CODE'])}")
-            lines.append(f"  航警时间: {_time_of(item)}")
-            lines.append(f"  航警坐标: {item['COORDINATES']}")
-    else:
-        lines.append('- 无移除航警')
+    if section_mode == 'all':
+        lines.append('移除航警：')
+        if removed_ids:
+            for pid in removed_ids:
+                item = prev_map[pid]
+                lines.append(f"- {_code_with_emoji(item['CODE'])}")
+                lines.append(f"  航警时间: {_time_of(item)}")
+                lines.append(f"  航警坐标: {item['COORDINATES']}")
+        else:
+            lines.append('- 无移除航警')
 
-    lines.append('保留航警：')
-    if kept_ids:
-        for pid in kept_ids:
-            item = curr_map[pid]
-            lines.append(f"- {_code_with_emoji(item['CODE'])}")
-            lines.append(f"  航警时间: {_time_of(item)}")
-            lines.append(f"  航警坐标: {item['COORDINATES']}")
-            if include_match:
-                lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
-                for match_line in _format_match_summary(item['index']):
-                    lines.append(f'  - {match_line}')
-    else:
-        lines.append('- 无保留航警')
+    if section_mode == 'all':
+        lines.append('保留航警：')
+        if kept_ids:
+            for pid in kept_ids:
+                item = curr_map[pid]
+                lines.append(f"- {_code_with_emoji(item['CODE'])}")
+                lines.append(f"  航警时间: {_time_of(item)}")
+                lines.append(f"  航警坐标: {item['COORDINATES']}")
+                if include_match:
+                    lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
+                    for match_line in _format_match_summary(item['index']):
+                        lines.append(f'  - {match_line}')
+        else:
+            lines.append('- 无保留航警')
+    elif section_mode == 'current':
+        lines.append('当前航警：')
+        all_current = sorted(added_ids + kept_ids)
+        if all_current:
+            for pid in all_current:
+                item = curr_map[pid]
+                lines.append(f"- {_code_with_emoji(item['CODE'])}")
+                lines.append(f"  航警时间: {_time_of(item)}")
+                lines.append(f"  航警坐标: {item['COORDINATES']}")
+                if include_match:
+                    lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
+                    for match_line in _format_match_summary(item['index']):
+                        lines.append(f'  - {match_line}')
+        else:
+            lines.append('- 无当前航警')
 
     body_text = '\n'.join(lines)
 

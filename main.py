@@ -260,6 +260,51 @@ def filter_data_by_source(data, include_sources):
     return out
 
 
+def filter_data_by_platids(data, include_platids):
+    """Filter data dict to keep only records whose PLATID is in include_platids."""
+    include_platids = set(str(p) for p in (include_platids or []))
+    if not isinstance(data, dict) or not include_platids:
+        return {
+            'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [], 'RAWMESSAGE': [],
+            'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'CLASSIFY': {}, 'NUM': 0,
+        }
+
+    platids = data.get('PLATID', []) or []
+    size = min(
+        len(data.get('CODE', []) or []),
+        len(data.get('COORDINATES', []) or []),
+        len(data.get('TIME', []) or []),
+        len(platids),
+        len(data.get('RAWMESSAGE', []) or []),
+    )
+
+    out = {
+        'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [],
+        'RAWMESSAGE': [], 'ALTITUDE': [], 'SOURCE': [], 'FIR': [],
+        'CLASSIFY': {}, 'NUM': 0,
+    }
+    for i in range(size):
+        pid = str(platids[i]) if i < len(platids) else ''
+        if pid not in include_platids:
+            continue
+        out['CODE'].append(data['CODE'][i])
+        out['COORDINATES'].append(data['COORDINATES'][i])
+        out['TIME'].append(data['TIME'][i])
+        out['PLATID'].append(pid)
+        raw_list = data.get('RAWMESSAGE', []) or []
+        out['RAWMESSAGE'].append(raw_list[i] if i < len(raw_list) else '')
+        alt_list = data.get('ALTITUDE', []) or []
+        out['ALTITUDE'].append(alt_list[i] if i < len(alt_list) else 'None')
+        src_list = data.get('SOURCE', []) or []
+        out['SOURCE'].append(str(src_list[i] if i < len(src_list) else 'NOTAM'))
+        fir_list = data.get('FIR', []) or []
+        out['FIR'].append(fir_list[i] if i < len(fir_list) else '')
+
+    out['NUM'] = len(out['CODE'])
+    out['CLASSIFY'] = classify_data(out)
+    return out
+
+
 def compute_data_hash(data, include_sources=None):
     if not isinstance(data, dict):
         return ''
@@ -859,7 +904,6 @@ if __name__ == '__main__':
         previous_notam = filter_data_by_source(previous_data, {'NOTAM'})
         notam_match_archive(dataDict=current_notam)
         email_draft = generate_change_email_draft(previous_notam, current_notam)
-        qqbot_draft = generate_change_email_draft(previous_notam, current_notam, include_match=False, include_website=False)
         added_count = count_new_notams_for_mail(previous_notam, current_notam)
         if MAIL_ENABLED and added_count > 0:
             try:
@@ -874,7 +918,29 @@ if __name__ == '__main__':
         # QQ Bot 通知独立于邮件发送
         if added_count > 0:
             try:
-                bot_send_notification(qqbot_draft)
+                # 先计算全量数据的颜色和 emoji 映射，保证两条消息一致
+                from fetch.mail_draft import _build_code_to_color_map, _build_code_emoji_map
+                code_to_color = _build_code_to_color_map(current_notam)
+                code_emoji_map = _build_code_emoji_map(current_notam)
+
+                # 第一条：仅新增航警图片 + 新增航警文字(无坐标)
+                added_ids = sorted(set(
+                    str(x) for x in (current_notam.get('PLATID', []) if isinstance(current_notam, dict) else [])
+                ) - set(
+                    str(x) for x in (previous_notam.get('PLATID', []) if isinstance(previous_notam, dict) else [])
+                ))
+                added_only_data = filter_data_by_platids(current_notam, added_ids)
+                added_draft = generate_change_email_draft(
+                    {}, added_only_data, include_match=False, include_website=False,
+                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='added_only'
+                )
+                # 第二条：全部航警图片 + 当前航警文字
+                full_draft = generate_change_email_draft(
+                    previous_notam, current_notam, include_match=False, include_website=False,
+                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='current'
+                )
+                from fetch.notam_bot import send_two_notifications
+                send_two_notifications(added_draft, full_draft)
             except Exception as exc:
                 print(f"QQ Bot 通知发送失败: {exc}")
     elif before_hash != after_hash:

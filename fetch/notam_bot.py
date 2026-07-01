@@ -126,3 +126,26 @@ def send_notification(email_draft: dict) -> bool:
             print(f'[notam_bot] 删除临时图片失败: {e}')
 
     return ok
+
+
+def send_two_notifications(added_draft: dict, full_draft: dict) -> bool:
+    """
+    发送两条 QQ 消息：
+      第一条：新增航警（图片仅新增 + 文字仅新增）
+      第二条：全部航警（图片全部 + 文字全部）
+    两条之间间隔 3 秒。
+    """
+    # 第一条：新增航警
+    print('[notam_bot] === 发送第一条消息：新增航警 ===')
+    ok1 = send_notification(added_draft)
+    if not ok1:
+        print('[notam_bot] 第一条消息发送失败，继续尝试第二条')
+
+    import time
+    time.sleep(3)
+
+    # 第二条：全部航警
+    print('[notam_bot] === 发送第二条消息：全部航警 ===')
+    ok2 = send_notification(full_draft)
+
+    return ok1 and ok2
