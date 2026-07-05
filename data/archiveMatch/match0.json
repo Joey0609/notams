@@ -33,8 +33,8 @@
                 110.53333333333333
             ]
         ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 129.5,
+        "Overlapping_Area": 3.6,
+        "Center_Distance": -1.0,
         "RelatedItems": [
             {
                 "CODE": "A1115/26",
@@ -87,8 +87,8 @@
                 110.63333333333334
             ]
         ],
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 158.2,
+        "Overlapping_Area": 3.6,
+        "Center_Distance": -1.0,
         "RelatedItems": [
             {
                 "CODE": "A1035/26",
@@ -172,7 +172,7 @@
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 196.1,
+        "Center_Distance": 185.5,
         "RelatedItems": [
             {
                 "CODE": "A1116/26",
@@ -226,7 +226,7 @@
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 221.2,
+        "Center_Distance": 211.8,
         "RelatedItems": [
             {
                 "CODE": "B4805/23",
@@ -280,7 +280,7 @@
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 226.5,
+        "Center_Distance": 215.6,
         "RelatedItems": [
             {
                 "CODE": "A1035/26",
@@ -368,7 +368,7 @@
             ]
         ],
         "Overlapping_Area": 0.0,
-        "Center_Distance": 233.0,
+        "Center_Distance": 222.1,
         "RelatedItems": [
             {
                 "CODE": "A3267/23",
@@ -427,6 +427,79 @@
                 "source_file": "2023-12.json",
                 "source_index": 38,
                 "GroupKey": "c159680636",
+                "IsSameGroup": true,
+                "parent_index": 0
+            }
+        ]
+    },
+    {
+        "CODE": "A3579/23",
+        "COORDINATES": "N0719E10842-N0711E10926-N0541E10909-N0548E10825-N0715E10840-N0719E10842",
+        "TIME": "25 DEC 22:21 2023 UNTIL 25 DEC 23:20 2023",
+        "PLATID": "70663331",
+        "RAWMESSAGE": "A3579/23 NOTAMN\nQ) WSJC/QAFXX/IV/BO/W/000/999/0630N10855E053\nA) WSJC B) 2312252221 C) 2312252320\nE) UNBURNED DEBRIS IS EXPECTED TO FALL WI 0719N10842E - 0711N10926E -\n0541N10909E - 0548N10825E - 0715N10840E - 0719N10842E DUE TO\nAEROSPACE FLT ACT. RMK/ATS ROUTE L625 BTN LUSMO AND AKMON NOT AVBL IN\nSINGAPORE FIR\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-12.json",
+        "source_index": 5,
+        "classify_key": "c845076389",
+        "points": [
+            [
+                7.316666666666666,
+                108.7
+            ],
+            [
+                7.183333333333334,
+                109.43333333333334
+            ],
+            [
+                5.683333333333334,
+                109.15
+            ],
+            [
+                5.8,
+                108.41666666666667
+            ],
+            [
+                7.25,
+                108.66666666666667
+            ],
+            [
+                7.316666666666666,
+                108.7
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 240.7,
+        "RelatedItems": [
+            {
+                "CODE": "A4057/23",
+                "COORDINATES": "N184200E1111700-N183900E1113500-N181100E1112900-N181500E1111200",
+                "TIME": "25 DEC 22:20 2023 UNTIL 25 DEC 23:09 2023",
+                "PLATID": "70653008",
+                "RAWMESSAGE": "A4057/23 NOTAMN\nQ) ZJSA/QRDCA/IV/BO/W/000/999/1826N11123E017\nA) ZJSA B) 2312252220 C) 2312252309 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N184200E1111700-N183900E1113500-N181100E1112900-N181500E1111200 \nBACK TO START. VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-12.json",
+                "source_index": 19,
+                "GroupKey": "c845076389",
+                "IsSameGroup": true,
+                "parent_index": 0
+            },
+            {
+                "CODE": "F4431/23",
+                "COORDINATES": "S471700E0955400-S472600E0965700-S500500E0960500-S495500E0945600",
+                "TIME": "25 DEC 22:23 2023 UNTIL 25 DEC 23:34 2023",
+                "PLATID": "70659766",
+                "RAWMESSAGE": "F4431/23 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/4840S09600E090\nA) YMMM\nB) 2312252223 C) 2312252334\nE) CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\nFLW RECEIVED FROM CIVIL AVIATION ADMINISTRATION OF CHINA:\nDUE TO AEROSPACE FLIGHT ACTIVITIES, THE FLIGHT SAFETY OF THE AIRCRAFT\nIN THE FOLLOWING AREA MAY BE AFFECTED:\nS471700 E0955400\nS472600 E0965700\nS500500 E0960500\nS495500 E0945600\n\nSVC046/23\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-12.json",
+                "source_index": 44,
+                "GroupKey": "c845076389",
                 "IsSameGroup": true,
                 "parent_index": 0
             }
