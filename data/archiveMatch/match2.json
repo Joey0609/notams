@@ -486,44 +486,6 @@
         ]
     },
     {
-        "CODE": "B0114/23",
-        "COORDINATES": "N190000E1200200-N193700E1200500-N194200E1183900-N190400E1183700-N190000E1200200",
-        "TIME": "08 JAN 21:00 2023 UNTIL 11 JAN 03:00 2023",
-        "PLATID": "66766066",
-        "RAWMESSAGE": "B0114/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1921N11921E046\nA) RPHI B) 2301082100 C) 2301110300\nD) 2100-0300\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n190000N 1200200E -\n193700N 1200500E -\n194200N 1183900E -\n190400N 1183700E -\n190000N 1200200E\n(AREA 1).\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2023-01.json",
-        "source_index": 9,
-        "classify_key": "c510161941",
-        "points": [
-            [
-                19.0,
-                120.03333333333333
-            ],
-            [
-                19.616666666666667,
-                120.08333333333333
-            ],
-            [
-                19.7,
-                118.65
-            ],
-            [
-                19.066666666666666,
-                118.61666666666666
-            ],
-            [
-                19.0,
-                120.03333333333333
-            ]
-        ],
-        "Overlapping_Area": 93.3,
-        "Center_Distance": -1.0,
-        "RelatedItems": []
-    },
-    {
         "CODE": "B2219/26",
         "COORDINATES": "N194200E1184200-N193700E1200900-N190000E1200600-N190400E1184000-N194200E1184200",
         "TIME": "26 MAY 16:08 2026 UNTIL 26 MAY 17:08 2026",
@@ -587,6 +549,113 @@
                 "source_file": "2026-05.json",
                 "source_index": 41,
                 "GroupKey": "c671132980",
+                "IsSameGroup": true,
+                "parent_index": 2
+            }
+        ]
+    },
+    {
+        "CODE": "B0114/23",
+        "COORDINATES": "N190000E1200200-N193700E1200500-N194200E1183900-N190400E1183700-N190000E1200200",
+        "TIME": "08 JAN 21:00 2023 UNTIL 11 JAN 03:00 2023",
+        "PLATID": "66766066",
+        "RAWMESSAGE": "B0114/23 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/999/1921N11921E046\nA) RPHI B) 2301082100 C) 2301110300\nD) 2100-0300\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL TAKE PLACE WI:\n190000N 1200200E -\n193700N 1200500E -\n194200N 1183900E -\n190400N 1183700E -\n190000N 1200200E\n(AREA 1).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-01.json",
+        "source_index": 9,
+        "classify_key": "c510161941",
+        "points": [
+            [
+                19.0,
+                120.03333333333333
+            ],
+            [
+                19.616666666666667,
+                120.08333333333333
+            ],
+            [
+                19.7,
+                118.65
+            ],
+            [
+                19.066666666666666,
+                118.61666666666666
+            ],
+            [
+                19.0,
+                120.03333333333333
+            ]
+        ],
+        "Overlapping_Area": 93.3,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "B1768/26",
+        "COORDINATES": "N190400E1184100-N194100E1184400-N193700E1201000-N185900E1200700-N190400E1184100",
+        "TIME": "26 MAY 16:00 2026 UNTIL 30 MAY 22:00 2026",
+        "PLATID": "80914318",
+        "RAWMESSAGE": "B1768/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11925E047\r\nA) RPHI B) 2605261600 C) 2605302200\r\nD) 1600-2200\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n190400N 1184100E -\r\n194100N 1184400E -\r\n193700N 1201000E -\r\n185900N 1200700E -\r\n190400N 1184100E\r\n(55NM WEST OF LAOAG AP)\r\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-05.json",
+        "source_index": 35,
+        "classify_key": "c622991870",
+        "points": [
+            [
+                19.066666666666666,
+                118.68333333333334
+            ],
+            [
+                19.683333333333334,
+                118.73333333333333
+            ],
+            [
+                19.616666666666667,
+                120.16666666666667
+            ],
+            [
+                18.983333333333334,
+                120.11666666666666
+            ],
+            [
+                19.066666666666666,
+                118.68333333333334
+            ]
+        ],
+        "Overlapping_Area": 92.2,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "B1769/26",
+                "COORDINATES": "N184700E1232200-N191900E1232500-N191400E1242500-N184200E1242200-N184700E1232200",
+                "TIME": "26 MAY 16:00 2026 UNTIL 30 MAY 22:00 2026",
+                "PLATID": "80914365",
+                "RAWMESSAGE": "B1769/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11925E047\r\nA) RPHI B) 2605261600 C) 2605302200\r\nD) 1600-2200\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n184700N 1232200E -\r\n191900N 1232500E -\r\n191400N 1242500E -\r\n184200N 1242200E -\r\n184700N 1232200E \r\n(100NM NORTH EAT OF LALLO AP)\r\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-05.json",
+                "source_index": 36,
+                "GroupKey": "c622991870",
+                "IsSameGroup": true,
+                "parent_index": 2
+            },
+            {
+                "CODE": "B1771/26",
+                "COORDINATES": "N184700E1232200-N191900E1232500-N191400E1242500-N184200E1242200-N184700E1232200",
+                "TIME": "26 MAY 16:00 2026 UNTIL 30 MAY 22:00 2026",
+                "PLATID": "80914379",
+                "RAWMESSAGE": "B1771/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11925E047\r\nA) RPHI B) 2605261600 C) 2605302200\r\nD) 1600-2200\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n184700N 1232200E -\r\n191900N 1232500E -\r\n191400N 1242500E -\r\n184200N 1242200E -\r\n184700N 1232200E \r\n(100NM NORTH EAST OF LALLO AP)\r\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-05.json",
+                "source_index": 37,
+                "GroupKey": "c622991870",
                 "IsSameGroup": true,
                 "parent_index": 2
             }
@@ -695,75 +764,6 @@
                 "source_file": "2025-09.json",
                 "source_index": 28,
                 "GroupKey": "c282586436",
-                "IsSameGroup": true,
-                "parent_index": 2
-            }
-        ]
-    },
-    {
-        "CODE": "B1768/26",
-        "COORDINATES": "N190400E1184100-N194100E1184400-N193700E1201000-N185900E1200700-N190400E1184100",
-        "TIME": "26 MAY 16:00 2026 UNTIL 30 MAY 22:00 2026",
-        "PLATID": "80914318",
-        "RAWMESSAGE": "B1768/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11925E047\r\nA) RPHI B) 2605261600 C) 2605302200\r\nD) 1600-2200\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n190400N 1184100E -\r\n194100N 1184400E -\r\n193700N 1201000E -\r\n185900N 1200700E -\r\n190400N 1184100E\r\n(55NM WEST OF LAOAG AP)\r\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2026-05.json",
-        "source_index": 35,
-        "classify_key": "c622991870",
-        "points": [
-            [
-                19.066666666666666,
-                118.68333333333334
-            ],
-            [
-                19.683333333333334,
-                118.73333333333333
-            ],
-            [
-                19.616666666666667,
-                120.16666666666667
-            ],
-            [
-                18.983333333333334,
-                120.11666666666666
-            ],
-            [
-                19.066666666666666,
-                118.68333333333334
-            ]
-        ],
-        "Overlapping_Area": 92.2,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "B1769/26",
-                "COORDINATES": "N184700E1232200-N191900E1232500-N191400E1242500-N184200E1242200-N184700E1232200",
-                "TIME": "26 MAY 16:00 2026 UNTIL 30 MAY 22:00 2026",
-                "PLATID": "80914365",
-                "RAWMESSAGE": "B1769/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11925E047\r\nA) RPHI B) 2605261600 C) 2605302200\r\nD) 1600-2200\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n184700N 1232200E -\r\n191900N 1232500E -\r\n191400N 1242500E -\r\n184200N 1242200E -\r\n184700N 1232200E \r\n(100NM NORTH EAT OF LALLO AP)\r\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2026-05.json",
-                "source_index": 36,
-                "GroupKey": "c622991870",
-                "IsSameGroup": true,
-                "parent_index": 2
-            },
-            {
-                "CODE": "B1771/26",
-                "COORDINATES": "N184700E1232200-N191900E1232500-N191400E1242500-N184200E1242200-N184700E1232200",
-                "TIME": "26 MAY 16:00 2026 UNTIL 30 MAY 22:00 2026",
-                "PLATID": "80914379",
-                "RAWMESSAGE": "B1771/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/1921N11925E047\r\nA) RPHI B) 2605261600 C) 2605302200\r\nD) 1600-2200\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n184700N 1232200E -\r\n191900N 1232500E -\r\n191400N 1242500E -\r\n184200N 1242200E -\r\n184700N 1232200E \r\n(100NM NORTH EAST OF LALLO AP)\r\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2026-05.json",
-                "source_index": 37,
-                "GroupKey": "c622991870",
                 "IsSameGroup": true,
                 "parent_index": 2
             }
