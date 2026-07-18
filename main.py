@@ -876,6 +876,16 @@ def fetch():
     dataDict["MSI_DATA"] = msi_data
 
     print(dataDict)
+    # 保护：如果本次抓取全部为空，不覆盖文件（应对上游服务临时故障）
+    if dataDict["NUM"] == 0 and os.path.exists('data_dict.json'):
+        try:
+            with open('data_dict.json', 'r', encoding='utf-8') as f:
+                existing = json.load(f)
+            if existing.get('NUM', 0) > 0:
+                print("抓取结果为空但已有有效数据，跳过覆盖（防止上游临时故障导致数据清空）")
+                return dataDict
+        except Exception:
+            pass
     with open('data_dict.json', 'w', encoding='utf-8') as json_file:
         json.dump(dataDict, json_file, ensure_ascii=False, indent=4)
     return dataDict
