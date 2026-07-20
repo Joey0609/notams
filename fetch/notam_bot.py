@@ -128,12 +128,15 @@ def send_notification(email_draft: dict) -> bool:
     return ok
 
 
-def send_two_notifications(added_draft: dict, full_draft: dict) -> bool:
+def send_two_notifications(added_draft: dict, full_draft: dict, return_details: bool = False):
     """
     发送两条 QQ 消息：
       第一条：新增航警（图片仅新增 + 文字仅新增）
       第二条：全部航警（图片全部 + 文字全部）
     两条之间间隔 3 秒。
+
+    return_details=True 时分别返回两条消息的发送结果，供调用方准确记录
+    已经通过 QQ Bot 送达的新增航警。
     """
     # 第一条：新增航警
     print('[notam_bot] === 发送第一条消息：新增航警 ===')
@@ -148,4 +151,6 @@ def send_two_notifications(added_draft: dict, full_draft: dict) -> bool:
     print('[notam_bot] === 发送第二条消息：全部航警 ===')
     ok2 = send_notification(full_draft)
 
+    if return_details:
+        return {'added': ok1, 'full': ok2}
     return ok1 and ok2

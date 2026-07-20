@@ -19,6 +19,9 @@ dins = False
 FNSs = True
 MSIs = False
 
+REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
+NOTIFY_SEND_LIST_PATH = os.path.join(REPO_ROOT, 'notify_send_list.txt')
+
 def parse_point(pt):
     m = re.match(r'([NS])(\d{4,6})([WE])(\d{5,7})', pt)
     if not m:
@@ -194,20 +197,85 @@ def coordinates_has_lon_in_range(coord_str, lon_min=70.0, lon_max=180.0):
     return False
 
 
-def count_new_notams_for_mail(previous_data, current_data):
+def normalize_notam_number(value):
+    """Normalize a user-visible NOTAM number for notification deduplication."""
+    return re.sub(r'\s+', '', str(value or '')).upper()
+
+
+def load_notified_notam_numbers(path=NOTIFY_SEND_LIST_PATH):
+    """Load NOTAM numbers already delivered by QQ Bot or email."""
+    try:
+        with open(path, 'r', encoding='utf-8') as file:
+            return {
+                normalize_notam_number(line)
+                for line in file
+                if line.strip() and not line.lstrip().startswith('#')
+            }
+    except FileNotFoundError:
+        return set()
+
+
+def record_notified_notam_numbers(notam_numbers, path=NOTIFY_SEND_LIST_PATH):
+    """Append newly delivered NOTAM numbers to the shared notification list."""
+    existing = load_notified_notam_numbers(path)
+    new_numbers = []
+    for value in notam_numbers or []:
+        number = normalize_notam_number(value)
+        if number and number not in existing:
+            existing.add(number)
+            new_numbers.append(number)
+
+    if not new_numbers:
+        return 0
+
+    needs_leading_newline = False
+    try:
+        needs_leading_newline = os.path.getsize(path) > 0
+        if needs_leading_newline:
+            with open(path, 'rb') as file:
+                file.seek(-1, os.SEEK_END)
+                needs_leading_newline = file.read(1) not in (b'\n', b'\r')
+    except FileNotFoundError:
+        pass
+
+    with open(path, 'a', encoding='utf-8', newline='\n') as file:
+        if needs_leading_newline:
+            file.write('\n')
+        for number in new_numbers:
+            file.write(f'{number}\n')
+    return len(new_numbers)
+
+
+def get_new_notams_for_notification(previous_data, current_data, notified_numbers=None):
+    """Return new, in-range NOTAMs that have not already been delivered."""
     prev_ids = set(str(x) for x in (previous_data.get('PLATID', []) if isinstance(previous_data, dict) else []))
     curr_ids = current_data.get('PLATID', []) if isinstance(current_data, dict) else []
+    curr_codes = current_data.get('CODE', []) if isinstance(current_data, dict) else []
     curr_coords = current_data.get('COORDINATES', []) if isinstance(current_data, dict) else []
+    pending_numbers = {
+        normalize_notam_number(value) for value in (notified_numbers or [])
+    }
 
-    cnt = 0
+    pending = []
     for idx, platid in enumerate(curr_ids):
         pid = str(platid)
         if pid in prev_ids:
             continue
         coord = curr_coords[idx] if idx < len(curr_coords) else ''
-        if coordinates_has_lon_in_range(coord, 70.0, 180.0):
-            cnt += 1
-    return cnt
+        if not coordinates_has_lon_in_range(coord, 70.0, 180.0):
+            continue
+        code = str(curr_codes[idx]) if idx < len(curr_codes) else ''
+        normalized_code = normalize_notam_number(code)
+        if normalized_code in pending_numbers:
+            continue
+        pending.append({'PLATID': pid, 'CODE': code})
+        if normalized_code:
+            pending_numbers.add(normalized_code)
+    return pending
+
+
+def count_new_notams_for_mail(previous_data, current_data, notified_numbers=None):
+    return len(get_new_notams_for_notification(previous_data, current_data, notified_numbers))
 
 
 def filter_data_by_source(data, include_sources):
@@ -303,6 +371,15 @@ def filter_data_by_platids(data, include_platids):
     out['NUM'] = len(out['CODE'])
     out['CLASSIFY'] = classify_data(out)
     return out
+
+
+def build_notification_current_data(previous_data, current_data, pending_platids):
+    """Exclude non-sendable new records while preserving kept/removed sections."""
+    previous_ids = {
+        str(value)
+        for value in (previous_data.get('PLATID', []) if isinstance(previous_data, dict) else [])
+    }
+    return filter_data_by_platids(current_data, previous_ids | set(str(x) for x in pending_platids))
 
 
 def compute_data_hash(data, include_sources=None):
@@ -913,16 +990,28 @@ if __name__ == '__main__':
         current_notam = filter_data_by_source(dataDict, {'NOTAM'})
         previous_notam = filter_data_by_source(previous_data, {'NOTAM'})
         notam_match_archive(dataDict=current_notam)
-        email_draft = generate_change_email_draft(previous_notam, current_notam)
-        added_count = count_new_notams_for_mail(previous_notam, current_notam)
+        notified_numbers = load_notified_notam_numbers()
+        pending_notams = get_new_notams_for_notification(
+            previous_notam, current_notam, notified_numbers
+        )
+        pending_platids = [item['PLATID'] for item in pending_notams]
+        pending_codes = [item['CODE'] for item in pending_notams]
+        added_count = len(pending_notams)
+        notification_current = build_notification_current_data(
+            previous_notam, current_notam, pending_platids
+        )
+        email_draft = None
         if MAIL_ENABLED and added_count > 0:
             try:
+                email_draft = generate_change_email_draft(previous_notam, notification_current)
                 send_result = send_email_via_qq_smtp(get_mail_config(), email_draft)
                 print(f"邮件发送成功: {send_result}")
+                recorded_count = record_notified_notam_numbers(pending_codes)
+                print(f"已记录 {recorded_count} 个通过邮件发送的航警编号")
             except Exception as exc:
                 print(f"邮件发送失败: {exc}")
         elif MAIL_ENABLED:
-            print('无符合经度范围(70~180)的新增航警，已跳过邮件发送')
+            print('无未发送过且符合经度范围(70~180)的新增航警，已跳过邮件发送')
         else:
             print('MAIL.enabled=false，已跳过邮件发送')
         # QQ Bot 通知独立于邮件发送
@@ -934,12 +1023,7 @@ if __name__ == '__main__':
                 code_emoji_map = _build_code_emoji_map(current_notam)
 
                 # 第一条：仅新增航警图片 + 新增航警文字(无坐标)
-                added_ids = sorted(set(
-                    str(x) for x in (current_notam.get('PLATID', []) if isinstance(current_notam, dict) else [])
-                ) - set(
-                    str(x) for x in (previous_notam.get('PLATID', []) if isinstance(previous_notam, dict) else [])
-                ))
-                added_only_data = filter_data_by_platids(current_notam, added_ids)
+                added_only_data = filter_data_by_platids(current_notam, pending_platids)
                 added_draft = generate_change_email_draft(
                     {}, added_only_data, include_match=False, include_website=False,
                     code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='added_only'
@@ -950,8 +1034,13 @@ if __name__ == '__main__':
                     code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='current'
                 )
                 from fetch.notam_bot import send_two_notifications
-                send_two_notifications(added_draft, full_draft)
+                qq_result = send_two_notifications(added_draft, full_draft, return_details=True)
+                if qq_result.get('added') or qq_result.get('full'):
+                    recorded_count = record_notified_notam_numbers(pending_codes)
+                    print(f"已记录 {recorded_count} 个通过 QQ Bot 发送的航警编号")
             except Exception as exc:
                 print(f"QQ Bot 通知发送失败: {exc}")
+        else:
+            print('无未发送过且符合经度范围(70~180)的新增航警，已跳过 QQ Bot 发送')
     elif before_hash != after_hash:
         print('仅MSI或非NOTAM数据变化，已跳过历史匹配与邮件发送')
