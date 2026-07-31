@@ -412,6 +412,24 @@ def compute_data_hash(data, include_sources=None):
     return hashlib.sha256(payload.encode('utf-8')).hexdigest()
 
 
+def is_valid_fetch_result(data):
+    """Only non-empty fetch results may trigger downstream updates."""
+    if not isinstance(data, dict):
+        return False
+    try:
+        return int(data.get('NUM', 0) or 0) > 0
+    except (TypeError, ValueError):
+        return False
+
+
+def should_update_visits(before_hash, current_data):
+    """Do not refresh visits.json when an upstream failure produced empty data."""
+    return (
+        is_valid_fetch_result(current_data)
+        and before_hash != current_data.get('HASH')
+    )
+
+
 def _parse_time_windows(time_text):
     windows = []
     for segment in str(time_text or '').split(';'):
@@ -981,12 +999,15 @@ if __name__ == '__main__':
     dataDict = fetch()
     after_hash = dataDict.get("HASH", None)
     after_hash_notam = dataDict.get('HASH_NOTAM', None)
+    fetch_result_valid = is_valid_fetch_result(dataDict)
 
-    if before_hash != after_hash:
+    if should_update_visits(before_hash, dataDict):
         update_visits()
         print('检测到数据变化，已执行 update_visits')
 
-    if before_hash_notam != after_hash_notam:
+    if not fetch_result_valid:
+        print('本次抓取结果为空，视为上游异常，已跳过 visits、历史匹配和通知')
+    elif before_hash_notam != after_hash_notam:
         current_notam = filter_data_by_source(dataDict, {'NOTAM'})
         previous_notam = filter_data_by_source(previous_data, {'NOTAM'})
         notam_match_archive(dataDict=current_notam)
