@@ -41,6 +41,55 @@ NOTAM（Notice to Airmen）是用于提示飞行活动风险的航空通告，�
 
 项目启动后会自动抓取数据、生成结构化结果并绘制到地图中。地图侧重展示当前有效和可视化分析所需的信息，而不是保留每条原文的完整格式。若同一事件同时出现在不同来源，系统会优先保留更完整、可解释性更强的字段，并尽量避免被空值或默认值覆盖。
 
+### 数据源配置
+
+数据源由 `config.ini` 的 `[DATA_SOURCES]` 选择。默认继续使用 FAA：
+
+```ini
+[DATA_SOURCES]
+enabled = faa
+```
+
+切换到 DAIP：
+
+```ini
+[DATA_SOURCES]
+enabled = daip
+```
+
+也可以按优先级同时启用多个数据源。相同 `SOURCE + CODE` 的记录会保留先出现的数据源版本：
+
+```ini
+[DATA_SOURCES]
+enabled = faa, daip
+```
+
+`[ICAO] codes` 是所有航空 NOTAM 数据源共用的查询位置列表。当前可选模块为：
+
+- `faa`：FAA NOTAM Search JSON 接口，支持位置查询以及 `freeform_terms` 自由文本查询。
+- `daip`：DAIP Mobile JSON 接口，解析 `group[].notams[].list[]` 中的标准 NOTAM 原文。
+- `dins`：旧 FAA DINS HTML 数据源的兼容适配器。
+- `msi`：现有海事安全信息数据源的兼容适配器。
+
+每个模块负责自己的网络请求和原始响应解析，统一输出 `CODE`、`COORDINATES`、`TIME`、`PLATID`、`RAWMESSAGE`、`ALTITUDE`、`SOURCE`、`FIR`。主流程只负责聚合、区域过滤、有效期过滤、分类和落盘。
+
+DAIP 当前使用的证书链通常不在 Python/Certifi 默认信任库内，因此示例配置为 `verify_ssl = false`。如果运行环境已经安装对应 CA 证书，应改为 `true`；也可以在 `DAIPClient` 中传入受信任 CA 文件路径后再启用校验。
+
+### 数据源目录
+
+```text
+fetch/sources/
+├── base.py          # 统一接口、结果对象和字段结构
+├── common.py        # 各航空数据源共用的 NOTAM 字段解析工具
+├── manager.py       # 读取配置、加载模块、按配置顺序聚合去重
+├── faa/             # FAA 请求、解析和数据源入口
+├── daip/            # DAIP 请求、解析和数据源入口
+├── dins/            # 旧 DINS 兼容适配器
+└── msi/             # MSI 兼容适配器
+```
+
+新增数据源时，实现 `DataSource.fetch()` 并在 `fetch/sources/manager.py` 注册即可；其余业务层不需要修改。
+
 欢迎提交Pull Request或Issue来帮助完善功能和修正问题！<br>
 
 **其他页面**

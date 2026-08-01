@@ -7,17 +7,10 @@ import sys
 from datetime import datetime, timedelta
 
 from fetch.Archive_Notam_Match import notam_match_archive
-from fetch.FNS_NOTAM_SEARCH import FNS_NOTAM_SEARCH
-from fetch.MSI_FETCH import MSI_FETCH
-from fetch.dinsQueryWeb import dinsQueryWeb
 from fetch.mail_draft import generate_change_email_draft
-from fetch.notam_bot import send_notification as bot_send_notification
 from fetch.sendcloud_email import send_email_via_qq_smtp
+from fetch.sources import fetch_enabled_sources
 from fetch.visits import update_visits
-
-dins = False
-FNSs = True
-MSIs = False
 
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 NOTIFY_SEND_LIST_PATH = os.path.join(REPO_ROOT, 'notify_send_list.txt')
@@ -165,7 +158,10 @@ def classify_data(data):
     return classify
 
 
-altitude_regex = re.compile(r'Q\) [A-Z]+?/[A-Z]+?/[IVK\s]*?/[NBOMK\s]*?/[AEWK\s]*?/(\d{3}/\d{3})/')
+altitude_regex = re.compile(
+    r'Q\)\s*[A-Z]+?/[A-Z]+?/[IVK\s]*?/[NBOMK\s]*?/[AEWK\s]*?/(\d{3}/\d{3})/',
+    re.IGNORECASE,
+)
 
 
 def extract_altitude(raw_message_lst):
@@ -684,13 +680,65 @@ EXCLUDE_RECTS = [
     {'lat_min': 40.12,     'lat_max': 42.09,      'lon_min': 89.95,    'lon_max': 96.50},
 ]
 
+
+def coordinates_are_excluded(coord_text):
+    """Apply the existing geographic exclusion rules to one polygon."""
+    points = []
+    for part in str(coord_text or '').split('-'):
+        point = parse_point(part.strip())
+        if point:
+            points.append(point)
+
+    for rect in EXCLUDE_RECTS:
+        if any(point_in_rect(point, rect) for point in points):
+            return True
+
+        corners = [
+            (rect['lat_min'], rect['lon_min']),
+            (rect['lat_min'], rect['lon_max']),
+            (rect['lat_max'], rect['lon_min']),
+            (rect['lat_max'], rect['lon_max']),
+        ]
+        if any(point_in_poly(corner[0], corner[1], points) for corner in corners):
+            return True
+
+        # 保持现有行为：仅检测交点，不据此排除边界穿越的落区。
+        rect_edges = [
+            ((rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max'])),
+            ((rect['lat_min'], rect['lon_max']), (rect['lat_max'], rect['lon_max'])),
+            ((rect['lat_max'], rect['lon_max']), (rect['lat_max'], rect['lon_min'])),
+            ((rect['lat_max'], rect['lon_min']), (rect['lat_min'], rect['lon_min'])),
+        ]
+        for index in range(len(points)):
+            start = points[index]
+            end = points[(index + 1) % len(points)]
+            if any(seg_intersect(start, end, edge[0], edge[1]) for edge in rect_edges):
+                break
+    return False
+
 def load_config():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     config_file = os.path.join(current_dir, 'config.ini')
     config = configparser.ConfigParser()
     if not os.path.exists(config_file):
+        config['DATA_SOURCES'] = {
+            'enabled': 'faa',
+        }
         config['ICAO'] = {
             'codes': 'ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH VVTS WSJC WIIF YMMM WMFC RPHI AYPM AGGG ANAU NFFF KZAK VYYF VCCF VOMF WAAF RJJJ RCAA YBBB VVGL VVHN VVHM RCSP VVHM WIIF ',
+        }
+        config['FAA'] = {
+            'freeform_terms': 'AEROSPACE,AER0SPACE,DNG ZONE',
+            'timeout': '7',
+            'retries': '2',
+            'max_workers': '2',
+            'max_pages': '100',
+        }
+        config['DAIP'] = {
+            'timeout': '15',
+            'verify_ssl': 'false',
+            'radius': '10',
+            'sort': 'Criticality',
         }
         config['SERVER'] = {
             'host': '127.0.0.1',
@@ -709,7 +757,7 @@ def load_config():
         }
         
         with open(config_file, 'w', encoding='utf-8') as f:
-            f.write('# FIR/ICAO配置，填写你需要获取的航警所在的飞行情报区（FIR）代码或机场ICAO代码\n')
+            f.write('# 数据源、查询位置、服务和通知配置\n')
             config.write(f)
     config.read(config_file, encoding='utf-8')
     return config
@@ -797,7 +845,9 @@ def fetch():
     try:
         current_config = load_config()
         current_icao_codes = current_config.get('ICAO', 'codes', fallback=ICAO_CODES)
-    except Exception as e:
+    except Exception as exc:
+        print(f'读取 config.ini 失败，使用启动时配置: {exc}')
+        current_config = config
         current_icao_codes = ICAO_CODES
     fir_candidates = _parse_fir_candidates_from_config(current_icao_codes)
     
@@ -813,110 +863,28 @@ def fetch():
         "CLASSIFY": {},
         "NUM": 0,
     }
-    source_num = 0
-    
-    if dins:
-        dins_data = dinsQueryWeb(current_icao_codes)
-        if dins_data.get("CODE"):
-            source_num += 1
-            dataDict["CODE"].extend(dins_data["CODE"])
-            dataDict["COORDINATES"].extend(dins_data["COORDINATES"])
-            dataDict["TIME"].extend(dins_data["TIME"])
-            dataDict["PLATID"].extend(dins_data["TRANSID"])
-            dataDict["RAWMESSAGE"].extend(dins_data["RAWMESSAGE"])
-            dataDict["SOURCE"].extend(dins_data.get("SOURCE", []) or ['MSI'] * len(dins_data["CODE"]))
-            dataDict["FIR"].extend(dins_data.get("FIR", []) or ['DINS'] * len(dins_data["CODE"]))
-            print(f"爬取来源{source_num}: dinsQueryWeb, 获取 {len(dins_data['CODE'])} 条航警")
-    
-    if FNSs:
-        FNS_data = FNS_NOTAM_SEARCH()
-        if FNS_data.get("CODE"):
-            source_num += 1
-            fns_code = []
-            fns_coord = []
-            fns_time = []
-            fns_id = []
-            fns_raw = []
-            fns_source = []
-            fns_fir = []
-
-            for code, coords_str, t, id, raw, source_type, fir in zip(
-                FNS_data['CODE'],
-                FNS_data['COORDINATES'],
-                FNS_data['TIME'],
-                FNS_data['TRANSID'],
-                FNS_data['RAWMESSAGE'],
-                FNS_data.get('SOURCE', []) or ['NOTAM'] * len(FNS_data['CODE']),
-                FNS_data.get('FIR', []) or [''] * len(FNS_data['CODE'])
-            ):
-                pts = []
-                for part in coords_str.split('-'):
-                    p = parse_point(part.strip())
-                    if p:
-                        pts.append(p)
-                excluded = False
-                for rect in EXCLUDE_RECTS:
-                    #1检查落区顶点是否在矩形内
-                    if any(point_in_rect(p, rect) for p in pts):
-                        excluded = True #True
-                        break
-                    #2检查矩形顶点是否在落区内
-                    corners = [(rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max']),
-                             (rect['lat_max'], rect['lon_min']), (rect['lat_max'], rect['lon_max'])]
-                    if any(point_in_poly(c[0], c[1], pts) for c in corners):
-                        excluded = True #True
-                        break
-                    #3检查边是否相交
-                    rect_edges = [
-                        ((rect['lat_min'], rect['lon_min']), (rect['lat_min'], rect['lon_max'])),
-                        ((rect['lat_min'], rect['lon_max']), (rect['lat_max'], rect['lon_max'])),
-                        ((rect['lat_max'], rect['lon_max']), (rect['lat_max'], rect['lon_min'])),
-                        ((rect['lat_max'], rect['lon_min']), (rect['lat_min'], rect['lon_min'])),
-                    ]
-                    found_intersect = False
-                    for i in range(len(pts)):
-                        a = pts[i]; b = pts[(i+1)%len(pts)]
-                        for edge in rect_edges:
-                            if seg_intersect(a, b, edge[0], edge[1]):
-                                excluded = False #True
-                                found_intersect = True
-                                break
-                        if found_intersect:
-                            break
-                    if excluded:
-                        break
-                            
-                if not excluded:
-                    fns_code.append(code)
-                    fns_coord.append(coords_str)
-                    fns_time.append(t)
-                    fns_id.append(id)
-                    fns_raw.append(raw)
-                    fns_source.append(source_type)
-                    fns_fir.append(fir)
-
-            if fns_code:
-                dataDict["CODE"].extend(fns_code)
-                dataDict["COORDINATES"].extend(fns_coord)
-                dataDict["TIME"].extend(fns_time)
-                dataDict["PLATID"].extend(fns_id)
-                dataDict["RAWMESSAGE"].extend(fns_raw)
-                dataDict["SOURCE"].extend(fns_source)
-                dataDict["FIR"].extend(fns_fir)
-            print(f"爬取来源{source_num}: FNS_NOTAM_SEARCH, 获取 {len(fns_code)} 条航警")
-
-    if MSIs:
-        msi_data = MSI_FETCH()
-        if msi_data.get('CODE'):
-            source_num += 1
-            dataDict['CODE'].extend(msi_data.get('CODE', []))
-            dataDict['COORDINATES'].extend(msi_data.get('COORDINATES', []))
-            dataDict['TIME'].extend(msi_data.get('TIME', []))
-            dataDict['PLATID'].extend(msi_data.get('TRANSID', []))
-            dataDict['RAWMESSAGE'].extend(msi_data.get('RAWMESSAGE', []))
-            dataDict['SOURCE'].extend(msi_data.get('SOURCE', []) or ['MSI'] * len(msi_data.get('CODE', [])))
-            dataDict['FIR'].extend(msi_data.get('FIR', []) or ['UNKNOWN'] * len(msi_data.get('CODE', [])))
-            print(f"爬取来源{source_num}: MSI_FETCH, 获取 {len(msi_data.get('CODE', []))} 条航警")
+    source_batch = fetch_enabled_sources(current_config)
+    source_data = source_batch.data
+    for code, coordinates, time_value, platid, raw, altitude, source_type, fir in zip(
+        source_data['CODE'],
+        source_data['COORDINATES'],
+        source_data['TIME'],
+        source_data['PLATID'],
+        source_data['RAWMESSAGE'],
+        source_data['ALTITUDE'],
+        source_data['SOURCE'],
+        source_data['FIR'],
+    ):
+        if str(source_type).upper().startswith('NOTAM') and coordinates_are_excluded(coordinates):
+            continue
+        dataDict['CODE'].append(code)
+        dataDict['COORDINATES'].append(coordinates)
+        dataDict['TIME'].append(time_value)
+        dataDict['PLATID'].append(platid)
+        dataDict['RAWMESSAGE'].append(raw)
+        dataDict['ALTITUDE'].append(altitude)
+        dataDict['SOURCE'].append(source_type)
+        dataDict['FIR'].append(fir)
 
     backfill_fir_from_text(dataDict, fir_candidates)
     harmonize_fir_by_platid(dataDict)

@@ -39,6 +39,32 @@ In this example, “A1690/23” is the NOTAM serial number, the sequence of coor
 
 After startup, the project automatically fetches data, generates structured results, and renders them on the map. The map focuses on information needed for current visibility and analysis rather than preserving every original notice in full. When the same event appears from multiple sources, the system keeps the most complete and interpretable fields and tries to avoid being overwritten by empty or default values.
 
+### Data-source selection
+
+Select providers in `config.ini`. FAA remains the default:
+
+```ini
+[DATA_SOURCES]
+enabled = faa
+```
+
+Use `enabled = daip` for DAIP, or `enabled = faa, daip` to aggregate both in priority order. Duplicate records with the same `SOURCE + CODE` keep the version from the first configured provider. `[ICAO] codes` supplies the shared location list.
+
+Available providers are `faa`, `daip`, `dins` (legacy adapter), and `msi` (legacy adapter). Provider-specific request and parsing code lives under `fetch/sources/<provider>/`. Every provider emits the same normalized fields, while `main.py` only performs aggregation, filtering, classification, and persistence.
+
+The DAIP certificate chain is commonly absent from Python/Certifi's default trust store, so the sample configuration uses `verify_ssl = false`. Set it to `true` when the corresponding CA certificates are installed in the runtime environment.
+
+```text
+fetch/sources/
+├── base.py
+├── common.py
+├── manager.py
+├── faa/
+├── daip/
+├── dins/
+└── msi/
+```
+
 If you find a bug or want to improve the project, feel free to open an Issue or Pull Request.
 
 **Other Pages**
