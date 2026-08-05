@@ -1,16 +1,15 @@
 """
 NOTAM QQ Bot 通知模块。
-职责：接收邮件草稿 payload，提取图片与摘要，上传图床，
-      将图文消息通过 HTTP POST 发送到外部 QQbotServer 代为发送。
-      （避免 GitHub Actions IP 不在 QQ 机器人白名单的问题）
+职责：接收邮件草稿 payload，提取图片与摘要，将图片 base64 编码后
+      通过 HTTP POST 直接传给 QQbotServer，由服务器代为发送。
+      （避免图床失效 + GitHub Actions IP 不在 QQ 白名单的问题）
 """
+import base64
 import json
 import os
 from datetime import datetime
 
 import requests
-
-from fetch.image_hosting import upload_image
 
 # ── 配置 ──────────────────────────────────────────────────────
 QQ_BOT_SERVER_IP = os.getenv('QQ_BOT_SERVER_IP', '0.0.0.0').strip()
@@ -43,7 +42,7 @@ def _build_message_text(email_draft: dict) -> str:
 def send_notification(email_draft: dict) -> bool:
     """
     主入口：根据邮件草稿发送 QQ Bot 通知。
-    流程：存临时图片 → 图床上传 → HTTP POST → 删除临时文件。
+    流程：提取图片 → base64 编码 → HTTP POST → 服务器保存并代为发送。
     """
     if not QQBOT_ENABLED:
         print('[notam_bot] QQBOT_ENABLED=false，跳过')
@@ -60,43 +59,23 @@ def send_notification(email_draft: dict) -> bool:
     if not image_bytes:
         print('[notam_bot] 邮件草稿中无图片，仅发送文本')
 
-    # 2. 存临时文件
-    temp_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'temp')
-    os.makedirs(temp_dir, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    temp_png = os.path.abspath(os.path.join(temp_dir, f'notam_{timestamp}.png'))
-
+    # 2. base64 编码图片
+    image_base64 = ''
     if image_bytes:
-        try:
-            with open(temp_png, 'wb') as f:
-                f.write(image_bytes)
-            print(f'[notam_bot] 临时图片已保存: {temp_png}')
-        except Exception as e:
-            print(f'[notam_bot] 保存临时图片失败: {e}')
-            temp_png = None
+        image_base64 = base64.b64encode(image_bytes).decode('ascii')
+        print(f'[notam_bot] 图片已 base64 编码: {len(image_base64)} 字符')
 
-    # 3. 上传图床（重试 2 次）
-    image_url = None
-    if image_bytes:
-        print('[notam_bot] 上传图片至图床...')
-        for attempt in range(2):
-            image_url = upload_image(image_bytes)
-            if image_url:
-                print(f'[notam_bot] 图床上传成功: {image_url}')
-                break
-            print(f'[notam_bot] 图床上传第 {attempt+1} 次失败，{"重试" if attempt==0 else "放弃"}')
-
-    # 4. 构建消息内容
+    # 3. 构建消息内容
     message_text = _build_message_text(email_draft)
 
-    # 5. HTTP POST 到外部 QQbotServer
+    # 4. HTTP POST 到外部 QQbotServer
     server_url = f'http://{QQ_BOT_SERVER_IP}:{QQ_BOT_SERVER_PORT}/send_notification'
     payload = {
         'text': message_text,
-        'image_url': image_url or '',
+        'image_base64': image_base64,
     }
     print(f'[notam_bot] 转发消息到 QQbotServer: {server_url}')
-    print(f'[notam_bot] 消息长度: text={len(message_text)}, image_url={bool(image_url)}')
+    print(f'[notam_bot] 消息长度: text={len(message_text)}, image={bool(image_base64)}')
 
     try:
         resp = requests.post(server_url, json=payload, timeout=120)
@@ -116,14 +95,6 @@ def send_notification(email_draft: dict) -> bool:
     except Exception as e:
         print(f'[notam_bot] 请求 QQbotServer 异常: {e}')
         ok = False
-
-    # 6. 清理临时文件
-    if temp_png and os.path.exists(temp_png):
-        try:
-            os.remove(temp_png)
-            print(f'[notam_bot] 临时图片已删除: {temp_png}')
-        except Exception as e:
-            print(f'[notam_bot] 删除临时图片失败: {e}')
 
     return ok
 
