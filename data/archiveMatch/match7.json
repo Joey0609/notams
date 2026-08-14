@@ -1,0 +1,74 @@
+[
+    {
+        "CODE": "F3698/22",
+        "COORDINATES": "S621200E1630000-S624020E1630000-S623300E1623336-S621200E1630000",
+        "TIME": "27 NOV 15:00 2022 UNTIL 30 NOV 17:30 2022",
+        "PLATID": "66933534",
+        "RAWMESSAGE": "F3698/22 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/6224S16254E040\nA) YMMM\nB) 2211271500 C) 2211301730\nD) DAILY 1500/1730\nE) ROCKET LAUNCH FROM RUSSIA WILL TAKE PLACE\nFLW RECEIVED FROM GOVERNMENT OF RUSSIA: THE RUSSIAN AEROSPACE FORCES\nPLAN TO LAUNCH MISSILE AND TO SINK ITS FRAGMENTS IN THE WATERS OF THE\nOCEAN.\nCHARACTERISTICS OF IMPACT AREA:\n621200S 1630000E\n624020S 1630000E\n623300S 1623336E\n621200S 1630000E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2022-11.json",
+        "source_index": 11,
+        "classify_key": "c195407367",
+        "points": [
+            [
+                -62.2,
+                163.0
+            ],
+            [
+                -62.67222222222222,
+                163.0
+            ],
+            [
+                -62.55,
+                162.56
+            ],
+            [
+                -62.2,
+                163.0
+            ]
+        ],
+        "Overlapping_Area": 84.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "F3488/25",
+        "COORDINATES": "S623300E1623336-S620900E1630000-S624200E1630000-S623300E1623336-S623300E1623336",
+        "TIME": "13 SEP 02:30 2025 UNTIL 14 SEP 03:30 2025",
+        "PLATID": "77875204",
+        "RAWMESSAGE": "F3488/25 NOTAMN\nQ) YMMM/QWMLW/IV/BO/W/000/999/6229S16250E020\nA) YMMM\nB) 2509130230 C) 2509140330\nD) DAILY 0230-0330\nE) RUSSIA AEROSPACE ACTIVITIES WILL TAKE PLACE\nFLW ADVICE FROM STATE ATM CORPORATION OF RUSSIA: \nAEROSPACE FLIGHT ACTIVITIES, POSSIBILE DEBRIS IN THE FOLLOWING AREA:\n623300S 1623336E - 620900S 1630000E - 624200S 1630000E - \n623300S 1623336E - 623300S 1623336E\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-09.json",
+        "source_index": 36,
+        "classify_key": "c2471593",
+        "points": [
+            [
+                -62.55,
+                162.56
+            ],
+            [
+                -62.15,
+                163.0
+            ],
+            [
+                -62.7,
+                163.0
+            ],
+            [
+                -62.55,
+                162.56
+            ],
+            [
+                -62.55,
+                162.56
+            ]
+        ],
+        "Overlapping_Area": 72.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    }
+]
