@@ -19,6 +19,8 @@ concurrency:
 jobs:
   update-notam:
     runs-on: ubuntu-latest
+    outputs:
+      has_generated_changes: ${{ steps.commit.outputs.has_generated_changes }}
     env:
       NOTAM_SMTP_USER: ${{ secrets.NOTAM_SMTP_USER }}
       NOTAM_SMTP_AUTH_CODE: ${{ secrets.NOTAM_SMTP_AUTH_CODE }}
@@ -49,15 +51,24 @@ jobs:
           python3 main.py
 
       - name: Commit and push changes
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Auto update NOTAM list" || echo "No changes to commit"
+          git add --all
+          if git diff --staged --quiet; then
+            echo "has_generated_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No generated changes; skip commit and Pages deployment."
+            exit 0
+          fi
+          echo "has_generated_changes=true" >> "$GITHUB_OUTPUT"
+          git commit -m "Auto update NOTAM list"
           git push
 
   deploy:
     needs: update-notam
+    # 定时/手动抓取仅在 main.py 实际写入文件后部署；用户手动 push 仍可部署站点代码。
+    if: needs.update-notam.outputs.has_generated_changes == 'true' || github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -65,6 +76,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # update-notam 可能刚刚提交数据；部署必须读取远端 main 的最新提交。
+          ref: main
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
