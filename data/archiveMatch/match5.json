@@ -1,0 +1,67 @@
+[
+    {
+        "CODE": "A2794/23",
+        "COORDINATES": "N461510E1221940-N460729E1225215-N441802E1220642-N442610E1213127",
+        "TIME": "17 SEP 00:00 2023 UNTIL 17 SEP 09:00 2023",
+        "PLATID": "69650828",
+        "RAWMESSAGE": "A2794/23 NOTAMN\nQ) ZYSH/QRTCA/IV/BO/W/000/999/4516N12213E059\nA) ZYSH B) 2309170000 C) 2309170900 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\nN461510E1221940-N460729E1225215-N441802E1220642-N442610E1213127,BAC\nK TO START. \nVERTICAL LIMITS: GND-UNL.\nF) GND G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-09.json",
+        "source_index": 12,
+        "classify_key": "c163142641",
+        "points": [
+            [
+                46.25277777777778,
+                122.32777777777777
+            ],
+            [
+                46.124722222222225,
+                122.87083333333332
+            ],
+            [
+                44.300555555555555,
+                122.11166666666666
+            ],
+            [
+                44.43611111111111,
+                121.52416666666666
+            ]
+        ],
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 236.4,
+        "RelatedItems": [
+            {
+                "CODE": "A2795/23",
+                "COORDINATES": "N395740E1240810-N391822E1234127-N392745E1232230-N400501E1235143",
+                "TIME": "17 SEP 00:00 2023 UNTIL 17 SEP 09:00 2023",
+                "PLATID": "69650832",
+                "RAWMESSAGE": "A2795/23 NOTAMN\nQ) ZYSH/QRTCA/IV/BO/W/000/999/3941N12346E024\nA) ZYSH B) 2309170000 C) 2309170900 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\nN395740E1240810-N391822E1234127-N392745E1232230-N400501E1235143,BAC\nK TO START. \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-09.json",
+                "source_index": 13,
+                "GroupKey": "c163142641",
+                "IsSameGroup": true,
+                "parent_index": 5
+            },
+            {
+                "CODE": "A2796/23",
+                "COORDINATES": "N411030E1212249-N405816E1214756-N403330E1211850-N393321E1205140-N375920E1195740-N381105E1185755-N385430E1190202-N395100E1193900-N404611E1205442",
+                "TIME": "17 SEP 00:00 2023 UNTIL 17 SEP 09:00 2023",
+                "PLATID": "69650834",
+                "RAWMESSAGE": "A2796/23 NOTAMN\nQ) ZXXX/QRTCA/IV/BO/W/000/999/3934N12022E107\nA) ZBPE ZYSH ZSHA B) 2309170000 C) 2309170900 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\nN411030E1212249-N405816E1214756-N403330E1211850-N393321E1205140-N37\n5920E1195740-N381105E1185755-N385430E1190202-N395100E1193900-N40461\n1E1205442,BACK TO START. \nVERTICAL LIMITS: SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-09.json",
+                "source_index": 14,
+                "GroupKey": "c163142641",
+                "IsSameGroup": true,
+                "parent_index": 5
+            }
+        ]
+    }
+]
