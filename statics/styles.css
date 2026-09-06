@@ -1,4 +1,120 @@
-/* Leaflet地图样式 */
+/* 临时暂停服务弹窗：地图仍保持可见，仅覆盖交互界面 */
+.site-pause-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .35s ease, visibility .35s ease;
+    overflow: hidden;
+}
+.site-pause-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.site-pause-card {
+    position: relative;
+    z-index: 2;
+    width: min(620px, 100%);
+    box-sizing: border-box;
+    padding: 42px clamp(24px, 6vw, 64px) 34px;
+    text-align: center;
+    color: #26364a;
+    border: 1px solid rgba(72, 112, 152, .2);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, .96);
+    box-shadow: 0 24px 80px rgba(69, 96, 125, .2), inset 0 1px 0 rgba(255,255,255,.9);
+    animation: sitePauseCardIn .65s cubic-bezier(.2,.75,.25,1) both;
+}
+.site-pause-icon {
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 20px;
+    border-radius: 24px;
+    color: #4a83b5;
+    font-size: 46px;
+    line-height: 1;
+    background: linear-gradient(135deg, #e2f3ff, #e8e4ff);
+    box-shadow: 0 12px 30px rgba(102, 145, 184, .18), inset 0 1px 0 rgba(255,255,255,.95);
+    animation: sitePauseFloat 4s ease-in-out infinite;
+}
+.site-pause-kicker {
+    margin: 0 0 10px;
+    color: #6698bf;
+    font: 700 11px/1.2 Arial, sans-serif;
+    letter-spacing: .24em;
+}
+.site-pause-card h1 {
+    margin: 0 0 18px;
+    color: #26364a;
+    font-size: clamp(25px, 4vw, 36px);
+    letter-spacing: .04em;
+}
+.site-pause-message {
+    margin: 0 auto;
+    max-width: 520px;
+    color: #5c6f82;
+    font-size: clamp(14px, 2vw, 16px);
+    line-height: 2;
+}
+.site-pause-recovery {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 26px auto 0;
+    padding: 12px 22px;
+    border: 1px solid rgba(102, 152, 191, .25);
+    border-radius: 14px;
+    background: #f5f9fc;
+}
+.site-pause-recovery span {
+    color: #7b8d9d;
+    font-size: 12px;
+}
+.site-pause-recovery strong {
+    color: #3975a5;
+    font-size: 18px;
+    letter-spacing: .04em;
+}
+.site-pause-line {
+    width: 54px;
+    height: 3px;
+    margin: 28px auto 16px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #65b9e8, #9587dc);
+}
+.site-pause-thanks {
+    margin: 0;
+    color: #8493a0;
+    font-size: 13px;
+}
+@keyframes sitePauseCardIn { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes sitePauseFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) {
+    .site-pause-card, .site-pause-icon { animation: none; }
+    .site-pause-overlay { transition: none; }
+}
+@media (max-width: 600px) {
+    .site-pause-overlay { padding: 16px; }
+    .site-pause-card { padding: 32px 20px 28px; border-radius: 22px; }
+    .site-pause-icon { width: 64px; height: 64px; margin-bottom: 16px; border-radius: 20px; font-size: 38px; }
+    .site-pause-message { line-height: 1.85; }
+    .site-pause-recovery strong { font-size: 16px; }
+}
+
+
 body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";z-index:1;}
 /* Leaflet popup自定义样式 */
 .leaflet-popup-content-wrapper {border-radius: 8px;}

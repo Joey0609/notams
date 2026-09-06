@@ -14,6 +14,17 @@
 </head>
 
 <body>
+    <div id="sitePauseOverlay" class="site-pause-overlay" role="status" aria-live="polite" aria-labelledby="sitePauseTitle">
+        <main class="site-pause-card">
+            <div class="site-pause-icon" aria-hidden="true"><span>⌁</span></div>
+            <p class="site-pause-kicker">SERVICE PAUSED</p>
+            <h1 id="sitePauseTitle">本站暂时暂停服务</h1>
+            <p class="site-pause-message" data-pause-message></p>
+            <div class="site-pause-recovery"><span>计划恢复访问</span><strong data-pause-date></strong></div>
+            <div class="site-pause-line" aria-hidden="true"></div>
+            <p class="site-pause-thanks">感谢您的理解与支持</p>
+        </main>
+    </div>
     <div class="smoke">
         <div id="allmap" class="div1"></div>
 
@@ -206,6 +217,7 @@
             </div>
         </div>
     </div>
+    <script src="scripts/sitePause.js"></script>
     <script src="scripts/notamsDrawer.js"></script>
     <script src="scripts/browserConsoleLog.js"></script>
     <script src="scripts/buttons.js"></script>

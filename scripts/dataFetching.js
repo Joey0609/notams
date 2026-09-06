@@ -61,21 +61,23 @@ function normalizeDataPayload(raw) {
     return merged;
 }
 
-// 页面加载即获取一次
-loadingModal.style.display = 'block';
-fetch('data_dict.json', { cache: 'no-cache' })
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(data => {
-        dict = normalizeDataPayload(data);
-        assignGroupColors(dict.CLASSIFY || {});
-        drawAllAutoNotams();
-        updateSidebar();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("获取航警失败，可能是网络问题或当前无相关航警。手动输入功能仍可使用。");
-    })
-    .finally(() => loadingModal.style.display = 'none');
+// 页面加载即获取一次；维护期间不请求 data_dict.json
+if (!isSitePaused()) {
+    loadingModal.style.display = 'block';
+    fetch('data_dict.json', { cache: 'no-cache' })
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(data => {
+            dict = normalizeDataPayload(data);
+            assignGroupColors(dict.CLASSIFY || {});
+            drawAllAutoNotams();
+            updateSidebar();
+        })
+        .catch(err => {
+            console.error(err);
+            alert("获取航警失败，可能是网络问题或当前无相关航警。手动输入功能仍可使用。");
+        })
+        .finally(() => loadingModal.style.display = 'none');
+}
 
 let dict = null;
 
@@ -114,6 +116,10 @@ function clearAllPolygons() {
 
 // 重新获取（按钮已移除，这里保留函数供以后可能使用）
 function refetchData() {
+    if (isSitePaused()) {
+        showSitePausePage();
+        return;
+    }
     loadingModal.style.display = 'block';
     fetch('data_dict.json', { cache: 'no-cache' })
         .then(r => r.json())

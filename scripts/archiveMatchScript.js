@@ -42,6 +42,7 @@ function parseCoordinatesToLatLngs(coordStr) {
 
 // 页面加载
 window.addEventListener('DOMContentLoaded', function() {
+    if (isSitePaused()) return;
     matchIndex = parseInt(getUrlParameter('index')) || 0;
     loadMatchData(matchIndex);
 });
@@ -104,6 +105,10 @@ window.getBaseLatLngsFromLayer = getBaseLatLngsFromLayer;
 
 // 加载匹配数据
 function loadMatchData(index) {
+    if (isSitePaused()) {
+        showSitePausePage();
+        return;
+    }
     const loadingModal = document.getElementById('loadingModal');
     if (loadingModal) loadingModal.style.display = 'block';
     

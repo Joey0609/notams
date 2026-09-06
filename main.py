@@ -274,6 +274,44 @@ def count_new_notams_for_mail(previous_data, current_data, notified_numbers=None
     return len(get_new_notams_for_notification(previous_data, current_data, notified_numbers))
 
 
+def get_removed_notams_for_notification(previous_data, current_data, now=None, lead_minutes=60):
+    """Return removed NOTAMs deleted at least lead_minutes before their start."""
+    current_ids = {
+        str(value)
+        for value in (current_data.get('PLATID', []) if isinstance(current_data, dict) else [])
+    }
+    previous_codes = previous_data.get('CODE', []) if isinstance(previous_data, dict) else []
+    previous_times = previous_data.get('TIME', []) if isinstance(previous_data, dict) else []
+    previous_coords = previous_data.get('COORDINATES', []) if isinstance(previous_data, dict) else []
+    previous_ids = previous_data.get('PLATID', []) if isinstance(previous_data, dict) else []
+    check_time = now or datetime.utcnow()
+    threshold = timedelta(minutes=lead_minutes)
+
+    pending = []
+    for idx, platid in enumerate(previous_ids):
+        pid = str(platid)
+        if pid in current_ids:
+            continue
+        coord = previous_coords[idx] if idx < len(previous_coords) else ''
+        if not coordinates_has_lon_in_range(coord, 70.0, 180.0):
+            continue
+        time_text = previous_times[idx] if idx < len(previous_times) else ''
+        windows = _parse_time_windows(time_text)
+        if not windows:
+            continue
+        earliest_start = min(start for start, _ in windows)
+        if check_time <= earliest_start - threshold:
+            pending.append({
+                'PLATID': pid,
+                'CODE': str(previous_codes[idx]) if idx < len(previous_codes) else '',
+            })
+    return pending
+
+
+def count_removed_notams_for_notification(previous_data, current_data, now=None, lead_minutes=60):
+    return len(get_removed_notams_for_notification(previous_data, current_data, now, lead_minutes))
+
+
 def filter_data_by_source(data, include_sources):
     include_sources = set(include_sources or [])
     if not isinstance(data, dict):
@@ -378,6 +416,18 @@ def build_notification_current_data(previous_data, current_data, pending_platids
     return filter_data_by_platids(current_data, previous_ids | set(str(x) for x in pending_platids))
 
 
+def build_notification_previous_data(previous_data, current_data, removed_platids):
+    """Keep current records and only deletion records eligible for notification."""
+    current_ids = {
+        str(value)
+        for value in (current_data.get('PLATID', []) if isinstance(current_data, dict) else [])
+    }
+    return filter_data_by_platids(
+        previous_data,
+        current_ids | set(str(value) for value in (removed_platids or [])),
+    )
+
+
 def compute_data_hash(data, include_sources=None):
     if not isinstance(data, dict):
         return ''
@@ -409,9 +459,11 @@ def compute_data_hash(data, include_sources=None):
 
 
 def is_valid_fetch_result(data):
-    """Only non-empty fetch results may trigger downstream updates."""
+    """Only complete fetches may trigger downstream updates."""
     if not isinstance(data, dict):
         return False
+    if 'FETCH_VALID' in data:
+        return data.get('FETCH_VALID') is True
     try:
         return int(data.get('NUM', 0) or 0) > 0
     except (TypeError, ValueError):
@@ -427,20 +479,32 @@ def should_update_visits(before_hash, current_data):
 
 
 def _parse_time_windows(time_text):
+    """Parse NOTAM UTC windows, tolerating case and extra whitespace."""
     windows = []
     for segment in str(time_text or '').split(';'):
         segment = segment.strip()
-        if not segment or ' UNTIL ' not in segment:
+        match = re.fullmatch(
+            r'(\d{1,2})\s+([A-Za-z]{3})\s+(\d{2}:\d{2})\s+(\d{4})\s+UNTIL\s+'
+            r'(\d{1,2})\s+([A-Za-z]{3})\s+(\d{2}:\d{2})\s+(\d{4})',
+            segment,
+            flags=re.IGNORECASE,
+        )
+        if not match:
             continue
-        parts = segment.split(' UNTIL ', 1)
-        if len(parts) != 2:
-            continue
+        start_day, start_mon, start_time, start_year, end_day, end_mon, end_time, end_year = match.groups()
         try:
-            start = datetime.strptime(parts[0].strip(), "%d %b %H:%M %Y")
-            end = datetime.strptime(parts[1].strip(), "%d %b %H:%M %Y")
-        except Exception:
+            start = datetime.strptime(
+                f'{start_day} {start_mon.upper()} {start_time} {start_year}',
+                "%d %b %H:%M %Y",
+            )
+            end = datetime.strptime(
+                f'{end_day} {end_mon.upper()} {end_time} {end_year}',
+                "%d %b %H:%M %Y",
+            )
+        except (TypeError, ValueError):
             continue
-        windows.append((start, end))
+        if end > start:
+            windows.append((start, end))
     return windows
 
 
@@ -939,16 +1003,20 @@ def fetch():
     dataDict["MSI_DATA"] = msi_data
 
     print(dataDict)
-    # 保护：如果本次抓取全部为空，不覆盖文件（应对上游服务临时故障）
-    if dataDict["NUM"] == 0 and os.path.exists('data_dict.json'):
+    fetch_complete = bool(source_batch.results) and all(
+        result.success for result in source_batch.results
+    )
+    # 任一上游失败时保留完整旧快照，避免部分数据源缺失被误判为批量删除。
+    if not fetch_complete and os.path.exists('data_dict.json'):
         try:
             with open('data_dict.json', 'r', encoding='utf-8') as f:
                 existing = json.load(f)
             if existing.get('NUM', 0) > 0:
-                print("抓取结果为空但已有有效数据，跳过覆盖（防止上游临时故障导致数据清空）")
-                return dataDict
+                print("部分数据源获取失败，跳过覆盖（防止部分快照触发误删除通知）")
+                return existing
         except Exception:
             pass
+    dataDict['FETCH_VALID'] = fetch_complete
     with open('data_dict.json', 'w', encoding='utf-8') as json_file:
         json.dump(dataDict, json_file, ensure_ascii=False, indent=4)
     return dataDict
@@ -986,21 +1054,31 @@ if __name__ == '__main__':
         pending_platids = [item['PLATID'] for item in pending_notams]
         pending_codes = [item['CODE'] for item in pending_notams]
         added_count = len(pending_notams)
+        removed_notams = get_removed_notams_for_notification(
+            previous_notam, current_notam, now=datetime.utcnow(), lead_minutes=60
+        )
+        removed_platids = [item['PLATID'] for item in removed_notams]
+        removed_count = len(removed_notams)
+        notification_previous = build_notification_previous_data(
+            previous_notam, current_notam, removed_platids
+        )
         notification_current = build_notification_current_data(
             previous_notam, current_notam, pending_platids
         )
         email_draft = None
-        if MAIL_ENABLED and added_count > 0:
+        if MAIL_ENABLED and (added_count > 0 or removed_count > 0):
             try:
-                email_draft = generate_change_email_draft(previous_notam, notification_current)
+                email_draft = generate_change_email_draft(
+                    notification_previous, notification_current
+                )
                 send_result = send_email_via_qq_smtp(get_mail_config(), email_draft)
                 print(f"邮件发送成功: {send_result}")
                 recorded_count = record_notified_notam_numbers(pending_codes)
-                print(f"已记录 {recorded_count} 个通过邮件发送的航警编号")
+                print(f"已记录 {recorded_count} 个通过邮件发送的新增航警编号")
             except Exception as exc:
                 print(f"邮件发送失败: {exc}")
         elif MAIL_ENABLED:
-            print('无未发送过且符合经度范围(70~180)的新增航警，已跳过邮件发送')
+            print('无符合条件的新增航警，且无删除时间早于开始时间60分钟的航警，已跳过邮件发送')
         else:
             print('MAIL.enabled=false，已跳过邮件发送')
         # QQ Bot 通知独立于邮件发送
