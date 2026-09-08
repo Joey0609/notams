@@ -287,8 +287,45 @@
         }, 500);
     }
 
+    function addUniqueCandidate(latlng, candidates, seen) {
+        if (!latlng || !Number.isFinite(latlng.lat) || !Number.isFinite(latlng.lng)) {
+            return;
+        }
+
+        const key = latlng.lat + ',' + latlng.lng;
+        if (seen.has(key)) return;
+        seen.add(key);
+        candidates.push(latlng);
+    }
+
+    function isVisibleLayer(layer) {
+        if (!map || typeof map.hasLayer !== 'function') return false;
+        return map.hasLayer(layer) || layer._map === map;
+    }
+
+    function collectMarkerLatLngs(layer, candidates, seen) {
+        if (!layer) return;
+
+        if (Array.isArray(layer)) {
+            layer.forEach((item) => collectMarkerLatLngs(item, candidates, seen));
+            return;
+        }
+
+        if (typeof layer.getLatLng === 'function') {
+            if (isVisibleLayer(layer)) {
+                addUniqueCandidate(layer.getLatLng(), candidates, seen);
+            }
+            return;
+        }
+
+        if (typeof layer.eachLayer === 'function' && isVisibleLayer(layer)) {
+            layer.eachLayer((child) => collectMarkerLatLngs(child, candidates, seen));
+        }
+    }
+
     function getSnapCandidates() {
         const candidates = [];
+        const seen = new Set();
 
         const markerGroups = [
             window.launchSiteMarkers || [],
@@ -296,11 +333,7 @@
         ];
 
         markerGroups.forEach((group) => {
-            group.forEach((mk) => {
-                if (mk && typeof mk.getLatLng === 'function') {
-                    candidates.push(mk.getLatLng());
-                }
-            });
+            collectMarkerLatLngs(group, candidates, seen);
         });
 
         const polygonGroups = [
@@ -310,16 +343,20 @@
         ];
 
         polygonGroups.forEach((group) => {
+            if (!Array.isArray(group)) return;
             group.forEach((poly) => {
-                if (poly && typeof poly.getBounds === 'function') {
-                    candidates.push(poly.getBounds().getCenter());
+                if (poly && typeof poly.getBounds === 'function' && isVisibleLayer(poly)) {
+                    const bounds = poly.getBounds();
+                    if (bounds && typeof bounds.getCenter === 'function') {
+                        addUniqueCandidate(bounds.getCenter(), candidates, seen);
+                    }
                 }
             });
         });
 
         // 测距过程中，允许吸附到已落点（包含起点）。
         for (let i = 0; i < measurePoints.length; i++) {
-            candidates.push(measurePoints[i]);
+            addUniqueCandidate(measurePoints[i], candidates, seen);
         }
 
         return candidates;
@@ -334,6 +371,7 @@
 
         for (let i = 0; i < candidates.length; i++) {
             const cand = candidates[i];
+            if (!cand) continue;
             const candPoint = map.latLngToContainerPoint(cand);
             const pxDist = targetPoint.distanceTo(candPoint);
             if (pxDist <= SNAP_PX && pxDist < bestDist) {
