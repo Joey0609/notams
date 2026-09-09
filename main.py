@@ -10,6 +10,7 @@ from fetch.Archive_Notam_Match import notam_match_archive
 from fetch.mail_draft import generate_change_email_draft
 from fetch.sendcloud_email import send_email_via_qq_smtp
 from fetch.sources import fetch_enabled_sources
+from fetch.sources.common import extract_circle_area
 from fetch.visits import update_visits
 
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -193,6 +194,25 @@ def coordinates_has_lon_in_range(coord_str, lon_min=70.0, lon_max=180.0):
     return False
 
 
+def record_has_lon_in_range(data, index, lon_min=70.0, lon_max=180.0):
+    """Apply notification longitude filtering to polygons and circles."""
+    coordinates = (data.get('COORDINATES', []) or [])
+    coord = coordinates[index] if index < len(coordinates) else ''
+    if coordinates_has_lon_in_range(coord, lon_min, lon_max):
+        return True
+
+    shapes = data.get('SHAPE', []) or []
+    centers = data.get('CENTER', []) or []
+    shape = str(shapes[index] if index < len(shapes) else '').upper()
+    center_text = str(centers[index] if index < len(centers) else '')
+    if shape != 'CIRCLE' or not center_text:
+        raws = data.get('RAWMESSAGE', []) or []
+        circle = extract_circle_area(raws[index] if index < len(raws) else '')
+        center_text = circle[0] if circle else center_text
+    point = parse_point(center_text)
+    return bool(point and lon_min <= point[1] <= lon_max)
+
+
 def normalize_notam_number(value):
     """Normalize a user-visible NOTAM number for notification deduplication."""
     return re.sub(r'\s+', '', str(value or '')).upper()
@@ -247,7 +267,6 @@ def get_new_notams_for_notification(previous_data, current_data, notified_number
     prev_ids = set(str(x) for x in (previous_data.get('PLATID', []) if isinstance(previous_data, dict) else []))
     curr_ids = current_data.get('PLATID', []) if isinstance(current_data, dict) else []
     curr_codes = current_data.get('CODE', []) if isinstance(current_data, dict) else []
-    curr_coords = current_data.get('COORDINATES', []) if isinstance(current_data, dict) else []
     pending_numbers = {
         normalize_notam_number(value) for value in (notified_numbers or [])
     }
@@ -257,8 +276,7 @@ def get_new_notams_for_notification(previous_data, current_data, notified_number
         pid = str(platid)
         if pid in prev_ids:
             continue
-        coord = curr_coords[idx] if idx < len(curr_coords) else ''
-        if not coordinates_has_lon_in_range(coord, 70.0, 180.0):
+        if not record_has_lon_in_range(current_data, idx, 70.0, 180.0):
             continue
         code = str(curr_codes[idx]) if idx < len(curr_codes) else ''
         normalized_code = normalize_notam_number(code)
@@ -282,7 +300,6 @@ def get_removed_notams_for_notification(previous_data, current_data, now=None, l
     }
     previous_codes = previous_data.get('CODE', []) if isinstance(previous_data, dict) else []
     previous_times = previous_data.get('TIME', []) if isinstance(previous_data, dict) else []
-    previous_coords = previous_data.get('COORDINATES', []) if isinstance(previous_data, dict) else []
     previous_ids = previous_data.get('PLATID', []) if isinstance(previous_data, dict) else []
     check_time = now or datetime.utcnow()
     threshold = timedelta(minutes=lead_minutes)
@@ -292,8 +309,7 @@ def get_removed_notams_for_notification(previous_data, current_data, now=None, l
         pid = str(platid)
         if pid in current_ids:
             continue
-        coord = previous_coords[idx] if idx < len(previous_coords) else ''
-        if not coordinates_has_lon_in_range(coord, 70.0, 180.0):
+        if not record_has_lon_in_range(previous_data, idx, 70.0, 180.0):
             continue
         time_text = previous_times[idx] if idx < len(previous_times) else ''
         windows = _parse_time_windows(time_text)
