@@ -38,12 +38,13 @@ function hoverHighlightNotam(idx) {
     
     // 第一次高亮时保存原始样式
     if (!originalPolygonStyles[idx]) {
+        const style = poly.__baseStyle || poly.options || {};
         originalPolygonStyles[idx] = {
-            weight: poly.options.weight || 1,
-            fillOpacity: poly.options.fillOpacity || 0.5,
-            opacity: poly.options.opacity || 1,
-            color: poly.options.color,
-            fillColor: poly.options.fillColor
+            weight: style.weight || 1,
+            fillOpacity: style.fillOpacity ?? 0.5,
+            opacity: style.opacity ?? 1,
+            color: style.color,
+            fillColor: style.fillColor || style.color
         };
     }
     
@@ -392,7 +393,8 @@ function redrawAllNotams() {
             0,
             dict.RAWMESSAGE[i],
             dict.SOURCE?.[i] || 'NOTAM',
-            dict.FIR?.[i] || ''
+            dict.FIR?.[i] || '', dict.SHAPE?.[i] || 'POLYGON', dict.CENTER?.[i] || '',
+            dict.RADIUS?.[i] || '', dict.RADIUS_UNIT?.[i] || ''
         );
         
         if (currentVisibleState[i] === false && polygonAuto[i]) {
@@ -700,8 +702,12 @@ function highlightNotam(index, color) {
 
     try {
         const coordinates = dict.COORDINATES[index];
+        if ((dict.SHAPE?.[index] || 'POLYGON').toUpperCase() === 'CIRCLE') {
+            const center = parseCircleCenter(dict.CENTER?.[index]);
+            const radius = circleRadiusMeters(dict.RADIUS?.[index], dict.RADIUS_UNIT?.[index]);
+            if (center && radius) highlightPolygon = createWrappedCircle(center, radius, { color, weight: 3, opacity: 1, fillColor: color, fillOpacity: 0.6 }).addTo(map);
+        } else {
         const points = parseCoordinatesToPoints(coordinates);
-
         if (points && points.length > 0) {
             highlightPolygon = L.polygon(points, {
                 color: color,
@@ -710,6 +716,7 @@ function highlightNotam(index, color) {
                 fillColor: color,
                 fillOpacity: 0.6
             }).addTo(map);
+        }
         }
     } catch (e) {
         console.error('高亮绘制失败', e);
@@ -726,7 +733,7 @@ function removeHighlight() {
 
 // 解析坐标为Leaflet点
 function parseCoordinatesToPoints(coordStr) {
-    const arr = coordStr.split('-');
+    const arr = String(coordStr || '').split('-');
     const points = [];
 
     for (let i = 0; i < arr.length; i++) {
@@ -737,6 +744,48 @@ function parseCoordinatesToPoints(coordStr) {
     }
 
     return points;
+}
+
+function parseCircleCenter(center) {
+    const point = pullOut(String(center || ''));
+    return point && point.length === 2 && Number.isFinite(point[0]) && Number.isFinite(point[1]) ? [point[1], point[0]] : null;
+}
+
+function circleRadiusMeters(radius, unit) {
+    const value = Number(radius);
+    return Number.isFinite(value) && value > 0 ? value * (String(unit || '').toUpperCase() === 'NM' ? 1852 : 1000) : 0;
+}
+
+function formatCircleCoordinates(center, radius, unit) {
+    return String(center || '') + ' RADIUS ' + String(radius || '') + String(unit || '').toUpperCase();
+}
+
+// Keep circles continuous on the horizontally wrapped map, just like polygons.
+// The small compatibility surface lets existing sidebar/highlight code treat the
+// resulting FeatureGroup as a normal vector layer.
+function createWrappedCircle(center, radiusMeters, options) {
+    const normalizedLng = normalizeLngForWrap(center[1]);
+    const circles = WRAP_WORLD_OFFSETS.map(offset => L.circle([center[0], normalizedLng + offset], { ...options, radius: radiusMeters }));
+    const group = L.featureGroup(circles);
+    group.options = { ...options, radius: radiusMeters };
+    group.__baseStyle = { ...group.options };
+    group.setStyle = function(style) { circles.forEach(circle => circle.setStyle(style)); return group; };
+    group.bringToFront = function() { circles.forEach(circle => circle.bringToFront()); return group; };
+    group.bindPopup = function(content, popupOptions) { circles.forEach(circle => circle.bindPopup(content, popupOptions)); return group; };
+    group.getBounds = function() { return circles[Math.floor(circles.length / 2)].getBounds(); };
+    group.__circleCenter = L.latLng(center[0], normalizedLng);
+    group.__circleRadius = radiusMeters;
+    return group;
+}
+
+function circleGeometryFromRaw(rawmessage) {
+    const text = String(rawmessage || '').toUpperCase().replace(/\s+/g, '');
+    if (!text.includes('CIRCLE')) return null;
+    const center = text.match(/(?:CENTEREDAT|CENTER)([NS]\d{4,6}[WE]\d{5,7}|\d{4,6}[NS]\d{5,7}[WE])/);
+    const radius = text.match(/RADIUS(?:OF)?(?:IS)?(\d+(?:\.\d+)?)(KM|NM)\b/);
+    if (!center || !radius) return null;
+    const normalizedCenter = /^[NS]/.test(center[1]) ? center[1] : center[1].slice(4, 5) + center[1].slice(0, 4) + center[1].slice(-1) + center[1].slice(5, -1);
+    return { center: normalizedCenter, radius: radius[1], unit: radius[2] };
 }
 
 function normalizeLngForWrap(lng) {
@@ -779,8 +828,12 @@ function sortPolygonPoints(latlngs) {
 }
 
 // 绘制NOTAM多边形
-function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, sourceType = 'NOTAM', fir = '') {
-    var pos = COORstrin;
+function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, sourceType = 'NOTAM', fir = '', shape = 'POLYGON', center = '', radius = '', radiusUnit = '') {
+    const rawCircle = circleGeometryFromRaw(rawmessage);
+    if (rawCircle && String(shape).toUpperCase() !== 'CIRCLE') {
+        shape = 'CIRCLE'; center = rawCircle.center; radius = rawCircle.radius; radiusUnit = rawCircle.unit;
+    }
+    var pos = COORstrin || '';
     var timestr = is_self ? null : convertTime(timee);
     var stPos = 0;
     var arr = [];
@@ -806,6 +859,12 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
         }
     }
 
+    if (String(shape).toUpperCase() === 'CIRCLE') {
+        const circleCenter = parseCircleCenter(center);
+        const radiusMeters = circleRadiusMeters(radius, radiusUnit);
+        if (!circleCenter || !radiusMeters) return;
+        var tmpPolygon = createWrappedCircle(circleCenter, radiusMeters, { color: col, weight: 1, opacity: 1, fillColor: col, fillOpacity: 0.5 }).addTo(map);
+    } else {
     if (latlngs.length < 3) return; // 至少需要3个点才能绘制多边形
 
     // 对坐标点排序，确保多边形是凸的或至少是合理的形状
@@ -821,6 +880,7 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
         fillColor: col,
         fillOpacity: 0.5
     }).addTo(map);
+    }
 
     // 创建弹出窗口内容
     var popupContent;
@@ -879,7 +939,7 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
             sourceAndSecondLineRow +
             codeAndDetailRow +
             "<div class='notam-popup-buttons'>" +
-            "<button class='copy copy-coord' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
+            "<button class='copy copy-coord' onclick=\"handleCopy('" + (String(shape).toUpperCase() === 'CIRCLE' ? formatCircleCoordinates(center, radius, radiusUnit) : COORstrin) + "')\">复制坐标</button>" +
             "<button class='copy copy-raw' data-raw-index='" + numm + "'>" + rawLabel + "</button>" +
             "</div>" +
             "</div>";

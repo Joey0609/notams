@@ -6,6 +6,7 @@ from math import radians, cos, sin, asin, sqrt
 from datetime import datetime
 
 from fetch.classify_notam_db import rebuild_notam_db_classify
+from fetch.sources.common import extract_circle_area
 
 def parse_point(pt):
     m = re.match(r'([NS])(\d{4,6})([WE])(\d{5,7})', pt)
@@ -73,6 +74,39 @@ def haversine(lon1, lat1, lon2, lat2):
     r = 6371  # 地球平均半径，单位公里
     return c * r
 
+def _radius_km(notam):
+    value = float(notam.get('RADIUS') or 0)
+    return value * (1.852 if str(notam.get('RADIUS_UNIT', '')).upper() == 'NM' else 1.0)
+
+def _is_circle(notam):
+    return str(notam.get('SHAPE', '')).upper() == 'CIRCLE' and notam.get('center') and _radius_km(notam) > 0
+
+def _hydrate_circle_geometry(notam):
+    """Backfill circle fields for data generated before the circle schema existed."""
+    if str(notam.get('SHAPE', '')).upper() == 'CIRCLE':
+        return
+    circle = extract_circle_area(notam.get('RAWMESSAGE', ''))
+    if not circle:
+        return
+    center, radius, unit = circle
+    notam.update({'SHAPE': 'CIRCLE', 'CENTER': center, 'RADIUS': radius, 'RADIUS_UNIT': unit})
+
+def _point_to_segment_km(point, a, b):
+    # Local equirectangular projection is accurate enough for the 250 km match window.
+    lat0 = radians(point[0]); scale = 111.195
+    px, py = point[1] * cos(lat0) * scale, point[0] * scale
+    ax, ay = a[1] * cos(lat0) * scale, a[0] * scale
+    bx, by = b[1] * cos(lat0) * scale, b[0] * scale
+    dx, dy = bx - ax, by - ay
+    t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy or 1)))
+    return sqrt((px - (ax + t * dx)) ** 2 + (py - (ay + t * dy)) ** 2)
+
+def _circle_polygon_distance(circle, polygon):
+    center = circle['center']
+    if point_in_poly(center[1], center[0], [(p[1], p[0]) for p in polygon]):
+        return 0.0
+    return min(_point_to_segment_km(center, polygon[i], polygon[(i + 1) % len(polygon)]) for i in range(len(polygon)))
+
 # 匹配两条航警
 def match_two_notams(notam1, notam2):
     """
@@ -87,8 +121,19 @@ def match_two_notams(notam1, notam2):
     poly1_orig = notam1.get('points', [])  # 当前航警的点列表
     poly2_orig = notam2.get('points', [])  # 历史航警的点列表
     
+    circle1, circle2 = _is_circle(notam1), _is_circle(notam2)
+    if circle1 and circle2:
+        distance = haversine(notam1['center'][1], notam1['center'][0], notam2['center'][1], notam2['center'][0])
+        overlap = max(0.0, _radius_km(notam1) + _radius_km(notam2) - distance)
+        return (min(1.0, overlap / max(min(_radius_km(notam1), _radius_km(notam2)), 1e-9)), -1.0) if overlap else (0.0, distance)
+    if circle1 and len(poly2_orig) >= 3:
+        distance = _circle_polygon_distance(notam1, poly2_orig)
+        return (1.0, -1.0) if distance <= _radius_km(notam1) else (0.0, distance - _radius_km(notam1))
+    if circle2 and len(poly1_orig) >= 3:
+        distance = _circle_polygon_distance(notam2, poly1_orig)
+        return (1.0, -1.0) if distance <= _radius_km(notam2) else (0.0, distance - _radius_km(notam2))
     if len(poly1_orig) < 3 or len(poly2_orig) < 3:
-        return 0.0, 1000.0  # 无效多边形，不匹配
+        return 0.0, 1000.0
     
     # 1. 计算AABB (Axis-Aligned Bounding Box)
     lats1 = [p[0] for p in poly1_orig]
@@ -244,12 +289,23 @@ def notam_match_archive(dataDict):
                                 "ALTITUDE": db_data['ALTITUDE'][i] if 'ALTITUDE' in db_data and i < len(db_data['ALTITUDE']) else 'None',
                                 "SOURCE": db_data['SOURCE'][i] if 'SOURCE' in db_data and i < len(db_data['SOURCE']) else 'NOTAM',
                                 "FIR": db_data['FIR'][i] if 'FIR' in db_data and i < len(db_data['FIR']) else '',
+                                "SHAPE": db_data.get('SHAPE', ['POLYGON'] * db_data.get('NUM', 0))[i],
+                                "CENTER": db_data.get('CENTER', [''] * db_data.get('NUM', 0))[i],
+                                "RADIUS": db_data.get('RADIUS', [''] * db_data.get('NUM', 0))[i],
+                                "RADIUS_UNIT": db_data.get('RADIUS_UNIT', [''] * db_data.get('NUM', 0))[i],
                                 "source_file": filename,
                                 "source_index": i,
                                 "classify_key": classify_key
                             }
                             # 解析坐标点
                             coords_str = notam['COORDINATES']
+                            _hydrate_circle_geometry(notam)
+                            if _is_circle({**notam, 'center': parse_point(notam['CENTER'])}):
+                                notam['center'] = parse_point(notam['CENTER'])
+                                notam['points'] = []
+                                history_notams.append(notam)
+                                if classify_key: file_group_index.setdefault(classify_key, []).append(notam)
+                                continue
                             pts = []
                             for part in coords_str.split('-'):
                                 p = parse_point(part.strip())
@@ -276,17 +332,24 @@ def notam_match_archive(dataDict):
             "ALTITUDE": dataDict['ALTITUDE'][idx],
             "SOURCE": dataDict['SOURCE'][idx] if 'SOURCE' in dataDict and idx < len(dataDict['SOURCE']) else 'NOTAM',
             "FIR": dataDict['FIR'][idx] if 'FIR' in dataDict and idx < len(dataDict['FIR']) else '',
+            "SHAPE": dataDict.get('SHAPE', ['POLYGON'] * dataDict['NUM'])[idx],
+            "CENTER": dataDict.get('CENTER', [''] * dataDict['NUM'])[idx],
+            "RADIUS": dataDict.get('RADIUS', [''] * dataDict['NUM'])[idx],
+            "RADIUS_UNIT": dataDict.get('RADIUS_UNIT', [''] * dataDict['NUM'])[idx],
         }
         
         # 解析当前航警的坐标点
+        _hydrate_circle_geometry(current_notam)
         pts = []
         for part in current_notam['COORDINATES'].split('-'):
             p = parse_point(part.strip())
             if p:
                 pts.append(p)
         current_notam['points'] = pts
+        if str(current_notam.get('SHAPE', '')).upper() == 'CIRCLE':
+            current_notam['center'] = parse_point(current_notam['CENTER'])
         
-        if len(pts) < 3:
+        if len(pts) < 3 and not _is_circle(current_notam):
             print(f"警告: 航警 {current_notam['CODE']} 坐标点不足3个，跳过匹配")
             continue
         
@@ -320,6 +383,10 @@ def notam_match_archive(dataDict):
                             'ALTITUDE': rel_hist['ALTITUDE'],
                             'SOURCE': rel_hist.get('SOURCE', 'NOTAM'),
                             'FIR': rel_hist.get('FIR', ''),
+                            'SHAPE': rel_hist.get('SHAPE', 'POLYGON'),
+                            'CENTER': rel_hist.get('CENTER', ''),
+                            'RADIUS': rel_hist.get('RADIUS', ''),
+                            'RADIUS_UNIT': rel_hist.get('RADIUS_UNIT', ''),
                             'source_file': rel_hist.get('source_file', ''),
                             'source_index': rel_hist.get('source_index', -1),
                             'GroupKey': hist_group_key,

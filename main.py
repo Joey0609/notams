@@ -317,7 +317,7 @@ def filter_data_by_source(data, include_sources):
     if not isinstance(data, dict):
         return {
             'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [], 'RAWMESSAGE': [],
-            'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'CLASSIFY': {}, 'NUM': 0,
+            'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'SHAPE': [], 'CENTER': [], 'RADIUS': [], 'RADIUS_UNIT': [], 'CLASSIFY': {}, 'NUM': 0,
         }
 
     sources = data.get('SOURCE', []) or []
@@ -338,6 +338,7 @@ def filter_data_by_source(data, include_sources):
         'ALTITUDE': [],
         'SOURCE': [],
         'FIR': [],
+        'SHAPE': [], 'CENTER': [], 'RADIUS': [], 'RADIUS_UNIT': [],
         'CLASSIFY': {},
         'NUM': 0,
     }
@@ -356,6 +357,10 @@ def filter_data_by_source(data, include_sources):
         out['ALTITUDE'].append(altitude_list[i] if i < len(altitude_list) else 'None')
         out['SOURCE'].append(src)
         out['FIR'].append(fir_list[i] if i < len(fir_list) else '')
+        out['SHAPE'].append((data.get('SHAPE', []) or ['POLYGON'])[i] if i < len(data.get('SHAPE', []) or []) else 'POLYGON')
+        out['CENTER'].append((data.get('CENTER', []) or [''])[i] if i < len(data.get('CENTER', []) or []) else '')
+        out['RADIUS'].append((data.get('RADIUS', []) or [''])[i] if i < len(data.get('RADIUS', []) or []) else '')
+        out['RADIUS_UNIT'].append((data.get('RADIUS_UNIT', []) or [''])[i] if i < len(data.get('RADIUS_UNIT', []) or []) else '')
 
     out['NUM'] = len(out['CODE'])
     out['CLASSIFY'] = classify_data(out)
@@ -368,7 +373,7 @@ def filter_data_by_platids(data, include_platids):
     if not isinstance(data, dict) or not include_platids:
         return {
             'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [], 'RAWMESSAGE': [],
-            'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'CLASSIFY': {}, 'NUM': 0,
+            'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'SHAPE': [], 'CENTER': [], 'RADIUS': [], 'RADIUS_UNIT': [], 'CLASSIFY': {}, 'NUM': 0,
         }
 
     platids = data.get('PLATID', []) or []
@@ -382,7 +387,7 @@ def filter_data_by_platids(data, include_platids):
 
     out = {
         'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [],
-        'RAWMESSAGE': [], 'ALTITUDE': [], 'SOURCE': [], 'FIR': [],
+        'RAWMESSAGE': [], 'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'SHAPE': [], 'CENTER': [], 'RADIUS': [], 'RADIUS_UNIT': [],
         'CLASSIFY': {}, 'NUM': 0,
     }
     for i in range(size):
@@ -401,6 +406,9 @@ def filter_data_by_platids(data, include_platids):
         out['SOURCE'].append(str(src_list[i] if i < len(src_list) else 'NOTAM'))
         fir_list = data.get('FIR', []) or []
         out['FIR'].append(fir_list[i] if i < len(fir_list) else '')
+        for field, default in [('SHAPE', 'POLYGON'), ('CENTER', ''), ('RADIUS', ''), ('RADIUS_UNIT', '')]:
+            values = data.get(field, []) or []
+            out[field].append(values[i] if i < len(values) else default)
 
     out['NUM'] = len(out['CODE'])
     out['CLASSIFY'] = classify_data(out)
@@ -452,6 +460,10 @@ def compute_data_hash(data, include_sources=None):
             str(data['TIME'][i]),
             str(data['PLATID'][i]),
             src,
+            str((data.get('SHAPE', []) or ['POLYGON'])[i] if i < len(data.get('SHAPE', []) or []) else 'POLYGON'),
+            str((data.get('CENTER', []) or [''])[i] if i < len(data.get('CENTER', []) or []) else ''),
+            str((data.get('RADIUS', []) or [''])[i] if i < len(data.get('RADIUS', []) or []) else ''),
+            str((data.get('RADIUS_UNIT', []) or [''])[i] if i < len(data.get('RADIUS_UNIT', []) or []) else ''),
         ]))
 
     payload = '\n'.join(sorted(records))
@@ -577,7 +589,7 @@ def filter_expired_records(data, grace_hours=24):
     if expired_count == 0:
         return
 
-    for key in ['CODE', 'COORDINATES', 'TIME', 'PLATID', 'RAWMESSAGE', 'SOURCE', 'FIR']:
+    for key in ['CODE', 'COORDINATES', 'TIME', 'PLATID', 'RAWMESSAGE', 'ALTITUDE', 'SOURCE', 'FIR', 'SHAPE', 'CENTER', 'RADIUS', 'RADIUS_UNIT']:
         arr = data.get(key, []) or []
         data[key] = [arr[i] for i in keep_indices if i < len(arr)]
 
@@ -606,7 +618,14 @@ def remove_msi_fully_overlapped_by_notam(data):
         src = str(data['SOURCE'][i] or '').upper()
         if not src.startswith('NOTAM'):
             continue
-        key = (_normalize_coord_key(data['COORDINATES'][i]), _normalize_time_key(data['TIME'][i]))
+        geometry = '|'.join([
+            str((data.get('SHAPE', []) or ['POLYGON'])[i] if i < len(data.get('SHAPE', []) or []) else 'POLYGON'),
+            _normalize_coord_key(data['COORDINATES'][i]),
+            str((data.get('CENTER', []) or [''])[i] if i < len(data.get('CENTER', []) or []) else ''),
+            str((data.get('RADIUS', []) or [''])[i] if i < len(data.get('RADIUS', []) or []) else ''),
+            str((data.get('RADIUS_UNIT', []) or [''])[i] if i < len(data.get('RADIUS_UNIT', []) or []) else ''),
+        ])
+        key = (geometry, _normalize_time_key(data['TIME'][i]))
         notam_keys.add(key)
 
     if not notam_keys:
@@ -924,12 +943,16 @@ def fetch():
         "RAWMESSAGE": [],
         "SOURCE": [],
         "FIR": [],
+        "SHAPE": [],
+        "CENTER": [],
+        "RADIUS": [],
+        "RADIUS_UNIT": [],
         "CLASSIFY": {},
         "NUM": 0,
     }
     source_batch = fetch_enabled_sources(current_config)
     source_data = source_batch.data
-    for code, coordinates, time_value, platid, raw, altitude, source_type, fir in zip(
+    for code, coordinates, time_value, platid, raw, altitude, source_type, fir, shape, center, radius, radius_unit in zip(
         source_data['CODE'],
         source_data['COORDINATES'],
         source_data['TIME'],
@@ -938,6 +961,10 @@ def fetch():
         source_data['ALTITUDE'],
         source_data['SOURCE'],
         source_data['FIR'],
+        source_data['SHAPE'],
+        source_data['CENTER'],
+        source_data['RADIUS'],
+        source_data['RADIUS_UNIT'],
     ):
         if str(source_type).upper().startswith('NOTAM') and coordinates_are_excluded(coordinates):
             continue
@@ -949,6 +976,10 @@ def fetch():
         dataDict['ALTITUDE'].append(altitude)
         dataDict['SOURCE'].append(source_type)
         dataDict['FIR'].append(fir)
+        dataDict['SHAPE'].append(shape or 'POLYGON')
+        dataDict['CENTER'].append(center)
+        dataDict['RADIUS'].append(radius)
+        dataDict['RADIUS_UNIT'].append(radius_unit)
 
     backfill_fir_from_text(dataDict, fir_candidates)
     harmonize_fir_by_platid(dataDict)
@@ -971,12 +1002,16 @@ def fetch():
             dataDict["ALTITUDE"],
             dataDict["SOURCE"],
             dataDict["FIR"],
+            dataDict["SHAPE"],
+            dataDict["CENTER"],
+            dataDict["RADIUS"],
+            dataDict["RADIUS_UNIT"],
         ),
         key=lambda x: x[0]
     )
     if (sorted_data == []):
         print("No data fetched.")
-        dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"], dataDict["ALTITUDE"], dataDict["SOURCE"], dataDict["FIR"] = [], [], [], [], [], [], [], []
+        dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"], dataDict["ALTITUDE"], dataDict["SOURCE"], dataDict["FIR"], dataDict["SHAPE"], dataDict["CENTER"], dataDict["RADIUS"], dataDict["RADIUS_UNIT"] = [], [], [], [], [], [], [], [], [], [], [], []
         dataDict["NUM"] = len(dataDict["CODE"])
     else:
         (
@@ -988,6 +1023,10 @@ def fetch():
             dataDict["ALTITUDE"],
             dataDict["SOURCE"],
             dataDict["FIR"],
+            dataDict["SHAPE"],
+            dataDict["CENTER"],
+            dataDict["RADIUS"],
+            dataDict["RADIUS_UNIT"],
         ) = map(list, zip(*sorted_data))
         dataDict["NUM"] = len(dataDict["CODE"])
     dataDict["HASH"] = compute_data_hash(dataDict)

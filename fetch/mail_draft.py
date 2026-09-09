@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import requests
 from PIL import Image, ImageDraw
 import html
+from fetch.sources.common import extract_circle_area
 
 
 MAIL_LAUNCH_SITES = [
@@ -72,6 +73,11 @@ def _build_notam_map(data):
     times = _safe_get(data, 'TIME')
     coords = _safe_get(data, 'COORDINATES')
     platids = _safe_get(data, 'PLATID')
+    shapes = _safe_get(data, 'SHAPE')
+    centers = _safe_get(data, 'CENTER')
+    radii = _safe_get(data, 'RADIUS')
+    radius_units = _safe_get(data, 'RADIUS_UNIT')
+    raw_messages = _safe_get(data, 'RAWMESSAGE')
     size = min(len(codes), len(times), len(coords), len(platids))
 
     records = {}
@@ -85,6 +91,11 @@ def _build_notam_map(data):
             'TIME': str(times[i]),
             'COORDINATES': str(coords[i]),
             'PLATID': pid,
+            'SHAPE': str(shapes[i] if i < len(shapes) else 'POLYGON'),
+            'CENTER': str(centers[i] if i < len(centers) else ''),
+            'RADIUS': str(radii[i] if i < len(radii) else ''),
+            'RADIUS_UNIT': str(radius_units[i] if i < len(radius_units) else ''),
+            'RAWMESSAGE': str(raw_messages[i] if i < len(raw_messages) else ''),
         }
     return records
 
@@ -124,12 +135,69 @@ def _format_match_summary(match_idx, top_n=5):
     return lines
 
 
+def _circle_points(center, radius_km, segments=144):
+    """Approximate a geodesic circle with points suitable for static map drawing."""
+    lat0, lon0 = center
+    angular_distance = radius_km / 6371.0088
+    lat0_rad, lon0_rad = math.radians(lat0), math.radians(lon0)
+    points = []
+    for index in range(segments):
+        bearing = 2 * math.pi * index / segments
+        lat = math.asin(math.sin(lat0_rad) * math.cos(angular_distance) + math.cos(lat0_rad) * math.sin(angular_distance) * math.cos(bearing))
+        lon = lon0_rad + math.atan2(math.sin(bearing) * math.sin(angular_distance) * math.cos(lat0_rad), math.cos(angular_distance) - math.sin(lat0_rad) * math.sin(lat))
+        points.append((math.degrees(lat), ((math.degrees(lon) + 540) % 360) - 180))
+    return points
+
+
+def _circle_geometry(data, index):
+    shapes = _safe_get(data, 'SHAPE')
+    centers = _safe_get(data, 'CENTER')
+    radii = _safe_get(data, 'RADIUS')
+    units = _safe_get(data, 'RADIUS_UNIT')
+    raws = _safe_get(data, 'RAWMESSAGE')
+    shape = str(shapes[index] if index < len(shapes) else '').upper()
+    center_text = str(centers[index] if index < len(centers) else '')
+    radius_text = str(radii[index] if index < len(radii) else '')
+    unit = str(units[index] if index < len(units) else '').upper()
+    if shape != 'CIRCLE' or not center_text or not radius_text:
+        fallback = extract_circle_area(raws[index] if index < len(raws) else '')
+        if not fallback:
+            return None
+        center_text, radius, unit = fallback
+    else:
+        try:
+            radius = float(radius_text)
+        except (TypeError, ValueError):
+            return None
+    center = parse_point(center_text)
+    if not center or radius <= 0 or unit not in ('KM', 'NM'):
+        return None
+    return center_text, center, radius, unit
+
+
+def _format_geometry(item):
+    if str(item.get('SHAPE', '')).upper() == 'CIRCLE' and item.get('CENTER') and item.get('RADIUS'):
+        return f"{item['CENTER']} RADIUS {item['RADIUS']}{item.get('RADIUS_UNIT', '')}"
+    fallback = extract_circle_area(item.get('RAWMESSAGE', ''))
+    if fallback:
+        center, radius, unit = fallback
+        return f'{center} RADIUS {radius:g}{unit}'
+    return item.get('COORDINATES', '')
+
+
 def _collect_polygons(data):
     coords_list = _safe_get(data, 'COORDINATES')
     codes = _safe_get(data, 'CODE')
     polys = []
 
     for i, coords in enumerate(coords_list):
+        circle = _circle_geometry(data, i)
+        if circle:
+            _center_text, center, radius, unit = circle
+            radius_km = radius * (1.852 if unit == 'NM' else 1.0)
+            code = codes[i] if i < len(codes) else f'NOTAM-{i}'
+            polys.append((str(code), _circle_points(center, radius_km)))
+            continue
         pts = []
         for token in str(coords).split('-'):
             p = parse_point(token.strip())
@@ -483,7 +551,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
                 if section_mode == 'added_only':
                     pass  # 新增消息不要坐标
                 else:
-                    lines.append(f"  航警坐标: {item['COORDINATES']}")
+                    lines.append(f"  航警坐标: {_format_geometry(item)}")
                 if include_match and section_mode != 'added_only':
                     lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
                     for match_line in _format_match_summary(item['index']):
@@ -498,7 +566,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
                 item = prev_map[pid]
                 lines.append(f"- {_code_with_emoji(item['CODE'])}")
                 lines.append(f"  航警时间: {_time_of(item)}")
-                lines.append(f"  航警坐标: {item['COORDINATES']}")
+                lines.append(f"  航警坐标: {_format_geometry(item)}")
         else:
             lines.append('- 无移除航警')
 
@@ -509,7 +577,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
                 item = curr_map[pid]
                 lines.append(f"- {_code_with_emoji(item['CODE'])}")
                 lines.append(f"  航警时间: {_time_of(item)}")
-                lines.append(f"  航警坐标: {item['COORDINATES']}")
+                lines.append(f"  航警坐标: {_format_geometry(item)}")
                 if include_match:
                     lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
                     for match_line in _format_match_summary(item['index']):
@@ -524,7 +592,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
                 item = curr_map[pid]
                 lines.append(f"- {_code_with_emoji(item['CODE'])}")
                 lines.append(f"  航警时间: {_time_of(item)}")
-                lines.append(f"  航警坐标: {item['COORDINATES']}")
+                lines.append(f"  航警坐标: {_format_geometry(item)}")
                 if include_match:
                     lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
                     for match_line in _format_match_summary(item['index']):
@@ -565,7 +633,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
             emoji_code = _code_with_emoji(item['CODE'])
             code_html = f'<strong>{e(emoji_code)}</strong>'
             tmp_link = match_link(item['index']) if include_match else ''
-            body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}<br/>{tmp_link}</div>'
+            body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(_format_geometry(item))}<br/>{tmp_link}</div>'
             if include_match:
                 body_html += '<ul style="margin:2px 0 4px 6px; padding-left:10px;">'
                 for match_line in _format_match_summary(item['index']):
@@ -582,7 +650,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
         for pid in removed_ids:
             item = prev_map[pid]
             emoji_code = _code_with_emoji(item['CODE'])
-            body_html += f'<li><strong>{e(emoji_code)}</strong><div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}</div></li>'
+            body_html += f'<li><strong>{e(emoji_code)}</strong><div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(_format_geometry(item))}</div></li>'
         body_html += '</ul>'
     else:
         body_html += '<div style="margin-left:8px;">- 无移除航警</div>'
@@ -595,7 +663,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
             emoji_code = _code_with_emoji(item['CODE'])
             code_html = f'<strong>{e(emoji_code)}</strong>'
             tmp_link = match_link(item['index']) if include_match else ''
-            body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(item["COORDINATES"])}<br/>{tmp_link}</div>'
+            body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(_format_geometry(item))}<br/>{tmp_link}</div>'
             if include_match:
                 body_html += '<ul style="margin:2px 0 4px 6px; padding-left:10px;">'
                 for match_line in _format_match_summary(item['index']):

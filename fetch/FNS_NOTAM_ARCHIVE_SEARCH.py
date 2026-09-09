@@ -9,6 +9,10 @@ except ImportError:
 import numpy as np
 import pandas as pd
 import requests
+try:
+    from fetch.sources.common import extract_circle_area
+except ImportError:
+    from sources.common import extract_circle_area
 
 ICAO_CODES = [
     'AGGG', 'ANAU', 'AYPM', 'KZAK', 'NFFF', 
@@ -299,14 +303,14 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0, progress_filepath="./data/progr
 
         return f"{convert_date(start_date)} UNTIL {convert_date(end_date)}"
 
-    data_array = np.array([["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE", "ALTITUDE"]])
+    data_array = np.array([["CODE", "COORDINATES", "TIME", "TRANSID", "RAWMESSAGE", "ALTITUDE", "SHAPE", "CENTER", "RADIUS", "RADIUS_UNIT"]])
 
     # 处理每个NOTAM
     debug = False
     for icao, notams in results.items():
         for notam in notams:
             message = notam.get('Message', '')
-            if ("A TEMPORARY" in message and "-" in message) or "AEROSPACE" in message or (
+            if ("A TEMPORARY" in message and ("-" in message or extract_circle_area(message))) or "AEROSPACE" in message or (
                     "AER0SPACE" in message) or (
                     "CHINA" in message and "AERIAL" in message and "DNG ZONE" in message):
                 raw_message = message
@@ -317,6 +321,10 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0, progress_filepath="./data/progr
                 altitude = extract_altitude(raw_message)
                 code = notam.get('Number', 'UNKNOWN')
                 trans_id = notam.get('transactionID', 'UNKNOWN')
+                circle = extract_circle_area(raw_message)
+                if circle:
+                    center, radius, unit = circle
+                    data_array = np.vstack([data_array, np.array([code, '', time_result, trans_id, raw_message, altitude, 'CIRCLE', center, radius, unit])])
                 for i, group in enumerate(coordinate_groups):
                     coordinates_result = '-'.join(group)
                     if len(coordinate_groups) > 1:
@@ -324,11 +332,11 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0, progress_filepath="./data/progr
                     else:
                         area_code = code
                     data_array = np.vstack(
-                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message, altitude])])
+                        [data_array, np.array([area_code, coordinates_result, time_result, trans_id, raw_message, altitude, 'POLYGON', '', '', ''])])
 
     if len(data_array) > 1:
         df = pd.DataFrame(data_array[1:], columns=data_array[0])
-        df_unique = df.drop_duplicates(subset='COORDINATES')
+        df_unique = df.drop_duplicates(subset=['COORDINATES', 'SHAPE', 'CENTER', 'RADIUS', 'RADIUS_UNIT'])
         data_array_unique = np.vstack([data_array[0], df_unique.to_numpy()])
         if len(data_array_unique) > 1 and data_array_unique[0, 0] == "CODE":
             data_array_unique = data_array_unique[1:]
@@ -340,6 +348,10 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0, progress_filepath="./data/progr
             "TRANSID": data_array_unique[:, 3].tolist() if len(data_array_unique) > 0 else [],
             "RAWMESSAGE": data_array_unique[:, 4].tolist() if len(data_array_unique) > 0 else [],
             "ALTITUDE": data_array_unique[:, 5].tolist() if len(data_array_unique) > 0 else [],
+            "SHAPE": data_array_unique[:, 6].tolist() if len(data_array_unique) > 0 else [],
+            "CENTER": data_array_unique[:, 7].tolist() if len(data_array_unique) > 0 else [],
+            "RADIUS": data_array_unique[:, 8].tolist() if len(data_array_unique) > 0 else [],
+            "RADIUS_UNIT": data_array_unique[:, 9].tolist() if len(data_array_unique) > 0 else [],
         }
     else:
         result = {
@@ -350,8 +362,8 @@ def FNS_NOTAM_ARCHIVE_SEARCH(icao, date, mode=0, progress_filepath="./data/progr
             "TRANSID": [],
             "RAWMESSAGE": [],
             "ALTITUDE": [],
+            "SHAPE": [], "CENTER": [], "RADIUS": [], "RADIUS_UNIT": [],
         }
     print(f"[进度] 解析完成，共获取 {len(result['CODE'])} 条有效航警")
     print(f"[进度] ========== 检索完成 ==========\n")
     return result
-# print(FNS_NOTAM_ARCHIVE_SEARCH("ZPKM", "2024-06-01", 0))

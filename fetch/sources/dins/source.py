@@ -17,7 +17,10 @@ class DINSDataSource(DataSource):
                 return SourceResult(provider=self.name, success=False, error=payload['ERROR'])
             data = normalized_data(payload)
             for index, code in enumerate(data['CODE']):
-                data['PLATID'][index] = _stable_id(code, data['COORDINATES'][index])
+                data['PLATID'][index] = _stable_id(code, '|'.join([
+                    data['COORDINATES'][index], data['SHAPE'][index], data['CENTER'][index],
+                    data['RADIUS'][index], data['RADIUS_UNIT'][index],
+                ]))
                 data['SOURCE'][index] = 'NOTAM'
                 data['FIR'][index] = 'UNKNOWN'
             return SourceResult(provider=self.name, data=data, success=True)

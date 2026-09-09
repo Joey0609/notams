@@ -557,11 +557,8 @@ function hideAllArchiveNotams() {
 function locateToNotam(index) {
     if (!dict || index >= dict.NUM) return;
     try {
-        const points = parseCoordinatesToPoints(dict.COORDINATES[index]);
-        if (points && points.length > 0) {
-            const bounds = L.latLngBounds(points);
-            map.fitBounds(bounds, { padding: [80, 80], maxZoom: 6 });
-        }
+        const layer = polygonAuto[index];
+        if (layer && typeof layer.getBounds === 'function') map.fitBounds(layer.getBounds(), { padding: [80, 80], maxZoom: 6 });
     } catch (e) { console.error(e); }
 }
 /* 定位历史航警 */

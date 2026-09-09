@@ -72,6 +72,10 @@ def save_results_to_db(result: dict, db: "NotamDatabase"):
             "PLATID":      result["TRANSID"][i],   # 字段名统一映射
             "RAWMESSAGE":  result["RAWMESSAGE"][i],
             "ALTITUDE":    result["ALTITUDE"][i],
+            "SHAPE":       result.get("SHAPE", ["POLYGON"] * len(codes))[i],
+            "CENTER":      result.get("CENTER", [""] * len(codes))[i],
+            "RADIUS":      result.get("RADIUS", [""] * len(codes))[i],
+            "RADIUS_UNIT": result.get("RADIUS_UNIT", [""] * len(codes))[i],
         }
         db.save_notam(record)
         count += 1

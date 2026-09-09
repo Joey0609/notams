@@ -14,6 +14,10 @@ function buildEmptyDataDict() {
         ALTITUDE: [],
         SOURCE: [],
         FIR: [],
+        SHAPE: [],
+        CENTER: [],
+        RADIUS: [],
+        RADIUS_UNIT: [],
         CLASSIFY: {},
         NUM: 0
     };
@@ -30,6 +34,10 @@ function appendSection(target, section) {
     const alts = Array.isArray(section.ALTITUDE) ? section.ALTITUDE : [];
     const srcs = Array.isArray(section.SOURCE) ? section.SOURCE : [];
     const firs = Array.isArray(section.FIR) ? section.FIR : [];
+    const shapes = Array.isArray(section.SHAPE) ? section.SHAPE : [];
+    const centers = Array.isArray(section.CENTER) ? section.CENTER : [];
+    const radii = Array.isArray(section.RADIUS) ? section.RADIUS : [];
+    const radiusUnits = Array.isArray(section.RADIUS_UNIT) ? section.RADIUS_UNIT : [];
 
     const size = Math.min(codes.length, coords.length, times.length, ids.length, raws.length);
     for (let i = 0; i < size; i++) {
@@ -41,6 +49,10 @@ function appendSection(target, section) {
         target.ALTITUDE.push(alts[i] || 'None');
         target.SOURCE.push(srcs[i] || 'NOTAM');
         target.FIR.push(firs[i] || '');
+        target.SHAPE.push(shapes[i] || 'POLYGON');
+        target.CENTER.push(centers[i] || '');
+        target.RADIUS.push(radii[i] || '');
+        target.RADIUS_UNIT.push(radiusUnits[i] || '');
     }
 }
 
@@ -98,6 +110,8 @@ function drawAllAutoNotams() {
             dict.RAWMESSAGE?.[i] || "",
             dict.SOURCE?.[i] || 'NOTAM',
             dict.FIR?.[i] || ''
+            , dict.SHAPE?.[i] || 'POLYGON', dict.CENTER?.[i] || '',
+            dict.RADIUS?.[i] || '', dict.RADIUS_UNIT?.[i] || ''
         );
         visibleState[i] = true;
     }

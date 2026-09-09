@@ -48,10 +48,31 @@ def extract_coordinate_groups(text: str, minimum_points: int = 3) -> List[List[s
     return groups
 
 
+def extract_circle_area(text: str):
+    """Return a circular NOTAM area as (center, radius, unit), if present."""
+    compact = re.sub(r'\s+', '', html.unescape(str(text or ''))).upper()
+    # Require circle vocabulary so a Q-line centre/radius is never mistaken for
+    # an explicitly described circular danger area.
+    if 'CIRCLE' not in compact:
+        return None
+    center_match = re.search(
+        r'(?:CENTER(?:ED)?AT|CENT(?:ER|RE))([NS]\d{4,6}[WE]\d{5,7}|\d{4,6}[NS]\d{5,7}[WE])',
+        compact,
+    )
+    radius_match = re.search(r'RADIUS(?:OF)?(?:IS)?(\d+(?:\.\d+)?)(KM|NM)\b', compact)
+    if not center_match or not radius_match:
+        return None
+    center = standardize_coordinate(center_match.group(1))
+    radius = float(radius_match.group(1))
+    if not center or radius <= 0:
+        return None
+    return center, radius, radius_match.group(2)
+
+
 def is_relevant_area_notam(message: str) -> bool:
     text = html.unescape(str(message or '')).upper()
     return (
-        ('A TEMPORARY' in text and '-' in text)
+        ('A TEMPORARY' in text and ('-' in text or extract_circle_area(text) is not None))
         or 'AEROSPACE' in text
         or 'AER0SPACE' in text
         or ('CHINA' in text and 'DNG ZONE' in text and 'AERIAL' in text)
@@ -142,6 +163,17 @@ def add_area_records(
 ) -> int:
     from .base import append_record
 
+    circle = extract_circle_area(raw_message)
+    if circle:
+        center, radius, unit = circle
+        append_record(
+            output, CODE=code, COORDINATES='', TIME=time_value, PLATID=platid,
+            RAWMESSAGE=html.unescape(str(raw_message or '')), ALTITUDE=extract_altitude(raw_message),
+            SOURCE=source_type, FIR=fir or 'UNKNOWN', SHAPE='CIRCLE', CENTER=center,
+            RADIUS=radius, RADIUS_UNIT=unit,
+        )
+        return 1
+
     groups = extract_coordinate_groups(raw_message)
     altitude = extract_altitude(raw_message)
     for index, group in enumerate(groups, start=1):
@@ -156,6 +188,7 @@ def add_area_records(
             ALTITUDE=altitude,
             SOURCE=source_type,
             FIR=fir or 'UNKNOWN',
+            SHAPE='POLYGON',
         )
     return len(groups)
 

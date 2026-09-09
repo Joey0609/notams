@@ -3,6 +3,7 @@
 let matchIndex = -1;
 let matchData = null;
 let relatedChildLayersByParent = {};
+let originalMatchLayer = null;
 const matchColorPool = [
     '#3498db99', '#e74c3c99', '#2ecc7199', '#f39c1299', '#9b59b699',
     '#1abc9c99', '#34495e99', '#16a08599', '#27ae6099', '#2980b999',
@@ -84,6 +85,8 @@ function getBaseLatLngsFromLayer(layer) {
 }
 
 function getBaseBoundsFromLayer(layer) {
+    if (layer && layer.__circleCenter && typeof layer.getBounds === 'function') return layer.getBounds();
+    if (layer && typeof layer.getLatLng === 'function' && typeof layer.getBounds === 'function') return layer.getBounds();
     const baseLatLngs = getBaseLatLngsFromLayer(layer);
     if (baseLatLngs.length < 3) return null;
     return L.latLngBounds(baseLatLngs);
@@ -92,6 +95,16 @@ function getBaseBoundsFromLayer(layer) {
 function getMergedBaseBounds(layers) {
     const points = [];
     (layers || []).forEach((layer) => {
+        if (layer && layer.__circleCenter && typeof layer.getBounds === 'function') {
+            const bounds = layer.getBounds();
+            points.push(bounds.getSouthWest(), bounds.getNorthEast(), layer.__circleCenter);
+            return;
+        }
+        if (layer && typeof layer.getLatLng === 'function' && typeof layer.getBounds === 'function') {
+            const bounds = layer.getBounds();
+            points.push(bounds.getSouthWest(), bounds.getNorthEast());
+            return;
+        }
         const baseLatLngs = getBaseLatLngsFromLayer(layer);
         if (baseLatLngs.length >= 3) {
             points.push(...baseLatLngs);
@@ -158,7 +171,9 @@ function drawOriginalNotam() {
                 ALTITUDE: notamData.ALTITUDE[matchIndex] || 'None',
                 RAWMESSAGE: notamData.RAWMESSAGE[matchIndex] || '',
                 SOURCE: notamData.SOURCE?.[matchIndex] || 'NOTAM',
-                FIR: notamData.FIR?.[matchIndex] || ''
+                FIR: notamData.FIR?.[matchIndex] || '',
+                SHAPE: notamData.SHAPE?.[matchIndex] || 'POLYGON', CENTER: notamData.CENTER?.[matchIndex] || '',
+                RADIUS: notamData.RADIUS?.[matchIndex] || '', RADIUS_UNIT: notamData.RADIUS_UNIT?.[matchIndex] || ''
             };
             
             // 绘制原始航警，使用特殊颜色（半透明红色）
@@ -173,16 +188,12 @@ function drawOriginalNotam() {
                 originalNotam.RAWMESSAGE || "",
                 0.8,
                 originalNotam.SOURCE || 'NOTAM',
-                originalNotam.FIR || ''
+                originalNotam.FIR || '', originalNotam.SHAPE, originalNotam.CENTER, originalNotam.RADIUS, originalNotam.RADIUS_UNIT
             );
+            originalMatchLayer = window.polygonAuto['original'] || null;
             
             // 将原始航警置于顶层
-            if (window.polygonAuto && window.polygonAuto.length > 0) {
-                const lastPoly = window.polygonAuto[window.polygonAuto.length - 1];
-                if (lastPoly) {
-                    lastPoly.bringToFront();
-                }
-            }
+            if (originalMatchLayer && originalMatchLayer.bringToFront) originalMatchLayer.bringToFront();
         })
         .catch(err => {
             console.error('Failed to load original NOTAM:', err);
@@ -192,18 +203,16 @@ function drawOriginalNotam() {
 
 // 清除匹配多边形，保留原始航警
 function clearMatchPolygons() {
-    // 保留原始航警 (假定它是 polygonAuto 的最后一个元素)
-    const originalPoly = window.polygonAuto && window.polygonAuto.length > 0 
-        ? window.polygonAuto[window.polygonAuto.length - 1] 
-        : null;
+    const originalPoly = originalMatchLayer;
     
     // 清除其他自动航警
     if (window.polygonAuto) {
-        for (let i = 0; i < window.polygonAuto.length - 1; i++) {
+        for (let i = 0; i < window.polygonAuto.length; i++) {
             const p = window.polygonAuto[i];
-            if (p) map.removeLayer(p);
+            if (p && p !== originalPoly) map.removeLayer(p);
         }
-        window.polygonAuto = originalPoly ? [originalPoly] : [];
+        window.polygonAuto = [];
+        if (originalPoly) window.polygonAuto['original'] = originalPoly;
     }
     
     // 清除匹配航警
@@ -281,7 +290,7 @@ function drawMatchNotams() {
             item.RAWMESSAGE || "",
             0.05,
             item.SOURCE || 'NOTAM',
-            item.FIR || ''
+            item.FIR || '', item.SHAPE || 'POLYGON', item.CENTER || '', item.RADIUS || '', item.RADIUS_UNIT || ''
         );
         // 重用自动航警的数组
         polygonMatch[i] = window.polygonAuto[i];
@@ -381,8 +390,12 @@ function closeLoadingModal() {
 
 // 复制原始航警
 // 绘制NOTAM多边形
-function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, fillopacity = 0.5, sourceType = 'NOTAM', fir = '') {
-    var pos = COORstrin;
+function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, fillopacity = 0.5, sourceType = 'NOTAM', fir = '', shape = 'POLYGON', center = '', radius = '', radiusUnit = '') {
+    const rawCircle = circleGeometryFromRaw(rawmessage);
+    if (rawCircle && String(shape).toUpperCase() !== 'CIRCLE') {
+        shape = 'CIRCLE'; center = rawCircle.center; radius = rawCircle.radius; radiusUnit = rawCircle.unit;
+    }
+    var pos = COORstrin || '';
     var timestr = is_self ? null : convertTime(timee);
     var stPos = 0;
     var arr = [];
@@ -408,6 +421,13 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
         }
     }
 
+    if (String(shape).toUpperCase() === 'CIRCLE') {
+        const circleCenter = typeof parseCircleCenter === 'function' ? parseCircleCenter(center) : null;
+        const radiusMeters = typeof circleRadiusMeters === 'function' ? circleRadiusMeters(radius, radiusUnit) : 0;
+        if (!circleCenter || !radiusMeters) return;
+        var tmpPolygon = createWrappedCircle(circleCenter, radiusMeters, { color: col, weight: 1, opacity: 1, fillColor: col, fillOpacity: fillopacity }).addTo(map);
+        tmpPolygon.__baseLatLngs = [];
+    } else {
     if (latlngs.length < 3) return; // 至少需要3个点才能绘制多边形
 
     // 对坐标点排序，确保多边形是凸的或至少是合理的形状
@@ -425,6 +445,7 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
         fillOpacity: fillopacity
     }).addTo(map);
     tmpPolygon.__baseLatLngs = baseLatLngs;
+    }
 
     // 创建弹出窗口内容
     var popupContent;
@@ -459,7 +480,7 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
             "</div>" +
             "</div>" +
             "<div class='notam-popup-buttons'>" +
-            "<button class='copy copy-coord' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
+            "<button class='copy copy-coord' onclick=\"handleCopy('" + (String(shape).toUpperCase() === 'CIRCLE' ? formatCircleCoordinates(center, radius, radiusUnit) : COORstrin) + "')\">复制坐标</button>" +
             "<button class='copy copy-raw' data-raw-index='" + numm + "'>复制原始航警</button>" +
             "</div>" +
             "</div>";

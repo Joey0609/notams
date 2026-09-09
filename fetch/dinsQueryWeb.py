@@ -8,10 +8,11 @@ import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from fetch.sources.common import extract_circle_area
 
 
 def dinsQueryWeb(icao_codes):
-    data_array = np.array(["CODE", "COORDINATES", "TIME"])
+    data_array = np.array([["CODE", "COORDINATES", "TIME", "SHAPE", "CENTER", "RADIUS", "RADIUS_UNIT"]])
 
     def removeC(text):
         return re.sub(r'[\r\n\[\]...]+', ' ', text)
@@ -139,25 +140,31 @@ def dinsQueryWeb(icao_codes):
                 time_result = time_info.group() if time_info else "00 JAN 00:00 0000 UNTIL 00 JAN 00:00 0000"
                 currentText = text_content.split('-', 1)
                 code = currentText[0] if currentText else "UNKNOWN"
+                circle = extract_circle_area(text_content)
+                if circle:
+                    center, radius, unit = circle
+                    data_array = np.vstack([data_array, np.array([code, '', time_result, 'CIRCLE', center, radius, unit])])
                 for i, group in enumerate(coordinate_groups):
                     coordinates_result = '-'.join(group)
                     if len(coordinate_groups) > 1:
                         area_code = f"{code}_AREA{i + 1}"
                     else:
                         area_code = code
-                    data_array = np.vstack([data_array, np.array([area_code, coordinates_result, time_result])])
+                    data_array = np.vstack([data_array, np.array([area_code, coordinates_result, time_result, 'POLYGON', '', '', ''])])
                     parsed_count += 1
 
     if len(data_array) > 1:
-        df = pd.DataFrame(data_array)
-        df_unique = df.drop_duplicates(subset=1)
+        df = pd.DataFrame(data_array[1:], columns=data_array[0])
+        df_unique = df.drop_duplicates(subset=['COORDINATES', 'SHAPE', 'CENTER', 'RADIUS', 'RADIUS_UNIT'])
         data_array = df_unique.to_numpy()
-        if len(data_array) > 1 and data_array[0, 0] == "CODE":
-            data_array = data_array[1:]
         result = {
             "CODE": data_array[:, 0].tolist() if len(data_array) > 0 else [],
             "COORDINATES": data_array[:, 1].tolist() if len(data_array) > 0 else [],
             "TIME": data_array[:, 2].tolist() if len(data_array) > 0 else [],
+            "SHAPE": data_array[:, 3].tolist() if len(data_array) > 0 else [],
+            "CENTER": data_array[:, 4].tolist() if len(data_array) > 0 else [],
+            "RADIUS": data_array[:, 5].tolist() if len(data_array) > 0 else [],
+            "RADIUS_UNIT": data_array[:, 6].tolist() if len(data_array) > 0 else [],
         }
     else:
         result = {

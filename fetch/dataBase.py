@@ -96,7 +96,8 @@ class NotamDatabase:
                 "TIME": [],
                 "PLATID": [],
                 "RAWMESSAGE": [],
-                "ALTITUDE": []
+                "ALTITUDE": [],
+                "SHAPE": [], "CENTER": [], "RADIUS": [], "RADIUS_UNIT": []
             }
         return self.cache[month_key]
 
@@ -117,7 +118,11 @@ class NotamDatabase:
             "TIME": [month_data["TIME"][i] for i in indices if i < len(month_data["TIME"])],
             "PLATID": [month_data["PLATID"][i] for i in indices if i < len(month_data["PLATID"])],
             "RAWMESSAGE": [month_data["RAWMESSAGE"][i] for i in indices if i < len(month_data["RAWMESSAGE"])],
-            "ALTITUDE": [month_data["ALTITUDE"][i] for i in indices if i < len(month_data["ALTITUDE"])]
+            "ALTITUDE": [month_data["ALTITUDE"][i] for i in indices if i < len(month_data["ALTITUDE"])],
+            "SHAPE": [month_data.get("SHAPE", ["POLYGON"] * month_data["NUM"])[i] for i in indices],
+            "CENTER": [month_data.get("CENTER", [""] * month_data["NUM"])[i] for i in indices],
+            "RADIUS": [month_data.get("RADIUS", [""] * month_data["NUM"])[i] for i in indices],
+            "RADIUS_UNIT": [month_data.get("RADIUS_UNIT", [""] * month_data["NUM"])[i] for i in indices]
         }
 
         return sorted_data
@@ -177,6 +182,8 @@ class NotamDatabase:
                 month_data["PLATID"][index] = notam_data["PLATID"]
                 month_data["RAWMESSAGE"][index] = notam_data["RAWMESSAGE"]
                 month_data["ALTITUDE"][index] = notam_data["ALTITUDE"]
+                for field, default in [("SHAPE", "POLYGON"), ("CENTER", ""), ("RADIUS", ""), ("RADIUS_UNIT", "")]:
+                    month_data.setdefault(field, [default] * month_data["NUM"])[index] = notam_data.get(field, default)
                 print(f"[INFO] 已更新现有 NOTAM: {notam_data['CODE']} (月份: {month_key})")
             else:
                 # 添加新记录
@@ -186,6 +193,10 @@ class NotamDatabase:
                 month_data["PLATID"].append(notam_data["PLATID"])
                 month_data["RAWMESSAGE"].append(notam_data["RAWMESSAGE"])
                 month_data["ALTITUDE"].append(notam_data["ALTITUDE"])
+                month_data.setdefault("SHAPE", ["POLYGON"] * (month_data["NUM"] - 1)).append(notam_data.get("SHAPE", "POLYGON"))
+                month_data.setdefault("CENTER", [""] * (month_data["NUM"] - 1)).append(notam_data.get("CENTER", ""))
+                month_data.setdefault("RADIUS", [""] * (month_data["NUM"] - 1)).append(notam_data.get("RADIUS", ""))
+                month_data.setdefault("RADIUS_UNIT", [""] * (month_data["NUM"] - 1)).append(notam_data.get("RADIUS_UNIT", ""))
                 month_data["NUM"] += 1
                 print(f"[INFO] 已添加新 NOTAM: {notam_data['CODE']} (月份: {month_key})")
 

@@ -346,9 +346,10 @@
             if (!Array.isArray(group)) return;
             group.forEach((poly) => {
                 if (poly && typeof poly.getBounds === 'function' && isVisibleLayer(poly)) {
-                    const bounds = poly.getBounds();
-                    if (bounds && typeof bounds.getCenter === 'function') {
-                        addUniqueCandidate(bounds.getCenter(), candidates, seen);
+                    if (typeof poly.getLatLng === 'function') addUniqueCandidate(poly.getLatLng(), candidates, seen);
+                    else {
+                        const bounds = poly.getBounds();
+                        if (bounds && typeof bounds.getCenter === 'function') addUniqueCandidate(bounds.getCenter(), candidates, seen);
                     }
                 }
             });

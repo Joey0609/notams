@@ -1,6 +1,7 @@
 from ..base import DataSource, SourceResult
 from .client import DAIPClient
 from .parser import parse_daip_response
+import json
 
 
 class DAIPDataSource(DataSource):
@@ -26,6 +27,8 @@ class DAIPDataSource(DataSource):
                 sort=self.sort,
             )
             data = parse_daip_response(response)
+            # with open('raw_data.jsonl', 'a', encoding='utf-8') as f:
+            #     f.write(json.dumps(response, ensure_ascii=False, default=str) + '\n')
             return SourceResult(
                 provider=self.name,
                 data=data,

@@ -55,7 +55,11 @@ def batch_fetch_and_save(start_date, end_date, interval_days=3):
                     "TIME": result["TIME"][i],
                     "PLATID": result["TRANSID"][i],  # 转换字段名
                     "RAWMESSAGE": result["RAWMESSAGE"][i],
-                    "ALTITUDE": result["ALTITUDE"][i],
+                "ALTITUDE": result["ALTITUDE"][i],
+                "SHAPE": result.get("SHAPE", ["POLYGON"] * len(codes))[i],
+                "CENTER": result.get("CENTER", [""] * len(codes))[i],
+                "RADIUS": result.get("RADIUS", [""] * len(codes))[i],
+                "RADIUS_UNIT": result.get("RADIUS_UNIT", [""] * len(codes))[i],
                 }
                 db.save_notam(notam_record)
                 saved_count += 1
