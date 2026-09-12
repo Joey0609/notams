@@ -252,6 +252,56 @@ def convert_time(utcTimeStr):
     return f"{s_dt.year}年{s_dt.month}月{s_dt.day}日 {s_dt.hour:02d}:{s_dt.minute:02d} ~ {e_dt.year}年{e_dt.month}月{e_dt.day}日 {e_dt.hour:02d}:{e_dt.minute:02d} 北京时间 (UTC+8)"
 
 
+def _parse_display_time(utc_time_str):
+    regex = r"(\d{1,2})\s+([A-Za-z]{3})\s+(\d{2}:\d{2})\s+(\d{4})\s+UNTIL\s+" \
+        r"(\d{1,2})\s+([A-Za-z]{3})\s+(\d{2}:\d{2})\s+(\d{4})"
+    match = re.search(regex, str(utc_time_str or ''))
+    if not match:
+        return None
+
+    start_day, start_mon, start_time, start_year, end_day, end_mon, end_time, end_year = match.groups()
+    month_map = {
+        'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4,
+        'MAY': 5, 'JUN': 6, 'JUL': 7, 'AUG': 8,
+        'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12,
+    }
+
+    try:
+        start = datetime(
+            int(start_year), month_map[start_mon.upper()], int(start_day),
+            int(start_time[:2]), int(start_time[3:]),
+        ) + timedelta(hours=8)
+        end = datetime(
+            int(end_year), month_map[end_mon.upper()], int(end_day),
+            int(end_time[:2]), int(end_time[3:]),
+        ) + timedelta(hours=8)
+    except (KeyError, TypeError, ValueError):
+        return None
+    return start, end
+
+
+def _format_short_time(start, end):
+    return f'{start.month}月{start.day}日 {start:%H:%M} ~ {end.month}月{end.day}日 {end:%H:%M}'
+
+
+def _class_groups(items, code_to_class_map):
+    groups = {}
+    for item in items:
+        class_key = code_to_class_map.get(item['CODE'], f"__{item['PLATID']}")
+        groups.setdefault(class_key, []).append(item)
+    return list(groups.values())
+
+
+def _merged_group_time(items):
+    parsed = [_parse_display_time(item.get('TIME', '')) for item in items]
+    parsed = [value for value in parsed if value]
+    if not parsed:
+        return '时间未知'
+    earliest_start = min(value[0] for value in parsed)
+    earliest_end = min(value[1] for value in parsed)
+    return _format_short_time(earliest_start, earliest_end)
+
+
 def _build_code_class_map(data):
     classify = data.get('CLASSIFY', {}) if isinstance(data, dict) else {}
     code_to_class = {}
@@ -533,7 +583,8 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
 
     def _time_of(item):
         try:
-            return convert_time(item.get('TIME', ''))
+            parsed = _parse_display_time(item.get('TIME', ''))
+            return _format_short_time(*parsed) if parsed else '时间未知'
         except Exception:
             return item.get('TIME', '')
 
@@ -547,7 +598,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
             for pid in added_ids:
                 item = curr_map[pid]
                 lines.append(f"- {_code_with_emoji(item['CODE'])}")
-                lines.append(f"  航警时间: {_time_of(item)}")
+                lines.append(f"  {_time_of(item)}")
                 if section_mode == 'added_only':
                     pass  # 新增消息不要坐标
                 else:
@@ -565,7 +616,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
             for pid in removed_ids:
                 item = prev_map[pid]
                 lines.append(f"- {_code_with_emoji(item['CODE'])}")
-                lines.append(f"  航警时间: {_time_of(item)}")
+                lines.append(f"  {_time_of(item)}")
                 lines.append(f"  航警坐标: {_format_geometry(item)}")
         else:
             lines.append('- 无移除航警')
@@ -573,30 +624,22 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
     if section_mode == 'all':
         lines.append('保留航警：')
         if kept_ids:
-            for pid in kept_ids:
-                item = curr_map[pid]
-                lines.append(f"- {_code_with_emoji(item['CODE'])}")
-                lines.append(f"  航警时间: {_time_of(item)}")
-                lines.append(f"  航警坐标: {_format_geometry(item)}")
-                if include_match:
-                    lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
-                    for match_line in _format_match_summary(item['index']):
-                        lines.append(f'  - {match_line}')
+            code_to_class = _build_code_class_map(current_data or {})
+            for group in _class_groups([curr_map[pid] for pid in kept_ids], code_to_class):
+                lines.append(f"- {_time_of(group[0]) if len(group) == 1 else _merged_group_time(group)}")
+                lines.append('  ' + '，'.join(item['CODE'] for item in group))
         else:
             lines.append('- 无保留航警')
     elif section_mode == 'current':
         lines.append('当前航警：')
         all_current = sorted(added_ids + kept_ids)
         if all_current:
-            for pid in all_current:
-                item = curr_map[pid]
-                lines.append(f"- {_code_with_emoji(item['CODE'])}")
-                lines.append(f"  航警时间: {_time_of(item)}")
-                lines.append(f"  航警坐标: {_format_geometry(item)}")
-                if include_match:
-                    lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
-                    for match_line in _format_match_summary(item['index']):
-                        lines.append(f'  - {match_line}')
+            code_to_class = _build_code_class_map(current_data or {})
+            for group in _class_groups([curr_map[pid] for pid in all_current], code_to_class):
+                emoji = code_emoji_map.get(group[0]['CODE'], '')
+                prefix = f'{emoji} ' if emoji else ''
+                lines.append(f"- {prefix}{_merged_group_time(group)}")
+                lines.append('  ' + '，'.join(item['CODE'] for item in group))
         else:
             lines.append('- 无当前航警')
 

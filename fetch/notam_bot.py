@@ -7,6 +7,7 @@ NOTAM QQ Bot 通知模块。
 import base64
 import json
 import os
+import re
 from datetime import datetime
 
 import requests
@@ -15,6 +16,11 @@ import requests
 QQ_BOT_SERVER_IP = os.getenv('QQ_BOT_SERVER_IP', '0.0.0.0').strip()
 QQ_BOT_SERVER_PORT = os.getenv('QQ_BOT_SERVER_PORT', '2001').strip()
 QQBOT_ENABLED = bool(QQ_BOT_SERVER_IP) and QQ_BOT_SERVER_IP != '0.0.0.0'
+
+
+def _remove_year_from_time(line: str) -> str:
+    """QQ 消息中的时间不显示年份，邮件正文保持原样。"""
+    return re.sub(r'\b\d{4}年', '', line)
 
 
 def _build_message_text(email_draft: dict) -> str:
@@ -35,8 +41,8 @@ def _build_message_text(email_draft: dict) -> str:
         # QQ 消息中去掉坐标行
         if '航警坐标' in line:
             continue
-        filtered.append(line)
-    return '\n'.join(filtered)
+        filtered.append(_remove_year_from_time(line))
+    return '\n'.join(filtered).strip()
 
 
 def send_notification(email_draft: dict) -> bool:
