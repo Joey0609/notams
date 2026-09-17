@@ -7,8 +7,8 @@ from urllib3.exceptions import InsecureRequestWarning
 
 DEFAULT_QUERY_URL = 'https://www.daip.jcs.mil/daip/mobile/query'
 DEFAULT_INDEX_URL = 'https://www.daip.jcs.mil/daip/mobile/index'
-DEFAULT_BATCH_SIZE = 30
-DEFAULT_BATCH_DELAY = 3
+DEFAULT_BATCH_SIZE = 46
+DEFAULT_BATCH_DELAY = 2
 
 
 class DAIPClient:
