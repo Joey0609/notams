@@ -18,8 +18,7 @@ class DINSDataSource(DataSource):
             data = normalized_data(payload)
             for index, code in enumerate(data['CODE']):
                 data['PLATID'][index] = _stable_id(code, '|'.join([
-                    data['COORDINATES'][index], data['SHAPE'][index], data['CENTER'][index],
-                    data['RADIUS'][index], data['RADIUS_UNIT'][index],
+                    data['GEOMETRY'][index],
                 ]))
                 data['SOURCE'][index] = 'NOTAM'
                 data['FIR'][index] = 'UNKNOWN'

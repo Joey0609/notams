@@ -1,4 +1,5 @@
 import warnings
+import time
 
 import requests
 from urllib3.exceptions import InsecureRequestWarning
@@ -6,6 +7,8 @@ from urllib3.exceptions import InsecureRequestWarning
 
 DEFAULT_QUERY_URL = 'https://www.daip.jcs.mil/daip/mobile/query'
 DEFAULT_INDEX_URL = 'https://www.daip.jcs.mil/daip/mobile/index'
+DEFAULT_BATCH_SIZE = 30
+DEFAULT_BATCH_DELAY = 3
 
 
 class DAIPClient:
@@ -16,15 +19,23 @@ class DAIPClient:
         index_url=DEFAULT_INDEX_URL,
         timeout=15,
         verify_ssl=True,
+        batch_size=DEFAULT_BATCH_SIZE,
+        batch_delay=DEFAULT_BATCH_DELAY,
         session=None,
     ):
         self.query_url = query_url
         self.index_url = index_url
         self.timeout = timeout
         self.verify_ssl = verify_ssl
+        self.batch_size = max(1, int(batch_size))
+        self.batch_delay = max(0, float(batch_delay))
         self.session = session or requests.Session()
 
     def fetch_locations(self, locations, radius='10', sort='Criticality'):
+        locations = [str(location).strip() for location in (locations or []) if str(location).strip()]
+        if not locations:
+            return {'group': [], 'count': 0}
+
         headers = {
             'Accept': 'application/json, text/javascript, */*; q=0.01',
             'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -40,24 +51,49 @@ class DAIPClient:
         with warnings.catch_warnings():
             if not self.verify_ssl:
                 warnings.simplefilter('ignore', InsecureRequestWarning)
-            self.session.get(
-                self.index_url,
-                headers=headers,
-                timeout=self.timeout,
-                verify=self.verify_ssl,
-            ).raise_for_status()
-            response = self.session.post(
-                self.query_url,
-                headers=headers,
-                json=_build_payload(locations, radius=radius, sort=sort),
-                timeout=self.timeout,
-                verify=self.verify_ssl,
-            )
-        response.raise_for_status()
-        payload = response.json()
-        if payload.get('error'):
-            raise RuntimeError(f"DAIP returned an error: {payload['error']}")
-        return payload
+            merged_payload = {'group': [], 'count': 0}
+            location_batches = [
+                locations[index:index + self.batch_size]
+                for index in range(0, len(locations), self.batch_size)
+            ]
+            batch_count = len(location_batches)
+            for index, location_batch in enumerate(location_batches, start=1):
+                print(
+                    f'[data-source:daip] 正在获取第 {index}/{batch_count} 批: '
+                    f"{' '.join(location_batch)}"
+                )
+                self.session.get(
+                    self.index_url,
+                    headers=headers,
+                    timeout=self.timeout,
+                    verify=self.verify_ssl,
+                ).raise_for_status()
+                response = self.session.post(
+                    self.query_url,
+                    headers=headers,
+                    json=_build_payload(location_batch, radius=radius, sort=sort),
+                    timeout=self.timeout,
+                    verify=self.verify_ssl,
+                )
+                response.raise_for_status()
+                payload = response.json()
+                if not isinstance(payload, dict):
+                    raise RuntimeError('DAIP returned an invalid response format')
+                if payload.get('error'):
+                    raise RuntimeError(f"DAIP returned an error: {payload['error']}")
+                merged_payload['group'].extend(payload.get('group', []) or [])
+                try:
+                    batch_result_count = int(payload.get('count', 0) or 0)
+                except (TypeError, ValueError):
+                    batch_result_count = 0
+                merged_payload['count'] += batch_result_count
+                print(
+                    f'[data-source:daip] 第 {index}/{batch_count} 批返回 '
+                    f'{batch_result_count} 条，上游累计 {merged_payload["count"]} 条'
+                )
+                if index < batch_count:
+                    time.sleep(self.batch_delay)
+        return merged_payload
 
 
 def _build_payload(locations, radius='10', sort='Criticality'):

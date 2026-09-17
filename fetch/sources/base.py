@@ -5,17 +5,13 @@ from typing import Any, Dict, List, Optional
 
 DATA_FIELDS = (
     'CODE',
-    'COORDINATES',
     'TIME',
     'PLATID',
     'RAWMESSAGE',
     'ALTITUDE',
     'SOURCE',
     'FIR',
-    'SHAPE',
-    'CENTER',
-    'RADIUS',
-    'RADIUS_UNIT',
+    'GEOMETRY',
 )
 
 
@@ -50,8 +46,6 @@ def normalized_data(payload: Optional[Dict[str, Any]]) -> Dict[str, List[str]]:
                 fallback = 'UNKNOWN'
             elif field_name == 'ALTITUDE':
                 fallback = 'None'
-            elif field_name == 'SHAPE':
-                fallback = 'POLYGON'
             output[field_name].append(
                 str(values[index] if index < len(values) else fallback)
             )

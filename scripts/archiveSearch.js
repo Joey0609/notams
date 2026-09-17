@@ -285,12 +285,11 @@ function filterNotamsWithinDateRange(allData, startDate, endDate) {
     const result = {
         NUM: 0,
         CODE: [],
-        COORDINATES: [],
+        GEOMETRY: [],
         TIME: [],
         PLATID: [],
         RAWMESSAGE: [],
         ALTITUDE: [],
-        SHAPE: [], CENTER: [], RADIUS: [], RADIUS_UNIT: [],
         CLASSIFY: {}
     };
     
@@ -320,8 +319,7 @@ function filterNotamsWithinDateRange(allData, startDate, endDate) {
                     const uniqueKey = [
                         code,
                         data.TIME[i] || '',
-                        data.COORDINATES[i] || '',
-                        data.SHAPE?.[i] || 'POLYGON', data.CENTER?.[i] || '', data.RADIUS?.[i] || '', data.RADIUS_UNIT?.[i] || '',
+                        data.GEOMETRY?.[i] || '',
                         data.PLATID?.[i] || ''
                     ].join('|');
                     if (seen.has(uniqueKey)) {
@@ -330,7 +328,7 @@ function filterNotamsWithinDateRange(allData, startDate, endDate) {
                     seen.add(uniqueKey);
                     // 添加到结果
                     result.CODE.push(code);
-                    result.COORDINATES.push(data.COORDINATES[i]);
+                    result.GEOMETRY.push(data.GEOMETRY?.[i] || '');
                     result.TIME.push(data.TIME[i]);
                     result.PLATID.push(data.PLATID?.[i] || 'UNKNOWN');
                     result.RAWMESSAGE.push(data.RAWMESSAGE?.[i] || '');
@@ -339,10 +337,6 @@ function filterNotamsWithinDateRange(allData, startDate, endDate) {
                     if (!Array.isArray(result.FIR)) result.FIR = [];
                     result.SOURCE.push(data.SOURCE?.[i] || 'NOTAM');
                     result.FIR.push(data.FIR?.[i] || '');
-                    result.SHAPE.push(data.SHAPE?.[i] || 'POLYGON');
-                    result.CENTER.push(data.CENTER?.[i] || '');
-                    result.RADIUS.push(data.RADIUS?.[i] || '');
-                    result.RADIUS_UNIT.push(data.RADIUS_UNIT?.[i] || '');
                     
                     // 收集分类信息
                     for (const [group, codes] of Object.entries(data.CLASSIFY || {})) {
@@ -500,15 +494,14 @@ function drawAllArchiveNotams() {
     for (let i = 0; i < archiveDict.NUM; i++) {
         const col = getColorForArchiveCode(archiveDict.CODE[i]);
         drawArchiveNotam(
-            archiveDict.COORDINATES[i],
+            archiveDict.GEOMETRY?.[i] || '',
             archiveDict.TIME[i],
             archiveDict.CODE[i],
             i,
             col,
             archiveDict.RAWMESSAGE?.[i] || "",
             archiveDict.SOURCE?.[i] || 'NOTAM',
-            archiveDict.FIR?.[i] || '', archiveDict.SHAPE?.[i] || 'POLYGON', archiveDict.CENTER?.[i] || '',
-            archiveDict.RADIUS?.[i] || '', archiveDict.RADIUS_UNIT?.[i] || ''
+            archiveDict.FIR?.[i] || ''
         );
         // 保持之前的可见状态
         if (archiveVisibleState[i] === false) {
@@ -521,93 +514,34 @@ function drawAllArchiveNotams() {
 }
 
 // 绘制单个历史航警
-function drawArchiveNotam(COORstrin, timee, codee, numm, col, rawmessage, sourceType = 'NOTAM', fir = '', shape = 'POLYGON', center = '', radius = '', radiusUnit = '') {
-    const rawCircle = circleGeometryFromRaw(rawmessage);
-    if (rawCircle && String(shape).toUpperCase() !== 'CIRCLE') {
-        shape = 'CIRCLE'; center = rawCircle.center; radius = rawCircle.radius; radiusUnit = rawCircle.unit;
-    }
-    var pos = COORstrin || '';
-    console.log(timee);
+function drawArchiveNotam(geometry, timee, codee, numm, col, rawmessage, sourceType = 'NOTAM', fir = '') {
     var timestr = convertTime(timee);
-    console.log(timestr);
-    var stPos = 0;
-    var arr = [];
-    
-    for (var i = 0; i < pos.length; i++) {
-        if (pos[i] == "-") {
-            var tmp = pos.substring(stPos, i);
-            arr.push(tmp);
-            stPos = i + 1;
-        }
-    }
-    arr.push(pos.substring(stPos, pos.length));
-    
-    var _TheArray = [];
-    for (var i = 0; i < arr.length; i++) {
-        _TheArray.push(pullOut(arr[i]));
-    }
-    
-    var latlngs = [];
-    for (var i = 0; i < _TheArray.length; i++) {
-        if (_TheArray[i]) {
-            latlngs.push([_TheArray[i][1], _TheArray[i][0]]);
-        }
-    }
-
-    var tmpPolygon;
-    if (String(shape).toUpperCase() === 'CIRCLE') {
-        const circleCenter = parseCircleCenter(center);
-        const radiusMeters = circleRadiusMeters(radius, radiusUnit);
-        if (!circleCenter || !radiusMeters) return;
-        tmpPolygon = createWrappedCircle(circleCenter, radiusMeters, {
-            color: col, weight: 2, opacity: 0.8, fillColor: col, fillOpacity: 0.5, dashArray: '3, 3'
-        }).addTo(map);
-    } else {
-    if (latlngs.length < 3) return;
-    const wrappedRings = typeof buildWrappedLatLngRings === 'function' ? buildWrappedLatLngRings(latlngs) : [latlngs];
-    if (!wrappedRings || wrappedRings.length === 0) return;
-    tmpPolygon = L.polygon(wrappedRings, {
+    const style = {
         color: col,
         weight: 2,
         opacity: 0.8,
         fillColor: col,
         fillOpacity: 0.5,
         dashArray: '3, 3'  // 虚线样式，区分历史航警
-    }).addTo(map);
-    }
+    };
+    var tmpPolygon = typeof geometryToLayer === 'function' ? geometryToLayer(geometry, style) : null;
+    if (!tmpPolygon) return;
+    tmpPolygon.addTo(map);
 
     // 创建弹出窗口
     var popupContent = "<div class='notam-popup'>" +
-        "<div class='notam-popup-header' style='background: linear-gradient(135deg, #1e9613ff 0%, #127209ff 100%);'>" +
-        "<h4>历史NOTAM信息</h4>" +
-        "</div>" +
+        buildNotamPopupHeader('历史NOTAM信息', rawmessage, 'background: linear-gradient(135deg, #1e9613ff 0%, #127209ff 100%);') +
         "<div class='notam-popup-body'>" +
-        "<div class='popup-info-row'>" +
-        "<span class='popup-label'>持续时间:</span>" +
-        "<span class='popup-value'>" + timestr + "</span>" +
-        "</div>" +
-        "<div class='popup-info-row'>" +
-        "<span class='popup-label'>航警编号:</span>" +
-        "<span class='popup-value'>" + codee + "</span>" +
-        "</div>" +
-        "<div class='popup-info-row row-horizontal'>" +
-        "<div class='popup-col'>" +
-        "<span class='popup-label'>来源:</span>" +
-        "<span class='popup-value'>" + (sourceType || 'NOTAM') + "</span>" +
-        "</div>" +
-        "<div class='popup-col'>" +
-        "<span class='popup-label'>飞行情报区:</span>" +
-        "<span class='popup-value'>" + (fir || '-') + "</span>" +
-        "</div>" +
-        "</div>" +
-        "<div class='popup-info-row'>" +
-        "<span class='popup-label'>数据来源日期:</span>" +
-        "<span class='popup-value'>" + extractDateFromNotamTime(timee) + "</span>" +
-        "</div>" +
-        "</div>" +
-        "<div class='notam-popup-buttons'>" +
-        "<button class='copy copy-coord' onclick=\"handleCopy('" + (String(shape).toUpperCase() === 'CIRCLE' ? formatCircleCoordinates(center, radius, radiusUnit) : COORstrin) + "')\">复制坐标</button>" +
-        "<button class='copy copy-raw' onclick=\"handleCopy('" + (rawmessage || '').replace(/'/g, "\\'").replace(/\n/g, '\\n') + "')\">复制原始航警</button>" +
+        buildNotamPopupRows({
+            timeText: timestr,
+            code: codee,
+            regionValue: fir || '-',
+            rawMessage: rawmessage,
+            extraRows: "<div class='popup-info-row'>" +
+                "<span class='popup-label'>数据来源日期:</span>" +
+                "<span class='popup-value'>" + extractDateFromNotamTime(timee) + "</span>" +
+                "</div>"
+        }) +
         "</div>" +
         "</div>";
 
@@ -615,6 +549,8 @@ function drawArchiveNotam(COORstrin, timee, codee, numm, col, rawmessage, source
         maxWidth: 300,
         className: 'notam-info-popup'
     });
+
+    bindPopupActions(tmpPolygon);
 
     polygonArchive[numm] = tmpPolygon;
 }

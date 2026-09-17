@@ -3,6 +3,8 @@ const exportButton = document.getElementById('exportButton');
 const expandableArea = document.getElementById('expandableArea');
 const exportArea = document.getElementById('exportArea');
 const logPanel = document.getElementById('logPanel');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const manualToggle = document.getElementById('manualToggle');
 let logPanelExpanded = false;
 let logPanelListener = null;
 let userScrolledUp = false;
@@ -10,6 +12,47 @@ let lastRenderedCount = 0;
 const customButton = document.getElementById('customButton');
 let isHelpExpanded = false;
 let isExportExpanded = false;
+
+/* 液态玻璃的悬停高光跟随指针：把圆心写进 --glass-x / --glass-y（元素内的百分比），
+   CSS 里那层 ::after 的径向渐变用它当圆心。指针事件本身就是一帧最多一次，
+   直接写变量即可跟手，不需要 rAF 循环。
+   触摸/手写笔没有 hover：改为按住期间加 .is-touching 点亮，并跟随手指（松手或离开时收起）。 */
+function glassSheenPercent(rect, clientX, clientY) {
+    const clamp = (value) => Math.min(125, Math.max(-25, value));
+    return {
+        x: clamp(((clientX - rect.left) / rect.width) * 100),
+        y: clamp(((clientY - rect.top) / rect.height) * 100),
+    };
+}
+
+function bindGlassSheen(control) {
+    if (!control || control.__glassSheenBound) return;
+    control.__glassSheenBound = true;
+
+    const move = (event) => {
+        const rect = control.getBoundingClientRect ? control.getBoundingClientRect() : null;
+        if (!rect || !rect.width || !rect.height) return;
+        if (!control.style || typeof control.style.setProperty !== 'function') return;
+        const point = glassSheenPercent(rect, event.clientX, event.clientY);
+        control.style.setProperty('--glass-x', point.x.toFixed(2) + '%');
+        control.style.setProperty('--glass-y', point.y.toFixed(2) + '%');
+    };
+    const release = (event) => {
+        if (!event || event.pointerType !== 'mouse') control.classList.remove('is-touching');
+    };
+
+    control.addEventListener('pointerenter', move, { passive: true });
+    control.addEventListener('pointermove', move, { passive: true });
+    control.addEventListener('pointerdown', (event) => {
+        move(event);
+        if (event.pointerType !== 'mouse') control.classList.add('is-touching');
+    }, { passive: true });
+    control.addEventListener('pointerup', release, { passive: true });
+    control.addEventListener('pointercancel', release, { passive: true });
+    control.addEventListener('pointerleave', () => control.classList.remove('is-touching'), { passive: true });
+}
+
+[helpButton, exportButton, sidebarToggle, manualToggle, customButton].forEach(bindGlassSheen);
 
 const GITHUB_STAR_URL = 'https://github.com/Joey0609/notams';
 const GITHUB_STAR_THANK_YOU = '❤ 谢谢 ❤';
@@ -169,6 +212,7 @@ exportButton.addEventListener('click', () => {
 
 function openHelpArea() {
     isHelpExpanded = true;
+    expandableArea.classList.add('is-open');
     expandableArea.style.maxHeight = HELP_AREA_HEIGHT + 'px';
     const isMobile = window.innerWidth <= 768;
     expandableArea.style.bottom = isMobile ? '60px' : '10px';
@@ -183,6 +227,7 @@ function openHelpArea() {
 
 function closeHelpArea() {
     isHelpExpanded = false;
+    expandableArea.classList.remove('is-open');
     expandableArea.style.maxHeight = '0';
     const isMobile = window.innerWidth <= 768;
     expandableArea.style.bottom = isMobile ? '90px' : '40px';
@@ -194,6 +239,7 @@ function closeHelpArea() {
 
 function openExportArea() {
     isExportExpanded = true;
+    exportArea.classList.add('is-open');
     exportArea.style.maxHeight = EXPORT_AREA_HEIGHT + 'px';
     const isMobile = window.innerWidth <= 768;
     exportArea.style.bottom = isMobile ? '60px' : '10px';
@@ -208,6 +254,7 @@ function openExportArea() {
 
 function closeExportArea() {
     isExportExpanded = false;
+    exportArea.classList.remove('is-open');
     exportArea.style.maxHeight = '0';
     const isMobile = window.innerWidth <= 768;
     exportArea.style.bottom = isMobile ? '90px' : '40px';

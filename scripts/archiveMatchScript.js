@@ -4,6 +4,7 @@ let matchIndex = -1;
 let matchData = null;
 let relatedChildLayersByParent = {};
 let originalMatchLayer = null;
+let hasInitialFocus = false;   // 是否已按原始航警定位过（只在首次加载时执行）
 const matchColorPool = [
     '#3498db99', '#e74c3c99', '#2ecc7199', '#f39c1299', '#9b59b699',
     '#1abc9c99', '#34495e99', '#16a08599', '#27ae6099', '#2980b999',
@@ -56,7 +57,27 @@ function getUrlParameter(name) {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
+// 合并聚焦段与外部段，得到与首页 dict 一致的行号空间（match{idx}.json 按该行号编号）
+function mergeFocusedNotamSections(data) {
+    const sections = [data.FOCUSED_NOTAM_DATA, data.NOTAM_DATA];
+    const fields = ['CODE', 'TIME', 'PLATID', 'RAWMESSAGE', 'ALTITUDE', 'SOURCE', 'FIR', 'GEOMETRY'];
+    const merged = {};
+    fields.forEach((field) => { merged[field] = []; });
+    sections.forEach((section) => {
+        if (!section || typeof section !== 'object') return;
+        const size = Number(section.NUM || 0);
+        for (let i = 0; i < size; i++) {
+            fields.forEach((field) => { merged[field].push(section[field]?.[i] ?? ''); });
+        }
+    });
+    merged.NUM = merged.CODE.length;
+    return merged;
+}
+
 function getNotamDataSection(data) {
+    if (data && data.FOCUSED_NOTAM_DATA && typeof data.FOCUSED_NOTAM_DATA === 'object') {
+        return mergeFocusedNotamSections(data);
+    }
     if (data && data.NOTAM_DATA && typeof data.NOTAM_DATA === 'object') {
         return data.NOTAM_DATA;
     }
@@ -146,6 +167,16 @@ function loadMatchData(index) {
         });
 }
 
+// 打开匹配页时定位到原始航警；圆形的 FeatureGroup 走 getBounds() 分支
+function focusOnOriginalNotam() {
+    if (!originalMatchLayer || typeof map === 'undefined' || !map) return false;
+    const baseLatLngs = getBaseLatLngsFromLayer(originalMatchLayer);
+    const bounds = baseLatLngs.length >= 3 ? L.latLngBounds(baseLatLngs) : getBaseBoundsFromLayer(originalMatchLayer);
+    if (!bounds || (typeof bounds.isValid === 'function' && !bounds.isValid())) return false;
+    map.fitBounds(bounds, { padding: [80, 80], maxZoom: 6 });
+    return true;
+}
+
 // 绘制原始航警
 function drawOriginalNotam() {
     // 先清除所有匹配多边形，保留地图和图层
@@ -165,20 +196,18 @@ function drawOriginalNotam() {
             }
             
             const originalNotam = {
-                COORDINATES: notamData.COORDINATES[matchIndex],
+                GEOMETRY: notamData.GEOMETRY?.[matchIndex] || '',
                 TIME: notamData.TIME[matchIndex],
                 CODE: notamData.CODE[matchIndex],
                 ALTITUDE: notamData.ALTITUDE[matchIndex] || 'None',
                 RAWMESSAGE: notamData.RAWMESSAGE[matchIndex] || '',
                 SOURCE: notamData.SOURCE?.[matchIndex] || 'NOTAM',
-                FIR: notamData.FIR?.[matchIndex] || '',
-                SHAPE: notamData.SHAPE?.[matchIndex] || 'POLYGON', CENTER: notamData.CENTER?.[matchIndex] || '',
-                RADIUS: notamData.RADIUS?.[matchIndex] || '', RADIUS_UNIT: notamData.RADIUS_UNIT?.[matchIndex] || ''
+                FIR: notamData.FIR?.[matchIndex] || ''
             };
             
             // 绘制原始航警，使用特殊颜色（半透明红色）
             drawNotArchive(
-                originalNotam.COORDINATES,
+                originalNotam.GEOMETRY,
                 originalNotam.TIME,
                 originalNotam.CODE,
                 originalNotam.ALTITUDE,
@@ -188,12 +217,15 @@ function drawOriginalNotam() {
                 originalNotam.RAWMESSAGE || "",
                 0.8,
                 originalNotam.SOURCE || 'NOTAM',
-                originalNotam.FIR || '', originalNotam.SHAPE, originalNotam.CENTER, originalNotam.RADIUS, originalNotam.RADIUS_UNIT
+                originalNotam.FIR || ''
             );
             originalMatchLayer = window.polygonAuto['original'] || null;
             
             // 将原始航警置于顶层
             if (originalMatchLayer && originalMatchLayer.bringToFront) originalMatchLayer.bringToFront();
+
+            // 打开匹配页时把视图定位到这条航警，而不是地图初始位置
+            if (!hasInitialFocus && focusOnOriginalNotam()) hasInitialFocus = true;
         })
         .catch(err => {
             console.error('Failed to load original NOTAM:', err);
@@ -280,7 +312,7 @@ function drawMatchNotams() {
         const item = matchData[i];
         const col = getMatchColor(item.CODE);
         drawNotArchive(
-            item.COORDINATES,
+            item.GEOMETRY || '',
             item.TIME,
             item.CODE,
             item.ALTITUDE,
@@ -290,7 +322,7 @@ function drawMatchNotams() {
             item.RAWMESSAGE || "",
             0.05,
             item.SOURCE || 'NOTAM',
-            item.FIR || '', item.SHAPE || 'POLYGON', item.CENTER || '', item.RADIUS || '', item.RADIUS_UNIT || ''
+            item.FIR || ''
         );
         // 重用自动航警的数组
         polygonMatch[i] = window.polygonAuto[i];
@@ -308,8 +340,7 @@ function drawMatchNotams() {
 }
 
 // 定位到匹配航警
-function locateToMatchNotam(index) {
-    if (!matchData || index >= matchData.length) return;
+function locateToMatchNotam(index) {    if (!matchData || index >= matchData.length) return;
     try {
         const poly = polygonMatch[index];
         if (poly) {
@@ -361,127 +392,38 @@ function closeLoadingModal() {
 
                     const layers = [];
                     related.forEach((child) => {
-                        const latlngs = parseCoordinatesToLatLngs(child.COORDINATES);
-                        if (latlngs.length < 3) return;
-                        const rings = typeof buildWrappedLatLngRings === 'function' ? buildWrappedLatLngRings(latlngs) : [latlngs];
-                        if (!rings || rings.length === 0) return;
-                        const layer = L.polygon(rings, {
-                            color,
-                            weight: 3,
-                            opacity: 1,
-                            fillColor: color,
-                            fillOpacity: 0.0,
-                            dashArray: '8 6',
+                        const layer = geometryToLayer(child.GEOMETRY || '', {
+                            color, weight: 3, opacity: 1, fillColor: color,
+                            fillOpacity: 0.0, dashArray: '8 6',
                         });
-                        layer.__baseStyle = {
-                            weight: 3,
-                            opacity: 1,
-                            fillOpacity: 0.0,
-                            dashArray: '8 6',
-                            color,
-                            fillColor: color,
-                        };
-                            layer.__baseLatLngs = cloneLatLngs(latlngs);
-                        layers.push(layer);
-                    });
-                    relatedChildLayersByParent[parentIndex] = layers;
+                        if (!layer) return;
+                        layer.__baseStyle = { weight: 3, opacity: 1, fillOpacity: 0.0, dashArray: '8 6' };
+                        layer.addTo(map); layers.push(layer);
+                    });                    relatedChildLayersByParent[parentIndex] = layers;
                     window.relatedChildLayersByParent = relatedChildLayersByParent;
                 }
 
 // 复制原始航警
 // 绘制NOTAM多边形
-function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, fillopacity = 0.5, sourceType = 'NOTAM', fir = '', shape = 'POLYGON', center = '', radius = '', radiusUnit = '') {
-    const rawCircle = circleGeometryFromRaw(rawmessage);
-    if (rawCircle && String(shape).toUpperCase() !== 'CIRCLE') {
-        shape = 'CIRCLE'; center = rawCircle.center; radius = rawCircle.radius; radiusUnit = rawCircle.unit;
-    }
-    var pos = COORstrin || '';
+function drawNotArchive(geometry, timee, codee, altitude, numm, col, is_self, rawmessage, fillopacity = 0.5, sourceType = 'NOTAM', fir = '') {
     var timestr = is_self ? null : convertTime(timee);
-    var stPos = 0;
-    var arr = [];
-    
-    for (var i = 0; i < pos.length; i++) {
-        if (pos[i] == "-") {
-            var tmp = pos.substring(stPos, i);
-            arr.push(tmp);
-            stPos = i + 1;
-        }
-    }
-    arr.push(pos.substring(stPos, pos.length));
-    
-    var _TheArray = [];
-    for (var i = 0; i < arr.length; i++) {
-        _TheArray.push(pullOut(arr[i]));
-    }
-    
-    var latlngs = [];
-    for (var i = 0; i < _TheArray.length; i++) {
-        if (_TheArray[i]) {
-            latlngs.push([_TheArray[i][1], _TheArray[i][0]]); // [lat, lng]
-        }
-    }
-
-    if (String(shape).toUpperCase() === 'CIRCLE') {
-        const circleCenter = typeof parseCircleCenter === 'function' ? parseCircleCenter(center) : null;
-        const radiusMeters = typeof circleRadiusMeters === 'function' ? circleRadiusMeters(radius, radiusUnit) : 0;
-        if (!circleCenter || !radiusMeters) return;
-        var tmpPolygon = createWrappedCircle(circleCenter, radiusMeters, { color: col, weight: 1, opacity: 1, fillColor: col, fillOpacity: fillopacity }).addTo(map);
-        tmpPolygon.__baseLatLngs = [];
-    } else {
-    if (latlngs.length < 3) return; // 至少需要3个点才能绘制多边形
-
-    // 对坐标点排序，确保多边形是凸的或至少是合理的形状
-    latlngs = sortPolygonPoints(latlngs);
-    var baseLatLngs = cloneLatLngs(latlngs);
-    const wrappedRings = typeof buildWrappedLatLngRings === 'function' ? buildWrappedLatLngRings(latlngs) : [latlngs];
-    if (!wrappedRings || wrappedRings.length === 0) return;
-
-    // 创建多边形
-    var tmpPolygon = L.polygon(wrappedRings, {
-        color: col,
-        weight: 1,
-        opacity: 1,
-        fillColor: col,
-        fillOpacity: fillopacity
-    }).addTo(map);
-    tmpPolygon.__baseLatLngs = baseLatLngs;
-    }
-
+    const style = { color: col, weight: 1, opacity: 1, fillColor: col, fillOpacity: fillopacity };
+    var tmpPolygon = typeof geometryToLayer === 'function' ? geometryToLayer(geometry, style) : null;
+    if (!tmpPolygon) return;
+    tmpPolygon.addTo(map);
+    // geometryToLayer 已经写入未偏移的原始环（__baseLatLngs），不要覆盖
     // 创建弹出窗口内容
     var popupContent;
     if (!is_self) {
         popupContent = "<div class='notam-popup'>" +
-            "<div class='notam-popup-header'>" +
-            "<h4>NOTAM 信息</h4>" +
-            "</div>" +
+            buildNotamPopupHeader('NOTAM 信息', rawmessage) +
             "<div class='notam-popup-body'>" +
-            "<div class='popup-info-row'>" +
-            "<span class='popup-label'>持续时间:</span>" +
-            "<span class='popup-value'>" + timestr + "</span>" +
-            "</div>" +
-            "<div class='popup-info-row row-horizontal'>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>来源:</span>" +
-            "<span class='popup-value'>" + (sourceType || 'NOTAM') + "</span>" +
-            "</div>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>飞行情报区:</span>" +
-            "<span class='popup-value'>" + (fir || '-') + "</span>" +
-            "</div>" +
-            "</div>" +
-            "<div class='popup-info-row row-horizontal'>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>航警编号:</span>" +
-            "<span class='popup-value'>" + codee + "</span>" +
-            "</div>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>航警高度:</span>" +
-            "<span class='popup-value'>" + altitude + "</span>" +
-            "</div>" +
-            "</div>" +
-            "<div class='notam-popup-buttons'>" +
-            "<button class='copy copy-coord' onclick=\"handleCopy('" + (String(shape).toUpperCase() === 'CIRCLE' ? formatCircleCoordinates(center, radius, radiusUnit) : COORstrin) + "')\">复制坐标</button>" +
-            "<button class='copy copy-raw' data-raw-index='" + numm + "'>复制原始航警</button>" +
+            buildNotamPopupRows({
+                timeText: timestr,
+                code: codee,
+                regionValue: fir || '-',
+                rawMessage: rawmessage
+            }) +
             "</div>" +
             "</div>";
     } else {
@@ -495,7 +437,7 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
             "</div>" +
             "</div>" +
             "<div class='notam-popup-buttons'>" +
-            "<button class='copy' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
+            "<button class='copy' onclick=\"handleCopy('" + (geometry || '') + "')\">复制坐标</button>" +
             "</div>" +
             "</div>";
     }
@@ -504,23 +446,9 @@ function drawNotArchive(COORstrin, timee, codee, altitude, numm, col, is_self, r
         maxWidth: 300,
         className: 'notam-info-popup'
     });
-    
-    // 为弹出窗口添加打开事件监听器，处理复制原始航警按钮
-    tmpPolygon.on('popupopen', function(e) {
-        const popup = e.popup;
-        const popupElement = popup.getElement();
-        if (popupElement) {
-            const rawBtn = popupElement.querySelector('.copy-raw[data-raw-index]');
-            if (rawBtn) {
-                const idx = parseInt(rawBtn.getAttribute('data-raw-index'));
-                rawBtn.onclick = function(event) {
-                    event.stopPropagation();
-                    const raw = dict?.RAWMESSAGE?.[idx] || '';
-                    handleCopy(raw);
-                };
-            }
-        }
-    });
+
+    // 标题栏「图钉 / 复制」按钮（匹配页没有 dict，报文由标题栏注册表携带）
+    bindPopupActions(tmpPolygon);
 
     // 存储多边形引用
     if (is_self) {

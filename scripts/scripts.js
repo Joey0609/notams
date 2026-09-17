@@ -22,7 +22,7 @@ const WRAP_WORLD_OFFSETS = (() => {
 })();
 
 // 海外发射场开关：0=不绘制，1=绘制
-var drawForeignLaunchSite = 0;
+var drawForeignLaunchSite = 1;
 
 // 海南发射场相关标记（用于缩放级别切换）
 var hainanMergedMarker = null;
@@ -137,20 +137,32 @@ var tileLayers = {
     },
 };
 
-// 矢量图层颜色池
+// 矢量图层颜色池（聚焦段以外的航警）
 const colorPoolVector = [
     "#a70000ff", "#1a2cd1", "#006d1bff", "#806800ff", "#6a009bff",
     "#548100ff", "#a74e00ff", "#313131", "#a0008bff", "#006b79ff"
 ];
 
-// 卫星图层颜色池
+// 卫星图层颜色池（聚焦段以外的航警）
 const colorPoolSatellite = [
     "#ff3b3b", "#00d9ff", "#00ff41", "#ffea00", "#c300ffff",
     "#7dff00", "#ff8c00", "#ffffff", "#ff1493", "#00ffff"
 ];
 
+// 聚焦段（[ICAO_FOCUSED]）专用颜色池：与全量池错开，保证两类航警一眼可分
+const colorPoolVectorFocused = [
+    "#00b7d4ff", "#ff3d8bff", "#7a4bffff", "#00b050ff", "#ff7a00ff",
+    "#c200c2ff", "#4a4affff", "#00a3a3ff", "#ff5c5cff", "#8fa300ff"
+];
+
+const colorPoolSatelliteFocused = [
+    "#00e5ffff", "#ff2d95ff", "#b388ffff", "#00ff9dff", "#ffaa00ff",
+    "#ff00e5ff", "#6ec6ffff", "#00ffd5ff", "#ff6b6bff", "#e8ff3aff"
+];
+
 // 当前使用的颜色池
 let currentColorPool = colorPoolVector;
+let currentFocusedColorPool = colorPoolVectorFocused;
 let currentColor_idx = 0;
 
 function randomColor() {
@@ -160,6 +172,7 @@ function randomColor() {
 // 根据地图类型切换颜色池
 function switchColorPool(isVectorMap) {
     currentColorPool = isVectorMap ? colorPoolVector : colorPoolSatellite;
+    currentFocusedColorPool = isVectorMap ? colorPoolVectorFocused : colorPoolSatelliteFocused;
     currentColor_idx = 0; // 重置索引
 }
 
@@ -357,9 +370,9 @@ function addLayerControl() {
         // 切换颜色池
         switchColorPool(isVector);
         
-        // 重新分配颜色并重绘航警
-        if (dict && dict.CLASSIFY) {
-            assignGroupColors(dict.CLASSIFY);
+        // 重新分配颜色并重绘航警（聚焦段与外部段各用一套颜色池）
+        if (dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
+            assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);
             redrawAllNotams();
         }
         
@@ -383,19 +396,7 @@ function redrawAllNotams() {
     
     for (var i = 0; i < dict.NUM; i++) {
         var color = getColorForCode(dict.CODE[i]);
-        drawNot(
-            dict.COORDINATES[i],
-            dict.TIME[i],
-            dict.CODE[i],
-            dict.ALTITUDE[i],
-            i,
-            color,
-            0,
-            dict.RAWMESSAGE[i],
-            dict.SOURCE?.[i] || 'NOTAM',
-            dict.FIR?.[i] || '', dict.SHAPE?.[i] || 'POLYGON', dict.CENTER?.[i] || '',
-            dict.RADIUS?.[i] || '', dict.RADIUS_UNIT?.[i] || ''
-        );
+        drawNot(dict.TIME[i], dict.CODE[i], dict.ALTITUDE[i], i, color, 0, dict.RAWMESSAGE[i], dict.SOURCE?.[i] || 'NOTAM', dict.FIR?.[i] || '', dict.GEOMETRY?.[i] || '');
         
         if (currentVisibleState[i] === false && polygonAuto[i]) {
             map.removeLayer(polygonAuto[i]);
@@ -537,58 +538,146 @@ function drawLandingZone(lat, lng, title, content, iconUrl){
 }
 
 function drawForeignLaunchSites() {
+    const foreignSiteIcon = 'statics/launch.png';
     const foreignSites = [
-        { name: '中大西洋区域发射场', lat: 37.84341, lng: -75.478195 },
-        { name: '伍默拉靶场综合体', lat: -30.955278, lng: 136.532222 },
-        { name: '内之浦航天中心', lat: 31.25, lng: 131.08 },
-        { name: '军际特种装备测试中心', lat: 30.778056, lng: -3.055278 },
-        { name: '卡普斯京亚尔', lat: 48.59, lng: 45.72 },
-        { name: '卡纳维拉尔角太空军基地', lat: 28.488889, lng: -80.577778 },
-        { name: '因约克恩机场', lat: 35.658611, lng: -117.829444 },
-        { name: '圭亚那航天中心', lat: 5.28, lng: -52.79 },
-        { name: '塞姆南航天中心', lat: 35.234444, lng: 53.911111 },
-        { name: '多姆巴罗夫斯基空军基地', lat: 51.093889, lng: 59.842222 },
-        { name: '太平洋太空港综合体', lat: 57.435833, lng: -152.337778 },
-        { name: '奥德赛发射平台', lat: null, lng: null },
-        { name: '布罗格里奥航天中心', lat: -2.938333, lng: 40.2125 },
-        { name: '帕尔马希姆空军基地', lat: 31.897778, lng: 34.690556 },
-        { name: '德尔塔级潜艇', lat: null, lng: null },
-        { name: '拜科努尔航天发射场', lat: 45.965, lng: 63.305 },
-        { name: '斯沃博德尼航天发射场', lat: 51.883333, lng: 128.333333 },
-        { name: '普列谢茨克航天发射场', lat: 62.925556, lng: 40.577778 },
-        { name: '东方航天发射场', lat: 51.884553, lng: 128.334778 },
-        { name: '沃洛普斯飞行设施', lat: 37.940194, lng: -75.466389 },
-        { name: '沙赫鲁德导弹测试场', lat: 36, lng: 55 },
-        { name: '火箭实验室发射综合体1号', lat: -39.2615, lng: 177.864876 },
-        { name: '爱德华空军基地', lat: 34.905556, lng: -117.883611 },
-        { name: '甘多空军基地', lat: 27.930278, lng: -15.385 },
-        { name: '种子岛航天中心', lat: 30.4, lng: 130.97 },
-        { name: '罗老航天中心', lat: 34.431867, lng: 127.535069 },
-        { name: '考爱岛导弹试验靶场', lat: 22.083333, lng: -159.5 },
-        { name: '肯尼迪航天中心', lat: 28.524167, lng: -80.650833 },
-        { name: '东海卫星发射场', lat: 40.85, lng: 129.67 },
-        { name: '范登堡空军基地', lat: 34.732778, lng: -120.568056 },
-        { name: '萨迪什·达万航天中心', lat: 13.719939, lng: 80.230425 },
-        { name: '西海卫星发射场', lat: 39.66, lng: 124.705 },
-        { name: '里根试验场', lat: 8.716667, lng: 167.733333 },
-        { name: '阿尔坎塔拉航天中心', lat: -2.333333, lng: -44.4 },
-        { name: '莫哈维航空航天港', lat: 35.06, lng: -118.15 },
-        { name: '康沃尔航天港', lat: 50.440833, lng: -4.995278 },
-        { name: '星港', lat: 25.997, lng: -97.157 },
-        { name: '纪伊太空发射场', lat: 33.544167, lng: 135.889444 }
-    ];
+        {
+            name: '卡纳维拉尔角太空军基地',
+            lat: 28.488889,
+            lng: -80.577778,
+            content: "<b><large>美国佛罗里达</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/卡纳维拉尔角太空军站' target='_blank' style='text-decoration: none; font-weight: bold;'>卡纳维拉尔角太空军基地</a>（Cape Canaveral Space Force Station，CCSFS）</b>，简称“卡角”，原称卡纳维拉尔角空军基地，1949 年启用，是美国东海岸的主要发射基地，现有空间发射综合体 37B、40、41 三个发射台，与肯尼迪航天中心相邻。"
+        },
+        {
+            name: '圭亚那航天中心',
+            lat: 5.28,
+            lng: -52.79,
+            content: "<b><large>法属圭亚那库鲁</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/圭亚那航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>圭亚那航天中心</a>（Guiana Space Centre，CSG；法语：Centre Spatial Guyanais）</b>，位于南美洲法属圭亚那库鲁西北部，1964 年建立、1968 年开始运作，由欧洲空间局、法国国家空间研究中心和阿丽亚娜空间公司共同使用。"
+        },
+        {
+            name: '拜科努尔航天发射场',
+            lat: 45.965,
+            lng: 63.305,
+            content: "<b><large>哈萨克斯坦拜科努尔</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/拜科努尔航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>拜科努尔航天发射场</a>（Baikonur Cosmodrome）</b>，位于哈萨克斯坦南部，1955 年建立，是世界上第一个轨道与载人航天发射场，目前由俄罗斯租借至 2050 年，俄罗斯多数卫星和所有载人飞船都在此发射。"
+        },
+        {
+            name: '普列谢茨克航天发射场',
+            lat: 62.925556,
+            lng: 40.577778,
+            content: "<b><large>俄罗斯阿尔汉格尔斯克</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/普列谢茨克航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>普列谢茨克航天发射场</a>（Plesetsk Cosmodrome）</b>，位于阿尔汉格尔斯克州米尔内，1957 年建立，最初是 R-7 洲际弹道导弹基地；因纬度较高，适合闪电轨道、高倾角近地轨道与太阳同步轨道发射。"
+        },
+        {
+            name: '东方航天发射场',
+            lat: 51.884553,
+            lng: 128.334778,
+            content: "<b><large>俄罗斯阿穆尔</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/东方航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>东方航天发射场</a>（Vostochny Cosmodrome）</b>，又称沃斯托克尼航天发射场，位于远东阿穆尔州，2016 年 4 月 28 日首次发射，用于降低俄罗斯对拜科努尔航天发射场的依赖。"
+        },
+        {
+            name: '火箭实验室发射综合体1号',
+            lat: -39.2615,
+            lng: 177.864876,
+            content: "<b><large>新西兰马希亚</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/火箭实验室发射综合体1号' target='_blank' style='text-decoration: none; font-weight: bold;'>火箭实验室发射综合体1号</a>（Rocket Lab Launch Complex 1）</b>，又称马希亚发射综合体，位于新西兰北岛马希亚半岛南端的阿胡里点，由火箭实验室拥有并运营；2017 年 5 月 25 日发射电子号，成为第一个执行轨道发射的私人发射场。"
+        },
+        {
+            name: '种子岛航天中心',
+            lat: 30.4,
+            lng: 130.97,
+            content: "<b><large>日本鹿儿岛</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/种子岛航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>种子岛航天中心</a>（Tanegashima Space Center，TNSC）</b>，位于九州以南约 40 公里的种子岛东南海岸，总面积约 9.7 平方公里，1969 年建立，是日本最大的火箭发射基地，现由日本宇宙航空研究开发机构管理。"
+        },
+        {
+            name: '罗老航天中心',
+            lat: 34.431867,
+            lng: 127.535069,
+            content: "<b><large>韩国全罗南道</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/罗老航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>罗老航天中心</a>（Naro Space Center）</b>，位于全罗南道高兴郡，2009 年 7 月启用，由国有的韩国航空航天研究院运营，设有两座发射台、控制塔以及火箭总装与测试设施。"
+        },
+        {
+            name: '肯尼迪航天中心',
+            lat: 28.524167,
+            lng: -80.650833,
+            content: "<b><large>美国佛罗里达</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/肯尼迪航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>肯尼迪航天中心</a>（Kennedy Space Center，KSC）</b>，位于佛罗里达州东海岸的梅里特岛，1962 年 7 月成立，是美国国家航空航天局主要的航天发射场，自阿波罗 4 号起一直承担 NASA 载人航天任务的发射。"
+        },
+        {
+            name: '范登堡空军基地',
+            lat: 34.732778,
+            lng: -120.568056,
+            content: "<b><large>美国加利福尼亚</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/范登堡太空军基地' target='_blank' style='text-decoration: none; font-weight: bold;'>范登堡空军基地</a>（Vandenberg Space Force Base，VSFB，现称范登堡太空军基地）</b>，位于加州隆坡西北约 15 公里，1941 年建立，由美国太空军第 30 太空发射三角洲部队运营，主要执行极轨卫星发射与导弹试验。"
+        },
+        {
+            name: '萨迪什·达万航天中心',
+            lat: 13.719939,
+            lng: 80.230425,
+            content: "<b><large>印度安得拉邦</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/萨迪什·达万航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>萨迪什·达万航天中心</a>（Satish Dhawan Space Centre，SDSC）</b>，又称斯里赫里戈达靶场（SHAR），位于安得拉邦斯里赫里戈达岛，由印度空间研究组织运营，2002 年改为以 ISRO 前主席萨迪什·达万命名。"
+        },
+        {
+            name: '西海卫星发射场',
+            lat: 39.66,
+            lng: 124.705,
+            content: "<b><large>朝鲜东仓里</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/西海卫星发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>西海卫星发射场</a>（Sohae Satellite Launching Station）</b>，又称东仓洞航天发射中心，位于朝鲜西北部靠近中国边界的丘陵地带，2012 年 4 月首次发射光明星 3 号失败，同年 12 月发射成功。"
+        },
+        {
+            name: '星港',
+            lat: 25.997,
+            lng: -97.157,
+            content: "<b><large>美国得克萨斯</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/星港' target='_blank' style='text-decoration: none; font-weight: bold;'>星港</a>（Starbase，又称星际基地、博卡奇卡发射场）</b>，位于得克萨斯州博卡奇卡村附近，隶属太空探索技术公司，是星舰的专属发射场；2025 年 5 月当地成立星港市。"
+        },
+        {
+            name: '帕尔马希姆空军基地',
+            lat: 31.897778,
+            lng: 34.690556,
+            content: "<b><large>以色列帕尔马希姆</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/帕尔马希姆空军基地' target='_blank' style='text-decoration: none; font-weight: bold;'>帕尔马希姆空军基地</a>（Palmachim Airbase）</b>，位于地中海沿岸的以色列军事设施与航天发射场，1988 年启用，以附近的棕榈农场命名。"
+        },
+        {
+            name: '中大西洋区域发射场',
+            lat: 37.84341,
+            lng: -75.478195,
+            content: "<b><large>美国弗吉尼亚</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/中大西洋区域发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>中大西洋区域发射场</a>（Mid-Atlantic Regional Spaceport，MARS）</b>，位于弗吉尼亚州沃洛普斯岛南端，隶属于沃洛普斯飞行设施，2006 年启用的商业航天发射设施。"
+        },
+        {
+            name: '塞姆南航天中心',
+            lat: 35.234444,
+            lng: 53.911111,
+            content: "<b><large>伊朗塞姆南</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/塞姆南航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>塞姆南航天中心</a>（Semnan Space Center）</b>，位于塞姆南市东南约 50 公里，2009 年启用，是伊朗主要的航天发射场。"
+        },
+        {
+            name: '阿尔坎塔拉航天中心',
+            lat: -2.333333,
+            lng: -44.4,
+            content: "<b><large>巴西马拉尼昂</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/阿尔坎塔拉航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>阿尔坎塔拉航天中心</a>（Alcantara Space Center）</b>，位于巴西马拉尼昂州阿尔坎塔拉半岛，1982 年启用，是巴西航天局的主要航天发射中心。"
+        },
+        {
+            name: '纪伊太空发射场',
+            lat: 33.544167,
+            lng: 135.889444,
+            content: "<b><large>日本和歌山</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/纪伊太空发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>纪伊太空发射场</a>（Space Port Kii）</b>，位于和歌山县串本町，2024 年 3 月首次发射凯洛斯 1 号，是日本第一个民营火箭发射场，由航天公司 Space One 运营。"
+        }
+    ].map(site => ({
+        ...site,
+        icon: foreignSiteIcon,
+    }));
 
     foreignSites.forEach(site => {
-        if (!isFinite(site.lat) || !isFinite(site.lng)) {
+        if (!Number.isFinite(site.lat) || !Number.isFinite(site.lng)) {
             console.warn('海外发射场缺少坐标，已跳过:', site.name);
             return;
         }
 
-        const popupContent = "<b><large>海外发射场</large></b><br>" +
-            "<b>" + site.name + "</b><br>" +
-            "坐标: " + site.lat.toFixed(6) + ", " + site.lng.toFixed(6);
-
-        drawLaunchsite(site.lat, site.lng, site.name, popupContent, 'statics/launch1.png');
+        drawLaunchsite(site.lat, site.lng, site.name, site.content, site.icon);
     });
 }
 
@@ -697,32 +786,15 @@ function updateHainanSitesDisplay(sites) {
 // 高亮NOTAM
 function highlightNotam(index, color) {
     removeHighlight();
-
     if (!dict || index >= dict.NUM) return;
-
     try {
-        const coordinates = dict.COORDINATES[index];
-        if ((dict.SHAPE?.[index] || 'POLYGON').toUpperCase() === 'CIRCLE') {
-            const center = parseCircleCenter(dict.CENTER?.[index]);
-            const radius = circleRadiusMeters(dict.RADIUS?.[index], dict.RADIUS_UNIT?.[index]);
-            if (center && radius) highlightPolygon = createWrappedCircle(center, radius, { color, weight: 3, opacity: 1, fillColor: color, fillOpacity: 0.6 }).addTo(map);
-        } else {
-        const points = parseCoordinatesToPoints(coordinates);
-        if (points && points.length > 0) {
-            highlightPolygon = L.polygon(points, {
-                color: color,
-                weight: 3,
-                opacity: 1,
-                fillColor: color,
-                fillOpacity: 0.6
-            }).addTo(map);
-        }
-        }
-    } catch (e) {
-        console.error('高亮绘制失败', e);
+        const style = { color, weight: 3, opacity: 1, fillColor: color, fillOpacity: 0.6 };
+        highlightPolygon = geometryToLayer(dict.GEOMETRY?.[index] || '', style);
+        if (highlightPolygon) highlightPolygon.addTo(map);
+    } catch (error) {
+        console.error('高亮绘制失败', error);
     }
 }
-
 // 移除高亮
 function removeHighlight() {
     if (highlightPolygon) {
@@ -778,110 +850,340 @@ function createWrappedCircle(center, radiusMeters, options) {
     return group;
 }
 
-function circleGeometryFromRaw(rawmessage) {
-    const text = String(rawmessage || '').toUpperCase().replace(/\s+/g, '');
-    if (!text.includes('CIRCLE')) return null;
-    const center = text.match(/(?:CENTEREDAT|CENTER)([NS]\d{4,6}[WE]\d{5,7}|\d{4,6}[NS]\d{5,7}[WE])/);
-    const radius = text.match(/RADIUS(?:OF)?(?:IS)?(\d+(?:\.\d+)?)(KM|NM)\b/);
-    if (!center || !radius) return null;
-    const normalizedCenter = /^[NS]/.test(center[1]) ? center[1] : center[1].slice(4, 5) + center[1].slice(0, 4) + center[1].slice(-1) + center[1].slice(5, -1);
-    return { center: normalizedCenter, radius: radius[1], unit: radius[2] };
+function normalizeLngForWrap(lng) {
+    let value = Number(lng);
+    if (!Number.isFinite(value)) return lng;
+    while (value > 180) value -= 360;
+    while (value < -180) value += 360;
+    return value;
 }
 
-function normalizeLngForWrap(lng) {
-    let v = Number(lng);
-    if (!isFinite(v)) return lng;
-    while (v > 180) v -= 360;
-    while (v < -180) v += 360;
-    return v;
+function unwrapLatLngs(latlngs) {
+    if (!Array.isArray(latlngs) || latlngs.length === 0) return [];
+    const output = [[latlngs[0][0], normalizeLngForWrap(latlngs[0][1])]];
+    for (let index = 1; index < latlngs.length; index++) {
+        let longitude = normalizeLngForWrap(latlngs[index][1]);
+        const previous = output[output.length - 1][1];
+        while (longitude - previous > 180) longitude -= 360;
+        while (longitude - previous < -180) longitude += 360;
+        output.push([latlngs[index][0], longitude]);
+    }
+    return output;
 }
 
 function buildWrappedLatLngRings(latlngs) {
-    if (!Array.isArray(latlngs) || latlngs.length < 3) return [];
-    const normalized = latlngs.map(([lat, lng]) => [lat, normalizeLngForWrap(lng)]);
-    return WRAP_WORLD_OFFSETS.map(offset =>
-        normalized.map(([lat, lng]) => [lat, lng + offset])
-    );
+    const continuous = unwrapLatLngs(latlngs);
+    if (continuous.length < 3) return [];
+    return WRAP_WORLD_OFFSETS.map(offset => continuous.map(([lat, lng]) => [lat, lng + offset]));
+}
+
+// 与 createWrappedCircle 同理：多世界副本会让 getBounds() 覆盖 ±3600°，
+// 使侧边栏定位、导出图等 fitBounds 的缩放被压到最小级别，因此固定返回原始（未偏移）范围。
+function createWrappedPolygon(points, options) {
+    const rings = buildWrappedLatLngRings(points);
+    if (rings.length === 0) return null;
+    const polygon = L.polygon(rings, options);
+    const baseRing = rings[Math.floor(rings.length / 2)];
+    polygon.__baseLatLngs = baseRing;
+    polygon.getBounds = function() { return L.latLngBounds(baseRing); };
+    return polygon;
+}
+
+function geometryCoordinate(value) {
+    return parseCircleCenter(String(value || ''));
+}
+
+function geometryRadiusMeters(value) {
+    const match = String(value || '').match(/^(\d+(?:\.\d+)?)(KM|NM)$/i);
+    return match ? circleRadiusMeters(match[1], match[2]) : 0;
+}
+
+function initialBearingDegrees(from, to) {
+    const rad = Math.PI / 180;
+    const lat1 = from[0] * rad, lat2 = to[0] * rad;
+    const deltaLng = (to[1] - from[1]) * rad;
+    const y = Math.sin(deltaLng) * Math.cos(lat2);
+    const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLng);
+    return (Math.atan2(y, x) / rad + 360) % 360;
+}
+
+function destinationPoint(center, bearing, meters) {
+    const rad = Math.PI / 180, earth = 6371008.8;
+    const distance = meters / earth, direction = bearing * rad;
+    const lat1 = center[0] * rad, lng1 = center[1] * rad;
+    const lat2 = Math.asin(Math.sin(lat1) * Math.cos(distance) + Math.cos(lat1) * Math.sin(distance) * Math.cos(direction));
+    const lng2 = lng1 + Math.atan2(Math.sin(direction) * Math.sin(distance) * Math.cos(lat1), Math.cos(distance) - Math.sin(lat1) * Math.sin(lat2));
+    return [lat2 / rad, lng2 / rad];
+}
+
+function appendArc(points, center, radius, end, direction) {
+    if (!points.length || !center || !radius || !end) return false;
+    const start = points[points.length - 1];
+    const startBearing = initialBearingDegrees(center, start);
+    const endBearing = initialBearingDegrees(center, end);
+    let sweep = direction === 'CCW' ? (startBearing - endBearing + 360) % 360 : (endBearing - startBearing + 360) % 360;
+    if (sweep === 0) sweep = 360;
+    const steps = Math.max(1, Math.ceil(sweep / 2));
+    for (let step = 1; step <= steps; step++) {
+        const bearing = direction === 'CCW' ? startBearing - sweep * step / steps : startBearing + sweep * step / steps;
+        points.push(destinationPoint(center, bearing, radius));
+    }
+    return true;
+}
+
+function geometryToLayer(geometry, options) {
+    const parts = String(geometry || '').split('|');
+    if (!parts[0]) return null;
+    const kind = parts.shift().toUpperCase();
+    if (kind === 'CIRCLE') {
+        const center = geometryCoordinate((parts.find(part => part.startsWith('C=')) || '').slice(2));
+        const radius = geometryRadiusMeters((parts.find(part => part.startsWith('R=')) || '').slice(2));
+        return center && radius ? createWrappedCircle(center, radius, options) : null;
+    }
+    if (kind === 'SECTOR') {
+        const center = geometryCoordinate((parts.find(part => part.startsWith('C=')) || '').slice(2));
+        const radius = geometryRadiusMeters((parts.find(part => part.startsWith('R=')) || '').slice(2));
+        const bearings = ((parts.find(part => part.startsWith('B=')) || '').slice(2)).split(',').map(Number);
+        const direction = ((parts.find(part => part.startsWith('D=')) || '').slice(2)).toUpperCase() || 'CW';
+        if (!center || !radius || bearings.length !== 2 || !bearings.every(Number.isFinite)) return null;
+        const points = [center, destinationPoint(center, bearings[0], radius)];
+        appendArc(points, center, radius, destinationPoint(center, bearings[1], radius), direction);
+        points.push(center);
+        return createWrappedPolygon(points, options);
+    }
+    if (kind !== 'PATH') return null;
+    const points = [];
+    for (const part of parts) {
+        if (part.startsWith('M=') || part.startsWith('L=')) {
+            const point = geometryCoordinate(part.slice(2));
+            if (!point) return null;
+            points.push(point);
+        } else if (part.startsWith('A=')) {
+            const values = Object.fromEntries(part.slice(2).split(',').map(item => item.split(':', 2)));
+            const center = geometryCoordinate(values.C), end = geometryCoordinate(values.E);
+            if (!appendArc(points, center, geometryRadiusMeters(values.R), end, String(values.D || 'CW').toUpperCase())) return null;
+        }
+    }
+    return points.length >= 3 ? createWrappedPolygon(points, options) : null;
 }
 
 window.buildWrappedLatLngRings = buildWrappedLatLngRings;
+window.geometryToLayer = geometryToLayer;
 
-function sortPolygonPoints(latlngs) {
-    if (latlngs.length < 3) return latlngs;
-    
-    let centerLat = 0, centerLng = 0;
-    for (let i = 0; i < latlngs.length; i++) {
-        centerLat += latlngs[i][0];
-        centerLng += latlngs[i][1];
-    }
-    centerLat /= latlngs.length;
-    centerLng /= latlngs.length;
-    
-    //极角排序
-    const sortedPoints = latlngs.slice().sort((a, b) => {
-        const angleA = Math.atan2(a[0] - centerLat, a[1] - centerLng);
-        const angleB = Math.atan2(b[0] - centerLat, b[1] - centerLng);
-        return angleA - angleB;
-    });
-    
-    return sortedPoints;
+/* 拼接 E) 段的相邻两行：源报文既可能在单词中间硬折行（例如 "...BAC" + "K TO START"）
+   也可能是自然换行。规则：
+   - 行尾与行首都带空白 → 去掉行首空白直接接上（避免出现双空格）
+   - 只有一侧带空白 → 直接接上（保留原有空白，不重复补空格）
+   - 两侧都是字母/数字 → 判定为单词中间的硬折行 → 直接接上（BAC + K → BACK）
+   - 其它情况 → 补一个空格（"...BY:" + "N3958..." → "...BY: N3958..."） */
+function joinNotamLines(previous, line) {
+    if (!previous) return line;
+    if (!line) return previous;
+    const last = previous.slice(-1);
+    const first = line.slice(0, 1);
+    if (/\s/.test(last) && /\s/.test(first)) return previous + line.replace(/^\s+/, '');
+    if (/\s/.test(last) || /\s/.test(first)) return previous + line;
+    if (/[0-9A-Za-z]/.test(last) && /[0-9A-Za-z]/.test(first)) return previous + line;
+    return previous + ' ' + line;
 }
 
+/* 从原始报文中取出 E) 段正文：默认取全部行（maxLines <= 0 表示不限行数、不出现省略号），
+   传入正数则最多显示该行数、多出的用 ... 省略。行内容保留原始空白，返回纯文本（不带末尾换行）。 */
+function extractNotamDetails(rawMessage, maxLines = 0) {
+    const text = String(rawMessage || '').replace(/\r/g, '');
+    const match = text.match(/(?:^|\n)\s*E\)\s*([\s\S]*?)(?=\s[A-H]\)|$)/);
+    if (!match) return '';
+    // 不做 trim：行首/行尾的空白是硬折行的边界信息，拼接时要保留
+    const lines = match[1].split('\n').filter(line => line.trim() !== '');
+    if (lines.length === 0) return '';
+    const shown = maxLines > 0 ? lines.slice(0, maxLines) : lines;
+    return shown.join('\n') + (shown.length < lines.length ? '...' : '');
+}
+
+function escapeNotamText(text) {
+    return String(text == null ? '' : text)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* 详情末尾的断行：HTML 里换行必须用 <br>；而且行尾**单个** <br> 不会渲染出空行
+   （末尾的空行盒高度为 0），要「最后一行是空行」必须连续两次断行。 */
+const NOTAM_DETAIL_TRAILING_BREAK = '<br><br>';
+
+function notamDetailHtml(rawMessage, maxLines = 0) {
+    const details = extractNotamDetails(rawMessage, maxLines);
+    if (!details) return '';
+    const text = details.split('\n').reduce((accumulated, line) => joinNotamLines(accumulated, line), '');
+    if (!text) return '';
+    return escapeNotamText(text) + NOTAM_DETAIL_TRAILING_BREAK;
+}
+
+/* 弹窗标题栏：左侧标题 + 右侧「图钉」（固定弹窗）与「复制」（复制原始报文），两个图标同为 14×14 */
+const POPUP_PIN_ICON = "<svg width='14' height='14' viewBox='0 0 24 24' aria-hidden='true'>" +
+    "<path fill='currentColor' d='M16 9V4h1V2H7v2h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z'/></svg>";
+const POPUP_COPY_ICON = "<svg width='14' height='14' viewBox='0 0 24 24' aria-hidden='true'>" +
+    "<path fill='currentColor' d='M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z'/></svg>";
+const POPUP_CLOSE_ICON = "<svg width='14' height='14' viewBox='0 0 24 24' aria-hidden='true'>" +
+    "<path fill='currentColor' d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>";
+
+let popupRawSeq = 0;
+const popupRawMessages = new Map();
+
+function registerPopupRawMessage(rawMessage) {
+    const key = 'raw-' + (++popupRawSeq);
+    popupRawMessages.set(key, String(rawMessage == null ? '' : rawMessage));
+    return key;
+}
+
+function popupRawMessage(key) {
+    return popupRawMessages.get(key) || '';
+}
+
+function buildNotamPopupHeader(title, rawMessage, headerStyle) {
+    const key = registerPopupRawMessage(rawMessage);
+    const styleAttr = headerStyle ? " style='" + headerStyle + "'" : '';
+    return "<div class='notam-popup-header'" + styleAttr + ">" +
+        "<h4>" + title + "</h4>" +
+        "<div class='popup-header-actions'>" +
+        "<button class='popup-pin' data-pinned='false' title='固定弹窗' aria-label='固定弹窗'>" + POPUP_PIN_ICON + "</button>" +
+        "<button class='popup-copy-raw' data-raw-key='" + key + "' title='复制原始报文' aria-label='复制原始报文'>" + POPUP_COPY_ICON + "</button>" +
+        "</div>" +
+        "</div>";
+}
+
+/* 固定状态记在 popup 对象上：Leaflet 重新定位（点击同一多边形）会执行
+   update() → _updateContent()，按原始字符串重写弹窗正文，按钮 DOM 会被重建，
+   所以状态不能只存在按钮上；点击事件也改用容器委托，重建后依然有效。
+   Leaflet 侧还需要同步两处：getEvents() 的 closeOnClick（点击地图关闭）、
+   openOn() 的 autoClose（被新弹窗顶掉）。 */
+function setPopupPinned(popup, pinned) {
+    if (!popup || !popup.options) return;
+    popup.__pinned = !!pinned;
+    popup.options.closeOnClick = !pinned;
+    popup.options.autoClose = !pinned;
+    const map = popup._map || popup.__pinMap;
+    if (map && typeof map.off === 'function') {
+        popup.__pinMap = map;
+        map.off('preclick', popup.close, popup);
+        if (!pinned) map.on('preclick', popup.close, popup);
+    }
+    applyPopupPinState(popup);
+}
+
+/* 把固定状态套用到（可能刚被重建的）图钉按钮上 */
+function applyPopupPinState(popup, container) {
+    if (!popup) return;
+    const element = container || (popup.getElement ? popup.getElement() : null);
+    const button = element && element.querySelector ? element.querySelector('.popup-pin') : null;
+    if (!button) return;
+    const pinned = popup.__pinned === true;
+    button.dataset.pinned = pinned ? 'true' : 'false';
+    button.title = pinned ? '已固定：点击地图或打开其它航警都不会关闭' : '固定弹窗';
+}
+
+/* 容器级事件委托 + 内容重写后重新套用状态 */
+function ensurePopupActionDelegation(container, popup) {
+    if (!container || !popup) return;
+    if (!container.__popupActionsBound && typeof container.addEventListener === 'function') {
+        container.__popupActionsBound = true;
+        container.addEventListener('click', function(event) {
+            const target = event.target;
+            if (!target || typeof target.closest !== 'function') return;
+            if (target.closest('.popup-pin')) {
+                event.stopPropagation();
+                setPopupPinned(popup, popup.__pinned !== true);
+                return;
+            }
+            const copyButton = target.closest('.popup-copy-raw[data-raw-key]');
+            if (copyButton) {
+                event.stopPropagation();
+                handleCopy(popupRawMessage(copyButton.getAttribute('data-raw-key')));
+            }
+        });
+    }
+    if (typeof popup._updateContent === 'function' && !popup.__pinContentPatched) {
+        popup.__pinContentPatched = true;
+        const originalUpdateContent = popup._updateContent;
+        popup._updateContent = function() {
+            originalUpdateContent.apply(this, arguments);
+            applyPopupPinState(this, container);
+        };
+    }
+}
+
+/* Leaflet 的关闭按钮是 <a aria-label="Close popup"><span>×</span></a>，只在 _initLayout 里创建一次，
+   重写弹窗正文不会重建它，所以这里一次性换成与图钉/复制同一套 14×14 图标；
+   万一没换成，按钮里仍是原来的 ×，不会变成空按钮。 */
+function applyPopupCloseIcon(popup) {
+    const element = popup && popup.getElement ? popup.getElement() : null;
+    const button = element && element.querySelector ? element.querySelector('a.leaflet-popup-close-button') : null;
+    if (!button || typeof button.innerHTML !== 'string' || button.innerHTML.indexOf('<svg') !== -1) return;
+    button.innerHTML = POPUP_CLOSE_ICON;
+}
+
+/* 弹窗标题栏按钮：复制原始报文 + 固定弹窗（各页面共用一份实现） */
+function bindPopupActions(layer) {
+    if (!layer || typeof layer.on !== 'function') return;
+
+    layer.on('popupopen', function(e) {
+        const popup = e && e.popup;
+        if (!popup) return;
+        applyPopupCloseIcon(popup);
+        ensurePopupActionDelegation(popup.getElement ? popup.getElement() : null, popup);
+        // 每次重新打开都回到未固定状态（重新定位不会触发 popupopen，固定状态因此保留）
+        setPopupPinned(popup, false);
+    });
+
+    layer.on('popupclose', function(e) {
+        const popup = e && e.popup;
+        if (!popup) return;
+        // 关闭后恢复默认「点击地图即关闭、被新弹窗顶掉」，下次打开由 Leaflet 重新绑定
+        setPopupPinned(popup, false);
+    });
+}
+
+/* 统一的航警弹窗信息行：持续时间 / 航警编号 + 飞行情报区（编号在前）/ 航警详情 */
+function buildNotamPopupRows(options) {
+    const settings = options || {};
+    let rows = "<div class='popup-info-row'>" +
+        "<span class='popup-label'>持续时间:</span>" +
+        "<span class='popup-value'>" + (settings.timeText || '') + "</span>" +
+        "</div>" +
+        "<div class='popup-info-row row-horizontal'>" +
+        "<div class='popup-col'>" +
+        "<span class='popup-label'>" + (settings.codeLabel || '航警编号') + ":</span>" +
+        "<span class='popup-value'>" + (settings.code || '') + "</span>" +
+        "</div>" +
+        "<div class='popup-col'>" +
+        "<span class='popup-label'>" + (settings.regionLabel || '飞行情报区') + ":</span>" +
+        "<span class='popup-value'>" + (settings.regionValue || '-') + "</span>" +
+        "</div>" +
+        "</div>";
+
+    // 详情默认取全部行（不截断、不加省略号），超出部分由滚动区 + 底部渐隐查看
+    const detailLines = typeof settings.detailLines === 'number' ? settings.detailLines : 0;
+    const detailHtml = notamDetailHtml(settings.rawMessage, detailLines);
+    if (detailHtml) {
+        // 外层容器用于承载底部渐隐遮罩（见 styles.css .popup-detail-wrap::after）
+        rows += "<div class='popup-info-row'>" +
+            "<span class='popup-label'>" + (settings.detailLabel || '航警详情') + ":</span>" +
+            "<div class='popup-detail-wrap'>" +
+            "<span class='popup-value popup-detail'>" + detailHtml + "</span>" +
+            "</div>" +
+            "</div>";
+    }
+    return rows + (settings.extraRows || '');
+}
+
+window.extractNotamDetails = extractNotamDetails;
+window.buildNotamPopupRows = buildNotamPopupRows;
+
 // 绘制NOTAM多边形
-function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessage, sourceType = 'NOTAM', fir = '', shape = 'POLYGON', center = '', radius = '', radiusUnit = '') {
-    const rawCircle = circleGeometryFromRaw(rawmessage);
-    if (rawCircle && String(shape).toUpperCase() !== 'CIRCLE') {
-        shape = 'CIRCLE'; center = rawCircle.center; radius = rawCircle.radius; radiusUnit = rawCircle.unit;
-    }
-    var pos = COORstrin || '';
+function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceType = 'NOTAM', fir = '', geometry = '') {
     var timestr = is_self ? null : convertTime(timee);
-    var stPos = 0;
-    var arr = [];
-    
-    for (var i = 0; i < pos.length; i++) {
-        if (pos[i] == "-") {
-            var tmp = pos.substring(stPos, i);
-            arr.push(tmp);
-            stPos = i + 1;
-        }
-    }
-    arr.push(pos.substring(stPos, pos.length));
-    
-    var _TheArray = [];
-    for (var i = 0; i < arr.length; i++) {
-        _TheArray.push(pullOut(arr[i]));
-    }
-    
-    var latlngs = [];
-    for (var i = 0; i < _TheArray.length; i++) {
-        if (_TheArray[i]) {
-            latlngs.push([_TheArray[i][1], _TheArray[i][0]]); // [lat, lng]
-        }
-    }
-
-    if (String(shape).toUpperCase() === 'CIRCLE') {
-        const circleCenter = parseCircleCenter(center);
-        const radiusMeters = circleRadiusMeters(radius, radiusUnit);
-        if (!circleCenter || !radiusMeters) return;
-        var tmpPolygon = createWrappedCircle(circleCenter, radiusMeters, { color: col, weight: 1, opacity: 1, fillColor: col, fillOpacity: 0.5 }).addTo(map);
-    } else {
-    if (latlngs.length < 3) return; // 至少需要3个点才能绘制多边形
-
-    // 对坐标点排序，确保多边形是凸的或至少是合理的形状
-    latlngs = sortPolygonPoints(latlngs);
-    const wrappedRings = buildWrappedLatLngRings(latlngs);
-    if (wrappedRings.length === 0) return;
-
-    // 创建多边形
-    var tmpPolygon = L.polygon(wrappedRings, {
-        color: col,
-        weight: 1,
-        opacity: 1,
-        fillColor: col,
-        fillOpacity: 0.5
-    }).addTo(map);
-    }
-
+    const style = { color: col, weight: 1, opacity: 1, fillColor: col, fillOpacity: 0.5 };
+    var tmpPolygon = geometryToLayer(geometry, style);
+    if (!tmpPolygon) return;
+    tmpPolygon.addTo(map);
     // 创建弹出窗口内容
     var popupContent;
 
@@ -897,50 +1199,22 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
         var normalizedSource = (sourceType || 'NOTAM').toUpperCase();
         var isMsi = normalizedSource.startsWith('MSI');
         var popupTitle = isMsi ? 'MSI 信息' : 'NOTAM 信息';
-        var codeLabel = isMsi ? '海警编号' : '航警编号';
-        var rawLabel = isMsi ? '复制原始海警' : '复制原始航警';
-                var secondLineLabel = isMsi ? '关键词' : '飞行情报区';
-                var secondLineValue = isMsi ? extractMsiKeywords(rawmessage) : (fir || 'UNKNOWN');
-        var sourceAndSecondLineRow = "<div class='popup-info-row row-horizontal'>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>来源:</span>" +
-            "<span class='popup-value'>" + (sourceType || 'NOTAM') + "</span>" +
-            "</div>" +
-            "<div class='popup-col'>" +
-            "<span class='popup-label'>" + secondLineLabel + ":</span>" +
-            "<span class='popup-value'>" + secondLineValue + "</span>" +
-            "</div>" +
-            "</div>";
-        var codeAndDetailRow = isMsi
-            ? "<div class='popup-info-row'>" +
-              "<span class='popup-label'>" + codeLabel + ":</span>" +
-              "<span class='popup-value'>" + codee + "</span>" +
-              "</div>"
-            : "<div class='popup-info-row row-horizontal'>" +
-              "<div class='popup-col'>" +
-              "<span class='popup-label'>" + codeLabel + ":</span>" +
-              "<span class='popup-value'>" + codee + "</span>" +
-              "</div>" +
-              "<div class='popup-col'>" +
-              "<span class='popup-label'>航警高度:</span>" +
-              "<span class='popup-value'>" + altitude + "</span>" +
-              "</div>" +
-              "</div>";
+        var regionLabel = isMsi ? '关键词' : '飞行情报区';
+        var regionValue = isMsi ? extractMsiKeywords(rawmessage) : (fir || 'UNKNOWN');
 
+        // 统一布局：标题栏右侧「复制」按钮；内容为 持续时间 / 航警编号 + 飞行情报区（编号在前）/ 航警详情
         popupContent = "<div class='notam-popup'>" +
-            "<div class='notam-popup-header'>" +
-            "<h4>" + popupTitle + "</h4>" +
-            "</div>" +
+            buildNotamPopupHeader(popupTitle, rawmessage) +
             "<div class='notam-popup-body'>" +
-            "<div class='popup-info-row'>" +
-            "<span class='popup-label'>持续时间:</span>" +
-            "<span class='popup-value'>" + timestr + "</span>" +
-            "</div>" +
-            sourceAndSecondLineRow +
-            codeAndDetailRow +
-            "<div class='notam-popup-buttons'>" +
-            "<button class='copy copy-coord' onclick=\"handleCopy('" + (String(shape).toUpperCase() === 'CIRCLE' ? formatCircleCoordinates(center, radius, radiusUnit) : COORstrin) + "')\">复制坐标</button>" +
-            "<button class='copy copy-raw' data-raw-index='" + numm + "'>" + rawLabel + "</button>" +
+            buildNotamPopupRows({
+                timeText: timestr,
+                code: codee,
+                codeLabel: isMsi ? '海警编号' : '航警编号',
+                regionLabel: regionLabel,
+                regionValue: regionValue,
+                detailLabel: isMsi ? '海警详情' : '航警详情',
+                rawMessage: rawmessage
+            }) +
             "</div>" +
             "</div>";
     } else {
@@ -954,7 +1228,7 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
             "</div>" +
             "</div>" +
             "<div class='notam-popup-buttons'>" +
-            "<button class='copy' onclick=\"handleCopy('" + COORstrin + "')\">复制坐标</button>" +
+            "<button class='copy' onclick=\"handleCopy('" + geometry + "')\">复制坐标</button>" +
             "</div>" +
             "</div>";
     }
@@ -963,23 +1237,9 @@ function drawNot(COORstrin, timee, codee, altitude, numm, col, is_self, rawmessa
         maxWidth: 300,
         className: 'notam-info-popup'
     });
-    
-    // 为弹出窗口添加打开事件监听器，处理复制原始航警按钮
-    tmpPolygon.on('popupopen', function(e) {
-        const popup = e.popup;
-        const popupElement = popup.getElement();
-        if (popupElement) {
-            const rawBtn = popupElement.querySelector('.copy-raw[data-raw-index]');
-            if (rawBtn) {
-                const idx = parseInt(rawBtn.getAttribute('data-raw-index'));
-                rawBtn.onclick = function(event) {
-                    event.stopPropagation();
-                    const raw = dict?.RAWMESSAGE?.[idx] || '';
-                    handleCopy(raw);
-                };
-            }
-        }
-    });
+
+    // 标题栏「图钉 / 复制」按钮
+    bindPopupActions(tmpPolygon);
 
     // 存储多边形引用
     if (is_self) {
@@ -1028,17 +1288,33 @@ function pullOut(stri) {
     return tmpp;
 }
 var polygonAuto = [];           // 自动获取的多边形
-var groupColors = {};           // CLASSIFY → color
+var groupColors = {};           // 外部段 CLASSIFY → color
+var groupColorsFocused = {};    // 聚焦段 CLASSIFY → color
 var visibleState = {};          // index → true/false
 
-function assignGroupColors(classify) {
-    groupColors = {};
-    Object.keys(classify).forEach(key => {
-        groupColors[key] = randomColor();
+/* 为一段 CLASSIFY 分配颜色；targetMap/pool 可指定目标映射与颜色池 */
+function assignGroupColors(classify, targetMap, pool) {
+    const target = targetMap || groupColors;
+    const palette = pool || currentColorPool;
+    Object.keys(target).forEach(key => { delete target[key]; });
+    Object.keys(classify || {}).forEach(key => {
+        target[key] = palette[currentColor_idx++ % palette.length];
     });
+    return target;
+}
+
+/* 同时分配聚焦段与外部段的颜色：聚焦段用聚焦池，其余用全量池 */
+function assignAllGroupColors(focusedClassify, classify) {
+    assignGroupColors(focusedClassify || {}, groupColorsFocused, currentFocusedColorPool);
+    assignGroupColors(classify || {}, groupColors, currentColorPool);
 }
 
 function getColorForCode(code) {
+    for (const [group, codes] of Object.entries((dict && dict.CLASSIFY_FOCUSED) || {})) {
+        if (codes.includes(code)) {
+            return groupColorsFocused[group] || currentFocusedColorPool[0];
+        }
+    }
     if (!dict || !dict.CLASSIFY) return currentColorPool[0];
     for (const [group, codes] of Object.entries(dict.CLASSIFY)) {
         if (codes.includes(code)) {

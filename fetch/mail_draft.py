@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 import requests
 from PIL import Image, ImageDraw
 import html
-from fetch.sources.common import extract_circle_area
+from fetch.sources.geometry import geometry_circle, geometry_points
 
 
 MAIL_LAUNCH_SITES = [
@@ -71,14 +71,12 @@ def _safe_get(data, key):
 def _build_notam_map(data):
     codes = _safe_get(data, 'CODE')
     times = _safe_get(data, 'TIME')
-    coords = _safe_get(data, 'COORDINATES')
+    geometries = _safe_get(data, 'GEOMETRY')
     platids = _safe_get(data, 'PLATID')
-    shapes = _safe_get(data, 'SHAPE')
-    centers = _safe_get(data, 'CENTER')
-    radii = _safe_get(data, 'RADIUS')
-    radius_units = _safe_get(data, 'RADIUS_UNIT')
     raw_messages = _safe_get(data, 'RAWMESSAGE')
-    size = min(len(codes), len(times), len(coords), len(platids))
+    # INDEX 是记录在全局行号空间中的位置；通知切片会用它保持 match.html?index=N 正确
+    global_indices = _safe_get(data, 'INDEX')
+    size = min(len(codes), len(times), len(geometries), len(platids))
 
     records = {}
     for i in range(size):
@@ -86,21 +84,19 @@ def _build_notam_map(data):
         if not pid:
             continue
         records[pid] = {
-            'index': i,
+            'index': global_indices[i] if i < len(global_indices) else i,
             'CODE': str(codes[i]),
             'TIME': str(times[i]),
-            'COORDINATES': str(coords[i]),
+            'GEOMETRY': str(geometries[i]),
             'PLATID': pid,
-            'SHAPE': str(shapes[i] if i < len(shapes) else 'POLYGON'),
-            'CENTER': str(centers[i] if i < len(centers) else ''),
-            'RADIUS': str(radii[i] if i < len(radii) else ''),
-            'RADIUS_UNIT': str(radius_units[i] if i < len(radius_units) else ''),
             'RAWMESSAGE': str(raw_messages[i] if i < len(raw_messages) else ''),
         }
     return records
 
 
 def _format_match_summary(match_idx, top_n=5):
+    if match_idx is None:
+        return ['历史匹配结果未生成']
     match_path = os.path.join('data', 'archiveMatch', f'match{match_idx}.json')
     if not os.path.exists(match_path):
         return ['历史匹配结果未生成']
@@ -149,63 +145,38 @@ def _circle_points(center, radius_km, segments=144):
     return points
 
 
-def _circle_geometry(data, index):
-    shapes = _safe_get(data, 'SHAPE')
-    centers = _safe_get(data, 'CENTER')
-    radii = _safe_get(data, 'RADIUS')
-    units = _safe_get(data, 'RADIUS_UNIT')
-    raws = _safe_get(data, 'RAWMESSAGE')
-    shape = str(shapes[index] if index < len(shapes) else '').upper()
-    center_text = str(centers[index] if index < len(centers) else '')
-    radius_text = str(radii[index] if index < len(radii) else '')
-    unit = str(units[index] if index < len(units) else '').upper()
-    if shape != 'CIRCLE' or not center_text or not radius_text:
-        fallback = extract_circle_area(raws[index] if index < len(raws) else '')
-        if not fallback:
-            return None
-        center_text, radius, unit = fallback
-    else:
-        try:
-            radius = float(radius_text)
-        except (TypeError, ValueError):
-            return None
-    center = parse_point(center_text)
-    if not center or radius <= 0 or unit not in ('KM', 'NM'):
-        return None
-    return center_text, center, radius, unit
+def _geometry_outline(item):
+    """Return the drawable outline of one record as a list of (lat, lon)."""
+    geometry = str(item.get('GEOMETRY') or '')
+    circle = geometry_circle(geometry)
+    if circle:
+        center, radius_meters = circle
+        return _circle_points(center, radius_meters / 1000.0)
+    return geometry_points(geometry)
 
 
 def _format_geometry(item):
-    if str(item.get('SHAPE', '')).upper() == 'CIRCLE' and item.get('CENTER') and item.get('RADIUS'):
-        return f"{item['CENTER']} RADIUS {item['RADIUS']}{item.get('RADIUS_UNIT', '')}"
-    fallback = extract_circle_area(item.get('RAWMESSAGE', ''))
-    if fallback:
-        center, radius, unit = fallback
-        return f'{center} RADIUS {radius:g}{unit}'
-    return item.get('COORDINATES', '')
+    """Render GEOMETRY as the compact coordinate text shown in notifications."""
+    geometry = str(item.get('GEOMETRY') or '')
+    parts = geometry.split('|')
+    if geometry_circle(geometry):
+        center_text = next((part[2:] for part in parts if part.startswith('C=')), '')
+        radius_text = next((part[2:] for part in parts if part.startswith('R=')), '')
+        return f'{center_text} RADIUS {radius_text}'
+    tokens = [part[2:] for part in parts if part.startswith('M=') or part.startswith('L=')]
+    return '-'.join(tokens)
 
 
 def _collect_polygons(data):
-    coords_list = _safe_get(data, 'COORDINATES')
     codes = _safe_get(data, 'CODE')
     polys = []
 
-    for i, coords in enumerate(coords_list):
-        circle = _circle_geometry(data, i)
-        if circle:
-            _center_text, center, radius, unit = circle
-            radius_km = radius * (1.852 if unit == 'NM' else 1.0)
-            code = codes[i] if i < len(codes) else f'NOTAM-{i}'
-            polys.append((str(code), _circle_points(center, radius_km)))
+    for i, geometry in enumerate(_safe_get(data, 'GEOMETRY')):
+        points = _geometry_outline({'GEOMETRY': geometry})
+        if len(points) < 3:
             continue
-        pts = []
-        for token in str(coords).split('-'):
-            p = parse_point(token.strip())
-            if p:
-                pts.append(p)
-        if len(pts) >= 3:
-            code = codes[i] if i < len(codes) else f'NOTAM-{i}'
-            polys.append((str(code), pts))
+        code = codes[i] if i < len(codes) else f'NOTAM-{i}'
+        polys.append((str(code), points))
 
     return polys
 
@@ -603,7 +574,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
                     pass  # 新增消息不要坐标
                 else:
                     lines.append(f"  航警坐标: {_format_geometry(item)}")
-                if include_match and section_mode != 'added_only':
+                if include_match and section_mode != 'added_only' and item.get('index') is not None:
                     lines.append(f"  历史匹配结果(链接): https://joey0609.github.io/notams/match.html?index={item['index']}")
                     for match_line in _format_match_summary(item['index']):
                         lines.append(f'  - {match_line}')
@@ -652,6 +623,8 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
         return e(s).replace('\n', '<br/>')
 
     def match_link(index_value):
+        if index_value is None:
+            return ''
         url = f'https://joey0609.github.io/notams/match.html?index={index_value}'
         return f'<a href="{url}" target="_blank" style="color:#1a73e8; text-decoration:none;">历史匹配结果</a>'
 
@@ -677,7 +650,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
             code_html = f'<strong>{e(emoji_code)}</strong>'
             tmp_link = match_link(item['index']) if include_match else ''
             body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(_format_geometry(item))}<br/>{tmp_link}</div>'
-            if include_match:
+            if include_match and item.get('index') is not None:
                 body_html += '<ul style="margin:2px 0 4px 6px; padding-left:10px;">'
                 for match_line in _format_match_summary(item['index']):
                     body_html += f'<li>{nl2br(match_line)}</li>'
@@ -707,7 +680,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
             code_html = f'<strong>{e(emoji_code)}</strong>'
             tmp_link = match_link(item['index']) if include_match else ''
             body_html += f'<li>{code_html}<div style="margin-left:6px;">时间: {e(_time_of(item))}<br/>坐标: {e(_format_geometry(item))}<br/>{tmp_link}</div>'
-            if include_match:
+            if include_match and item.get('index') is not None:
                 body_html += '<ul style="margin:2px 0 4px 6px; padding-left:10px;">'
                 for match_line in _format_match_summary(item['index']):
                     body_html += f'<li>{nl2br(match_line)}</li>'

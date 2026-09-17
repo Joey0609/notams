@@ -5,6 +5,7 @@ from ..common import (
     add_area_records,
     deduplicate_by_code,
     extract_fir,
+    extract_notam_code,
     is_relevant_area_notam,
     parse_raw_notam_time,
 )
@@ -25,7 +26,10 @@ def parse_daip_response(response):
                 searchable_text = raw_message or display_text
                 if not is_relevant_area_notam(searchable_text):
                     continue
-                code = str(item.get('idshow') or item.get('id') or 'UNKNOWN')
+                code = extract_notam_code(
+                    raw_message,
+                    fallback=str(item.get('idshow') or item.get('id') or 'UNKNOWN'),
+                )
                 platid = str(item.get('key') or item.get('xid') or f'{fallback_fir}:{code}')
                 add_area_records(
                     output,

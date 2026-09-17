@@ -1,5 +1,6 @@
 import os
 import json
+import random
 import time
 from datetime import datetime, timedelta
 import sys
@@ -9,6 +10,16 @@ from dataBase import  *
 # 导入获取历史航警的函数
 from FNS_NOTAM_ARCHIVE_SEARCH import *
 from classify_notam_db import rebuild_notam_db_classify
+from sources.geometry import path_geometry
+
+
+def _geometry_from_legacy(record):
+    """Convert legacy coordinate fields to the canonical GEOMETRY string."""
+    shape = str(record.get('SHAPE') or '').upper()
+    unit = str(record.get('RADIUS_UNIT') or '').upper()
+    if shape == 'CIRCLE' and record.get('CENTER') and record.get('RADIUS') and unit in {'KM', 'NM'}:
+        return f"CIRCLE|C={record['CENTER']}|R={record['RADIUS']}{unit}"
+    return path_geometry(str(record.get('COORDINATES') or '').split('-'))
 
 def batch_fetch_and_save(start_date, end_date, interval_days=3):
     """
@@ -61,7 +72,17 @@ def batch_fetch_and_save(start_date, end_date, interval_days=3):
                 "RADIUS": result.get("RADIUS", [""] * len(codes))[i],
                 "RADIUS_UNIT": result.get("RADIUS_UNIT", [""] * len(codes))[i],
                 }
-                db.save_notam(notam_record)
+                geometry = _geometry_from_legacy(notam_record)
+                if not geometry:
+                    continue
+                db.save_notam({
+                    "CODE": notam_record["CODE"],
+                    "GEOMETRY": geometry,
+                    "TIME": notam_record["TIME"],
+                    "PLATID": notam_record["PLATID"],
+                    "RAWMESSAGE": notam_record["RAWMESSAGE"],
+                    "ALTITUDE": notam_record["ALTITUDE"],
+                })
                 saved_count += 1
 
             print(f"[成功] {date_str} 保存 {saved_count} 条NOTAM数据")

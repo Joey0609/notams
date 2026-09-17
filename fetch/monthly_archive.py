@@ -26,7 +26,7 @@ import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from classify_notam_db import rebuild_notam_db_classify
+from fetch.classify_notam_db import rebuild_notam_db_classify
 
 # ---------- 路径设置：不论从哪里运行都能正确找到模块 ----------
 _REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -35,7 +35,9 @@ sys.path.insert(0, str(_REPO_ROOT))
 sys.path.insert(0, str(_FETCH_DIR))
 
 from FNS_NOTAM_ARCHIVE_SEARCH import FNS_NOTAM_ARCHIVE_SEARCH   # noqa: E402
-from dataBase import NotamDatabase                               # noqa: E402
+from fetch.sources.common import extract_coordinate_groups, extract_circle_area, normalize_coordinate_notation
+from fetch.sources.geometry import geometry_from_notam
+from geometry_database import NotamDatabase                               # noqa: E402
 
 # progress.json 固定写到 data/progress.json（相对仓库根）
 _PROGRESS_FILE = str(_REPO_ROOT / "data" / "progress.json")
@@ -61,26 +63,17 @@ def iter_days(year: int, month: int):
 
 
 def save_results_to_db(result: dict, db: "NotamDatabase"):
-    """把单天查询结果写入 NotamDatabase，返回写入条数。"""
-    codes = result.get("CODE", [])
+    """Store canonical drawable geometry only."""
     count = 0
-    for i in range(len(codes)):
-        record = {
-            "CODE":        result["CODE"][i],
-            "COORDINATES": result["COORDINATES"][i],
-            "TIME":        result["TIME"][i],
-            "PLATID":      result["TRANSID"][i],   # 字段名统一映射
-            "RAWMESSAGE":  result["RAWMESSAGE"][i],
-            "ALTITUDE":    result["ALTITUDE"][i],
-            "SHAPE":       result.get("SHAPE", ["POLYGON"] * len(codes))[i],
-            "CENTER":      result.get("CENTER", [""] * len(codes))[i],
-            "RADIUS":      result.get("RADIUS", [""] * len(codes))[i],
-            "RADIUS_UNIT": result.get("RADIUS_UNIT", [""] * len(codes))[i],
-        }
-        db.save_notam(record)
+    for index, code in enumerate(result.get('CODE', [])):
+        raw = result.get('RAWMESSAGE', [''])[index]
+        normalized = normalize_coordinate_notation(raw)
+        geometry = geometry_from_notam(normalized, extract_coordinate_groups(normalized), extract_circle_area(normalized))
+        if not geometry:
+            continue
+        db.save_notam({'CODE': code, 'TIME': result['TIME'][index], 'PLATID': result['TRANSID'][index], 'RAWMESSAGE': raw, 'ALTITUDE': result['ALTITUDE'][index], 'GEOMETRY': geometry})
         count += 1
     return count
-
 
 # ----------------------------------------------------------------
 def fetch_month(year: int, month: int) -> bool:
@@ -165,9 +158,8 @@ if __name__ == "__main__":
     else:
         year, month = last_month_info()
         print(f"[月度归档] 自动检测到上个月: {year}-{month:02d}")
-    stats = rebuild_notam_db_classify("./data/notam_db")
-    print(
-        f"[CLASSIFY] 完成: files={stats['files']}, records={stats['records']}, groups={stats['groups']}"
-    )
     success = fetch_month(year, month)
+    if success:
+        stats = rebuild_notam_db_classify(_DB_DIR)
+        print(f"[CLASSIFY] 完成: files={stats['files']}, records={stats['records']}, groups={stats['groups']}")
     sys.exit(0 if success else 1)

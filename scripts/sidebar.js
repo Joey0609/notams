@@ -252,7 +252,16 @@ function updateSidebar() {
         for (let i = 0; i < dict.NUM; i++) {
             const code = dict.CODE[i];
             const sourceType = (dict.SOURCE?.[i] || 'NOTAM').toUpperCase();
-            const canArchiveMatch = sourceType === 'NOTAM';
+            // 只有聚焦段（前 FOCUSED_NUM 行）会生成 data/archiveMatch/match{idx}.json，
+            // 其余行不渲染「历史航警匹配」按钮
+            const focusedRows = Number(dict.FOCUSED_NUM || 0);
+            const canArchiveMatch = sourceType === 'NOTAM' && i < focusedRows;
+            const matchButton = canArchiveMatch ? `
+                        <button class="icon-btn"
+                            onclick="event.stopPropagation(); archiveNOTAMmatch(${i})"
+                            title="历史航警匹配">
+                            <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81836 6.72729V14H13.0911" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 24C4 35.0457 12.9543 44 24 44V44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C16.598 4 10.1351 8.02111 6.67677 13.9981" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.005 12L24.0038 24.0088L32.4832 32.4882" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>` : '';
             const copyTitle = sourceType === 'MSI' ? '复制原始海警' : '复制原始航警';
             const rawTime = dict.TIME[i] || '';
             const prettyTime = convertTime(rawTime);
@@ -305,12 +314,7 @@ function updateSidebar() {
 
                             }
                         </button>   
-                        <button class="icon-btn"
-                            onclick="event.stopPropagation(); archiveNOTAMmatch(${i})"
-                            title="${canArchiveMatch ? '历史航警匹配' : 'MSI不参与历史匹配'}"
-                            ${canArchiveMatch ? '' : 'disabled style="opacity:0.4;cursor:not-allowed;"'}>
-                            <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81836 6.72729V14H13.0911" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 24C4 35.0457 12.9543 44 24 44V44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C16.598 4 10.1351 8.02111 6.67677 13.9981" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.005 12L24.0038 24.0088L32.4832 32.4882" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </button>
+${matchButton}
                     </div>
                 
             </div>`;
@@ -444,12 +448,22 @@ function changeArchiveGroupColor(code, newColor, idx) {
 
 /* 改变某个航警所属分组的颜色（同一个 CLASSIFY 分组所有航警一起改） */
 function changeGroupColor(code, newColor, exampleIdx) {
-    if (!dict || !dict.CLASSIFY) return;
-    for (const [group, codes] of Object.entries(dict.CLASSIFY)) {
-        if (codes.includes(code)) {
-            groupColors[group] = newColor;
-            break;
+    if (!dict) return;
+    // 聚焦段与外部段各自一套映射，按顺序查找
+    const groupMaps = [
+        [dict.CLASSIFY_FOCUSED || {}, groupColorsFocused],
+        [dict.CLASSIFY || {}, groupColors]
+    ];
+    for (const [classify, colorMap] of groupMaps) {
+        let found = false;
+        for (const [group, codes] of Object.entries(classify)) {
+            if (codes.includes(code)) {
+                colorMap[group] = newColor;
+                found = true;
+                break;
+            }
         }
+        if (found) break;
     }
     // 清除样式缓存，避免悬停时使用旧颜色
     if (typeof originalPolygonStyles !== 'undefined') {
@@ -567,6 +581,10 @@ function archiveNOTAMmatch(index) {
     const sourceType = (dict.SOURCE?.[index] || 'NOTAM').toUpperCase();
     if (sourceType !== 'NOTAM') {
         alert('MSI 不参与历史航警匹配');
+        return;
+    }
+    if (index >= Number(dict.FOCUSED_NUM || 0)) {
+        alert('仅聚焦航警提供历史匹配结果');
         return;
     }
     console.log('匹配历史航警航警:', index);

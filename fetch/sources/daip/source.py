@@ -17,6 +17,8 @@ class DAIPDataSource(DataSource):
             index_url=section.get('index_url', 'https://www.daip.jcs.mil/daip/mobile/index'),
             timeout=int(section.get('timeout', 15)),
             verify_ssl=_as_bool(section.get('verify_ssl', 'false')),
+            batch_size=int(section.get('batch_size', 30)),
+            batch_delay=float(section.get('batch_delay', 3)),
         )
 
     def fetch(self):

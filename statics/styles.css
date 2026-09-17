@@ -120,10 +120,26 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 .leaflet-popup-content-wrapper {border-radius: 8px;}
 /* NOTAM弹出窗口样式 */
 .notam-popup {font-family: "微软雅黑", Arial, sans-serif;min-width: 240px;}
-.notam-popup-header {background: linear-gradient(135deg, #243064 0%, #381d57 100%);margin: -12px -12px 8px -12px;padding: 8px 12px;border-radius: 6px 6px 0 0;}
-.notam-popup-header h4 {margin: 0;padding: 0;font-size: 14px;color: #fff;font-weight: bold;text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);}
-.notam-popup-body {margin-bottom: 8px;}
-.popup-info-row {display: flex;flex-direction: column;margin-bottom: 6px;padding: 5px 0;border-bottom: 1px solid #eee;}
+.notam-popup-header {display: flex;align-items: center;justify-content: space-between;gap: 8px;background: linear-gradient(135deg, #243064 0%, #381d57 100%);margin: -12px -12px 8px -12px;padding: 8px 37px 8px 12px;border-radius: 6px 6px 0 0;}
+.notam-popup-header h4 {flex: 1 1 auto;min-width: 0;margin: 0;padding: 0;font-size: 14px;color: #fff;font-weight: bold;text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);}
+/* 标题栏右侧控件（图钉 / 复制）与右上角关闭按钮：三个图标按钮完全同尺寸（24px 圆形，
+   图钉/复制图标 14×14，关闭图标 16×16 以抵消 × 字形本身偏小） */
+.leaflet-popup.notam-info-popup {--popup-control-size: 24px;--popup-icon-size: 14px;--popup-close-icon-size: 16px;}
+.popup-header-actions {display: flex;align-items: center;gap: 6px;flex: 0 0 auto;height: var(--popup-control-size, 24px);}
+.popup-pin, .popup-copy-raw {box-sizing: border-box;display: inline-flex;align-items: center;justify-content: center;flex: 0 0 auto;width: var(--popup-control-size, 24px);height: var(--popup-control-size, 24px);padding: 0;line-height: 1;color: #fff;background: rgba(255, 255, 255, 0.18);border: 1px solid rgba(255, 255, 255, 0.45);border-radius: 50%;cursor: pointer;transition: background 0.2s, color 0.2s;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+.popup-pin:hover, .popup-copy-raw:hover {background: rgba(255, 255, 255, 0.34);}
+.popup-pin:active, .popup-copy-raw:active {background: rgba(255, 255, 255, 0.5);}
+.popup-pin[data-pinned="true"] {color: #243064;background: #fff;border-color: #fff;}
+/* 图标一律 block + 固定 14×14，避免 SVG 的基线空隙把圆形撑高 */
+.popup-pin svg, .popup-copy-raw svg {display: block;width: var(--popup-icon-size, 14px);height: var(--popup-icon-size, 14px);}
+/* 关闭按钮：与上面两个控件同尺寸同底色；× 由 JS 换成同一套图标 */
+.leaflet-popup.notam-info-popup a.leaflet-popup-close-button {position: absolute;top: 8px;right: 7px;box-sizing: border-box;display: flex;align-items: center;justify-content: center;width: var(--popup-control-size, 24px);height: var(--popup-control-size, 24px);padding: 0;font-size: 15px;line-height: 1;color: #fff;background: rgba(255, 255, 255, 0.18);border: 1px solid rgba(255, 255, 255, 0.45);border-radius: 50%;text-decoration: none;transition: background 0.2s;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+/* × 的字形在 Material 图标里只占 14/24，比图钉/复制的字形小一圈，所以给它 16px（9.3px 宽）
+   对齐另两个约 8~11px 的视觉宽度；三个按钮的圆形本身仍然是同一个 24px。 */
+.leaflet-popup.notam-info-popup a.leaflet-popup-close-button svg {display: block;width: var(--popup-close-icon-size, 16px);height: var(--popup-close-icon-size, 16px);}
+.leaflet-popup.notam-info-popup a.leaflet-popup-close-button:hover {color: #fff;background: rgba(255, 255, 255, 0.34);}
+.notam-popup-body {margin-bottom: 0;}
+.popup-info-row {display: flex;flex-direction: column;margin-bottom: 6px;padding: 3px 0;border-bottom: 1px solid #f0f0f0;}
 
 .popup-info-row.row-horizontal {
     flex-direction: row;
@@ -139,6 +155,12 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 .popup-info-row:last-child {border-bottom: none;margin-bottom: 0;}
 .popup-label {font-size: 11px;color: #666;font-weight: bold;margin-bottom: 3px;}
 .popup-value {font-size: 12px;color: #333;line-height: 1.4;}
+/* 航警详情：滚动区约 2.5 行，底部渐隐遮罩覆盖到弹窗底边（把原来那块空白替换成渐变） */
+.popup-detail-wrap {position: relative;}
+.popup-detail-wrap::after {content: '';position: absolute;left: 0;right: 0;bottom: 0;height: 2.4em;background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);pointer-events: none;}
+.popup-detail {display: block;max-height: 4em;overflow-y: auto;overflow-wrap: break-word;word-break: break-word;padding-right: 2px;scrollbar-width: thin;}
+.popup-detail::-webkit-scrollbar {width: 4px;}
+.popup-detail::-webkit-scrollbar-thumb {background: rgba(0, 0, 0, 0.18);border-radius: 2px;}
 .notam-popup-buttons {display: flex;gap: 6px;margin-top: 8px;}
 .notam-popup-buttons .copy {flex: 1;padding: 6px 10px;font-size: 12px;font-weight: bold;}
 .copy-coord {background: #007906 !important;}
@@ -146,8 +168,10 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 .copy-coord:hover {background: #005a04 !important;}
 .copy-raw:hover {background: #004494 !important;}
 .launch-site-popup {max-width: 350px !important;}
-.notam-info-popup .leaflet-popup-content {margin: 12px;width: auto !important;}
+.notam-info-popup .leaflet-popup-content {margin: 12px 12px 0px 12px;width: auto !important;}
 .notam-info-popup .leaflet-popup-content-wrapper {border-radius: 6px;box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);}
+/* 去掉 Leaflet 默认的 1px 内边距（会被看成弹窗周围的一圈白边），并让标题栏圆角与弹窗一致 */
+.leaflet-popup.notam-info-popup .leaflet-popup-content-wrapper {padding: 0;border-radius: 6px;overflow: hidden;}
 /* Leaflet控件样式调整 */
 .leaflet-control-layers {background: rgba(255, 255, 255, 0.8);border-radius: 5px;}
 .leaflet-bar {box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);}
@@ -184,7 +208,7 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 #drawerFooter {text-align: center;padding: 10px;background: #f0f0f0;cursor: pointer;border-top: 1px solid #ccc;}
 #drawerFooter:hover {background: #e0e0e0;}
 textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px solid #ccc;box-sizing: border-box; }
-.help-btn, .custom-btn, .export-btn {position: absolute;bottom: 40px;height: 42px;display: flex;justify-content: center;align-items: center;color: #333;font-size: 14px;font-weight: bold;cursor: pointer;transition: transform 0.3s ease, background-color 0.3s ease, bottom 0.3s ease;z-index: 2;user-select: none;}
+.help-btn, .custom-btn, .export-btn {position: absolute;bottom: 40px;height: 42px;display: flex;justify-content: center;align-items: center;color: #333;font-size: 14px;font-weight: bold;cursor: pointer;transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, bottom 0.3s ease;z-index: 2;user-select: none;}
 .help-btn {width: 42px; left: 20px; border-radius: 10px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);background-color: #e6e6e6; }
 .export-btn {width: 42px; left: 74px; border-radius: 10px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);background-color: #e6e6e6; }
 .custom-btn {left: 95px;border-radius: 10px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);background-color: #d6d6d6;padding: 0 20px;}
@@ -287,7 +311,7 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 /* #sidebarToggle {right: 10px;transform: translateY(calc(-50% - 70px));} */
 #sidebarToggle {right: 10px;transform: translateY(calc(-50%));}
 #manualToggle {right: 10px;transform: translateY(calc(-50% + 70px));}
-#sidebarToggle:hover, #manualToggle:hover {background: #e8e8e8;box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);}
+#sidebarToggle:hover, #manualToggle:hover {box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);}
 /* #sidebarToggle:active {transform: translateY(calc(-50% - 70px)) scale(0.95);} */
 #sidebarToggle:active {transform: translateY(calc(-50%)) scale(0.95);}
 #manualToggle:active {transform: translateY(calc(-50% + 70px)) scale(0.95);}
@@ -695,4 +719,125 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 
 .action-btn:active {
     transform: scale(0.9);
+}
+
+/* ────────────────────── 液态玻璃质感（帮助 / 导出 / 航警列表 按钮与展开面板） ──────────────────────
+   半透明磨砂 + 镜面高光边缘：backdrop-filter 让地图从控件里透出来，
+   内阴影（inset）勾出玻璃的上亮下暗边缘，另有一层悬停才点亮的高光（::after）。
+   面板不用真实 border —— 收起时 max-height: 0 只是不画背景，1px 边框仍会留下一条细缝，
+   所以玻璃边改用 inset 阴影实现。 */
+.help-btn,
+.custom-btn,
+.export-btn,
+#sidebarToggle,
+#manualToggle {
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.34);
+    background-image:
+        radial-gradient(130% 150% at 14% -12%, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.30) 42%, rgba(255, 255, 255, 0) 68%),
+        linear-gradient(165deg, rgba(255, 255, 255, 0.52) 0%, rgba(236, 244, 255, 0.24) 52%, rgba(255, 255, 255, 0.44) 100%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.05);
+    backdrop-filter: blur(18px) saturate(180%) brightness(1.05);
+    box-shadow:
+        0 10px 26px rgba(14, 32, 62, 0.20),
+        0 2px 6px rgba(14, 32, 62, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.42);
+    /* 悬停高光的圆心（百分比），buttons.js 会按指针位置改写；这里是不跟随时的默认位置 */
+    --glass-x: 26%;
+    --glass-y: 6%;
+}
+
+.expandable-area.is-open,
+.export-area.is-open {
+    border-radius: 18px;
+    background-color: rgba(255, 255, 255, 0.46);
+    background-image:
+        radial-gradient(120% 90% at 8% 0%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.22) 55%, rgba(255, 255, 255, 0) 100%),
+        linear-gradient(170deg, rgba(255, 255, 255, 0.58) 0%, rgba(236, 244, 255, 0.36) 58%, rgba(255, 255, 255, 0.50) 100%);
+    -webkit-backdrop-filter: blur(26px) saturate(180%) brightness(1.03);
+    backdrop-filter: blur(26px) saturate(180%) brightness(1.03);
+    box-shadow:
+        0 20px 52px rgba(14, 32, 62, 0.24),
+        0 3px 10px rgba(14, 32, 62, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.38),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+}
+
+/* 悬停高光层：一个圆形光斑，圆心跟着指针走（--glass-x / --glass-y 由 buttons.js 按指针位置写入），
+   底下那层线性渐变是玻璃体本身的固定反光，不跟随。 */
+.help-btn::after,
+.custom-btn::after,
+.export-btn::after,
+#sidebarToggle::after,
+#manualToggle::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.28s ease;
+    background-image:
+        radial-gradient(circle 40px at var(--glass-x, 16%) var(--glass-y, 6%), rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.30) 45%, rgba(255, 255, 255, 0) 75%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.06) 55%, rgba(255, 255, 255, 0.32) 100%);
+}
+
+/* 点亮高光：真 hover 设备走 :hover；触摸/手写笔没有 hover，用 JS 加的 .is-touching（按住期间），
+   这样移动端点一下不会把 hover 状态和光斑一起留在按钮上。 */
+.help-btn.is-touching, .export-btn.is-touching, .custom-btn.is-touching,
+#sidebarToggle.is-touching, #manualToggle.is-touching {
+    background-color: rgba(255, 255, 255, 0.50);
+    box-shadow:
+        0 14px 34px rgba(14, 32, 62, 0.24),
+        0 3px 8px rgba(14, 32, 62, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.45);
+}
+
+@media (hover: hover) {
+    .help-btn:hover, .export-btn:hover, .custom-btn:hover,
+    #sidebarToggle:hover, #manualToggle:hover {
+        background-color: rgba(255, 255, 255, 0.50);
+        box-shadow:
+            0 14px 34px rgba(14, 32, 62, 0.24),
+            0 3px 8px rgba(14, 32, 62, 0.14),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.45);
+    }
+
+    .help-btn:hover::after, .export-btn:hover::after, .custom-btn:hover::after,
+    #sidebarToggle:hover::after, #manualToggle:hover::after {opacity: 1;}
+}
+
+/* 按下时压暗高光（鼠标才有「按住」之外的差别）；触摸按住是唯一状态，要排在上面这条之后才不会被压暗 */
+.help-btn:active::after, .export-btn:active::after, .custom-btn:active::after,
+#sidebarToggle:active::after, #manualToggle:active::after {opacity: 0.6;}
+
+.help-btn.is-touching::after, .export-btn.is-touching::after, .custom-btn.is-touching::after,
+#sidebarToggle.is-touching::after, #manualToggle.is-touching::after {opacity: 1;}
+
+/* 不支持 backdrop-filter 的浏览器退回接近不透明的浅色底 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .help-btn, .custom-btn, .export-btn,
+    #sidebarToggle, #manualToggle {background-color: rgba(246, 248, 252, 0.96);}
+    .help-btn:hover, .custom-btn:hover, .export-btn:hover,
+    #sidebarToggle:hover, #manualToggle:hover,
+    .help-btn.is-touching, .custom-btn.is-touching, .export-btn.is-touching,
+    #sidebarToggle.is-touching, #manualToggle.is-touching {background-color: #eaedf3;}
+    .expandable-area.is-open, .export-area.is-open {background-color: rgba(255, 255, 255, 0.97);}
+}
+
+/* 系统开启「减弱透明度」时同样退回实底 */
+@media (prefers-reduced-transparency: reduce) {
+    .help-btn, .custom-btn, .export-btn,
+    #sidebarToggle, #manualToggle {background-color: rgba(246, 248, 252, 0.96); -webkit-backdrop-filter: none; backdrop-filter: none;}
+    .help-btn:hover, .custom-btn:hover, .export-btn:hover,
+    #sidebarToggle:hover, #manualToggle:hover,
+    .help-btn.is-touching, .custom-btn.is-touching, .export-btn.is-touching,
+    #sidebarToggle.is-touching, #manualToggle.is-touching {background-color: #eaedf3;}
+    .expandable-area.is-open, .export-area.is-open {background-color: rgba(255, 255, 255, 0.97); -webkit-backdrop-filter: none; backdrop-filter: none;}
 }

@@ -5,74 +5,33 @@ function closeLoadingModal() {
 }
 
 function buildEmptyDataDict() {
-    return {
-        CODE: [],
-        COORDINATES: [],
-        TIME: [],
-        PLATID: [],
-        RAWMESSAGE: [],
-        ALTITUDE: [],
-        SOURCE: [],
-        FIR: [],
-        SHAPE: [],
-        CENTER: [],
-        RADIUS: [],
-        RADIUS_UNIT: [],
-        CLASSIFY: {},
-        NUM: 0
-    };
+    return { CODE: [], TIME: [], PLATID: [], RAWMESSAGE: [], ALTITUDE: [], SOURCE: [], FIR: [], GEOMETRY: [], CLASSIFY: {}, CLASSIFY_FOCUSED: {}, FOCUSED_NUM: 0, NUM: 0 };
 }
 
 function appendSection(target, section) {
     if (!section || typeof section !== 'object') return;
-
-    const codes = Array.isArray(section.CODE) ? section.CODE : [];
-    const coords = Array.isArray(section.COORDINATES) ? section.COORDINATES : [];
-    const times = Array.isArray(section.TIME) ? section.TIME : [];
-    const ids = Array.isArray(section.PLATID) ? section.PLATID : [];
-    const raws = Array.isArray(section.RAWMESSAGE) ? section.RAWMESSAGE : [];
-    const alts = Array.isArray(section.ALTITUDE) ? section.ALTITUDE : [];
-    const srcs = Array.isArray(section.SOURCE) ? section.SOURCE : [];
-    const firs = Array.isArray(section.FIR) ? section.FIR : [];
-    const shapes = Array.isArray(section.SHAPE) ? section.SHAPE : [];
-    const centers = Array.isArray(section.CENTER) ? section.CENTER : [];
-    const radii = Array.isArray(section.RADIUS) ? section.RADIUS : [];
-    const radiusUnits = Array.isArray(section.RADIUS_UNIT) ? section.RADIUS_UNIT : [];
-
-    const size = Math.min(codes.length, coords.length, times.length, ids.length, raws.length);
+    const size = Number(section.NUM || 0);
     for (let i = 0; i < size; i++) {
-        target.CODE.push(codes[i]);
-        target.COORDINATES.push(coords[i]);
-        target.TIME.push(times[i]);
-        target.PLATID.push(ids[i]);
-        target.RAWMESSAGE.push(raws[i]);
-        target.ALTITUDE.push(alts[i] || 'None');
-        target.SOURCE.push(srcs[i] || 'NOTAM');
-        target.FIR.push(firs[i] || '');
-        target.SHAPE.push(shapes[i] || 'POLYGON');
-        target.CENTER.push(centers[i] || '');
-        target.RADIUS.push(radii[i] || '');
-        target.RADIUS_UNIT.push(radiusUnits[i] || '');
+        target.CODE.push(section.CODE?.[i] || ''); target.TIME.push(section.TIME?.[i] || '');
+        target.PLATID.push(section.PLATID?.[i] || ''); target.RAWMESSAGE.push(section.RAWMESSAGE?.[i] || '');
+        target.ALTITUDE.push(section.ALTITUDE?.[i] || 'None'); target.SOURCE.push(section.SOURCE?.[i] || 'NOTAM');
+        target.FIR.push(section.FIR?.[i] || 'UNKNOWN'); target.GEOMETRY.push(section.GEOMETRY?.[i] || '');
     }
 }
 
 function normalizeDataPayload(raw) {
-    if (!raw || typeof raw !== 'object') return buildEmptyDataDict();
-
-    // 兼容旧结构：顶层就是可绘制数据
-    if (Array.isArray(raw.CODE) && Array.isArray(raw.COORDINATES) && Array.isArray(raw.TIME)) {
-        return raw;
-    }
-
-    // 新结构：拆分为 NOTAM_DATA / MSI_DATA
+    // 顺序固定为 聚焦段 → 外部段 → MSI 段：页面行号即 data/archiveMatch/match{idx}.json 的编号
     const merged = buildEmptyDataDict();
-    appendSection(merged, raw.NOTAM_DATA);
-    appendSection(merged, raw.MSI_DATA);
+    appendSection(merged, raw?.FOCUSED_NOTAM_DATA);
+    appendSection(merged, raw?.NOTAM_DATA);
+    appendSection(merged, raw?.MSI_DATA);
     merged.NUM = merged.CODE.length;
-    merged.CLASSIFY = raw.CLASSIFY || (raw.NOTAM_DATA && raw.NOTAM_DATA.CLASSIFY) || {};
+    merged.CLASSIFY_FOCUSED = raw?.FOCUSED_NOTAM_DATA?.CLASSIFY || {};
+    merged.CLASSIFY = raw?.NOTAM_DATA?.CLASSIFY || {};
+    // 只有前 FOCUSED_NUM 行（聚焦段）有 match{idx}.json
+    merged.FOCUSED_NUM = Number(raw?.FOCUSED_NOTAM_DATA?.NUM || 0);
     return merged;
 }
-
 // 页面加载即获取一次；维护期间不请求 data_dict.json
 if (!isSitePaused()) {
     loadingModal.style.display = 'block';
@@ -80,7 +39,7 @@ if (!isSitePaused()) {
         .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
         .then(data => {
             dict = normalizeDataPayload(data);
-            assignGroupColors(dict.CLASSIFY || {});
+            assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);
             drawAllAutoNotams();
             updateSidebar();
         })
@@ -99,20 +58,7 @@ function drawAllAutoNotams() {
 
     for (let i = 0; i < dict.NUM; i++) {
         const col = getColorForCode(dict.CODE[i]);
-        drawNot(
-            dict.COORDINATES[i],
-            dict.TIME[i],
-            dict.CODE[i],
-            dict.ALTITUDE[i],
-            i,
-            col,
-            0,
-            dict.RAWMESSAGE?.[i] || "",
-            dict.SOURCE?.[i] || 'NOTAM',
-            dict.FIR?.[i] || ''
-            , dict.SHAPE?.[i] || 'POLYGON', dict.CENTER?.[i] || '',
-            dict.RADIUS?.[i] || '', dict.RADIUS_UNIT?.[i] || ''
-        );
+        drawNot(dict.TIME[i], dict.CODE[i], dict.ALTITUDE[i], i, col, 0, dict.RAWMESSAGE?.[i] || '', dict.SOURCE?.[i] || 'NOTAM', dict.FIR?.[i] || '', dict.GEOMETRY?.[i] || '');
         visibleState[i] = true;
     }
 }
@@ -139,7 +85,7 @@ function refetchData() {
         .then(r => r.json())
         .then(data => {
             dict = normalizeDataPayload(data);
-            assignGroupColors(dict.CLASSIFY || {});
+            assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);
             drawAllAutoNotams();
             updateSidebar();
         })

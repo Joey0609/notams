@@ -4,17 +4,18 @@ import json
 import os
 import re
 import sys
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 from fetch.Archive_Notam_Match import notam_match_archive
 from fetch.mail_draft import generate_change_email_draft
 from fetch.sendcloud_email import send_email_via_qq_smtp
-from fetch.sources import fetch_enabled_sources
-from fetch.sources.common import extract_circle_area
+from fetch.sources import fetch_enabled_sources, get_enabled_source_names
 from fetch.visits import update_visits
 
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 NOTIFY_SEND_LIST_PATH = os.path.join(REPO_ROOT, 'notify_send_list.txt')
+SNAPSHOT_PATH = os.path.join(REPO_ROOT, 'data_dict.json')
+NOTIFY_DEDUPLICATION_WINDOW = timedelta(days=30)
 
 def parse_point(pt):
     m = re.match(r'([NS])(\d{4,6})([WE])(\d{5,7})', pt)
@@ -195,45 +196,86 @@ def coordinates_has_lon_in_range(coord_str, lon_min=70.0, lon_max=180.0):
 
 
 def record_has_lon_in_range(data, index, lon_min=70.0, lon_max=180.0):
-    """Apply notification longitude filtering to polygons and circles."""
-    coordinates = (data.get('COORDINATES', []) or [])
-    coord = coordinates[index] if index < len(coordinates) else ''
-    if coordinates_has_lon_in_range(coord, lon_min, lon_max):
-        return True
-
-    shapes = data.get('SHAPE', []) or []
-    centers = data.get('CENTER', []) or []
-    shape = str(shapes[index] if index < len(shapes) else '').upper()
-    center_text = str(centers[index] if index < len(centers) else '')
-    if shape != 'CIRCLE' or not center_text:
-        raws = data.get('RAWMESSAGE', []) or []
-        circle = extract_circle_area(raws[index] if index < len(raws) else '')
-        center_text = circle[0] if circle else center_text
-    point = parse_point(center_text)
-    return bool(point and lon_min <= point[1] <= lon_max)
-
+    """Apply notification longitude filtering to the canonical geometry only."""
+    values = data.get('GEOMETRY', []) or []
+    geometry = str(values[index] if index < len(values) else '')
+    points = re.findall(r'[NS]\d{4,6}[WE]\d{5,7}', geometry.upper())
+    return any(point and lon_min <= point[1] <= lon_max for point in (parse_point(value) for value in points))
 
 def normalize_notam_number(value):
     """Normalize a user-visible NOTAM number for notification deduplication."""
     return re.sub(r'\s+', '', str(value or '')).upper()
 
 
-def load_notified_notam_numbers(path=NOTIFY_SEND_LIST_PATH):
-    """Load NOTAM numbers already delivered by QQ Bot or email."""
+def _parse_notified_notam_record(line):
+    """Parse one ``NOTAM number<TAB>UTC timestamp`` notification record."""
+    text = line.strip()
+    if not text or text.startswith('#'):
+        return None
+    try:
+        number, timestamp_text = text.rsplit('\t', 1)
+        timestamp = datetime.fromisoformat(timestamp_text.replace('Z', '+00:00'))
+    except ValueError:
+        return normalize_notam_number(text), None
+    if timestamp.tzinfo is None:
+        timestamp = timestamp.replace(tzinfo=UTC)
+    return normalize_notam_number(number), timestamp.astimezone(UTC)
+
+
+def _write_notified_notam_records(records, path):
+    """Replace the notification list with the remaining timestamped records."""
+    with open(path, 'w', encoding='utf-8', newline='\n') as file:
+        file.write('# Delivered NOTAM number and UTC send time, tab-separated.\n')
+        for number, timestamp in records:
+            file.write(f'{number}\t{timestamp.isoformat().replace("+00:00", "Z")}\n')
+
+
+def load_notified_notam_numbers(path=NOTIFY_SEND_LIST_PATH, now=None):
+    """Load unexpired notifications and remove entries older than 30 days."""
+    check_time = now or datetime.now(UTC)
+    if check_time.tzinfo is None:
+        check_time = check_time.replace(tzinfo=UTC)
+    else:
+        check_time = check_time.astimezone(UTC)
+    cutoff = check_time - NOTIFY_DEDUPLICATION_WINDOW
     try:
         with open(path, 'r', encoding='utf-8') as file:
-            return {
-                normalize_notam_number(line)
-                for line in file
-                if line.strip() and not line.lstrip().startswith('#')
-            }
+            lines = list(file)
     except FileNotFoundError:
         return set()
 
+    records = []
+    seen_numbers = set()
+    needs_rewrite = False
+    for line in lines:
+        if not line.strip() or line.lstrip().startswith('#'):
+            continue
+        record = _parse_notified_notam_record(line)
+        number, timestamp = record
+        # Give pre-timestamp records the first scan's time, so they expire a
+        # month from this migration instead of being discarded immediately.
+        if timestamp is None:
+            timestamp = check_time
+            needs_rewrite = True
+        if not number or timestamp < cutoff or number in seen_numbers:
+            needs_rewrite = True
+            continue
+        seen_numbers.add(number)
+        records.append((number, timestamp))
 
-def record_notified_notam_numbers(notam_numbers, path=NOTIFY_SEND_LIST_PATH):
-    """Append newly delivered NOTAM numbers to the shared notification list."""
-    existing = load_notified_notam_numbers(path)
+    if needs_rewrite:
+        _write_notified_notam_records(records, path)
+    return seen_numbers
+
+
+def record_notified_notam_numbers(notam_numbers, path=NOTIFY_SEND_LIST_PATH, now=None):
+    """Append newly delivered NOTAM numbers with their UTC send time."""
+    sent_at = now or datetime.now(UTC)
+    if sent_at.tzinfo is None:
+        sent_at = sent_at.replace(tzinfo=UTC)
+    else:
+        sent_at = sent_at.astimezone(UTC)
+    existing = load_notified_notam_numbers(path, now=sent_at)
     new_numbers = []
     for value in notam_numbers or []:
         number = normalize_notam_number(value)
@@ -258,7 +300,7 @@ def record_notified_notam_numbers(notam_numbers, path=NOTIFY_SEND_LIST_PATH):
         if needs_leading_newline:
             file.write('\n')
         for number in new_numbers:
-            file.write(f'{number}\n')
+            file.write(f'{number}\t{sent_at.isoformat().replace("+00:00", "Z")}\n')
     return len(new_numbers)
 
 
@@ -301,7 +343,7 @@ def get_removed_notams_for_notification(previous_data, current_data, now=None, l
     previous_codes = previous_data.get('CODE', []) if isinstance(previous_data, dict) else []
     previous_times = previous_data.get('TIME', []) if isinstance(previous_data, dict) else []
     previous_ids = previous_data.get('PLATID', []) if isinstance(previous_data, dict) else []
-    check_time = now or datetime.utcnow()
+    check_time = now or datetime.now(UTC).replace(tzinfo=None)
     threshold = timedelta(minutes=lead_minutes)
 
     pending = []
@@ -328,108 +370,213 @@ def count_removed_notams_for_notification(previous_data, current_data, now=None,
     return len(get_removed_notams_for_notification(previous_data, current_data, now, lead_minutes))
 
 
-def filter_data_by_source(data, include_sources):
-    include_sources = set(include_sources or [])
-    if not isinstance(data, dict):
-        return {
-            'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [], 'RAWMESSAGE': [],
-            'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'SHAPE': [], 'CENTER': [], 'RADIUS': [], 'RADIUS_UNIT': [], 'CLASSIFY': {}, 'NUM': 0,
-        }
+RECORD_FIELDS = ('CODE', 'TIME', 'PLATID', 'RAWMESSAGE', 'ALTITUDE', 'SOURCE', 'FIR', 'GEOMETRY')
 
+
+def _empty_record_data():
+    data = {field: [] for field in RECORD_FIELDS}
+    data.update({'CLASSIFY': {}, 'NUM': 0})
+    return data
+
+
+def _record_key(source, code):
+    """Identity used across fetch stages, matching the source manager's dedup key."""
+    return (str(source or 'NOTAM').upper(), re.sub(r'\s+', '', str(code or '')).upper())
+
+
+def _record_keys(data):
+    """Collect the ``(SOURCE, CODE)`` keys returned by one fetch stage."""
+    codes = data.get('CODE', []) or []
     sources = data.get('SOURCE', []) or []
-    size = min(
-        len(data.get('CODE', []) or []),
-        len(data.get('COORDINATES', []) or []),
-        len(data.get('TIME', []) or []),
-        len(data.get('PLATID', []) or []),
-        len(data.get('RAWMESSAGE', []) or []),
+    return {
+        _record_key(sources[index] if index < len(sources) else 'NOTAM', code)
+        for index, code in enumerate(codes)
+    }
+
+
+def merge_source_batches(batches):
+    """Merge stage results in order, keeping the first copy of a duplicated record.
+
+    The focused stage is merged first, so a record reported by both stages stays in
+    the focused section. Rows keep fetch order here; :func:`order_notam_rows`
+    turns them into the CODE-sorted row space the site and match files share.
+    """
+    merged = _empty_record_data()
+    seen_keys = set()
+    duplicate_count = 0
+    for batch in batches:
+        batch_data = batch.data
+        for values in zip(*(batch_data[field] for field in RECORD_FIELDS)):
+            record = dict(zip(RECORD_FIELDS, values))
+            key = _record_key(record['SOURCE'], record['CODE'])
+            if key in seen_keys:
+                duplicate_count += 1
+                continue
+            seen_keys.add(key)
+            if str(record['SOURCE']).upper().startswith('NOTAM') and coordinates_are_excluded(record['GEOMETRY']):
+                continue
+            for field in RECORD_FIELDS:
+                merged[field].append(record[field])
+    if duplicate_count:
+        print(f'跨阶段去重: 移除 {duplicate_count} 条重复记录')
+    return merged
+
+
+def batches_are_complete(batches):
+    """Only a scan whose every stage succeeded may replace the snapshot."""
+    return bool(batches) and all(
+        batch.results and all(result.success for result in batch.results)
+        for batch in batches
     )
 
-    out = {
-        'CODE': [],
-        'COORDINATES': [],
-        'TIME': [],
-        'PLATID': [],
-        'RAWMESSAGE': [],
-        'ALTITUDE': [],
-        'SOURCE': [],
-        'FIR': [],
-        'SHAPE': [], 'CENTER': [], 'RADIUS': [], 'RADIUS_UNIT': [],
-        'CLASSIFY': {},
-        'NUM': 0,
-    }
-    for i in range(size):
-        src = sources[i] if i < len(sources) else 'NOTAM'
-        src = str(src or 'NOTAM').upper()
-        if src not in include_sources:
-            continue
-        out['CODE'].append(data['CODE'][i])
-        out['COORDINATES'].append(data['COORDINATES'][i])
-        out['TIME'].append(data['TIME'][i])
-        out['PLATID'].append(data['PLATID'][i])
-        out['RAWMESSAGE'].append(data['RAWMESSAGE'][i])
-        altitude_list = data.get('ALTITUDE', []) or []
-        fir_list = data.get('FIR', []) or []
-        out['ALTITUDE'].append(altitude_list[i] if i < len(altitude_list) else 'None')
-        out['SOURCE'].append(src)
-        out['FIR'].append(fir_list[i] if i < len(fir_list) else '')
-        out['SHAPE'].append((data.get('SHAPE', []) or ['POLYGON'])[i] if i < len(data.get('SHAPE', []) or []) else 'POLYGON')
-        out['CENTER'].append((data.get('CENTER', []) or [''])[i] if i < len(data.get('CENTER', []) or []) else '')
-        out['RADIUS'].append((data.get('RADIUS', []) or [''])[i] if i < len(data.get('RADIUS', []) or []) else '')
-        out['RADIUS_UNIT'].append((data.get('RADIUS_UNIT', []) or [''])[i] if i < len(data.get('RADIUS_UNIT', []) or []) else '')
 
-    out['NUM'] = len(out['CODE'])
-    out['CLASSIFY'] = classify_data(out)
-    return out
+def build_section(data, indices, sort_by_code=True):
+    """Materialize one payload section (record fields + ``NUM``/``CLASSIFY``/``HASH``)."""
+    positions = sorted(indices, key=lambda index: str(data['CODE'][index])) if sort_by_code else list(indices)
+    section = _empty_record_data()
+    for field in RECORD_FIELDS:
+        values = data.get(field, []) or []
+        section[field] = [values[index] if index < len(values) else '' for index in positions]
+    section['NUM'] = len(section['CODE'])
+    section['CLASSIFY'] = classify_data(section)
+    section['HASH'] = compute_data_hash(section)
+    return section
+
+
+def _segment_record_indices(data, focused_keys):
+    """Return ``(focused_notam, remaining_notam, msi)`` record positions."""
+    codes = data.get('CODE', []) or []
+    sources = data.get('SOURCE', []) or []
+    focused_index, remaining_index, msi_index = [], [], []
+    for index in range(len(codes)):
+        source = str(sources[index] if index < len(sources) else 'NOTAM').upper()
+        if source.startswith('MSI'):
+            msi_index.append(index)
+        elif source.startswith('NOTAM'):
+            key = _record_key(source, codes[index])
+            (focused_index if key in focused_keys else remaining_index).append(index)
+    return focused_index, remaining_index, msi_index
+
+
+def build_data_segments(data, focused_keys):
+    """Split the merged records into focused NOTAM, remaining NOTAM and MSI sections.
+
+    Every section is sorted by CODE and classified on its own, so the focused and
+    the remaining pool never share a classification group.
+    """
+    focused_index, remaining_index, msi_index = _segment_record_indices(data, focused_keys)
+    return (
+        build_section(data, focused_index),
+        build_section(data, remaining_index),
+        build_section(data, msi_index),
+    )
+
+
+def order_notam_rows(data, focused_num, notam_num):
+    """Order NOTAM rows exactly like the site does: focused segment first, then the rest.
+
+    Each segment is sorted by CODE, which is the row space ``data_dict.json`` and
+    ``data/archiveMatch/match{idx}.json`` share. The merged records keep fetch order,
+    so this reordering is what keeps page row ``N`` and match file ``N`` in sync.
+    """
+    codes = data.get('CODE', []) or []
+    limit = max(0, min(int(notam_num or 0), len(codes)))
+    boundary = max(0, min(int(focused_num or 0), limit))
+    focused_rows = sorted(range(boundary), key=lambda index: str(codes[index]))
+    remaining_rows = sorted(range(boundary, limit), key=lambda index: str(codes[index]))
+    return focused_rows + remaining_rows
+
+
+def record_index_lookup(sections):
+    """Map every record of the given sections to its global row number.
+
+    The global row space is ``focused section -> remaining section -> MSI section``,
+    which is exactly the order ``data/archiveMatch/match{idx}.json`` files use.
+    """
+    lookup = {}
+    offset = 0
+    for section in sections:
+        section = section if isinstance(section, dict) else {}
+        codes = section.get('CODE', []) or []
+        platids = section.get('PLATID', []) or []
+        for index in range(len(codes)):
+            code = str(codes[index])
+            platid = str(platids[index]) if index < len(platids) else ''
+            lookup.setdefault((platid, code), offset + index)
+            if platid:
+                lookup.setdefault(('', platid), offset + index)
+        offset += len(codes)
+    return lookup
+
+
+def attach_record_indices(data, lookup):
+    """Attach the global row number of every record as ``INDEX``.
+
+    Notification slices keep their original row numbers, so ``match.html?index=N``
+    links keep pointing at the record the notification is about.
+    """
+    result = dict(data or {})
+    codes = (data or {}).get('CODE', []) or []
+    platids = (data or {}).get('PLATID', []) or []
+    indices = []
+    for index, code in enumerate(codes):
+        platid = str(platids[index]) if index < len(platids) else ''
+        value = lookup.get((platid, str(code)))
+        if value is None:
+            value = lookup.get(('', platid))
+        indices.append(value)
+    result['INDEX'] = indices
+    return result
+
+
+def filter_data_by_source(data, include_sources):
+    """Return only the requested source sections; support the compact disk payload."""
+    requested = {str(source).upper() for source in (include_sources or [])}
+    if isinstance(data, dict) and 'NOTAM_DATA' in data:
+        sections = []
+        if 'NOTAM' in requested:
+            sections.append(data.get('NOTAM_DATA', {}))
+        if 'MSI' in requested:
+            sections.append(data.get('MSI_DATA', {}))
+        merged = _empty_record_data()
+        for section in sections:
+            for field in RECORD_FIELDS:
+                merged[field].extend(section.get(field, []) or [])
+        merged['NUM'] = len(merged['CODE'])
+        merged['CLASSIFY'] = classify_data(merged)
+        return merged
+    if not isinstance(data, dict):
+        return _empty_record_data()
+    result = _empty_record_data()
+    size = min(*(len(data.get(field, []) or []) for field in ('CODE', 'TIME', 'PLATID', 'RAWMESSAGE', 'GEOMETRY')))
+    for index in range(size):
+        source = str((data.get('SOURCE', []) or ['NOTAM'])[index] if index < len(data.get('SOURCE', []) or []) else 'NOTAM').upper()
+        if source not in requested:
+            continue
+        for field in RECORD_FIELDS:
+            values = data.get(field, []) or []
+            defaults = {'ALTITUDE': 'None', 'SOURCE': source, 'FIR': 'UNKNOWN'}
+            result[field].append(values[index] if index < len(values) else defaults.get(field, ''))
+    result['NUM'] = len(result['CODE'])
+    result['CLASSIFY'] = classify_data(result)
+    return result
 
 
 def filter_data_by_platids(data, include_platids):
-    """Filter data dict to keep only records whose PLATID is in include_platids."""
-    include_platids = set(str(p) for p in (include_platids or []))
-    if not isinstance(data, dict) or not include_platids:
-        return {
-            'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [], 'RAWMESSAGE': [],
-            'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'SHAPE': [], 'CENTER': [], 'RADIUS': [], 'RADIUS_UNIT': [], 'CLASSIFY': {}, 'NUM': 0,
-        }
-
-    platids = data.get('PLATID', []) or []
-    size = min(
-        len(data.get('CODE', []) or []),
-        len(data.get('COORDINATES', []) or []),
-        len(data.get('TIME', []) or []),
-        len(platids),
-        len(data.get('RAWMESSAGE', []) or []),
-    )
-
-    out = {
-        'CODE': [], 'COORDINATES': [], 'TIME': [], 'PLATID': [],
-        'RAWMESSAGE': [], 'ALTITUDE': [], 'SOURCE': [], 'FIR': [], 'SHAPE': [], 'CENTER': [], 'RADIUS': [], 'RADIUS_UNIT': [],
-        'CLASSIFY': {}, 'NUM': 0,
-    }
-    for i in range(size):
-        pid = str(platids[i]) if i < len(platids) else ''
-        if pid not in include_platids:
+    ids = {str(value) for value in (include_platids or [])}
+    if not ids:
+        return _empty_record_data()
+    result = _empty_record_data()
+    size = min(*(len(data.get(field, []) or []) for field in ('CODE', 'TIME', 'PLATID', 'RAWMESSAGE', 'GEOMETRY')))
+    for index in range(size):
+        if str(data['PLATID'][index]) not in ids:
             continue
-        out['CODE'].append(data['CODE'][i])
-        out['COORDINATES'].append(data['COORDINATES'][i])
-        out['TIME'].append(data['TIME'][i])
-        out['PLATID'].append(pid)
-        raw_list = data.get('RAWMESSAGE', []) or []
-        out['RAWMESSAGE'].append(raw_list[i] if i < len(raw_list) else '')
-        alt_list = data.get('ALTITUDE', []) or []
-        out['ALTITUDE'].append(alt_list[i] if i < len(alt_list) else 'None')
-        src_list = data.get('SOURCE', []) or []
-        out['SOURCE'].append(str(src_list[i] if i < len(src_list) else 'NOTAM'))
-        fir_list = data.get('FIR', []) or []
-        out['FIR'].append(fir_list[i] if i < len(fir_list) else '')
-        for field, default in [('SHAPE', 'POLYGON'), ('CENTER', ''), ('RADIUS', ''), ('RADIUS_UNIT', '')]:
+        for field in RECORD_FIELDS:
             values = data.get(field, []) or []
-            out[field].append(values[i] if i < len(values) else default)
-
-    out['NUM'] = len(out['CODE'])
-    out['CLASSIFY'] = classify_data(out)
-    return out
-
+            result[field].append(values[index] if index < len(values) else '')
+    result['NUM'] = len(result['CODE'])
+    result['CLASSIFY'] = classify_data(result)
+    return result
 
 def build_notification_current_data(previous_data, current_data, pending_platids):
     """Exclude non-sendable new records while preserving kept/removed sections."""
@@ -452,39 +599,94 @@ def build_notification_previous_data(previous_data, current_data, removed_platid
     )
 
 
+def notify_notam_changes(previous_data, current_data, now=None, mail_enabled=None, index_lookup=None):
+    """Send the focused added/removed notifications through email and the QQ bot.
+
+    Both inputs must be focused NOTAM slices: only focused records are reported,
+    drawn in the overview image and used for the colour/emoji maps.
+    """
+    check_time = now or datetime.now(UTC).replace(tzinfo=None)
+    mail_on = MAIL_ENABLED if mail_enabled is None else bool(mail_enabled)
+    if index_lookup is None:
+        index_lookup = record_index_lookup([current_data])
+
+    notified_numbers = load_notified_notam_numbers()
+    pending_notams = get_new_notams_for_notification(previous_data, current_data, notified_numbers)
+    pending_platids = [item['PLATID'] for item in pending_notams]
+    pending_codes = [item['CODE'] for item in pending_notams]
+    added_count = len(pending_notams)
+
+    removed_notams = get_removed_notams_for_notification(
+        previous_data, current_data, now=check_time, lead_minutes=60
+    )
+    removed_platids = [item['PLATID'] for item in removed_notams]
+    removed_count = len(removed_notams)
+
+    notification_previous = build_notification_previous_data(
+        previous_data, current_data, removed_platids
+    )
+    notification_current = attach_record_indices(
+        build_notification_current_data(previous_data, current_data, pending_platids),
+        index_lookup,
+    )
+
+    if mail_on and (added_count > 0 or removed_count > 0):
+        try:
+            email_draft = generate_change_email_draft(notification_previous, notification_current)
+            send_result = send_email_via_qq_smtp(get_mail_config(), email_draft)
+            print(f"邮件发送成功: {send_result}")
+            recorded_count = record_notified_notam_numbers(pending_codes)
+            print(f"已记录 {recorded_count} 个通过邮件发送的新增航警编号")
+        except Exception as exc:
+            print(f"邮件发送失败: {exc}")
+    elif mail_on:
+        print('无符合条件的新增航警，且无删除时间早于开始时间60分钟的航警，已跳过邮件发送')
+    else:
+        print('MAIL.enabled=false，已跳过邮件发送')
+
+    # QQ Bot 通知独立于邮件发送
+    if added_count > 0:
+        try:
+            # 两条消息共用聚焦数据的颜色和 emoji 映射，保证图片一致
+            from fetch.mail_draft import _build_code_to_color_map, _build_code_emoji_map
+            code_to_color = _build_code_to_color_map(current_data)
+            code_emoji_map = _build_code_emoji_map(current_data)
+
+            # 第一条：仅新增航警图片 + 新增航警文字(无坐标)
+            added_only_data = filter_data_by_platids(current_data, pending_platids)
+            added_draft = generate_change_email_draft(
+                {}, added_only_data, include_match=False, include_website=False,
+                code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='added_only'
+            )
+            # 第二条：全部聚焦航警图片 + 当前聚焦航警文字
+            full_draft = generate_change_email_draft(
+                previous_data, current_data, include_match=False, include_website=False,
+                code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='current'
+            )
+            from fetch.notam_bot import send_two_notifications
+            qq_result = send_two_notifications(added_draft, full_draft, return_details=True)
+            if qq_result.get('added') or qq_result.get('full'):
+                recorded_count = record_notified_notam_numbers(pending_codes)
+                print(f"已记录 {recorded_count} 个通过 QQ Bot 发送的航警编号")
+        except Exception as exc:
+            print(f"QQ Bot 通知发送失败: {exc}")
+    else:
+        print('无未发送过且符合经度范围(70~180)的新增航警，已跳过 QQ Bot 发送')
+
+    return {'added': added_count, 'removed': removed_count}
+
+
 def compute_data_hash(data, include_sources=None):
     if not isinstance(data, dict):
         return ''
-
-    include_sources = set(s.upper() for s in include_sources) if include_sources else None
-    sources = data.get('SOURCE', []) or []
-    size = min(
-        len(data.get('CODE', []) or []),
-        len(data.get('COORDINATES', []) or []),
-        len(data.get('TIME', []) or []),
-        len(data.get('PLATID', []) or []),
-    )
-
+    requested = {str(source).upper() for source in include_sources} if include_sources else None
     records = []
-    for i in range(size):
-        src = str(sources[i] if i < len(sources) else 'NOTAM').upper()
-        if include_sources is not None and src not in include_sources:
-            continue
-        records.append('|'.join([
-            str(data['CODE'][i]),
-            str(data['COORDINATES'][i]),
-            str(data['TIME'][i]),
-            str(data['PLATID'][i]),
-            src,
-            str((data.get('SHAPE', []) or ['POLYGON'])[i] if i < len(data.get('SHAPE', []) or []) else 'POLYGON'),
-            str((data.get('CENTER', []) or [''])[i] if i < len(data.get('CENTER', []) or []) else ''),
-            str((data.get('RADIUS', []) or [''])[i] if i < len(data.get('RADIUS', []) or []) else ''),
-            str((data.get('RADIUS_UNIT', []) or [''])[i] if i < len(data.get('RADIUS_UNIT', []) or []) else ''),
-        ]))
-
-    payload = '\n'.join(sorted(records))
-    return hashlib.sha256(payload.encode('utf-8')).hexdigest()
-
+    size = min(*(len(data.get(field, []) or []) for field in ('CODE', 'TIME', 'PLATID', 'GEOMETRY')))
+    for index in range(size):
+        source = str((data.get('SOURCE', []) or ['NOTAM'])[index] if index < len(data.get('SOURCE', []) or []) else 'NOTAM').upper()
+        if requested is None or source in requested:
+            records.append('|'.join((str(data['CODE'][index]), str(data['TIME'][index]), str(data['PLATID'][index]), source, str(data['GEOMETRY'][index]))))
+    return hashlib.sha256('\n'.join(sorted(records)).encode('utf-8')).hexdigest()
 
 def is_valid_fetch_result(data):
     """Only complete fetches may trigger downstream updates."""
@@ -498,11 +700,79 @@ def is_valid_fetch_result(data):
         return False
 
 
-def should_update_visits(before_hash, current_data):
-    """Do not refresh visits.json when an upstream failure produced empty data."""
+def should_update_visits(before_notam_hash, current_data):
+    """Refresh visits only after a valid NOTAM change, never for MSI-only updates.
+
+    ``HASH`` covers every source, including MSI. The visit counter must
+    therefore follow the NOTAM-specific hash.
+    """
+    current_notam_hash = current_data.get('HASH_NOTAM', current_data.get('HASH'))
+    return is_valid_fetch_result(current_data) and before_notam_hash != current_notam_hash
+
+def load_previous_snapshot(path=SNAPSHOT_PATH):
+    """Read the previous snapshot state without ever raising.
+
+    A missing file, an unreadable file and a snapshot written before the focused
+    layout exist all mean the same thing: the next scan establishes the baseline.
+    """
+    state = {
+        'data': {},
+        'hash': None,
+        'hash_notam': None,
+        'hash_focused': None,
+        'focus_baseline': True,
+        'focus_section': {},
+    }
+    try:
+        with open(path, 'r', encoding='utf-8') as snapshot_file:
+            previous_data = json.load(snapshot_file)
+    except (OSError, ValueError):
+        return state
+    if not isinstance(previous_data, dict):
+        return state
+
+    focused_section = previous_data.get('FOCUSED_NOTAM_DATA')
+    state['data'] = previous_data
+    state['hash'] = previous_data.get('HASH')
+    state['hash_notam'] = previous_data.get('HASH_NOTAM')
+    state['hash_focused'] = previous_data.get('HASH_FOCUSED')
+    state['focus_baseline'] = not isinstance(focused_section, dict)
+    state['focus_section'] = focused_section if isinstance(focused_section, dict) else {}
+    return state
+
+
+def notification_trigger(snapshot, data):
+    """Decide what one scan should do: ``invalid``, ``baseline``, ``notify`` or ``idle``.
+
+    Focused scans notify only when the focused hash changed, so records outside
+    ``[ICAO_FOCUSED]`` no longer send mail. Without ``[ICAO_FOCUSED]`` the scan falls
+    back to the previous behaviour of notifying on any NOTAM change.
+    """
+    if not is_valid_fetch_result(data):
+        return 'invalid'
+    if data.get('FOCUS_ENABLED'):
+        if snapshot.get('focus_baseline') or not snapshot.get('hash_focused'):
+            return 'baseline'
+        return 'notify' if snapshot.get('hash_focused') != data.get('HASH_FOCUSED') else 'idle'
+    return 'notify' if snapshot.get('hash_notam') != data.get('HASH_NOTAM') else 'idle'
+
+
+def _section_num(section):
+    try:
+        return int((section or {}).get('NUM', 0) or 0)
+    except (AttributeError, TypeError, ValueError):
+        return 0
+
+
+def should_keep_previous_snapshot(payload, existing):
+    """An incomplete scan must not overwrite a usable snapshot on disk."""
+    if payload.get('FETCH_VALID'):
+        return False
+    if not isinstance(existing, dict):
+        return False
     return (
-        is_valid_fetch_result(current_data)
-        and before_hash != current_data.get('HASH')
+        _section_num(existing.get('NOTAM_DATA')) > 0
+        or _section_num(existing.get('FOCUSED_NOTAM_DATA')) > 0
     )
 
 
@@ -580,10 +850,10 @@ def filter_expired_records(data, grace_hours=24):
     Filter out records whose latest end time is older than now - grace_hours.
     Records with unparseable TIME are kept.
     """
-    cutoff = datetime.utcnow() - timedelta(hours=grace_hours)
+    cutoff = datetime.now(UTC).replace(tzinfo=None) - timedelta(hours=grace_hours)
     size = min(
         len(data.get('CODE', []) or []),
-        len(data.get('COORDINATES', []) or []),
+        len(data.get('GEOMETRY', []) or []),
         len(data.get('TIME', []) or []),
         len(data.get('PLATID', []) or []),
         len(data.get('RAWMESSAGE', []) or []),
@@ -605,7 +875,7 @@ def filter_expired_records(data, grace_hours=24):
     if expired_count == 0:
         return
 
-    for key in ['CODE', 'COORDINATES', 'TIME', 'PLATID', 'RAWMESSAGE', 'ALTITUDE', 'SOURCE', 'FIR', 'SHAPE', 'CENTER', 'RADIUS', 'RADIUS_UNIT']:
+    for key in RECORD_FIELDS:
         arr = data.get(key, []) or []
         data[key] = [arr[i] for i in keep_indices if i < len(arr)]
 
@@ -613,60 +883,15 @@ def filter_expired_records(data, grace_hours=24):
 
 
 def remove_msi_fully_overlapped_by_notam(data):
-    """
-    If MSI and NOTAM are fully overlapped (same coordinates + same time windows),
-    remove MSI and keep NOTAM.
-    """
-    size = min(
-        len(data.get('CODE', []) or []),
-        len(data.get('COORDINATES', []) or []),
-        len(data.get('TIME', []) or []),
-        len(data.get('PLATID', []) or []),
-        len(data.get('RAWMESSAGE', []) or []),
-        len(data.get('SOURCE', []) or []),
-        len(data.get('FIR', []) or []),
-    )
-    if size == 0:
-        return
-
-    notam_keys = set()
-    for i in range(size):
-        src = str(data['SOURCE'][i] or '').upper()
-        if not src.startswith('NOTAM'):
-            continue
-        geometry = '|'.join([
-            str((data.get('SHAPE', []) or ['POLYGON'])[i] if i < len(data.get('SHAPE', []) or []) else 'POLYGON'),
-            _normalize_coord_key(data['COORDINATES'][i]),
-            str((data.get('CENTER', []) or [''])[i] if i < len(data.get('CENTER', []) or []) else ''),
-            str((data.get('RADIUS', []) or [''])[i] if i < len(data.get('RADIUS', []) or []) else ''),
-            str((data.get('RADIUS_UNIT', []) or [''])[i] if i < len(data.get('RADIUS_UNIT', []) or []) else ''),
-        ])
-        key = (geometry, _normalize_time_key(data['TIME'][i]))
-        notam_keys.add(key)
-
-    if not notam_keys:
-        return
-
-    keep_indices = []
-    removed_count = 0
-    for i in range(size):
-        src = str(data['SOURCE'][i] or '').upper()
-        if src.startswith('MSI'):
-            key = (_normalize_coord_key(data['COORDINATES'][i]), _normalize_time_key(data['TIME'][i]))
-            if key in notam_keys:
-                removed_count += 1
-                continue
-        keep_indices.append(i)
-
-    if removed_count == 0:
-        return
-
-    for key in ['CODE', 'COORDINATES', 'TIME', 'PLATID', 'RAWMESSAGE', 'SOURCE', 'FIR']:
-        arr = data.get(key, []) or []
-        data[key] = [arr[i] for i in keep_indices if i < len(arr)]
-
-    print(f"去重重合数据: 移除 {removed_count} 条与NOTAM完全重合的MSI")
-
+    """Remove MSI records whose canonical geometry and time exactly equal a NOTAM."""
+    size = min(*(len(data.get(field, []) or []) for field in ('CODE', 'TIME', 'PLATID', 'GEOMETRY', 'SOURCE')))
+    notam_keys = {(str(data['GEOMETRY'][i]), _normalize_time_key(data['TIME'][i])) for i in range(size) if str(data['SOURCE'][i]).upper().startswith('NOTAM')}
+    keep = [i for i in range(size) if not (str(data['SOURCE'][i]).upper().startswith('MSI') and (str(data['GEOMETRY'][i]), _normalize_time_key(data['TIME'][i])) in notam_keys)]
+    if len(keep) == size: return
+    for field in RECORD_FIELDS:
+        values = data.get(field, []) or []
+        data[field] = [values[i] for i in keep]
+    print(f'去重重合数据: 移除 {size - len(keep)} 条与NOTAM完全重合的MSI')
 
 def _is_unknown_fir(fir_value):
     text = str(fir_value or '').strip().upper()
@@ -783,7 +1008,7 @@ EXCLUDE_RECTS = [
 def coordinates_are_excluded(coord_text):
     """Apply the existing geographic exclusion rules to one polygon."""
     points = []
-    for part in str(coord_text or '').split('-'):
+    for part in re.findall(r'[NS]\\d{4,6}[WE]\\d{5,7}', str(coord_text or '').upper()):
         point = parse_point(part.strip())
         if point:
             points.append(point)
@@ -815,6 +1040,43 @@ def coordinates_are_excluded(coord_text):
                 break
     return False
 
+ICAO_fallback_codes = 'ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH VVTS WSJC WIIF YMMM WMFC RPHI AYPM AGGG ANAU NFFF KZAK VYYF VCCF VOMF WAAF RJJJ RCAA YBBB VVGL VVHN VVHM RCSP VVHM WIIF'
+
+def _split_location_codes(raw_text):
+    """Split a raw location list using the same rules as the source manager."""
+    locations = []
+    for item in re.split(r'[,;\s]+', str(raw_text or '')):
+        value = item.strip().upper()
+        if value and value not in locations:
+            locations.append(value)
+    return locations
+
+
+def _parse_location_codes(config, section):
+    """Read one ``codes =`` list; a missing section yields an empty list."""
+    try:
+        raw_text = config.get(section, 'codes', fallback='')
+    except Exception:
+        raw_text = ''
+    return _split_location_codes(raw_text)
+
+
+def plan_fetch_locations(all_codes, focused_codes):
+    """Plan the two fetch stages.
+
+    Returns ``(focused_stage, remaining_stage, focus_enabled)``. The remaining stage
+    is ``[ICAO]`` minus the focused codes, so no location is queried twice. An empty
+    focused list disables the focused stage and keeps the previous single-stage
+    behaviour (and therefore the previous notification rule).
+    """
+    focused_stage = _split_location_codes(' '.join(str(code) for code in (focused_codes or [])))
+    all_values = _split_location_codes(' '.join(str(code) for code in (all_codes or [])))
+    if not focused_stage:
+        return [], all_values, False
+    focused_set = set(focused_stage)
+    return focused_stage, [code for code in all_values if code not in focused_set], True
+
+
 def load_config():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     config_file = os.path.join(current_dir, 'config.ini')
@@ -824,7 +1086,7 @@ def load_config():
             'enabled': 'faa',
         }
         config['ICAO'] = {
-            'codes': 'ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH VVTS WSJC WIIF YMMM WMFC RPHI AYPM AGGG ANAU NFFF KZAK VYYF VCCF VOMF WAAF RJJJ RCAA YBBB VVGL VVHN VVHM RCSP VVHM WIIF ',
+            'codes': ICAO_fallback_codes,
         }
         config['FAA'] = {
             'freeform_terms': 'AEROSPACE,AER0SPACE,DNG ZONE',
@@ -862,7 +1124,7 @@ def load_config():
     return config
 
 config = load_config()
-ICAO_CODES = config.get('ICAO', 'codes', fallback='ZBPE ZGZU ZHWH ZJSA ZLHW ZPKM ZSHA ZWUQ ZYSH VVTS WSJC WIIF YMMM WMFC RPHI AYPM AGGG ANAU NFFF KZAK VYYF VCCF VOMF WAAF RJJJ RCAA YBBB VVGL VVHN VVHM RCSP VVHM WIIF')
+ICAO_CODES = config.get('ICAO', 'codes', fallback=ICAO_fallback_codes)
 HOST = config.get('SERVER', 'host', fallback='127.0.0.1')
 PORT = config.getint('SERVER', 'port', fallback=5005)
 AUTO_OPEN = config.getboolean('SERVER', 'auto_open_browser', fallback=True)
@@ -940,229 +1202,160 @@ class FlaskLogHandler(logging.Handler):
             log_capture.add_log(message)
 
 
-def fetch():
+def fetch(source_fetcher=None):
+    """Fetch both stages and write the snapshot.
+
+    ``source_fetcher`` defaults to the real :func:`fetch_enabled_sources`; tests
+    inject a stub with the same ``(config, locations, source_names=...)`` signature.
+    """
+    fetch_stage = source_fetcher or fetch_enabled_sources
     try:
         current_config = load_config()
-        current_icao_codes = current_config.get('ICAO', 'codes', fallback=ICAO_CODES)
     except Exception as exc:
         print(f'读取 config.ini 失败，使用启动时配置: {exc}')
         current_config = config
-        current_icao_codes = ICAO_CODES
-    fir_candidates = _parse_fir_candidates_from_config(current_icao_codes)
-    
-    dataDict = {
-        "CODE": [],
-        "COORDINATES": [],
-        "TIME": [],
-        "PLATID": [],
-        "ALTITUDE": [],
-        "RAWMESSAGE": [],
-        "SOURCE": [],
-        "FIR": [],
-        "SHAPE": [],
-        "CENTER": [],
-        "RADIUS": [],
-        "RADIUS_UNIT": [],
-        "CLASSIFY": {},
-        "NUM": 0,
-    }
-    source_batch = fetch_enabled_sources(current_config)
-    source_data = source_batch.data
-    for code, coordinates, time_value, platid, raw, altitude, source_type, fir, shape, center, radius, radius_unit in zip(
-        source_data['CODE'],
-        source_data['COORDINATES'],
-        source_data['TIME'],
-        source_data['PLATID'],
-        source_data['RAWMESSAGE'],
-        source_data['ALTITUDE'],
-        source_data['SOURCE'],
-        source_data['FIR'],
-        source_data['SHAPE'],
-        source_data['CENTER'],
-        source_data['RADIUS'],
-        source_data['RADIUS_UNIT'],
-    ):
-        if str(source_type).upper().startswith('NOTAM') and coordinates_are_excluded(coordinates):
-            continue
-        dataDict['CODE'].append(code)
-        dataDict['COORDINATES'].append(coordinates)
-        dataDict['TIME'].append(time_value)
-        dataDict['PLATID'].append(platid)
-        dataDict['RAWMESSAGE'].append(raw)
-        dataDict['ALTITUDE'].append(altitude)
-        dataDict['SOURCE'].append(source_type)
-        dataDict['FIR'].append(fir)
-        dataDict['SHAPE'].append(shape or 'POLYGON')
-        dataDict['CENTER'].append(center)
-        dataDict['RADIUS'].append(radius)
-        dataDict['RADIUS_UNIT'].append(radius_unit)
 
-    backfill_fir_from_text(dataDict, fir_candidates)
-    harmonize_fir_by_platid(dataDict)
-
-    # 过滤结束时间已早于当前时间 24h 的记录
-    filter_expired_records(dataDict, grace_hours=24)
-    # 若 MSI 与 NOTAM 完全重合（坐标+时间一致），仅保留 NOTAM
-    remove_msi_fully_overlapped_by_notam(dataDict)
-
-    dataDict["NUM"] = len(dataDict["CODE"])
-    dataDict["CLASSIFY"] = classify_data(dataDict)
-    dataDict["ALTITUDE"] = extract_altitude(dataDict["RAWMESSAGE"])
-    sorted_data = sorted(
-        zip(
-            dataDict["CODE"],
-            dataDict["COORDINATES"],
-            dataDict["TIME"],
-            dataDict["PLATID"],
-            dataDict["RAWMESSAGE"],
-            dataDict["ALTITUDE"],
-            dataDict["SOURCE"],
-            dataDict["FIR"],
-            dataDict["SHAPE"],
-            dataDict["CENTER"],
-            dataDict["RADIUS"],
-            dataDict["RADIUS_UNIT"],
-        ),
-        key=lambda x: x[0]
-    )
-    if (sorted_data == []):
-        print("No data fetched.")
-        dataDict["CODE"], dataDict["COORDINATES"], dataDict["TIME"], dataDict["PLATID"], dataDict["RAWMESSAGE"], dataDict["ALTITUDE"], dataDict["SOURCE"], dataDict["FIR"], dataDict["SHAPE"], dataDict["CENTER"], dataDict["RADIUS"], dataDict["RADIUS_UNIT"] = [], [], [], [], [], [], [], [], [], [], [], []
-        dataDict["NUM"] = len(dataDict["CODE"])
-    else:
-        (
-            dataDict["CODE"],
-            dataDict["COORDINATES"],
-            dataDict["TIME"],
-            dataDict["PLATID"],
-            dataDict["RAWMESSAGE"],
-            dataDict["ALTITUDE"],
-            dataDict["SOURCE"],
-            dataDict["FIR"],
-            dataDict["SHAPE"],
-            dataDict["CENTER"],
-            dataDict["RADIUS"],
-            dataDict["RADIUS_UNIT"],
-        ) = map(list, zip(*sorted_data))
-        dataDict["NUM"] = len(dataDict["CODE"])
-    dataDict["HASH"] = compute_data_hash(dataDict)
-    dataDict["HASH_NOTAM"] = compute_data_hash(dataDict, include_sources={'NOTAM'})
-    dataDict["HASH_MSI"] = compute_data_hash(dataDict, include_sources={'MSI'})
-
-    # 将结果拆分为两个部分并保存到同一个 data_dict.json 中
-    notam_data = filter_data_by_source(dataDict, {'NOTAM'})
-    msi_data = filter_data_by_source(dataDict, {'MSI'})
-    notam_data["HASH"] = compute_data_hash(notam_data)
-    msi_data["HASH"] = compute_data_hash(msi_data)
-    dataDict["NOTAM_DATA"] = notam_data
-    dataDict["MSI_DATA"] = msi_data
-
-    print(dataDict)
-    fetch_complete = bool(source_batch.results) and all(
-        result.success for result in source_batch.results
-    )
-    # 任一上游失败时保留完整旧快照，避免部分数据源缺失被误判为批量删除。
-    if not fetch_complete and os.path.exists('data_dict.json'):
-        try:
-            with open('data_dict.json', 'r', encoding='utf-8') as f:
-                existing = json.load(f)
-            if existing.get('NUM', 0) > 0:
-                print("部分数据源获取失败，跳过覆盖（防止部分快照触发误删除通知）")
-                return existing
-        except Exception:
-            pass
-    dataDict['FETCH_VALID'] = fetch_complete
-    with open('data_dict.json', 'w', encoding='utf-8') as json_file:
-        json.dump(dataDict, json_file, ensure_ascii=False, indent=4)
-    return dataDict
-
-if __name__ == '__main__':
-    previous_data = {}
+    all_codes = _parse_location_codes(current_config, 'ICAO') or _split_location_codes(ICAO_CODES)
+    focused_codes = _parse_location_codes(current_config, 'ICAO_FOCUSED')
+    focused_stage, remaining_stage, focus_enabled = plan_fetch_locations(all_codes, focused_codes)
+    fir_candidates = _parse_fir_candidates_from_config(','.join(focused_stage + all_codes))
 
     try:
-        with open('data_dict.json', 'r', encoding='utf-8') as json_file:
-            previous_data = json.load(json_file)
-            before_hash = previous_data.get('HASH') or compute_data_hash(previous_data)
-            before_hash_notam = previous_data.get('HASH_NOTAM') or compute_data_hash(previous_data, include_sources={'NOTAM'})
-    except FileNotFoundError:
-        before_hash = None
-        before_hash_notam = None
-    dataDict = fetch()
-    after_hash = dataDict.get("HASH", None)
-    after_hash_notam = dataDict.get('HASH_NOTAM', None)
-    fetch_result_valid = is_valid_fetch_result(dataDict)
+        enabled_sources = get_enabled_source_names(current_config)
+    except Exception as exc:
+        print(f'读取数据源配置失败: {exc}')
+        enabled_sources = []
+    # MSI 只在第二批（剩余位置）抓取
+    notam_sources = [name for name in enabled_sources if name != 'msi']
 
-    if should_update_visits(before_hash, dataDict):
-        update_visits()
-        print('检测到数据变化，已执行 update_visits')
+    batches = []
+    focused_keys = set()
+    if focus_enabled:
+        print(f'[FOCUSED] 阶段1: 抓取 {len(focused_stage)} 个聚焦位置（数据源: {", ".join(notam_sources) or "无"}）')
+        focused_batch = fetch_stage(current_config, focused_stage, source_names=notam_sources)
+        focused_keys = _record_keys(focused_batch.data)
+        batches.append(focused_batch)
+        print(f'[FOCUSED] 阶段1: 返回 {len(focused_batch.data.get("CODE", []) or [])} 条记录')
+    else:
+        print('警告: [ICAO_FOCUSED] 未配置位置，退化为单阶段抓取，通知按全部 NOTAM 变化触发')
+
+    if remaining_stage:
+        stage_label = '阶段2' if focus_enabled else '单阶段'
+        print(f'[FOCUSED] {stage_label}: 抓取 {len(remaining_stage)} 个位置（含 MSI）')
+        remaining_batch = fetch_stage(current_config, remaining_stage)
+        batches.append(remaining_batch)
+        print(f'[FOCUSED] {stage_label}: 返回 {len(remaining_batch.data.get("CODE", []) or [])} 条记录')
+    else:
+        print('[FOCUSED] 阶段2: 没有剩余位置，已跳过（本轮不获取 MSI 数据）')
+
+    dataDict = merge_source_batches(batches)
+    backfill_fir_from_text(dataDict, fir_candidates)
+    harmonize_fir_by_platid(dataDict)
+    filter_expired_records(dataDict, grace_hours=24)
+    remove_msi_fully_overlapped_by_notam(dataDict)
+    dataDict['ALTITUDE'] = extract_altitude(dataDict['RAWMESSAGE'])
+
+    # 行号空间 = 聚焦段 → 外部段 → MSI 段，两个 NOTAM 段各自排序与分类
+    focused_data, notam_data, msi_data = build_data_segments(dataDict, focused_keys)
+    dataDict['NUM'] = len(dataDict['CODE'])
+    dataDict['CLASSIFY'] = classify_data(dataDict)
+    dataDict['HASH'] = compute_data_hash(dataDict)
+    dataDict['HASH_NOTAM'] = compute_data_hash(dataDict, include_sources={'NOTAM'})
+    dataDict['HASH_MSI'] = compute_data_hash(dataDict, include_sources={'MSI'})
+    dataDict['HASH_FOCUSED'] = focused_data['HASH']
+    dataDict['FOCUS_ENABLED'] = focus_enabled
+    dataDict['FOCUSED_NUM'] = focused_data['NUM']
+    dataDict['NOTAM_NUM'] = focused_data['NUM'] + notam_data['NUM']
+
+    fetch_complete = batches_are_complete(batches)
+    dataDict['FETCH_VALID'] = fetch_complete
+    payload = {
+        'FOCUSED_NOTAM_DATA': focused_data,
+        'NOTAM_DATA': notam_data,
+        'MSI_DATA': msi_data,
+        'HASH': dataDict['HASH'],
+        'HASH_NOTAM': dataDict['HASH_NOTAM'],
+        # 未启用聚焦段时写 None，下一轮启用后按「建立聚焦基线」处理，避免一次性轰炸
+        'HASH_FOCUSED': dataDict['HASH_FOCUSED'] if focus_enabled else None,
+        'FETCH_VALID': fetch_complete,
+    }
+
+    if not fetch_complete:
+        existing = load_previous_snapshot(SNAPSHOT_PATH)['data']
+        if should_keep_previous_snapshot(payload, existing):
+            print('部分数据源获取失败，跳过覆盖（防止部分快照触发误删除通知）')
+            skipped = dict(existing)
+            skipped['FETCH_VALID'] = False
+            return skipped
+
+    with open(SNAPSHOT_PATH, 'w', encoding='utf-8') as json_file:
+        json.dump(payload, json_file, ensure_ascii=False, indent=4)
+    return dataDict
+
+
+def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
+             notification_sender=None, visits_updater=None,
+             notify_list_path=NOTIFY_SEND_LIST_PATH):
+    """Run one full scan: fetch, rebuild history matches when needed, notify on focus changes.
+
+    Only the focused stage drives mail/QQ notifications; the non-focused records stay
+    visible on the site and in ``data_dict.json``. The injected ``notification_sender``
+    must accept ``(previous_data, current_data, mail_enabled=...)``.
+    """
+    send_notifications = notification_sender or notify_notam_changes
+    refresh_visits = visits_updater or update_visits
+
+    # Maintain the notification list on every scan, including unchanged data.
+    load_notified_notam_numbers(notify_list_path)
+
+    snapshot = load_previous_snapshot(snapshot_path)
+    previous_data = snapshot['data']
+    before_hash = snapshot['hash'] or compute_data_hash(previous_data)
+    before_notam_hash = snapshot['hash_notam'] or compute_data_hash(
+        previous_data, include_sources={'NOTAM'}
+    )
+
+    dataDict = fetch(source_fetcher=fetcher)
+    after_hash = dataDict.get("HASH", None)
+    fetch_result_valid = is_valid_fetch_result(dataDict)
+    trigger = notification_trigger(snapshot, dataDict)
+
+    if should_update_visits(before_notam_hash, dataDict):
+        refresh_visits()
+        print('检测到航警变化，已执行 update_visits')
 
     if not fetch_result_valid:
         print('本次抓取结果为空，视为上游异常，已跳过 visits、历史匹配和通知')
-    elif before_hash_notam != after_hash_notam:
-        current_notam = filter_data_by_source(dataDict, {'NOTAM'})
-        previous_notam = filter_data_by_source(previous_data, {'NOTAM'})
-        notam_match_archive(dataDict=current_notam)
-        notified_numbers = load_notified_notam_numbers()
-        pending_notams = get_new_notams_for_notification(
-            previous_notam, current_notam, notified_numbers
-        )
-        pending_platids = [item['PLATID'] for item in pending_notams]
-        pending_codes = [item['CODE'] for item in pending_notams]
-        added_count = len(pending_notams)
-        removed_notams = get_removed_notams_for_notification(
-            previous_notam, current_notam, now=datetime.utcnow(), lead_minutes=60
-        )
-        removed_platids = [item['PLATID'] for item in removed_notams]
-        removed_count = len(removed_notams)
-        notification_previous = build_notification_previous_data(
-            previous_notam, current_notam, removed_platids
-        )
-        notification_current = build_notification_current_data(
-            previous_notam, current_notam, pending_platids
-        )
-        email_draft = None
-        if MAIL_ENABLED and (added_count > 0 or removed_count > 0):
-            try:
-                email_draft = generate_change_email_draft(
-                    notification_previous, notification_current
-                )
-                send_result = send_email_via_qq_smtp(get_mail_config(), email_draft)
-                print(f"邮件发送成功: {send_result}")
-                recorded_count = record_notified_notam_numbers(pending_codes)
-                print(f"已记录 {recorded_count} 个通过邮件发送的新增航警编号")
-            except Exception as exc:
-                print(f"邮件发送失败: {exc}")
-        elif MAIL_ENABLED:
-            print('无符合条件的新增航警，且无删除时间早于开始时间60分钟的航警，已跳过邮件发送')
-        else:
-            print('MAIL.enabled=false，已跳过邮件发送')
-        # QQ Bot 通知独立于邮件发送
-        if added_count > 0:
-            try:
-                # 先计算全量数据的颜色和 emoji 映射，保证两条消息一致
-                from fetch.mail_draft import _build_code_to_color_map, _build_code_emoji_map
-                code_to_color = _build_code_to_color_map(current_notam)
-                code_emoji_map = _build_code_emoji_map(current_notam)
+        return trigger
 
-                # 第一条：仅新增航警图片 + 新增航警文字(无坐标)
-                added_only_data = filter_data_by_platids(current_notam, pending_platids)
-                added_draft = generate_change_email_draft(
-                    {}, added_only_data, include_match=False, include_website=False,
-                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='added_only'
-                )
-                # 第二条：全部航警图片 + 当前航警文字
-                full_draft = generate_change_email_draft(
-                    previous_notam, current_notam, include_match=False, include_website=False,
-                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='current'
-                )
-                from fetch.notam_bot import send_two_notifications
-                qq_result = send_two_notifications(added_draft, full_draft, return_details=True)
-                if qq_result.get('added') or qq_result.get('full'):
-                    recorded_count = record_notified_notam_numbers(pending_codes)
-                    print(f"已记录 {recorded_count} 个通过 QQ Bot 发送的航警编号")
-            except Exception as exc:
-                print(f"QQ Bot 通知发送失败: {exc}")
+    focused_num = int(dataDict.get('FOCUSED_NUM', 0) or 0)
+    notam_num = int(dataDict.get('NOTAM_NUM', 0) or 0)
+    # 站点行号空间 = 聚焦段（按 CODE 排序）→ 外部段（按 CODE 排序）→ MSI 段
+    global_rows = order_notam_rows(dataDict, focused_num, notam_num)
+    current_notam = build_section(dataDict, global_rows, sort_by_code=False)
+    current_focused = build_section(dataDict, global_rows[:focused_num], sort_by_code=False)
+
+    # 聚焦段变化才通知；匹配文件在行号空间变化（首次升级或 NOTAM 段变化）时重建
+    if trigger == 'baseline' or snapshot['hash_notam'] != dataDict.get('HASH_NOTAM'):
+        notam_match_archive(dataDict=current_notam, match_indices=range(focused_num))
+
+    if trigger == 'baseline':
+        print('未检测到上一轮聚焦快照，已建立聚焦基线并跳过通知')
+    elif trigger == 'notify':
+        if dataDict.get('FOCUS_ENABLED'):
+            send_notifications(snapshot['focus_section'], current_focused, mail_enabled=mail_enabled)
         else:
-            print('无未发送过且符合经度范围(70~180)的新增航警，已跳过 QQ Bot 发送')
+            send_notifications(
+                filter_data_by_source(previous_data, {'NOTAM'}),
+                current_notam,
+                mail_enabled=mail_enabled,
+            )
     elif before_hash != after_hash:
-        print('仅MSI或非NOTAM数据变化，已跳过历史匹配与邮件发送')
+        print('仅MSI或非聚焦NOTAM数据变化，已跳过历史匹配与邮件发送')
+    else:
+        print('数据未变化，已跳过通知')
+    return trigger
+
+
+if __name__ == '__main__':
+    run_scan()

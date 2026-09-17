@@ -32,9 +32,22 @@ def get_locations(config):
     return locations
 
 
-def fetch_enabled_sources(config, locations=None):
-    locations = locations or get_locations(config)
+def fetch_enabled_sources(config, locations=None, source_names=None):
+    """Aggregate the enabled sources for ``locations``.
+
+    ``locations=None`` keeps using the configured ``[ICAO]`` list, while an explicit
+    empty list means "this stage has nothing to fetch" and must NOT fall back to the
+    full list. ``source_names`` optionally restricts the stage to a subset of the
+    enabled sources (the focused stage excludes MSI).
+    """
+    if locations is None:
+        locations = get_locations(config)
     names = get_enabled_source_names(config)
+    if source_names is not None:
+        requested = [str(name).strip().lower() for name in source_names]
+        names = [name for name in names if name in requested]
+    if not locations or not names:
+        return FetchBatchResult(data=empty_data(), results=[])
     registry = _source_registry()
     merged = empty_data()
     results = []
