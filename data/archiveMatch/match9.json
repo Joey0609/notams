@@ -1,0 +1,50 @@
+[
+    {
+        "CODE": "B5406/25",
+        "GEOMETRY": "PATH|M=N210223E1284802|L=N210000E1300000|L=N185550E1300000|L=N184924E1290617|Z",
+        "TIME": "26 NOV 16:00 2025 UNTIL 26 NOV 16:45 2025",
+        "PLATID": "78413876",
+        "RAWMESSAGE": "B5406/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/1959N12924E073\nA) RPHI B) 2511261600 C) 2511261645\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY THE REPUBLIC \nOF KOREA. EST FALL AREA OF UNBURNED DEBRIS WI:\n210223N 1284802E -\n210000N 1300000E -\n185550N 1300000E -\n184924N 1290617E -\n210223N 1284802E\n(420NM NORTHEAST OF LALLO AP).\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-11.json",
+        "source_index": 34,
+        "classify_key": "c937556924",
+        "Overlapping_Area": 64.2,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "B5407/25",
+                "GEOMETRY": "PATH|M=N113143E1293803|L=N113404E1300000|L=N081334E1300000|Z",
+                "TIME": "26 NOV 16:00 2025 UNTIL 26 NOV 16:45 2025",
+                "PLATID": "78413943",
+                "RAWMESSAGE": "B5407/25 NOTAMN\nQ) RPHI/QWMLW/IV/BO /W /000/999/0954N13000E102\nA) RPHI B) 2511261600 C) 2511261645\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY THE REPUBLIC \nOF KOREA. EST FALL AREA OF UNBURNED DEBRIS WI:\n113143N 1293803E -\n113404N 1300000E -\n081334N 1300000E -\n113143N 1293803E\n(275NM EAST OF TACLOBAN AP).\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2025-11.json",
+                "source_index": 35,
+                "GroupKey": "c937556924",
+                "IsSameGroup": true,
+                "parent_index": 9
+            }
+        ]
+    },
+    {
+        "CODE": "B3778/25",
+        "GEOMETRY": "PATH|M=N210000E1204500|L=N195500E1272000|L=N195500E1292000|L=N210000E1292000|Z",
+        "TIME": "11 AUG 21:30 2025 UNTIL 11 AUG 23:30 2025",
+        "PLATID": "77588693",
+        "RAWMESSAGE": "B3778/25 NOTAMN\nQ) RPHI/QRALW/IV/NBO/W /000/410/2031N12503E248\nA) RPHI B) 2508112130 C) 2508112330\nE) SPECIAL OPS (DROPSONDES FOR TYPH PODUL) WILL TAKE PLACE WI:\n210000N 1204500E (POTIB) -\n195500N 1272000E -\n195500N 1292000E -\n210000N 1292000E -\n210000N 1204500E (POTIB)\n\nRMK:\n1. TYP: ASTRA SPX\n2. ACFT REGISTRY: B20001\n3. CS: DOTS100\n4. OPR: AEROSPACE INDUSTRIAL DEVELOPMENT CORPORATION (AIDC)\n5. ALT OF DROPSONDES RELEASE: 41000FT\nF) SFC G) FL410",
+        "ALTITUDE": "0 ~ 12500 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-08.json",
+        "source_index": 30,
+        "classify_key": "c893058878",
+        "Overlapping_Area": 6.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    }
+]
