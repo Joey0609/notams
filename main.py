@@ -4,7 +4,7 @@ import json
 import os
 import re
 import sys
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fetch.Archive_Notam_Match import notam_match_archive
 from fetch.mail_draft import generate_change_email_draft
@@ -218,8 +218,8 @@ def _parse_notified_notam_record(line):
     except ValueError:
         return normalize_notam_number(text), None
     if timestamp.tzinfo is None:
-        timestamp = timestamp.replace(tzinfo=UTC)
-    return normalize_notam_number(number), timestamp.astimezone(UTC)
+        timestamp = timestamp.replace(tzinfo=timezone.utc)
+    return normalize_notam_number(number), timestamp.astimezone(timezone.utc)
 
 
 def _write_notified_notam_records(records, path):
@@ -232,11 +232,11 @@ def _write_notified_notam_records(records, path):
 
 def load_notified_notam_numbers(path=NOTIFY_SEND_LIST_PATH, now=None):
     """Load unexpired notifications and remove entries older than 30 days."""
-    check_time = now or datetime.now(UTC)
+    check_time = now or datetime.now(timezone.utc)
     if check_time.tzinfo is None:
-        check_time = check_time.replace(tzinfo=UTC)
+        check_time = check_time.replace(tzinfo=timezone.utc)
     else:
-        check_time = check_time.astimezone(UTC)
+        check_time = check_time.astimezone(timezone.utc)
     cutoff = check_time - NOTIFY_DEDUPLICATION_WINDOW
     try:
         with open(path, 'r', encoding='utf-8') as file:
@@ -270,11 +270,11 @@ def load_notified_notam_numbers(path=NOTIFY_SEND_LIST_PATH, now=None):
 
 def record_notified_notam_numbers(notam_numbers, path=NOTIFY_SEND_LIST_PATH, now=None):
     """Append newly delivered NOTAM numbers with their UTC send time."""
-    sent_at = now or datetime.now(UTC)
+    sent_at = now or datetime.now(timezone.utc)
     if sent_at.tzinfo is None:
-        sent_at = sent_at.replace(tzinfo=UTC)
+        sent_at = sent_at.replace(tzinfo=timezone.utc)
     else:
-        sent_at = sent_at.astimezone(UTC)
+        sent_at = sent_at.astimezone(timezone.utc)
     existing = load_notified_notam_numbers(path, now=sent_at)
     new_numbers = []
     for value in notam_numbers or []:
@@ -343,7 +343,7 @@ def get_removed_notams_for_notification(previous_data, current_data, now=None, l
     previous_codes = previous_data.get('CODE', []) if isinstance(previous_data, dict) else []
     previous_times = previous_data.get('TIME', []) if isinstance(previous_data, dict) else []
     previous_ids = previous_data.get('PLATID', []) if isinstance(previous_data, dict) else []
-    check_time = now or datetime.now(UTC).replace(tzinfo=None)
+    check_time = now or datetime.now(timezone.utc).replace(tzinfo=None)
     threshold = timedelta(minutes=lead_minutes)
 
     pending = []
@@ -605,7 +605,7 @@ def notify_notam_changes(previous_data, current_data, now=None, mail_enabled=Non
     Both inputs must be focused NOTAM slices: only focused records are reported,
     drawn in the overview image and used for the colour/emoji maps.
     """
-    check_time = now or datetime.now(UTC).replace(tzinfo=None)
+    check_time = now or datetime.now(timezone.utc).replace(tzinfo=None)
     mail_on = MAIL_ENABLED if mail_enabled is None else bool(mail_enabled)
     if index_lookup is None:
         index_lookup = record_index_lookup([current_data])
@@ -850,7 +850,7 @@ def filter_expired_records(data, grace_hours=24):
     Filter out records whose latest end time is older than now - grace_hours.
     Records with unparseable TIME are kept.
     """
-    cutoff = datetime.now(UTC).replace(tzinfo=None) - timedelta(hours=grace_hours)
+    cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=grace_hours)
     size = min(
         len(data.get('CODE', []) or []),
         len(data.get('GEOMETRY', []) or []),
