@@ -1,5 +1,7 @@
-import warnings
+import json
 import time
+import warnings
+from pathlib import Path
 
 import requests
 from urllib3.exceptions import InsecureRequestWarning
@@ -93,7 +95,19 @@ class DAIPClient:
                 )
                 if index < batch_count:
                     time.sleep(self.batch_delay)
+        # self._export_unfiltered_payload(merged_payload, locations)
         return merged_payload
+
+    @staticmethod
+    def _export_unfiltered_payload(payload, locations):
+        """Persist the complete upstream response before any parser filtering."""
+        root = Path(__file__).resolve().parents[3]
+        output_dir = root / 'temp' / 'daip_upstream_raw'
+        output_dir.mkdir(parents=True, exist_ok=True)
+        name = '_'.join(locations[:3]) + (f'_plus_{len(locations) - 3}' if len(locations) > 3 else '')
+        output_path = output_dir / f'{name}.json'
+        output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
+        print(f'[data-source:daip] 未筛选上游响应已导出: {output_path} ({payload.get("count", 0)} 条)')
 
 
 def _build_payload(locations, radius='10', sort='Criticality'):

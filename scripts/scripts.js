@@ -1000,6 +1000,16 @@ function extractNotamDetails(rawMessage, maxLines = 0) {
     return shown.join('\n') + (shown.length < lines.length ? '...' : '');
 }
 
+function extractFullNotamDetails(rawMessage, maxLines = 0) {
+    const lines = String(rawMessage == null ? '' : rawMessage)
+        .replace(/\r/g, '')
+        .split('\n')
+        .filter(line => line.trim() !== '');
+    if (lines.length === 0) return '';
+    const shown = maxLines > 0 ? lines.slice(0, maxLines) : lines;
+    return shown.join('\n') + (shown.length < lines.length ? '...' : '');
+}
+
 function escapeNotamText(text) {
     return String(text == null ? '' : text)
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -1011,10 +1021,14 @@ const NOTAM_DETAIL_TRAILING_BREAK = '<br><br>';
 
 function notamDetailHtml(rawMessage, maxLines = 0) {
     const details = extractNotamDetails(rawMessage, maxLines);
-    if (!details) return '';
-    const text = details.split('\n').reduce((accumulated, line) => joinNotamLines(accumulated, line), '');
-    if (!text) return '';
-    return escapeNotamText(text) + NOTAM_DETAIL_TRAILING_BREAK;
+    if (details) {
+        const text = details.split('\n').reduce((accumulated, line) => joinNotamLines(accumulated, line), '');
+        if (!text) return '';
+        return escapeNotamText(text) + NOTAM_DETAIL_TRAILING_BREAK;
+    }
+    const full = extractFullNotamDetails(rawMessage, maxLines);
+    if (!full) return '';
+    return escapeNotamText(full).replace(/\n/g, '<br>') + NOTAM_DETAIL_TRAILING_BREAK;
 }
 
 /* 弹窗标题栏：左侧标题 + 右侧「图钉」（固定弹窗）与「复制」（复制原始报文），两个图标同为 14×14 */
