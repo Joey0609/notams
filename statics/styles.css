@@ -212,7 +212,7 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .help-btn {width: 42px; left: 20px; border-radius: 10px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);background-color: #e6e6e6; }
 .export-btn {width: 42px; left: 74px; border-radius: 10px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);background-color: #e6e6e6; }
 .custom-btn {left: 95px;border-radius: 10px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);background-color: #d6d6d6;padding: 0 20px;}
-.expandable-area {position: absolute;left: 12px;bottom: 40px;width: 280px;max-height: 0;background-color: rgba(255, 255, 255, 0.95);border-radius: 8px;overflow-y: auto;overflow-x: hidden;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);transition: max-height 0.3s ease, bottom 0.3s ease;z-index: 2;}
+.expandable-area, .globe-fx-area {position: absolute;left: 12px;bottom: 40px;width: 280px;max-height: 0;background-color: rgba(255, 255, 255, 0.95);border-radius: 8px;overflow-y: auto;overflow-x: hidden;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);transition: max-height 0.3s ease, bottom 0.3s ease;z-index: 2;}
 .expandable-content {padding: 12px;font-size: 13px;color: #333;line-height: 1.5;}
 .export-area {position: absolute;left: 12px;bottom: 40px;width: 280px;max-height: 0;background-color: rgba(255, 255, 255, 0.95);border-radius: 8px;overflow-y: auto;overflow-x: hidden;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);transition: max-height 0.3s ease, bottom 0.3s ease;z-index: 2;}
 .export-content {padding: 12px;font-size: 13px;color: #333;line-height: 1.5;}
@@ -312,9 +312,14 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 #sidebarToggle {right: 10px;transform: translateY(calc(-50%));}
 #manualToggle {right: 10px;transform: translateY(calc(-50% + 70px));}
 /* 悬停不再整块改阴影/提亮底色，只亮跟随指针的光斑（见下面 .help-btn::after 那一层） */
+/* 按下的缩小位移是鼠标语义（按住相对 hover 的差别）；触摸端按住要等价于 hover，不做缩小，
+   所以这几条 :active 只给有 hover 的设备，并且用 :not(.is-touching) 排除掉「手指按住」那一刻 ——
+   触屏笔记本这类既有 hover 又能触摸的设备上，:active 对触摸也会匹配，不排除就会叠出缩小。 */
+@media (hover: hover) {
 /* #sidebarToggle:active {transform: translateY(calc(-50% - 70px)) scale(0.95);} */
-#sidebarToggle:active {transform: translateY(calc(-50%)) scale(0.95);}
-#manualToggle:active {transform: translateY(calc(-50% + 70px)) scale(0.95);}
+#sidebarToggle:active:not(.is-touching) {transform: translateY(calc(-50%)) scale(0.95);}
+#manualToggle:active:not(.is-touching) {transform: translateY(calc(-50% + 70px)) scale(0.95);}
+}
 
 /* 宽屏：右侧弹出 */
 .notam-sidebar {position: fixed;top: 0;right: -380px;width: 360px;height: 100%;background: rgba(255, 255, 255, 0.97);box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);transition: right 0.35s ease;z-index: 400;display: flex;flex-direction: column;overflow: hidden;}
@@ -333,17 +338,22 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 .help-btn, .export-btn {bottom: 42px;}
 .custom-btn {bottom: 42px;}
 /* 展开的面板停在整行正上方（42 + 42 + 6 = 90），按钮本身不再上移，这一行始终不散开 */
-.expandable-area, .export-area {bottom: 90px;}
+.expandable-area, .export-area, .globe-fx-area {bottom: 90px;}
 #sidebarToggle, #manualToggle {bottom: 42px;top: auto;writing-mode: horizontal-tb;text-align: center;height: 42px;display: flex;align-items: center;justify-content: center;padding: 10px 15px;border-radius: 10px;width: 130px;line-height: normal;letter-spacing: normal;font-size: 16px;font-weight: bold;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);user-select: none;transition: all 0.2s;color: #2c3e50;}
 #sidebarToggle {left: 50%;transform: translateX(calc(-50%));}
 #manualToggle {left: 50%;transform: translateX(8px);}
-#sidebarToggle:active {transform: translateX(calc(-50%)) scale(0.95);}
-#manualToggle:active {transform: translateX(8px) scale(0.95);}
+/* 同上：窄屏下按下的缩小也只给鼠标（:not(.is-touching) 排除手指按住） */
+@media (hover: hover) {
+#sidebarToggle:active:not(.is-touching) {transform: translateX(calc(-50%)) scale(0.95);}
+#manualToggle:active:not(.is-touching) {transform: translateX(8px) scale(0.95);}
+}
 /* 居中放不下（会压到「导出」）时：紧跟「导出」右侧 —— 导出右边缘 74+42=116，再加 12px 间距 */
 body.nav-row-tight #sidebarToggle,
 body.nav-row-tight #manualToggle {left: 128px;transform: none;}
-body.nav-row-tight #sidebarToggle:active,
-body.nav-row-tight #manualToggle:active {transform: scale(0.95);}
+@media (hover: hover) {
+body.nav-row-tight #sidebarToggle:active:not(.is-touching),
+body.nav-row-tight #manualToggle:active:not(.is-touching) {transform: scale(0.95);}
+}
 .notam-sidebar {top: auto;width: 100%;height: 35vh;bottom: -100%;right: auto;left: 0;transition: bottom 0.35s ease;border-radius: 16px 16px 0 0;}
 .notam-sidebar.open {bottom: 0;}
 .archive-sidebar {top: 60px;width: 90%;max-width: 400px;left: 10%;transform: translateX(-50%);height: auto;max-height: 60vh;bottom: auto;transition: none;border-radius: 12px;}
@@ -754,13 +764,17 @@ body.nav-row-tight #manualToggle:active {transform: scale(0.95);}
         0 2px 6px rgba(14, 32, 62, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.92),
         inset 0 -1px 0 rgba(255, 255, 255, 0.42);
+    /* 关掉系统自带的点按灰闪（iOS 的 tap highlight）：触摸按住时唯一的视觉反馈就是那层光斑，
+       否则手机上「按住」会比桌面 hover 多出一块灰色遮罩，两者就不一致了。 */
+    -webkit-tap-highlight-color: transparent;
     /* 悬停高光的圆心（百分比），buttons.js 会按指针位置改写；这里是不跟随时的默认位置 */
     --glass-x: 26%;
     --glass-y: 6%;
 }
 
 .expandable-area.is-open,
-.export-area.is-open {
+.export-area.is-open,
+.globe-fx-area.is-open {
     border-radius: 18px;
     background-color: rgba(255, 255, 255, 0.46);
     background-image:
@@ -776,8 +790,12 @@ body.nav-row-tight #manualToggle:active {transform: scale(0.95);}
         inset 0 0 0 1px rgba(255, 255, 255, 0.62);
 }
 
-/* 悬停高光层：一个圆形光斑，圆心跟着指针走（--glass-x / --glass-y 由 buttons.js 按指针位置写入），
-   底下那层线性渐变是玻璃体本身的固定反光，不跟随。
+/* 悬停高光层：只在指针位置亮一个圆形光斑，圆心跟着指针走（--glass-x / --glass-y 由 buttons.js
+   按指针 / 手指位置写入）。
+   ★ 这一层里只有径向的那一个点，没有别的：之前这里还叠了一条覆盖整块按钮的线性渐变，
+   点亮时会把整块按钮一起提亮（看起来就是「整个按钮发亮」，而不是「按压处一个亮点」），
+   所以把它删掉了 —— 玻璃体本身那层固定反光属于按钮自己的 background-image，
+   静止时照旧，不参与点亮。
    帮助 / 导出 / 手动绘制 / 航警列表 和地图模式三个选项共用这一层，效果完全一致。
    z-index: -1 让光斑落在按钮文字下面（这些按钮自己都带 z-index，本身就是独立层叠上下文）：
    光斑只亮在玻璃底和选中药丸上，不会把文字糊上一层光。 */
@@ -796,59 +814,65 @@ body.nav-row-tight #manualToggle:active {transform: scale(0.95);}
     opacity: 0;
     transition: opacity 0.28s ease;
     background-image:
-        radial-gradient(circle 40px at var(--glass-x, 16%) var(--glass-y, 6%), rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.30) 45%, rgba(255, 255, 255, 0) 75%),
-        linear-gradient(160deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.06) 55%, rgba(255, 255, 255, 0.32) 100%);
+        radial-gradient(circle 40px at var(--glass-x, 16%) var(--glass-y, 6%), rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.30) 45%, rgba(255, 255, 255, 0) 75%);
 }
 
-/* 点亮高光：真 hover 设备走 :hover；触摸/手写笔没有 hover，用 JS 加的 .is-touching（按住期间），
-   这样移动端点一下不会把 hover 状态和光斑一起留在按钮上。 */
-.help-btn.is-touching, .export-btn.is-touching, .custom-btn.is-touching,
-#sidebarToggle.is-touching, #manualToggle.is-touching {
-    background-color: rgba(255, 255, 255, 0.50);
-    box-shadow:
-        0 14px 34px rgba(14, 32, 62, 0.24),
-        0 3px 8px rgba(14, 32, 62, 0.14),
-        inset 0 1px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.45);
-}
+/* 点亮高光：真 hover 设备走 :hover；触摸 / 手写笔没有 hover，用 JS 加的 .is-touching（按住期间），
+   这样移动端点一下不会把 hover 状态和光斑一起留在按钮上。
 
+   ★ 触摸按住 = 桌面 hover 的逐像素等价物：两边都只做一件事 —— 点亮那层跟随指针的光斑（::after）。
+   按住期间绝不额外提亮底色、不加阴影、不做位移；鼠标那套「按下缩一下 / 压暗光斑」只属于
+   :active，也就是只属于有 hover 的设备。移动端按住不放的观感，因此和电脑端鼠标悬停一致。 */
 @media (hover: hover) {
-    /* 鼠标悬停只亮跟随指针的光斑（::after），不再整块提亮按钮底色和阴影 */
+    /* 悬停只亮跟随指针的光斑，不整块提亮按钮底色和阴影 */
     .help-btn:hover::after, .export-btn:hover::after, .custom-btn:hover::after,
-    #sidebarToggle:hover::after, #manualToggle:hover::after {opacity: 1;}
-
+    #sidebarToggle:hover::after, #manualToggle:hover::after,
     .map-mode-control button:hover::after {opacity: 1;}
+
+    /* 地图模式三颗的悬停还带一点放大，和上面同属「只有 hover 设备才有」的一套 */
+    .map-mode-control button:hover {transform: scale(1.025);}
+
+    /* 鼠标按住时压暗光斑 —— 「按住」相对 hover 的唯一差别，是鼠标语义 */
+    .help-btn:active::after, .export-btn:active::after, .custom-btn:active::after,
+    #sidebarToggle:active::after, #manualToggle:active::after,
+    .map-mode-control button:active::after {opacity: 0.6;}
 }
 
-/* 按下时压暗高光（鼠标才有「按住」之外的差别）；触摸按住是唯一状态，要排在上面这条之后才不会被压暗 */
-.help-btn:active::after, .export-btn:active::after, .custom-btn:active::after,
-#sidebarToggle:active::after, #manualToggle:active::after,
-.map-mode-control button:active::after {opacity: 0.6;}
-
+/* 触摸 / 手写笔按住期间：等价于 hover —— 只点亮光斑（地图模式那三颗连放大一起给）。
+   这一条必须排在上面 @media (hover: hover) 之后：触屏笔记本上手指按住时 :active 也在生效，
+   靠源码顺序让「按住」压过鼠标那套压暗。 */
 .help-btn.is-touching::after, .export-btn.is-touching::after, .custom-btn.is-touching::after,
 #sidebarToggle.is-touching::after, #manualToggle.is-touching::after,
 .map-mode-control button.is-touching::after {opacity: 1;}
+.map-mode-control button.is-touching {transform: scale(1.025);}
 
 /* 不支持 backdrop-filter 的浏览器退回接近不透明的浅色底 */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .help-btn, .custom-btn, .export-btn,
     #sidebarToggle, #manualToggle {background-color: rgba(246, 248, 252, 0.96);}
-    .help-btn:hover, .custom-btn:hover, .export-btn:hover,
-    #sidebarToggle:hover, #manualToggle:hover,
+    /* hover 与「按住」给同一个色，但 hover 仍要关进 (hover: hover)：
+       否则触摸端轻点一下会把这块浅色留在按钮上，和「松手就恢复」的预期不符。
+       下面 @media (prefers-reduced-transparency) 那块同理。 */
+    @media (hover: hover) {
+        .help-btn:hover, .custom-btn:hover, .export-btn:hover,
+        #sidebarToggle:hover, #manualToggle:hover {background-color: #eaedf3;}
+    }
     .help-btn.is-touching, .custom-btn.is-touching, .export-btn.is-touching,
     #sidebarToggle.is-touching, #manualToggle.is-touching {background-color: #eaedf3;}
-    .expandable-area.is-open, .export-area.is-open {background-color: rgba(255, 255, 255, 0.97);}
+    .expandable-area.is-open, .export-area.is-open, .globe-fx-area.is-open {background-color: rgba(255, 255, 255, 0.97);}
 }
 
 /* 系统开启「减弱透明度」时同样退回实底 */
 @media (prefers-reduced-transparency: reduce) {
     .help-btn, .custom-btn, .export-btn,
     #sidebarToggle, #manualToggle {background-color: rgba(246, 248, 252, 0.96); -webkit-backdrop-filter: none; backdrop-filter: none;}
-    .help-btn:hover, .custom-btn:hover, .export-btn:hover,
-    #sidebarToggle:hover, #manualToggle:hover,
+    @media (hover: hover) {
+        .help-btn:hover, .custom-btn:hover, .export-btn:hover,
+        #sidebarToggle:hover, #manualToggle:hover {background-color: #eaedf3;}
+    }
     .help-btn.is-touching, .custom-btn.is-touching, .export-btn.is-touching,
     #sidebarToggle.is-touching, #manualToggle.is-touching {background-color: #eaedf3;}
-    .expandable-area.is-open, .export-area.is-open {background-color: rgba(255, 255, 255, 0.97); -webkit-backdrop-filter: none; backdrop-filter: none;}
+    .expandable-area.is-open, .export-area.is-open, .globe-fx-area.is-open {background-color: rgba(255, 255, 255, 0.97); -webkit-backdrop-filter: none; backdrop-filter: none;}
 }
 /* ────────────────────── 二维 / 球面地图模式 ────────────────────── */
 #allmap, #globeMap { opacity: 1; transform: scale(1); transition: opacity .38s ease, transform .38s cubic-bezier(.2,.8,.2,1), visibility .38s step-end; }
@@ -870,23 +894,42 @@ body.globe-active #globeMap { visibility: visible; pointer-events: auto; z-index
    否则药丸步进和按钮行距不一致，选中第三项时就会错位、还会溢出面板底边。 */
 .map-mode-control { --mode-height: 28px; --mode-gap: 3px; --active-index: 0; }
 .map-mode-control::before { content: ""; position: absolute; z-index: -1; left: 4px; right: 4px; top: 4px; height: var(--mode-height); border-radius: 11px; background: linear-gradient(135deg,#1877b9,#274b8f); box-shadow: inset 0 1px 0 rgba(255,255,255,.4),0 4px 10px rgba(24,72,126,.32); transform: translateY(calc(var(--active-index) * (var(--mode-height) + var(--mode-gap)))); transition: transform .56s cubic-bezier(.22,1.55,.42,1); }
-.map-mode-control button { position: relative; z-index: 1; height: var(--mode-height); border: 0; border-radius: 11px; padding: 0 11px; color: #17324d; background: transparent; cursor: pointer; user-select: none; -webkit-user-select: none; font: 600 12px/1.2 "微软雅黑",sans-serif; transition: color .2s ease,transform .2s ease; }
-.map-mode-control button:hover { transform: scale(1.025); }
+.map-mode-control button { position: relative; z-index: 1; height: var(--mode-height); border: 0; border-radius: 11px; padding: 0 11px; color: #17324d; background: transparent; cursor: pointer; user-select: none; -webkit-user-select: none; font: 600 12px/1.2 "微软雅黑",sans-serif; transition: color .2s ease,transform .2s ease; -webkit-tap-highlight-color: transparent; }
+/* 悬停放大的 scale(1.025) 和它的触摸等价物（按住 .is-touching）都写在上面「点亮高光」那一段里，
+   一边只给 (hover: hover)，一边给触摸按住 —— 两处必须成对改，否则移动端和桌面又会对不上。 */
 .map-mode-control button.active { color: #fff; }
 /* 球面气泡：padding 12px 12px 0 是在顶掉 Leaflet 里 .leaflet-popup-content 的 12px 内容边距 ——
    .notam-popup-header 用的是 margin: -12px -12px 8px -12px 去贴气泡边缘，没有这层 padding 的话
    标题栏会往左右各撑出 12px，气泡就出现横向滚动条、内容被切（就是「渲染异常」的原因）。
    气泡本身不设 max-height / overflow：overflow 一旦不是 visible，::before 那个下三角会被裁掉，
-   而 .popup-detail 自己有 4em 的内滚动，气泡高度本来就有上限。 */
-.globe-notam-popup { position: absolute; z-index: 20; box-sizing: border-box; width: min(310px,calc(100% - 24px)); padding: 12px 12px 0; border-radius: 10px; background: rgba(255,255,255,.97); box-shadow: 0 8px 30px rgba(0,0,0,.35); }
-.globe-notam-popup .notam-popup { min-width: 0; }
+   而 .popup-detail 自己有 4em 的内滚动，气泡高度本来就有上限。
+
+   宽度必须和 2D 一致，而 2D 的规则不是「内容撑多宽就多宽」，是 **min-content**：
+   ① Leaflet 的 _updateLayout 会先 nowrap 量一次内容，再把 min(量到的, maxWidth=300)+1 作为行内
+      width 写到 .leaflet-popup-content 上，但 `.notam-info-popup .leaflet-popup-content
+      { width: auto !important }`（作者级 !important 胜过普通行内声明）把它顶掉了；
+   ② 于是宽度回到 CSS 的 shrink-to-fit，而它的可用宽度是 **0** —— .leaflet-popup 是
+      position: absolute + width: auto，包含块 .leaflet-popup-pane 同样是
+      position: absolute; left: 0; top: 0 且没有任何在流内容（气泡本身都是绝对定位），那个 pane 的宽度就是 0；
+      shrink-to-fit = min(max(min-content, 可用宽度 0), max-content) = **min-content**。
+      下限由 .notam-popup 的 min-width: 240px 兜住 → 240 + 左右各 12px = 264px 起。
+   这里直接写 width: min-content 就是同一个结果（padding 12px 等价于 2D 那 12px 内容边距）。
+   ⚠ 千万别改成 width: auto —— 3D 气泡挂在全屏的 #globeMap 上，可用宽度是整屏，
+   width: auto 会退化成 max-content：NOTAM 详情那一长行能把气泡撑到近千像素，成了一条横幅。
+   max-width 只留「不超出容器」这一道兜底。
+   注意：下面那条 .notam-popup { min-width: 0 } 已经删掉 —— 清零下限会让短内容的气泡比 2D 窄。 */
+.globe-notam-popup { position: absolute; z-index: 20; box-sizing: border-box; width: min-content; max-width: calc(100% - 24px); padding: 12px 12px 0; border-radius: 10px; background: rgba(255,255,255,.97); box-shadow: 0 8px 30px rgba(0,0,0,.35); }
 /* 开关动画：和 2D 的 Leaflet 气泡一样淡入淡出，并且从三角尖那一头展开（transform-origin 跟着三角走）。
    真正的隐藏由 globe.js 在动画结束后设 hidden，开的时候再加 .is-visible。 */
 .globe-notam-popup { opacity: 0; transform: translateY(6px) scale(.96); transform-origin: var(--popup-pointer-x, 50%) bottom; transition: opacity .18s ease, transform .18s ease; }
 .globe-notam-popup.is-visible { opacity: 1; transform: none; }
 /* 发射场 / 回收场这类没有 .notam-popup 内容的气泡：样式和 2D 的 Leaflet 气泡完全对齐 ——
    8px 圆角 + 0 3px 14px 阴影、13px/1.3、内边距 = Leaflet 的 1px wrapper padding + 13/24/13/20 内容边距、
-   链接色 #0078A8、右上角那颗朴素的灰色 ×。 */
+   链接色 #0078A8、右上角那颗朴素的灰色 ×。
+   这里保持 width: auto（不是上面 NOTAM 气泡的 min-content）：2D 的发射场/落区气泡用的是
+   className: 'launch-site-popup'，没有那条 width: auto !important，所以 Leaflet 的行内
+   width = min(内容宽, maxWidth 300) + 1 是生效的 —— 它们本来就是「内容撑开、上限 300」，
+   和这里的 shrink-to-fit（上限 348 = 300 + 那圈 13/24/13/20 边距）是同一回事。 */
 .globe-notam-popup.globe-popup-plain { width: auto; max-width: min(348px,calc(100% - 24px)); padding: 14px 25px 14px 21px; border-radius: 8px; box-shadow: 0 3px 14px rgba(0,0,0,.4); font-size: 13px; line-height: 1.3; color: #333; text-align: left; }
 .globe-notam-popup.globe-popup-plain a { color: #0078a8; }
 .globe-notam-popup.globe-popup-plain > .globe-popup-close { position: absolute; top: 0; right: 0; width: 24px; height: 24px; padding: 0; font: 16px/24px Tahoma, Verdana, sans-serif; text-align: center; color: #757575; background: transparent; border: 0; border-radius: 0; }
@@ -900,6 +943,53 @@ body.globe-active #globeMap { visibility: visible; pointer-events: auto; z-index
 .globe-query-hud { position: absolute; left: 50%; bottom: 22px; z-index: 20; max-width: calc(100% - 36px); transform: translateX(-50%); padding: 8px 12px; border-radius: 10px; color: #fff; background: rgba(5,18,34,.78); font-size: 13px; pointer-events: none; }
 body.globe-active #exportButton, body.globe-active .export-area { display: none !important; }
 body.globe-active #manualToggle, body.globe-active .custom-btn { opacity: .52; }
+
+/* ────────────────────── 3D 功能面板（晨昏光照 / 显示时刻 / 倍速播放） ──────────────────────
+   只在 3D 地球模式出现。上面藏「导出」用的是 #exportButton（按 id），
+   所以按钮复用 .export-btn 类不会被连带藏掉；而面板必须用自己这套类名，
+   因为 body.globe-active .export-area 是类选择器，复用就会被一起藏。 */
+body:not(.globe-active) #globeFxButton,
+body:not(.globe-active) .globe-fx-area {display: none !important;}
+
+.globe-fx-title {margin: 0 0 10px 0;font-size: 13px;font-weight: bold;color: #2c3e50;}
+.globe-fx-row {display: flex;align-items: center;justify-content: space-between;gap: 8px;}
+.globe-fx-label {font-size: 13px;font-weight: bold;color: #2c3e50;}
+.globe-fx-input {width: 100%;box-sizing: border-box;margin-top: 6px;}
+.globe-fx-quick {display: flex;flex-wrap: wrap;gap: 6px;margin-top: 8px;}
+.globe-fx-quick button {flex: 1 1 auto;padding: 5px 8px;border: 1px solid rgba(52, 152, 219, 0.35);border-radius: 6px;background: rgba(52, 152, 219, 0.10);color: #1f5d8b;font-size: 12px;font-weight: bold;cursor: pointer;transition: background 0.2s ease, border-color 0.2s ease;}
+.globe-fx-quick button:hover {background: rgba(52, 152, 219, 0.22);border-color: rgba(52, 152, 219, 0.55);}
+.globe-fx-quick button:active {background: rgba(52, 152, 219, 0.30);}
+.globe-fx-speed {font-size: 13px;font-weight: bold;color: #1f5d8b;font-variant-numeric: tabular-nums;}
+.globe-fx-play {padding: 5px 12px;border: none;border-radius: 6px;background: linear-gradient(135deg, #3498db, #2980b9);color: #fff;font-size: 12px;font-weight: bold;cursor: pointer;transition: background 0.2s ease, transform 0.1s ease;}
+.globe-fx-play:hover {background: linear-gradient(135deg, #2980b9, #21618c);}
+.globe-fx-play:active {transform: translateY(1px);}
+.globe-fx-slider {width: 100%;margin: 8px 0 4px 0;appearance: none;-webkit-appearance: none;height: 4px;border-radius: 2px;background: linear-gradient(90deg, #1877b9, #274b8f);cursor: pointer;}
+.globe-fx-slider::-webkit-slider-thumb {appearance: none;-webkit-appearance: none;width: 14px;height: 14px;border-radius: 50%;background: #fff;border: 2px solid #1877b9;box-shadow: 0 1px 3px rgba(14, 32, 62, 0.35);cursor: pointer;}
+.globe-fx-slider::-moz-range-thumb {width: 14px;height: 14px;border-radius: 50%;background: #fff;border: 2px solid #1877b9;box-shadow: 0 1px 3px rgba(14, 32, 62, 0.35);cursor: pointer;}
+.globe-fx-slider:focus-visible {outline: 2px solid rgba(24, 119, 185, 0.65);outline-offset: 3px;}
+.globe-fx-hint {font-size: 11px;color: #7f8c8d;line-height: 1.4;}
+/* 状态行交给 JS 写 textContent（含换行），pre-line 让 \n 生效 */
+.globe-fx-status {font-size: 12px;color: #34495e;line-height: 1.6;font-variant-numeric: tabular-nums;white-space: pre-line;}
+
+/* 滑动开关：styles.css 里原先没有任何开关 / 滑块样式，这是第一处。
+   注意 <input> 属于替换元素（replaced element），::before / ::after 挂在它身上**不会渲染**
+   （MDN ::after：“can't be applied to replaced elements”），所以轨道与滑块都做在外层
+   <label class="globe-fx-switch"> 里的 <span class="globe-fx-track"> 上；
+   真正的 checkbox 用 opacity: 0 铺满整块 —— 键盘仍能聚焦、点击照旧切换、无障碍语义不变。
+   选中态复用地图模式药丸那套蓝渐变（渐变做成一层 opacity 过渡，颜色才转得动）。 */
+.globe-fx-switch {position: relative;display: inline-flex;flex: 0 0 auto;width: 38px;height: 21px;}
+.globe-fx-switch input {position: absolute;top: 0;right: 0;bottom: 0;left: 0;width: 100%;height: 100%;margin: 0;opacity: 0;cursor: pointer;}
+.globe-fx-track {position: absolute;top: 0;right: 0;bottom: 0;left: 0;border-radius: 999px;background-color: #cfd6e0;box-shadow: inset 0 1px 2px rgba(14, 32, 62, 0.25);transition: background-color 0.24s ease;pointer-events: none;}
+.globe-fx-track::before {content: "";position: absolute;top: 0;right: 0;bottom: 0;left: 0;border-radius: inherit;background: linear-gradient(135deg, #1877b9, #274b8f);opacity: 0;transition: opacity 0.24s ease;}
+.globe-fx-track::after {content: "";position: absolute;top: 2px;left: 2px;width: 17px;height: 17px;border-radius: 50%;background: #fff;box-shadow: 0 1px 3px rgba(14, 32, 62, 0.35);transition: transform 0.24s cubic-bezier(.2,.8,.2,1);}
+.globe-fx-switch input:checked + .globe-fx-track {background-color: #274b8f;box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);}
+.globe-fx-switch input:checked + .globe-fx-track::before {opacity: 1;}
+.globe-fx-switch input:checked + .globe-fx-track::after {transform: translateX(17px);}
+.globe-fx-switch input:focus-visible + .globe-fx-track {outline: 2px solid rgba(24, 119, 185, 0.65);outline-offset: 2px;}
+
+@media (prefers-reduced-motion: reduce) {
+    .globe-fx-track, .globe-fx-track::before, .globe-fx-track::after {transition: none;}
+}
 /* 3D 左下角：兜底再藏一次 Cesium 的 LOGO（globe.js 里已经把静态 credit 移除了），
    影像版权文字（Tiles © Esri …）属于 Esri 影像署名，保留。 */
 #globeMap .cesium-viewer-bottom a[href*="cesium.com"],

@@ -58,6 +58,51 @@
 
         <div class="export-btn" id="exportButton">导出</div>
         <div class="help-btn" id="helpButton">帮助</div>
+        <div class="export-btn globe-fx-btn" id="globeFxButton">功能</div>
+        <div class="globe-fx-area" id="globeFxArea" aria-label="3D 功能设置">
+            <div class="export-content">
+                <h4 class="globe-fx-title">3D 功能</h4>
+
+                <!-- 晨昏光照：真实太阳光照让夜半球变暗 -->
+                <div class="export-section">
+                    <div class="globe-fx-row">
+                        <label class="globe-fx-label" for="globeFxToggle">晨昏光照</label>
+                        <!-- input 是替换元素，::before / ::after 挂在它身上不会渲染，
+                             所以轨道与滑块做在外面这层 <label> 里的 <span class="globe-fx-track"> 上；
+                             真正的 checkbox 以 opacity:0 铺满整块，键盘可聚焦、点击切换照旧。 -->
+                        <label class="globe-fx-switch">
+                            <input type="checkbox" id="globeFxToggle" role="switch" aria-label="晨昏光照">
+                            <span class="globe-fx-track" aria-hidden="true"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 显示时刻：默认跟随“现在”，也可以选任意（含未来）时刻 -->
+                <div class="export-section">
+                    <label class="globe-fx-label" for="globeFxTime">显示时刻（本地时间）</label>
+                    <input id="globeFxTime" class="archive-input globe-fx-input" type="datetime-local" step="60">
+                    <div class="globe-fx-quick">
+                        <button type="button" data-globe-fx-offset="3600">+1小时</button>
+                        <button type="button" data-globe-fx-offset="21600">+6小时</button>
+                        <button type="button" data-globe-fx-offset="43200">+12小时</button>
+                        <button type="button" data-globe-fx-offset="86400">+1天</button>
+                        <button type="button" id="globeFxNow">回到现在</button>
+                    </div>
+                </div>
+
+                <!-- 倍速播放：1×（实时）到 86400×（1 秒 = 1 天），对数滑杆连续可调 -->
+                <div class="export-section">
+                    <div class="globe-fx-row">
+                        <span class="globe-fx-speed" id="globeFxSpeedLabel">1×</span>
+                        <button type="button" class="globe-fx-play" id="globeFxPlay">▶ 播放</button>
+                    </div>
+                    <input id="globeFxSpeed" class="globe-fx-slider" type="range" min="0" max="1000" step="1" value="0" aria-label="时间倍速">
+                    <div class="globe-fx-hint">最左 = 1× 实时；最右 = 86400×（1 秒 = 1 天）</div>
+                </div>
+
+                <div class="globe-fx-status" id="globeFxStatus">当前未显示晨昏</div>
+            </div>
+        </div>
 
         <div class="export-area" id="exportArea">
             <div class="export-content">
