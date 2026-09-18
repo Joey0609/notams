@@ -16,6 +16,74 @@
 
     const SNAP_PX = 14;
 
+    function getWrapLngOffsets() {
+        if (typeof WRAP_WORLD_OFFSETS !== 'undefined' && Array.isArray(WRAP_WORLD_OFFSETS) && WRAP_WORLD_OFFSETS.length) {
+            return WRAP_WORLD_OFFSETS;
+        }
+        return [0];
+    }
+
+    function normalizeLng(lng) {
+        if (typeof normalizeLngForWrap === 'function') return normalizeLngForWrap(lng);
+        let value = Number(lng);
+        if (!Number.isFinite(value)) return lng;
+        while (value > 180) value -= 360;
+        while (value < -180) value += 360;
+        return value;
+    }
+
+    function normalizeMeasureLatLng(latlng) {
+        if (!latlng) return latlng;
+        return L.latLng(latlng.lat, normalizeLng(latlng.lng));
+    }
+
+    // 让 value 落在上一点附近：经度差始终小于 180°，跨 180° 时不会再绕地球一圈
+    function unwrapLngToPrevious(previousLng, lng) {
+        let value = lng;
+        while (value - previousLng > 180) value -= 360;
+        while (value - previousLng < -180) value += 360;
+        return value;
+    }
+
+    // 把一条经度连续的路径铺到每个世界副本上，直接交给一个 L.polyline 当多 ring 用
+    function buildWrappedRings(path) {
+        return getWrapLngOffsets().map(offset => path.map(point => L.latLng(point.lat, point.lng + offset)));
+    }
+
+    /* marker（公里牌 / 倾角 / 吸附提示）同样要每个副本一份，否则平移地图后它们会消失。
+       返回一个句柄：group 用于 addTo / removeLayer，setLatLng / setIcon 会同步到所有副本。 */
+    function createWrappedLayerSet(latlng, createLayer) {
+        const offsets = getWrapLngOffsets();
+        const target = normalizeMeasureLatLng(latlng);
+        const layers = offsets.map(offset => createLayer(target.lat, target.lng + offset));
+        return {
+            group: L.layerGroup(layers),
+            layers,
+            offsets,
+            addTo(targetMap) { this.group.addTo(targetMap); return this; },
+            setLatLng(next) {
+                const point = normalizeMeasureLatLng(next);
+                layers.forEach((layer, index) => layer.setLatLng([point.lat, point.lng + offsets[index]]));
+                return this;
+            },
+            setIcon(icon) {
+                layers.forEach(layer => { if (typeof layer.setIcon === 'function') layer.setIcon(icon); });
+                return this;
+            },
+            onAdd(handler) {
+                layers.forEach(layer => layer.on('add', handler));
+                return this;
+            },
+            getElement() {
+                return layers.length ? layers[0].getElement() : null;
+            },
+        };
+    }
+
+    function createWrappedMarkerSet(latlng, options) {
+        return createWrappedLayerSet(latlng, (lat, lng) => L.marker([lat, lng], options));
+    }
+
     function notify(msg, type) {
         if (typeof showNotification === 'function') {
             showNotification(msg, type || 'info');
@@ -69,7 +137,7 @@
 
     function formatLatLng(latlng) {
         if (!latlng) return '';
-        return '纬度: ' + latlng.lat.toFixed(6) + ', 经度: ' + latlng.lng.toFixed(6);
+        return '纬度: ' + latlng.lat.toFixed(6) + ', 经度: ' + normalizeLng(latlng.lng).toFixed(6);
     }
 
     function ensureLatLngQueryHint() {
@@ -195,15 +263,19 @@
     }
 
     function buildGeodesicPath(points) {
-        if (!points || points.length <= 1) return points || [];
-        const out = [points[0]];
+        if (!points || points.length <= 1) return (points || []).map(normalizeMeasureLatLng);
+        const out = [normalizeMeasureLatLng(points[0])];
         for (let i = 1; i < points.length; i++) {
-            const a = points[i - 1];
+            // 起点用已经连续化后的上一点（可能落在 ±180 之外），插值本身只用 sin/cos，等价
+            const a = out[out.length - 1];
             const b = points[i];
             const meters = map.distance(a, b);
             const segmentCount = Math.max(1, Math.min(64, Math.ceil(meters / 120000)));
             const seg = interpolateGreatCircle(a, b, segmentCount);
-            out.push(...seg.slice(1));
+            for (let k = 1; k < seg.length; k++) {
+                const previous = out[out.length - 1].lng;
+                out.push(L.latLng(seg[k].lat, unwrapLngToPrevious(previous, seg[k].lng)));
+            }
         }
         return out;
     }
@@ -218,11 +290,11 @@
             tempLine = null;
         }
         if (distanceLabel) {
-            map.removeLayer(distanceLabel);
+            map.removeLayer(distanceLabel.group);
             distanceLabel = null;
         }
         if (snapHint) {
-            map.removeLayer(snapHint);
+            map.removeLayer(snapHint.group);
             snapHint = null;
         }
         if (snapHintTimer) {
@@ -259,7 +331,7 @@
                 html: formatInclination(degrees, i),
                 iconSize: null,
             });
-            labels.push(L.marker(midpoint, {
+            labels.push(createWrappedMarkerSet(midpoint, {
                 icon,
                 interactive: false,
                 keyboard: false,
@@ -272,7 +344,7 @@
     function createPersistedMeasure(points, meters) {
         if (!points || points.length < 2) return 0;
 
-        const line = L.polyline(buildGeodesicPath(points), {
+        const line = L.polyline(buildWrappedRings(buildGeodesicPath(points)), {
             color: '#f59e0b',
             weight: 3,
             opacity: 0.95,
@@ -288,7 +360,7 @@
                 + '</div>',
             iconSize: null,
         });
-        const label = L.marker(endPoint, {
+        const label = createWrappedMarkerSet(endPoint, {
             icon: labelIcon,
             interactive: true,
             keyboard: false,
@@ -301,16 +373,17 @@
         window.__notamMeasurements.push(storeItem);
         if (window.NotamGlobe) window.NotamGlobe.refresh(true);
 
-        label.on('add', function () {
-            const el = label.getElement();
+        // 每个世界副本上的公里牌都能关掉这次测距
+        label.onAdd(function () {
+            const el = this.getElement();
             if (!el) return;
             const closeBtn = el.querySelector('.measure-result-close');
             if (!closeBtn) return;
             closeBtn.onclick = function (e) {
                 L.DomEvent.stop(e);
                 if (item.line) map.removeLayer(item.line);
-                if (item.label) map.removeLayer(item.label);
-                item.inclinationLabels.forEach((inclinationLabel) => map.removeLayer(inclinationLabel));
+                if (item.label) map.removeLayer(item.label.group);
+                item.inclinationLabels.forEach((inclinationLabel) => map.removeLayer(inclinationLabel.group));
                 persistedMeasures = persistedMeasures.filter((x) => x !== item);
                 window.__notamMeasurements = window.__notamMeasurements.filter((x) => x !== item.storeItem);
                 if (window.NotamGlobe) window.NotamGlobe.refresh(true);
@@ -324,21 +397,21 @@
     function updateSnapHint(latlng) {
         if (!latlng) {
             if (snapHint) {
-                map.removeLayer(snapHint);
+                map.removeLayer(snapHint.group);
                 snapHint = null;
             }
             return;
         }
 
         if (!snapHint) {
-            snapHint = L.circleMarker(latlng, {
+            snapHint = createWrappedLayerSet(latlng, (lat, lng) => L.circleMarker([lat, lng], {
                 radius: 5,
                 color: '#f59e0b',
                 weight: 2,
                 fillColor: '#f59e0b',
                 fillOpacity: 0.15,
                 interactive: false,
-            }).addTo(map);
+            })).addTo(map);
         } else {
             snapHint.setLatLng(latlng);
         }
@@ -417,9 +490,13 @@
             });
         });
 
-        // 测距过程中，允许吸附到已落点（包含起点）。
+        // 测距过程中，允许吸附到已落点（包含起点）；每个世界副本都要有一份，
+        // 否则在别的副本里点回自己刚下的点就吸不上了。
         for (let i = 0; i < measurePoints.length; i++) {
-            addUniqueCandidate(measurePoints[i], candidates, seen, false);
+            const point = measurePoints[i];
+            getWrapLngOffsets().forEach((offset) => {
+                addUniqueCandidate(L.latLng(point.lat, point.lng + offset), candidates, seen, false);
+            });
         }
 
         return candidates;
@@ -453,28 +530,30 @@
     function updateLines(cursorLatLng) {
         if (measurePoints.length === 0) return;
 
+        // 折线按世界副本铺开：一条 layer、多个 ring，跨 180° 的段也不会绕地球一圈
+        const fixedRings = buildWrappedRings(buildGeodesicPath(measurePoints));
         if (!fixedLine) {
-            fixedLine = L.polyline(buildGeodesicPath(measurePoints), {
+            fixedLine = L.polyline(fixedRings, {
                 color: '#f59e0b',
                 weight: 3,
                 opacity: 0.95,
             }).addTo(map);
         } else {
-            fixedLine.setLatLngs(buildGeodesicPath(measurePoints));
+            fixedLine.setLatLngs(fixedRings);
         }
 
         if (cursorLatLng) {
             const last = measurePoints[measurePoints.length - 1];
-            const previewPoints = buildGeodesicPath([last, cursorLatLng]);
+            const previewRings = buildWrappedRings(buildGeodesicPath([last, cursorLatLng]));
             if (!tempLine) {
-                tempLine = L.polyline(previewPoints, {
+                tempLine = L.polyline(previewRings, {
                     color: '#f59e0b',
                     weight: 2,
                     opacity: 0.8,
                     dashArray: '6, 6',
                 }).addTo(map);
             } else {
-                tempLine.setLatLngs(previewPoints);
+                tempLine.setLatLngs(previewRings);
             }
 
             const total = totalDistance(measurePoints) + map.distance(last, cursorLatLng);
@@ -499,7 +578,7 @@
         });
 
         if (!distanceLabel) {
-            distanceLabel = L.marker(latlng, {
+            distanceLabel = createWrappedMarkerSet(latlng, {
                 icon,
                 interactive: false,
                 keyboard: false,
@@ -514,7 +593,9 @@
     function onMapClick(e) {
         if (!isMeasuring) return;
         const snappedResult = getSnappedResult(e.latlng);
-        measurePoints.push(snappedResult.latlng);
+        // 统一归一化入库：视口跨 180° 时地图会返回 195/-190 这类越界经度，
+        // 存归一化后的值，画的时候再按世界副本铺开。
+        measurePoints.push(normalizeMeasureLatLng(snappedResult.latlng));
         if (measurePoints.length === 1) {
             measureStartIsLaunchSite = snappedResult.isLaunchSite;
         }
