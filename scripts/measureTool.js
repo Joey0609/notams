@@ -10,6 +10,7 @@
     let latLngQueryHint = null;
     let currentQueryText = '';
     let persistedMeasures = [];
+    window.__notamMeasurements = window.__notamMeasurements || [];
     let snapHintTimer = null;
     let measureStartIsLaunchSite = false;
 
@@ -63,6 +64,7 @@
         setLatLngQueryButtonState(isLatLngQuerying);
         map.getContainer().classList.toggle('measure-mode', isMeasuring);
         map.getContainer().classList.toggle('latlng-query-mode', isLatLngQuerying);
+        if (window.NotamGlobe && window.NotamGlobe.isActive()) window.NotamGlobe.setActiveTool(tool);
     }
 
     function formatLatLng(latlng) {
@@ -293,8 +295,11 @@
             zIndexOffset: 1000,
         });
 
-        const item = { line, label, inclinationLabels };
+        const storeItem = { points: points.map(function(point) { return { lat: point.lat, lng: point.lng }; }) };
+        const item = { line, label, inclinationLabels, storeItem };
         persistedMeasures.push(item);
+        window.__notamMeasurements.push(storeItem);
+        if (window.NotamGlobe) window.NotamGlobe.refresh(true);
 
         label.on('add', function () {
             const el = label.getElement();
@@ -307,6 +312,8 @@
                 if (item.label) map.removeLayer(item.label);
                 item.inclinationLabels.forEach((inclinationLabel) => map.removeLayer(inclinationLabel));
                 persistedMeasures = persistedMeasures.filter((x) => x !== item);
+                window.__notamMeasurements = window.__notamMeasurements.filter((x) => x !== item.storeItem);
+                if (window.NotamGlobe) window.NotamGlobe.refresh(true);
             };
         });
 
@@ -629,6 +636,14 @@
     }
 
     function startMeasure() {
+        if (window.NotamGlobe && window.NotamGlobe.isActive()) {
+            if (isLatLngQuerying) stopLatLngQuery();
+            isMeasuring = true;
+            setActiveTool('measure');
+            resetMeasure();
+            notify('球面测距已开启: 单击选点，双击结束，右键退出');
+            return;
+        }
         if (!window.map) {
             notify('地图尚未初始化');
             return;
@@ -653,6 +668,12 @@
     }
 
     function startLatLngQuery() {
+        if (window.NotamGlobe && window.NotamGlobe.isActive()) {
+            if (isMeasuring) stopMeasure();
+            setActiveTool('latlng');
+            notify('球面经纬度查询已开启: Ctrl+C 复制，右键退出');
+            return;
+        }
         if (!window.map) {
             notify('地图尚未初始化');
             return;
@@ -703,6 +724,18 @@
         btn.addEventListener('click', toggleLatLngQuery);
     }
 
+
+    window.NotamMeasure = {
+        addGlobeMeasure: function(rawPoints) {
+            var points = (rawPoints || []).map(function(point) { return L.latLng(point.lat, point.lng); });
+            if (points.length < 2) return;
+            createPersistedMeasure(points, totalDistance(points));
+        },
+        stopFromGlobe: function() {
+            if (isMeasuring) stopMeasure();
+            else if (isLatLngQuerying) stopLatLngQuery();
+        }
+    };
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initMeasureButton);
         document.addEventListener('DOMContentLoaded', initLatLngQueryButton);

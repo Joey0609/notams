@@ -54,6 +54,9 @@ function bindGlassSheen(control) {
 
 [helpButton, exportButton, sidebarToggle, manualToggle, customButton].forEach(bindGlassSheen);
 
+/* 地图模式（矢量地图 / 卫星地图 / 3D 地球）三个选项也要同一套跟随指针的光斑 */
+document.querySelectorAll('#mapModeControl button').forEach(bindGlassSheen);
+
 const GITHUB_STAR_URL = 'https://github.com/Joey0609/notams';
 const GITHUB_STAR_THANK_YOU = '❤ 谢谢 ❤';
 const GITHUB_STAR_RESET_DELAY = 30000;
@@ -210,17 +213,35 @@ exportButton.addEventListener('click', () => {
     }
 });
 
+/* ── 底部按钮行：帮助 / 导出 / 航警列表 ──
+   窄屏（<=768px）下三者排在同一行（bottom: 42px）：帮助、导出靠左，「航警列表」居中，
+   展开的面板就停在整行正上方（90px），按钮本身不再上移，这一行始终不会散开。
+   宽屏维持原来的行为：按钮抬到面板上方。 */
+function isNarrowLayout() {
+    return window.innerWidth <= 768;
+}
+
+function panelBottom(isOpen) {
+    if (isNarrowLayout()) return '90px';
+    return isOpen ? '10px' : '40px';
+}
+
+/* 宽屏下面板展开时把按钮抬到面板正上方；窄屏下按钮行不动，返回 0 */
+function setRowLift(areaHeight) {
+    const lift = isNarrowLayout() ? 0 : areaHeight;
+    helpButton.style.transform = `translateY(-${lift}px)`;
+    exportButton.style.transform = `translateY(-${lift}px)`;
+    if (customButton) customButton.style.transform = `translateY(-${lift}px)`;
+}
+
 function openHelpArea() {
     isHelpExpanded = true;
     expandableArea.classList.add('is-open');
     expandableArea.style.maxHeight = HELP_AREA_HEIGHT + 'px';
-    const isMobile = window.innerWidth <= 768;
-    expandableArea.style.bottom = isMobile ? '60px' : '10px';
+    expandableArea.style.bottom = panelBottom(true);
     // 等待 DOM 更新后获取实际高度
     setTimeout(() => {
-        helpButton.style.transform = `translateY(-${HELP_AREA_HEIGHT }px)`;
-        exportButton.style.transform = `translateY(-${HELP_AREA_HEIGHT }px)`;
-        if (customButton) customButton.style.transform = `translateY(-${HELP_AREA_HEIGHT }px)`;
+        setRowLift(HELP_AREA_HEIGHT);
     }, 10);
     helpButton.textContent = '收起';
 }
@@ -229,11 +250,8 @@ function closeHelpArea() {
     isHelpExpanded = false;
     expandableArea.classList.remove('is-open');
     expandableArea.style.maxHeight = '0';
-    const isMobile = window.innerWidth <= 768;
-    expandableArea.style.bottom = isMobile ? '90px' : '40px';
-    helpButton.style.transform = 'translateY(0)';
-    exportButton.style.transform = 'translateY(0)';
-    if (customButton) customButton.style.transform = 'translateY(0)';
+    expandableArea.style.bottom = panelBottom(false);
+    setRowLift(0);
     helpButton.textContent = '帮助';
 }
 
@@ -241,13 +259,10 @@ function openExportArea() {
     isExportExpanded = true;
     exportArea.classList.add('is-open');
     exportArea.style.maxHeight = EXPORT_AREA_HEIGHT + 'px';
-    const isMobile = window.innerWidth <= 768;
-    exportArea.style.bottom = isMobile ? '60px' : '10px';
+    exportArea.style.bottom = panelBottom(true);
     // 等待 DOM 更新后获取实际高度
     setTimeout(() => {
-        helpButton.style.transform = `translateY(-${EXPORT_AREA_HEIGHT }px)`;
-        exportButton.style.transform = `translateY(-${EXPORT_AREA_HEIGHT }px)`;
-        if (customButton) customButton.style.transform = `translateY(-${EXPORT_AREA_HEIGHT }px)`;
+        setRowLift(EXPORT_AREA_HEIGHT);
     }, 10);
     exportButton.textContent = '收起';
 }
@@ -256,27 +271,56 @@ function closeExportArea() {
     isExportExpanded = false;
     exportArea.classList.remove('is-open');
     exportArea.style.maxHeight = '0';
-    const isMobile = window.innerWidth <= 768;
-    exportArea.style.bottom = isMobile ? '90px' : '40px';
-    helpButton.style.transform = 'translateY(0)';
-    exportButton.style.transform = 'translateY(0)';
-    if (customButton) customButton.style.transform = 'translateY(0)';
+    exportArea.style.bottom = panelBottom(false);
+    setRowLift(0);
     exportButton.textContent = '导出';
 }
 
 
 // 动态调整展开区域的位置
 window.addEventListener('resize', () => {
-    const isMobile = window.innerWidth <= 768;
+    expandableArea.style.bottom = panelBottom(isHelpExpanded);
+    exportArea.style.bottom = panelBottom(isExportExpanded);
+    // 宽窄屏切换时同步按钮位移（宽屏要抬到面板上方，窄屏归零）
     if (isHelpExpanded) {
-        expandableArea.style.bottom = isMobile ? '60px' : '10px';
+        setRowLift(HELP_AREA_HEIGHT);
+    } else if (isExportExpanded) {
+        setRowLift(EXPORT_AREA_HEIGHT);
     } else {
-        expandableArea.style.bottom = isMobile ? '90px' : '40px';
-    }
-    if (isExportExpanded) {
-        exportArea.style.bottom = isMobile ? '60px' : '10px';
-    } else {
-        exportArea.style.bottom = isMobile ? '90px' : '40px';
+        setRowLift(0);
     }
 });
+
+/* ── 窄屏下这一行放不放得下 ──
+   「航警列表」居中时左边缘是 (视口宽 - 按钮宽) / 2；撞上「导出」右边缘（含间距）就放不下，
+   这时给 body 加 .nav-row-tight，由 styles.css 把它改成紧跟在「导出」右边。
+   判断只用到「导出」的位置和「航警列表」的宽度，两者都不随该 class 变化，不会来回抖。 */
+const NAV_ROW_MAX_WIDTH = 768;  // 与 styles.css 的窄屏断点一致
+const NAV_ROW_GAP = 12;         // 「导出」与「航警列表」之间的水平间距（px）
+let navRowFitFrame = 0;
+
+function updateNavRowFit() {
+    navRowFitFrame = 0;
+    if (!helpButton || !exportButton || !sidebarToggle || !document.body) return;
+
+    if (window.innerWidth > NAV_ROW_MAX_WIDTH) {
+        document.body.classList.remove('nav-row-tight');
+        return;
+    }
+
+    const exportRight = exportButton.getBoundingClientRect().right;
+    const toggleWidth = sidebarToggle.getBoundingClientRect().width;
+    const centeredLeft = (window.innerWidth - toggleWidth) / 2;
+    document.body.classList.toggle('nav-row-tight', centeredLeft < exportRight + NAV_ROW_GAP);
+}
+
+function scheduleNavRowFit() {
+    if (navRowFitFrame) return;
+    navRowFitFrame = requestAnimationFrame(updateNavRowFit);
+}
+
+updateNavRowFit();
+window.addEventListener('resize', scheduleNavRowFit);
+window.addEventListener('orientationchange', scheduleNavRowFit);
+window.addEventListener('load', updateNavRowFit);
 

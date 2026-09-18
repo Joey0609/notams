@@ -1,4 +1,5 @@
 var map = null;
+var mapViewMode = '2d';
 
 
 var highlightPolygon = null;
@@ -33,6 +34,10 @@ var originalPolygonStyles = {};
 
 /* 航警列表 hover 高亮指定多边形 */
 function hoverHighlightNotam(idx) {
+    if (mapViewMode === '3d' && window.NotamGlobe) {
+        window.NotamGlobe.highlight('auto-' + idx, true);
+        return;
+    }
     const poly = polygonAuto[idx];
     if (!poly) return;
     
@@ -67,6 +72,10 @@ function hoverHighlightNotam(idx) {
 
 /* 列表 hover 取消高亮 */
 function hoverUnhighlightNotam(idx) {
+    if (mapViewMode === '3d' && window.NotamGlobe) {
+        window.NotamGlobe.highlight('auto-' + idx, false);
+        return;
+    }
     const poly = polygonAuto[idx];
     if (!poly) return;
     
@@ -115,21 +124,21 @@ var tileLayers = {
     },
     //高德地图
     gaode_vec: {
-        url: 'http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+        url: 'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
         options: {
             subdomains: ['1', '2', '3', '4'],
             attribution: '&copy; 高德地图'
         }
     },
     gaode_img: {
-        url: 'http://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
+        url: 'https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
         options: {
             subdomains: ['1', '2', '3', '4'],
             attribution: '&copy; 高德地图'
         }
     },
     gaode_img_anno: {
-        url: 'http://webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}',
+        url: 'https://webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}',
         options: {
             subdomains: ['1', '2', '3', '4'],
             attribution: ''
@@ -322,6 +331,7 @@ function addMapLayers(provider) {
         }
 
         currentBaseLayer = L.tileLayer(tileUrl, baseConfig.options);
+        currentBaseLayer.addTo(map);
         if (provider === 'tianditu_vec') {
             var annoConfig = tileLayers.tianditu_vec_anno;
             currentAnnoLayer = L.tileLayer(annoConfig.url + randomKey, annoConfig.options).addTo(map);
@@ -337,49 +347,50 @@ function addMapLayers(provider) {
 
 // 添加图层切换控件
 function addLayerControl() {
-    var gaodeVecLayer = L.tileLayer(tileLayers.gaode_vec.url, tileLayers.gaode_vec.options);
-    var gaodeImgLayer = L.tileLayer(tileLayers.gaode_img.url, tileLayers.gaode_img.options);
-    
-    var baseMaps = {
-        "矢量图层": gaodeVecLayer,
-        "卫星图层": gaodeImgLayer,
-    };
-    // baseMaps["天地图"] = L.tileLayer(tileLayers.tianditu_vec.url + 'ad322867b18949f56e94e4fca2cfdfa2', tileLayers.tianditu_vec.options);
-    // baseMaps["天地图卫星"] = L.tileLayer(tileLayers.tianditu_img.url + 'ad322867b18949f56e94e4fca2cfdfa2', tileLayers.tianditu_img.options);
+    var control = document.getElementById('mapModeControl');
+    if (!control || control.__bound) return;
+    control.__bound = true;
+    control.addEventListener('click', function(event) {
+        var button = event.target.closest('button[data-map-mode]');
+        if (!button) return;
+        selectMapMode(button.dataset.mapMode);
+    });
+    updateMapModeControl();
+}
 
-    if (currentMapProvider === 'gaode_vec') {
-        currentBaseLayer = gaodeVecLayer;
-    } else if (currentMapProvider === 'gaode_img') {
-        currentBaseLayer = gaodeImgLayer;
-    }
-    if (currentBaseLayer) {
-        currentBaseLayer.addTo(map);
-    }
-
-    L.control.layers(baseMaps, null, {
-        position: 'topright',
-        collapsed: false  // 默认展开图层控件
-    }).addTo(map);
-
-
-    map.on('baselayerchange', function(e) {
-        // 判断切换到了哪个图层
-        var isVector = (e.name === "矢量图层");
-        currentMapProvider = isVector ? 'gaode_vec' : 'gaode_img';
-        
-        // 切换颜色池
-        switchColorPool(isVector);
-        
-        // 重新分配颜色并重绘航警（聚焦段与外部段各用一套颜色池）
-        if (dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
-            assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);
-            redrawAllNotams();
-        }
-        
-        console.log('切换到:', e.name, '使用颜色池:', isVector ? '深色系' : '鲜艳系');
+function updateMapModeControl() {
+    var control = document.getElementById('mapModeControl');
+    if (!control) return;
+    var modes = ['vector', 'satellite', 'globe'];
+    var activeMode = mapViewMode === '3d' ? 'globe' : (currentMapProvider === 'gaode_img' ? 'satellite' : 'vector');
+    control.style.setProperty('--active-index', String(Math.max(0, modes.indexOf(activeMode))));
+    control.querySelectorAll('button[data-map-mode]').forEach(function(button) {
+        var active = button.dataset.mapMode === activeMode;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
 }
 
+function selectMapMode(mode) {
+    var activeMode = mapViewMode === '3d' ? 'globe' : (currentMapProvider === 'gaode_img' ? 'satellite' : 'vector');
+    // 已经处于该模式时不重复销毁/创建图层，也不重新触发地图动画。
+    if (mode === activeMode) return;
+    if (mode === 'globe') {
+        if (window.NotamGlobe) window.NotamGlobe.enter();
+        return;
+    }
+    if (window.NotamGlobe && window.NotamGlobe.isActive()) window.NotamGlobe.leave();
+    currentMapProvider = mode === 'satellite' ? 'gaode_img' : 'gaode_vec';
+    switchColorPool(currentMapProvider === 'gaode_vec');
+    addMapLayers(currentMapProvider);
+    if (dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
+        assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);
+        redrawAllNotams();
+    }
+    mapViewMode = '2d';
+    updateMapModeControl();
+    if (window.NotamGlobe) window.NotamGlobe.refresh(true);
+}
 function redrawAllNotams() {
     if (!dict || dict.NUM === 0) return;
     
@@ -404,6 +415,7 @@ function redrawAllNotams() {
     }
     
     visibleState = currentVisibleState;
+    if (window.NotamGlobe) window.NotamGlobe.refresh(true);
 }
 
 // 初始化发射场标记
@@ -1118,8 +1130,13 @@ function ensurePopupActionDelegation(container, popup) {
         popup.__pinContentPatched = true;
         const originalUpdateContent = popup._updateContent;
         popup._updateContent = function() {
+            const element = this.getElement ? this.getElement() : null;
+            const closeButton = element && element.querySelector ? element.querySelector('a.leaflet-popup-close-button') : null;
+            if (closeButton && element && closeButton.parentElement !== element) element.appendChild(closeButton);
             originalUpdateContent.apply(this, arguments);
             applyPopupPinState(this, container);
+            applyPopupCloseIcon(this);
+            movePopupCloseIntoHeader(this, container);
         };
     }
 }
@@ -1134,6 +1151,13 @@ function applyPopupCloseIcon(popup) {
     button.innerHTML = POPUP_CLOSE_ICON;
 }
 
+function movePopupCloseIntoHeader(popup, container) {
+    const element = container || (popup && popup.getElement ? popup.getElement() : null);
+    if (!element || !element.querySelector) return;
+    const closeButton = element.querySelector('a.leaflet-popup-close-button');
+    const actions = element.querySelector('.popup-header-actions');
+    if (closeButton && actions && closeButton.parentElement !== actions) actions.appendChild(closeButton);
+}
 /* 弹窗标题栏按钮：复制原始报文 + 固定弹窗（各页面共用一份实现） */
 function bindPopupActions(layer) {
     if (!layer || typeof layer.on !== 'function') return;
@@ -1142,6 +1166,7 @@ function bindPopupActions(layer) {
         const popup = e && e.popup;
         if (!popup) return;
         applyPopupCloseIcon(popup);
+        movePopupCloseIntoHeader(popup);
         ensurePopupActionDelegation(popup.getElement ? popup.getElement() : null, popup);
         // 每次重新打开都回到未固定状态（重新定位不会触发 popupopen，固定状态因此保留）
         setPopupPinned(popup, false);
@@ -1261,6 +1286,7 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
     } else {
         polygonAuto[numm] = tmpPolygon;
     }
+    if (window.NotamGlobe) window.NotamGlobe.refresh(true);
 }
 
 // 解析坐标字符串

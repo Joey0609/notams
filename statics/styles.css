@@ -120,7 +120,7 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 .leaflet-popup-content-wrapper {border-radius: 8px;}
 /* NOTAM弹出窗口样式 */
 .notam-popup {font-family: "微软雅黑", Arial, sans-serif;min-width: 240px;}
-.notam-popup-header {display: flex;align-items: center;justify-content: space-between;gap: 8px;background: linear-gradient(135deg, #243064 0%, #381d57 100%);margin: -12px -12px 8px -12px;padding: 8px 37px 8px 12px;border-radius: 6px 6px 0 0;}
+.notam-popup-header {display: flex;align-items: center;justify-content: space-between;gap: 8px;background: linear-gradient(135deg, #243064 0%, #381d57 100%);margin: -12px -12px 8px -12px;padding: 8px 12px;border-radius: 6px 6px 0 0;}
 .notam-popup-header h4 {flex: 1 1 auto;min-width: 0;margin: 0;padding: 0;font-size: 14px;color: #fff;font-weight: bold;text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);}
 /* 标题栏右侧控件（图钉 / 复制）与右上角关闭按钮：三个图标按钮完全同尺寸（24px 圆形，
    图钉/复制图标 14×14，关闭图标 16×16 以抵消 × 字形本身偏小） */
@@ -311,7 +311,7 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 /* #sidebarToggle {right: 10px;transform: translateY(calc(-50% - 70px));} */
 #sidebarToggle {right: 10px;transform: translateY(calc(-50%));}
 #manualToggle {right: 10px;transform: translateY(calc(-50% + 70px));}
-#sidebarToggle:hover, #manualToggle:hover {box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);}
+/* 悬停不再整块改阴影/提亮底色，只亮跟随指针的光斑（见下面 .help-btn::after 那一层） */
 /* #sidebarToggle:active {transform: translateY(calc(-50% - 70px)) scale(0.95);} */
 #sidebarToggle:active {transform: translateY(calc(-50%)) scale(0.95);}
 #manualToggle:active {transform: translateY(calc(-50% + 70px)) scale(0.95);}
@@ -327,14 +327,23 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 
 /* 窄屏（<768px）：底部弹出 */
 @media (max-width: 768px) {
-.help-btn, .export-btn {bottom: 80px;}
-.custom-btn {bottom: 80px;}
-.expandable-area, .export-area {bottom: 130px;}
-#sidebarToggle, #manualToggle {bottom: 20px;top: auto;writing-mode: horizontal-tb;text-align: center;padding: 10px 15px;border-radius: 10px;width: 130px;line-height: normal;letter-spacing: normal;font-size: 16px;font-weight: bold;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);user-select: none;transition: all 0.2s;color: #2c3e50;}
+/* 窄屏底部同一行：帮助 / 导出 靠左，「航警列表」居中，
+   三者共用同一条基线（bottom: 42px = 按钮高度，正好在左下角比例尺之上）。
+   放不下时由 buttons.js 给 body 加 .nav-row-tight，「航警列表」改为跟在「导出」右侧。 */
+.help-btn, .export-btn {bottom: 42px;}
+.custom-btn {bottom: 42px;}
+/* 展开的面板停在整行正上方（42 + 42 + 6 = 90），按钮本身不再上移，这一行始终不散开 */
+.expandable-area, .export-area {bottom: 90px;}
+#sidebarToggle, #manualToggle {bottom: 42px;top: auto;writing-mode: horizontal-tb;text-align: center;height: 42px;display: flex;align-items: center;justify-content: center;padding: 10px 15px;border-radius: 10px;width: 130px;line-height: normal;letter-spacing: normal;font-size: 16px;font-weight: bold;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);user-select: none;transition: all 0.2s;color: #2c3e50;}
 #sidebarToggle {left: 50%;transform: translateX(calc(-50%));}
 #manualToggle {left: 50%;transform: translateX(8px);}
 #sidebarToggle:active {transform: translateX(calc(-50%)) scale(0.95);}
 #manualToggle:active {transform: translateX(8px) scale(0.95);}
+/* 居中放不下（会压到「导出」）时：紧跟「导出」右侧 —— 导出右边缘 74+42=116，再加 12px 间距 */
+body.nav-row-tight #sidebarToggle,
+body.nav-row-tight #manualToggle {left: 128px;transform: none;}
+body.nav-row-tight #sidebarToggle:active,
+body.nav-row-tight #manualToggle:active {transform: scale(0.95);}
 .notam-sidebar {top: auto;width: 100%;height: 35vh;bottom: -100%;right: auto;left: 0;transition: bottom 0.35s ease;border-radius: 16px 16px 0 0;}
 .notam-sidebar.open {bottom: 0;}
 .archive-sidebar {top: 60px;width: 90%;max-width: 400px;left: 10%;transform: translateX(-50%);height: auto;max-height: 60vh;bottom: auto;transition: none;border-radius: 12px;}
@@ -768,21 +777,26 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 }
 
 /* 悬停高光层：一个圆形光斑，圆心跟着指针走（--glass-x / --glass-y 由 buttons.js 按指针位置写入），
-   底下那层线性渐变是玻璃体本身的固定反光，不跟随。 */
+   底下那层线性渐变是玻璃体本身的固定反光，不跟随。
+   帮助 / 导出 / 手动绘制 / 航警列表 和地图模式三个选项共用这一层，效果完全一致。
+   z-index: -1 让光斑落在按钮文字下面（这些按钮自己都带 z-index，本身就是独立层叠上下文）：
+   光斑只亮在玻璃底和选中药丸上，不会把文字糊上一层光。 */
 .help-btn::after,
 .custom-btn::after,
 .export-btn::after,
 #sidebarToggle::after,
-#manualToggle::after {
+#manualToggle::after,
+.map-mode-control button::after {
     content: "";
     position: absolute;
+    z-index: -1;
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.28s ease;
     background-image:
-        radial-gradient(circle 40px at var(--glass-x, 16%) var(--glass-y, 6%), rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.30) 45%, rgba(255, 255, 255, 0) 75%),
+        radial-gradient(circle 40px at var(--glass-x, 16%) var(--glass-y, 6%), rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.30) 45%, rgba(255, 255, 255, 0) 75%),
         linear-gradient(160deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.06) 55%, rgba(255, 255, 255, 0.32) 100%);
 }
 
@@ -799,26 +813,21 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
 }
 
 @media (hover: hover) {
-    .help-btn:hover, .export-btn:hover, .custom-btn:hover,
-    #sidebarToggle:hover, #manualToggle:hover {
-        background-color: rgba(255, 255, 255, 0.50);
-        box-shadow:
-            0 14px 34px rgba(14, 32, 62, 0.24),
-            0 3px 8px rgba(14, 32, 62, 0.14),
-            inset 0 1px 0 rgba(255, 255, 255, 0.95),
-            inset 0 -1px 0 rgba(255, 255, 255, 0.45);
-    }
-
+    /* 鼠标悬停只亮跟随指针的光斑（::after），不再整块提亮按钮底色和阴影 */
     .help-btn:hover::after, .export-btn:hover::after, .custom-btn:hover::after,
     #sidebarToggle:hover::after, #manualToggle:hover::after {opacity: 1;}
+
+    .map-mode-control button:hover::after {opacity: 1;}
 }
 
 /* 按下时压暗高光（鼠标才有「按住」之外的差别）；触摸按住是唯一状态，要排在上面这条之后才不会被压暗 */
 .help-btn:active::after, .export-btn:active::after, .custom-btn:active::after,
-#sidebarToggle:active::after, #manualToggle:active::after {opacity: 0.6;}
+#sidebarToggle:active::after, #manualToggle:active::after,
+.map-mode-control button:active::after {opacity: 0.6;}
 
 .help-btn.is-touching::after, .export-btn.is-touching::after, .custom-btn.is-touching::after,
-#sidebarToggle.is-touching::after, #manualToggle.is-touching::after {opacity: 1;}
+#sidebarToggle.is-touching::after, #manualToggle.is-touching::after,
+.map-mode-control button.is-touching::after {opacity: 1;}
 
 /* 不支持 backdrop-filter 的浏览器退回接近不透明的浅色底 */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -841,3 +850,66 @@ textarea {resize: none; width: 100%;padding: 8px;border-radius: 5px;border: 1px 
     #sidebarToggle.is-touching, #manualToggle.is-touching {background-color: #eaedf3;}
     .expandable-area.is-open, .export-area.is-open {background-color: rgba(255, 255, 255, 0.97); -webkit-backdrop-filter: none; backdrop-filter: none;}
 }
+/* ────────────────────── 二维 / 球面地图模式 ────────────────────── */
+#allmap, #globeMap { opacity: 1; transform: scale(1); transition: opacity .38s ease, transform .38s cubic-bezier(.2,.8,.2,1), visibility .38s step-end; }
+#globeMap { display: block; visibility: hidden; pointer-events: none; z-index: 1; background: #071321; opacity: 0; transform: scale(1.025); }
+body.globe-active #allmap { visibility: hidden; pointer-events: none; z-index: 1; opacity: 0; transform: scale(.985); transition: opacity .28s ease, transform .28s ease, visibility .28s step-end; }
+body.globe-active #globeMap { visibility: visible; pointer-events: auto; z-index: 2; opacity: 1; transform: scale(1); transition: opacity .42s ease .04s, transform .42s cubic-bezier(.2,.8,.2,1) .04s, visibility 0s; }
+.map-mode-control {
+    position: fixed; top: 12px; right: 12px; z-index: 300;
+    display: flex; flex-direction: column; gap: var(--mode-gap); padding: 4px; border-radius: 13px;
+    border: 1px solid rgba(255,255,255,.62);
+    background-color: rgba(255,255,255,.34);
+    background-image: radial-gradient(130% 150% at 14% -12%,rgba(255,255,255,.86) 0%,rgba(255,255,255,.30) 42%,rgba(255,255,255,0) 68%),linear-gradient(165deg,rgba(255,255,255,.52) 0%,rgba(236,244,255,.24) 52%,rgba(255,255,255,.44) 100%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.05);
+    backdrop-filter: blur(18px) saturate(180%) brightness(1.05);
+    box-shadow: 0 10px 26px rgba(14,32,62,.20),0 2px 6px rgba(14,32,62,.12),inset 0 1px 0 rgba(255,255,255,.92),inset 0 -1px 0 rgba(255,255,255,.42);
+}
+/* --mode-height / --mode-gap 是这一组的唯一来源：按钮高度、选中药丸高度、以及药丸每一格的步进
+   （位移 = 序号 ×（高 + 间距））都从它俩算出来。窄屏只改这两个变量，别再单独写死按钮高度或 31px 步进，
+   否则药丸步进和按钮行距不一致，选中第三项时就会错位、还会溢出面板底边。 */
+.map-mode-control { --mode-height: 28px; --mode-gap: 3px; --active-index: 0; }
+.map-mode-control::before { content: ""; position: absolute; z-index: -1; left: 4px; right: 4px; top: 4px; height: var(--mode-height); border-radius: 11px; background: linear-gradient(135deg,#1877b9,#274b8f); box-shadow: inset 0 1px 0 rgba(255,255,255,.4),0 4px 10px rgba(24,72,126,.32); transform: translateY(calc(var(--active-index) * (var(--mode-height) + var(--mode-gap)))); transition: transform .56s cubic-bezier(.22,1.55,.42,1); }
+.map-mode-control button { position: relative; z-index: 1; height: var(--mode-height); border: 0; border-radius: 11px; padding: 0 11px; color: #17324d; background: transparent; cursor: pointer; user-select: none; -webkit-user-select: none; font: 600 12px/1.2 "微软雅黑",sans-serif; transition: color .2s ease,transform .2s ease; }
+.map-mode-control button:hover { transform: scale(1.025); }
+.map-mode-control button.active { color: #fff; }
+/* 球面气泡：padding 12px 12px 0 是在顶掉 Leaflet 里 .leaflet-popup-content 的 12px 内容边距 ——
+   .notam-popup-header 用的是 margin: -12px -12px 8px -12px 去贴气泡边缘，没有这层 padding 的话
+   标题栏会往左右各撑出 12px，气泡就出现横向滚动条、内容被切（就是「渲染异常」的原因）。
+   气泡本身不设 max-height / overflow：overflow 一旦不是 visible，::before 那个下三角会被裁掉，
+   而 .popup-detail 自己有 4em 的内滚动，气泡高度本来就有上限。 */
+.globe-notam-popup { position: absolute; z-index: 20; box-sizing: border-box; width: min(310px,calc(100% - 24px)); padding: 12px 12px 0; border-radius: 10px; background: rgba(255,255,255,.97); box-shadow: 0 8px 30px rgba(0,0,0,.35); }
+.globe-notam-popup .notam-popup { min-width: 0; }
+/* 开关动画：和 2D 的 Leaflet 气泡一样淡入淡出，并且从三角尖那一头展开（transform-origin 跟着三角走）。
+   真正的隐藏由 globe.js 在动画结束后设 hidden，开的时候再加 .is-visible。 */
+.globe-notam-popup { opacity: 0; transform: translateY(6px) scale(.96); transform-origin: var(--popup-pointer-x, 50%) bottom; transition: opacity .18s ease, transform .18s ease; }
+.globe-notam-popup.is-visible { opacity: 1; transform: none; }
+/* 发射场 / 回收场这类没有 .notam-popup 内容的气泡：样式和 2D 的 Leaflet 气泡完全对齐 ——
+   8px 圆角 + 0 3px 14px 阴影、13px/1.3、内边距 = Leaflet 的 1px wrapper padding + 13/24/13/20 内容边距、
+   链接色 #0078A8、右上角那颗朴素的灰色 ×。 */
+.globe-notam-popup.globe-popup-plain { width: auto; max-width: min(348px,calc(100% - 24px)); padding: 14px 25px 14px 21px; border-radius: 8px; box-shadow: 0 3px 14px rgba(0,0,0,.4); font-size: 13px; line-height: 1.3; color: #333; text-align: left; }
+.globe-notam-popup.globe-popup-plain a { color: #0078a8; }
+.globe-notam-popup.globe-popup-plain > .globe-popup-close { position: absolute; top: 0; right: 0; width: 24px; height: 24px; padding: 0; font: 16px/24px Tahoma, Verdana, sans-serif; text-align: center; color: #757575; background: transparent; border: 0; border-radius: 0; }
+.globe-notam-popup.globe-popup-plain > .globe-popup-close:hover { color: #585858; background: transparent; }
+/* 不再靠 overflow 裁切标题栏，标题栏自己跟着气泡圆角 */
+.globe-notam-popup .notam-popup-header { border-radius: 10px 10px 0 0; }
+.globe-popup-close { position: absolute; right: 7px; top: 6px; z-index: 2; width: 25px; height: 25px; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; background: rgba(255,255,255,.18); color: white; font-size: 18px; cursor: pointer; }
+/* 没有深色标题栏的气泡（发射场 / 落区）：关闭按钮留在白底右上角，得用深色才看得见 */
+.globe-notam-popup > .globe-popup-close { color: #2c3e50; border-color: rgba(0,0,0,.14); background: rgba(0,0,0,.06); }
+.globe-notam-popup > .globe-popup-close:hover { background: rgba(0,0,0,.12); }
+.globe-query-hud { position: absolute; left: 50%; bottom: 22px; z-index: 20; max-width: calc(100% - 36px); transform: translateX(-50%); padding: 8px 12px; border-radius: 10px; color: #fff; background: rgba(5,18,34,.78); font-size: 13px; pointer-events: none; }
+body.globe-active #exportButton, body.globe-active .export-area { display: none !important; }
+body.globe-active #manualToggle, body.globe-active .custom-btn { opacity: .52; }
+/* 3D 左下角：兜底再藏一次 Cesium 的 LOGO（globe.js 里已经把静态 credit 移除了），
+   影像版权文字（Tiles © Esri …）属于 Esri 影像署名，保留。 */
+#globeMap .cesium-viewer-bottom a[href*="cesium.com"],
+#globeMap .cesium-credit-logoContainer {display: none !important;}
+@media (max-width: 600px) { .map-mode-control { --mode-height: 27px; --mode-gap: 2px; top: 8px; right: 8px; padding: 4px; } .map-mode-control button { min-width: 74px; padding: 0 8px; font-size: 11px; } }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .map-mode-control { background: rgba(246,248,252,.96); } }
+.leaflet-popup.notam-info-popup .popup-header-actions a.leaflet-popup-close-button { position: static; top: auto; right: auto; }
+.globe-notam-popup .popup-header-actions .globe-popup-close { position: static; flex: 0 0 auto; width: 24px; height: 24px; padding: 0; font-size: 0; line-height: 1; background: rgba(255,255,255,.18); }
+.globe-notam-popup .popup-header-actions .globe-popup-close::after { content: '×'; font-size: 18px; }
+@media (prefers-reduced-motion: reduce) { .map-mode-control::before { transition: none; } .globe-notam-popup { transition: none; } }
+/* 三角往气泡里压 1px（-8 而不是 -9），把气泡底边和三角之间的接缝盖住，看着更干净 */
+.globe-notam-popup::before { content: ""; position: absolute; left: calc(var(--popup-pointer-x, 50%) - 9px); top: -8px; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid rgba(255,255,255,.97); filter: drop-shadow(0 -1px 1px rgba(0,0,0,.12)); }
+.globe-notam-popup.globe-popup-above::before { top: auto; bottom: -8px; border-bottom: 0; border-top: 9px solid rgba(255,255,255,.97); filter: drop-shadow(0 1px 1px rgba(0,0,0,.12)); }

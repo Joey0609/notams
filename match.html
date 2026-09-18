@@ -5,10 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="statics/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.114.0/Build/Cesium/Widgets/widgets.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <!-- Leaflet -->
     <link rel="stylesheet" href="statics/leaflet/leaflet.css" />
     <script src="statics/leaflet/leaflet.js"></script>
+    <script>window.CESIUM_BASE_URL = 'https://cdn.jsdelivr.net/npm/cesium@1.114.0/Build/Cesium/';</script>
+    <script src="https://cdn.jsdelivr.net/npm/cesium@1.114.0/Build/Cesium/Cesium.js"></script>
     <script src="https://cdn.counter.dev/script.js" data-id="0208cb8b-4c1b-4996-b09e-dc4c551828a5" data-utcoffset="8"></script>
     <title>NOTAM历史航警匹配</title>
 </head>
@@ -27,6 +30,12 @@
     </div>
     <div class="smoke">
         <div id="allmap" class="div1"></div>
+        <div id="globeMap" class="div1" aria-label="三维航警地球"></div>
+        <div id="mapModeControl" class="map-mode-control" role="group" aria-label="地图模式">
+            <button type="button" data-map-mode="vector">矢量地图</button>
+            <button type="button" data-map-mode="satellite">卫星地图</button>
+            <button type="button" data-map-mode="globe">3D 地球</button>
+        </div>
 
         <!-- 右侧统一按钮组 -->
         <div id="sidebarToggle" onclick="toggleSidebar()">匹配列表</div>
@@ -146,6 +155,7 @@
     <script src="scripts/buttons.js"></script>
     <script src="scripts/scripts.js"></script>
     <script src="scripts/measureTool.js"></script>
+    <script src="scripts/globe.js"></script>
     <script src="statics/leaflet/leaflet-image.js"></script>
     <script src="scripts/customAreaSelect.js"></script>
     <script src="scripts/exportImage.js"></script>
