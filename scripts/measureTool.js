@@ -11,6 +11,7 @@
     let currentQueryText = '';
     let persistedMeasures = [];
     let snapHintTimer = null;
+    let measureStartIsLaunchSite = false;
 
     const SNAP_PX = 14;
 
@@ -114,7 +115,39 @@
         return sum;
     }
 
-    function toRad(deg) {
+    // 根据每段起点纬度和该段大圆初始方位计算可达轨道倾角。
+    // 结果保留升轨/降轨方向，范围为 0° 到 180°。
+    function segmentInclinationDegrees(from, to) {
+        if (!from || !to) return null;
+        if (Math.abs(from.lat - to.lat) < 1e-12 && Math.abs(from.lng - to.lng) < 1e-12) return null;
+
+        const lat1 = toRad(from.lat);
+        const lat2 = toRad(to.lat);
+        const deltaLng = toRad(to.lng - from.lng);
+        const y = Math.sin(deltaLng) * Math.cos(lat2);
+        const x = Math.cos(lat1) * Math.sin(lat2)
+            - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLng);
+        const bearing = Math.atan2(y, x);
+        const cosInclination = Math.cos(lat1) * Math.sin(bearing);
+        return toDeg(Math.acos(Math.max(-1, Math.min(1, cosInclination))));
+    }
+
+    function formatInclination(degrees, segmentIndex) {
+        return Number.isFinite(degrees) ? '第' + segmentIndex + '段倾角: ' + degrees.toFixed(1) + '°' : '';
+    }
+
+    function getActiveSegmentInclination(points, previewPoint) {
+        if (!measureStartIsLaunchSite || !points || points.length === 0) return null;
+        const to = previewPoint || points[points.length - 1];
+        const from = previewPoint ? points[points.length - 1] : points[points.length - 2];
+        if (!from || !to) return null;
+
+        const degrees = segmentInclinationDegrees(from, to);
+        return Number.isFinite(degrees) ? {
+            degrees,
+            segmentIndex: previewPoint ? points.length : points.length - 1,
+        } : null;
+    }    function toRad(deg) {
         return (deg * Math.PI) / 180;
     }
 
@@ -202,6 +235,7 @@
 
     function resetMeasure() {
         measurePoints = [];
+        measureStartIsLaunchSite = false;
         clearOverlay();
     }
 
@@ -209,14 +243,39 @@
         clearQueryOverlay();
     }
 
+    function createSegmentInclinationLabels(points) {
+        if (!measureStartIsLaunchSite) return [];
+
+        const labels = [];
+        for (let i = 1; i < points.length; i++) {
+            const degrees = segmentInclinationDegrees(points[i - 1], points[i]);
+            if (!Number.isFinite(degrees)) continue;
+
+            const midpoint = interpolateGreatCircle(points[i - 1], points[i], 2)[1];
+            const icon = L.divIcon({
+                className: 'measure-distance-label',
+                html: formatInclination(degrees, i),
+                iconSize: null,
+            });
+            labels.push(L.marker(midpoint, {
+                icon,
+                interactive: false,
+                keyboard: false,
+                zIndexOffset: 999,
+            }).addTo(map));
+        }
+        return labels;
+    }
+
     function createPersistedMeasure(points, meters) {
-        if (!points || points.length < 2) return;
+        if (!points || points.length < 2) return 0;
 
         const line = L.polyline(buildGeodesicPath(points), {
             color: '#f59e0b',
             weight: 3,
             opacity: 0.95,
         }).addTo(map);
+        const inclinationLabels = createSegmentInclinationLabels(points);
 
         const endPoint = points[points.length - 1];
         const labelIcon = L.divIcon({
@@ -234,7 +293,7 @@
             zIndexOffset: 1000,
         });
 
-        const item = { line, label };
+        const item = { line, label, inclinationLabels };
         persistedMeasures.push(item);
 
         label.on('add', function () {
@@ -246,11 +305,13 @@
                 L.DomEvent.stop(e);
                 if (item.line) map.removeLayer(item.line);
                 if (item.label) map.removeLayer(item.label);
+                item.inclinationLabels.forEach((inclinationLabel) => map.removeLayer(inclinationLabel));
                 persistedMeasures = persistedMeasures.filter((x) => x !== item);
             };
         });
 
         label.addTo(map);
+        return inclinationLabels.length;
     }
 
     function updateSnapHint(latlng) {
@@ -287,7 +348,7 @@
         }, 500);
     }
 
-    function addUniqueCandidate(latlng, candidates, seen) {
+    function addUniqueCandidate(latlng, candidates, seen, isLaunchSite) {
         if (!latlng || !Number.isFinite(latlng.lat) || !Number.isFinite(latlng.lng)) {
             return;
         }
@@ -295,7 +356,7 @@
         const key = latlng.lat + ',' + latlng.lng;
         if (seen.has(key)) return;
         seen.add(key);
-        candidates.push(latlng);
+        candidates.push({ latlng, isLaunchSite: !!isLaunchSite });
     }
 
     function isVisibleLayer(layer) {
@@ -303,23 +364,23 @@
         return map.hasLayer(layer) || layer._map === map;
     }
 
-    function collectMarkerLatLngs(layer, candidates, seen) {
+    function collectMarkerLatLngs(layer, candidates, seen, isLaunchSite) {
         if (!layer) return;
 
         if (Array.isArray(layer)) {
-            layer.forEach((item) => collectMarkerLatLngs(item, candidates, seen));
+            layer.forEach((item) => collectMarkerLatLngs(item, candidates, seen, isLaunchSite));
             return;
         }
 
         if (typeof layer.getLatLng === 'function') {
             if (isVisibleLayer(layer)) {
-                addUniqueCandidate(layer.getLatLng(), candidates, seen);
+                addUniqueCandidate(layer.getLatLng(), candidates, seen, isLaunchSite);
             }
             return;
         }
 
         if (typeof layer.eachLayer === 'function' && isVisibleLayer(layer)) {
-            layer.eachLayer((child) => collectMarkerLatLngs(child, candidates, seen));
+            layer.eachLayer((child) => collectMarkerLatLngs(child, candidates, seen, isLaunchSite));
         }
     }
 
@@ -327,14 +388,8 @@
         const candidates = [];
         const seen = new Set();
 
-        const markerGroups = [
-            window.launchSiteMarkers || [],
-            window.landingZoneMarkers || [],
-        ];
-
-        markerGroups.forEach((group) => {
-            collectMarkerLatLngs(group, candidates, seen);
-        });
+        collectMarkerLatLngs(window.launchSiteMarkers || [], candidates, seen, true);
+        collectMarkerLatLngs(window.landingZoneMarkers || [], candidates, seen, false);
 
         const polygonGroups = [
             window.polygonAuto || [],
@@ -346,10 +401,10 @@
             if (!Array.isArray(group)) return;
             group.forEach((poly) => {
                 if (poly && typeof poly.getBounds === 'function' && isVisibleLayer(poly)) {
-                    if (typeof poly.getLatLng === 'function') addUniqueCandidate(poly.getLatLng(), candidates, seen);
+                    if (typeof poly.getLatLng === 'function') addUniqueCandidate(poly.getLatLng(), candidates, seen, false);
                     else {
                         const bounds = poly.getBounds();
-                        if (bounds && typeof bounds.getCenter === 'function') addUniqueCandidate(bounds.getCenter(), candidates, seen);
+                        if (bounds && typeof bounds.getCenter === 'function') addUniqueCandidate(bounds.getCenter(), candidates, seen, false);
                     }
                 }
             });
@@ -357,7 +412,7 @@
 
         // 测距过程中，允许吸附到已落点（包含起点）。
         for (let i = 0; i < measurePoints.length; i++) {
-            addUniqueCandidate(measurePoints[i], candidates, seen);
+            addUniqueCandidate(measurePoints[i], candidates, seen, false);
         }
 
         return candidates;
@@ -371,18 +426,19 @@
         let bestDist = Infinity;
 
         for (let i = 0; i < candidates.length; i++) {
-            const cand = candidates[i];
-            if (!cand) continue;
-            const candPoint = map.latLngToContainerPoint(cand);
+            const candidate = candidates[i];
+            if (!candidate) continue;
+            const candPoint = map.latLngToContainerPoint(candidate.latlng);
             const pxDist = targetPoint.distanceTo(candPoint);
             if (pxDist <= SNAP_PX && pxDist < bestDist) {
-                best = cand;
+                best = candidate;
                 bestDist = pxDist;
             }
         }
 
         return {
-            latlng: best || latlng,
+            latlng: best ? best.latlng : latlng,
+            isLaunchSite: !!(best && best.isLaunchSite),
             snapped: !!best,
         };
     }
@@ -415,19 +471,20 @@
             }
 
             const total = totalDistance(measurePoints) + map.distance(last, cursorLatLng);
-            updateDistanceLabel(cursorLatLng, total);
+            updateDistanceLabel(cursorLatLng, total, getActiveSegmentInclination(measurePoints, cursorLatLng));
         } else {
             if (tempLine) {
                 map.removeLayer(tempLine);
                 tempLine = null;
             }
             const total = totalDistance(measurePoints);
-            updateDistanceLabel(measurePoints[measurePoints.length - 1], total);
+            updateDistanceLabel(measurePoints[measurePoints.length - 1], total, getActiveSegmentInclination(measurePoints));
         }
     }
 
-    function updateDistanceLabel(latlng, meters) {
-        const text = formatDistance(meters);
+    function updateDistanceLabel(latlng, meters, segmentInclination) {
+        const text = formatDistance(meters)
+            + (segmentInclination ? '<br>' + formatInclination(segmentInclination.degrees, segmentInclination.segmentIndex) : '');
         const icon = L.divIcon({
             className: 'measure-distance-label',
             html: text,
@@ -451,6 +508,9 @@
         if (!isMeasuring) return;
         const snappedResult = getSnappedResult(e.latlng);
         measurePoints.push(snappedResult.latlng);
+        if (measurePoints.length === 1) {
+            measureStartIsLaunchSite = snappedResult.isLaunchSite;
+        }
         if (snappedResult.snapped) {
             flashSnapHint(snappedResult.latlng);
         }
@@ -479,16 +539,18 @@
             return;
         }
         const total = totalDistance(measurePoints);
-        createPersistedMeasure(measurePoints.slice(), total);
+        const inclinationCount = createPersistedMeasure(measurePoints.slice(), total);
         resetMeasure();
-        notify('测距完成: ' + formatDistance(total), 'success');
+        notify('测距完成: ' + formatDistance(total)
+            + (inclinationCount ? '，已显示 ' + inclinationCount + ' 段倾角' : ''), 'success');
     }
 
     function finishCurrentIfPossible() {
         if (measurePoints.length >= 2) {
             const total = totalDistance(measurePoints);
-            createPersistedMeasure(measurePoints.slice(), total);
-            notify('测距完成: ' + formatDistance(total), 'success');
+            const inclinationCount = createPersistedMeasure(measurePoints.slice(), total);
+            notify('测距完成: ' + formatDistance(total)
+                + (inclinationCount ? '，已显示 ' + inclinationCount + ' 段倾角' : ''), 'success');
         }
         resetMeasure();
     }
