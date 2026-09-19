@@ -4,6 +4,8 @@ const expandableArea = document.getElementById('expandableArea');
 const exportArea = document.getElementById('exportArea');
 const globeFxButton = document.getElementById('globeFxButton');   // 3D 专用「功能」按钮（2D 下由 CSS 隐藏）
 const globeFxArea = document.getElementById('globeFxArea');       // 3D 功能面板：晨昏光照 / 显示时刻 / 倍速播放
+const satelliteFxButton = document.getElementById('satelliteFxButton');
+const satelliteFxArea = document.getElementById('satelliteFxArea');
 const logPanel = document.getElementById('logPanel');
 const sidebarToggle = document.getElementById('sidebarToggle');
 const manualToggle = document.getElementById('manualToggle');
@@ -15,6 +17,7 @@ const customButton = document.getElementById('customButton');
 let isHelpExpanded = false;
 let isExportExpanded = false;
 let isGlobeFxExpanded = false;
+let isSatelliteFxExpanded = false;
 
 /* 液态玻璃的悬停高光跟随指针：把圆心写进 --glass-x / --glass-y（元素内的百分比），
    CSS 里那层 ::after 的径向渐变用它当圆心。指针事件本身就是一帧最多一次，
@@ -114,7 +117,7 @@ function bindGlassSheen(control) {
     control.addEventListener('pointerleave', release, { passive: true });
 }
 
-[helpButton, exportButton, sidebarToggle, manualToggle, customButton, globeFxButton].forEach(bindGlassSheen);
+[helpButton, exportButton, sidebarToggle, manualToggle, customButton, globeFxButton, satelliteFxButton].forEach(bindGlassSheen);
 
 /* 地图模式（矢量地图 / 卫星地图 / 3D 地球）三个选项也要同一套跟随指针的光斑 */
 document.querySelectorAll('#mapModeControl button').forEach(bindGlassSheen);
@@ -241,6 +244,11 @@ const EXPORT_AREA_HEIGHT = 230; // 导出区域高度
 const GLOBE_FX_AREA_HEIGHT = 340; // 3D 功能面板的兜底高度（优先量 scrollHeight，见 globeFxAreaHeight()）
 
 helpButton.addEventListener('click', () => {
+    if (isSatelliteFxExpanded) {
+        closeSatelliteFxArea();
+        setTimeout(() => { openHelpArea(); }, 100);
+        return;
+    }
     if (isGlobeFxExpanded) {
         // 3D 功能面板开着：先收起它，再展开帮助（和「导出」→「帮助」同一套错峰节奏）
         closeGlobeFxArea();
@@ -314,6 +322,7 @@ function setRowLift(areaHeight) {
     // 3D 下这一行是「帮助 + 功能」（导出被 CSS 隐藏），抬升要一起抬，否则两块按钮会错位。
     // 2D 下这个按钮是 display:none，写 transform 无副作用。
     if (globeFxButton) globeFxButton.style.transform = `translateY(-${lift}px)`;
+    if (satelliteFxButton) satelliteFxButton.style.transform = `translateY(-${lift}px)`;
 }
 
 function openHelpArea() {
@@ -398,6 +407,65 @@ function closeGlobeFxArea() {
     globeFxButton.textContent = '功能';
 }
 
+function satelliteFxAreaHeight() {
+    const measured = satelliteFxArea ? satelliteFxArea.scrollHeight : 0;
+    return Math.min(measured > 0 ? measured : 180, Math.max(150, window.innerHeight - 140));
+}
+
+function syncSatelliteFxUi() {
+    const toggle = document.getElementById('satelliteLabelsToggle');
+    if (toggle) toggle.checked = window.satelliteLabelsVisible !== false;
+    const provider = window.currentMapProvider;
+    document.querySelectorAll('[data-satellite-provider]').forEach((button) => {
+        const active = button.dataset.satelliteProvider === provider;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+}
+
+function openSatelliteFxArea() {
+    if (!satelliteFxArea || !satelliteFxButton) return;
+    isSatelliteFxExpanded = true;
+    satelliteFxArea.classList.add('is-open');
+    satelliteFxArea.style.maxHeight = satelliteFxAreaHeight() + 'px';
+    satelliteFxArea.style.bottom = panelBottom(true);
+    setTimeout(() => { setRowLift(satelliteFxAreaHeight()); }, 10);
+    satelliteFxButton.textContent = '收起';
+    syncSatelliteFxUi();
+}
+
+function closeSatelliteFxArea() {
+    if (!satelliteFxArea || !satelliteFxButton || !isSatelliteFxExpanded) return;
+    isSatelliteFxExpanded = false;
+    satelliteFxArea.classList.remove('is-open');
+    satelliteFxArea.style.maxHeight = '0';
+    satelliteFxArea.style.bottom = panelBottom(false);
+    setRowLift(0);
+    satelliteFxButton.textContent = '功能';
+}
+
+window.closeSatelliteFxArea = closeSatelliteFxArea;
+
+if (satelliteFxButton) {
+    satelliteFxButton.addEventListener('click', () => {
+        if (isHelpExpanded) { closeHelpArea(); setTimeout(openSatelliteFxArea, 100); return; }
+        if (isExportExpanded) { closeExportArea(); setTimeout(openSatelliteFxArea, 100); return; }
+        if (isSatelliteFxExpanded) closeSatelliteFxArea(); else openSatelliteFxArea();
+    });
+}
+
+const satelliteLabelsToggle = document.getElementById('satelliteLabelsToggle');
+if (satelliteLabelsToggle) {
+    satelliteLabelsToggle.addEventListener('change', () => {
+        if (typeof window.setSatelliteLabelsVisible === 'function') window.setSatelliteLabelsVisible(satelliteLabelsToggle.checked);
+    });
+}
+document.querySelectorAll('[data-satellite-provider]').forEach((button) => {
+    button.addEventListener('click', () => {
+        if (typeof window.setSatelliteProvider === 'function') window.setSatelliteProvider(button.dataset.satelliteProvider);
+        syncSatelliteFxUi();
+    });
+});
 if (globeFxButton) {
     globeFxButton.addEventListener('click', () => {
         if (isHelpExpanded) {
@@ -422,6 +490,7 @@ window.addEventListener('resize', () => {
     expandableArea.style.bottom = panelBottom(isHelpExpanded);
     exportArea.style.bottom = panelBottom(isExportExpanded);
     if (globeFxArea) globeFxArea.style.bottom = panelBottom(isGlobeFxExpanded);
+    if (satelliteFxArea) satelliteFxArea.style.bottom = panelBottom(isSatelliteFxExpanded);
     // 宽窄屏切换时同步按钮位移（宽屏要抬到面板上方，窄屏归零）
     if (isHelpExpanded) {
         setRowLift(HELP_AREA_HEIGHT);
@@ -429,6 +498,8 @@ window.addEventListener('resize', () => {
         setRowLift(EXPORT_AREA_HEIGHT);
     } else if (isGlobeFxExpanded) {
         setRowLift(globeFxAreaHeight());
+    } else if (isSatelliteFxExpanded) {
+        setRowLift(satelliteFxAreaHeight());
     } else {
         setRowLift(0);
     }
@@ -455,7 +526,7 @@ function updateNavRowFit() {
         return;
     }
 
-    const leftAnchor = document.body.classList.contains('globe-active') ? globeFxButton : exportButton;
+    const leftAnchor = document.body.classList.contains('globe-active') ? globeFxButton : (document.body.classList.contains('satellite-active') ? satelliteFxButton : exportButton);
     const anchorRect = leftAnchor ? leftAnchor.getBoundingClientRect() : null;
     const anchorRight = anchorRect && anchorRect.width ? anchorRect.right : NAV_ROW_LEFT_ANCHOR_RIGHT;
     const toggleWidth = sidebarToggle.getBoundingClientRect().width;

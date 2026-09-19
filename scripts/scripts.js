@@ -122,6 +122,30 @@ var tileLayers = {
             attribution: ''
         }
     },
+    // Bing 中文街道图（四叉树 q 参数由 createBingLayer 生成）
+    bing_vec: {
+        url: 'https://t1.dynamic.tiles.ditu.live.com/comp/ch/{q}?mkt=zh-CN&ur=CN&it=G,LA&og=767&n=z',
+        options: {
+            attribution: '&copy; Microsoft Bing Maps',
+            maxZoom: 19
+        }
+    },
+    // Bing 卫星图：航空影像叠加中文道路与地名/POI 注记。
+    bing_img: {
+        url: 'https://ecn.t3.tiles.virtualearth.net/tiles/a{q}.jpeg?g=1',
+        options: {
+            attribution: '&copy; Microsoft Bing Maps',
+            maxZoom: 19
+        }
+    },
+    // Bing 卫星注记层：在纯影像首屏完成后再异步加载。
+    bing_img_anno: {
+        url: 'https://t1.dynamic.tiles.ditu.live.com/comp/ch/{q}?mkt=zh-CN&ur=CN&it=Z,GF,L&og=767&n=z',
+        options: {
+            attribution: '',
+            maxZoom: 19
+        }
+    },
     //高德地图
     gaode_vec: {
         url: 'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
@@ -187,13 +211,14 @@ function switchColorPool(isVectorMap) {
 
 // 检查当前地图是否为矢量图层
 function isVectorMap() {
-    return currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec';
+    return currentMapProvider === 'bing_vec' || currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec';
 }
 // ==================== 颜色系统结束 ====================
 
 function getRandomTileLayer() {
     var providers = [
         'gaode_vec',     // 高德矢量
+        // 'bing_vec',      // Bing 中文街道
         // 'gaode_img',     // 高德影像
         // 'tianditu_vec',  // 天地图矢量
         // 'tianditu_img'   // 天地图影像
@@ -209,8 +234,10 @@ function getRandomTileLayer() {
 var currentMapProvider = getRandomTileLayer();
 var currentBaseLayer = null;
 var currentAnnoLayer = null;
+// 卫星地图注记的显示状态；切换 Bing / 高德底图时保持此选择。
+var satelliteLabelsVisible = true;
 
-switchColorPool(currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec');
+switchColorPool(currentMapProvider === 'bing_vec' || currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec');
 
 
 function handleCopy(text) {
@@ -299,7 +326,7 @@ function makeMap() {
         position: 'bottomleft'
     }).addTo(map);
 
-    // 添加图层切换控件
+// 添加图层切换控件
     addLayerControl();
 
     if (!currentBaseLayer) {
@@ -310,13 +337,36 @@ function makeMap() {
     siteInit();
 }
 
+// Bing 的瓦片 URL 使用四叉树编码，Leaflet 原生 XYZ 模板不提供 {q}，在此转换。
+function bingQuadKey(x, y, z) {
+    var key = '';
+    for (var i = z; i > 0; i--) {
+        var digit = 0;
+        var mask = 1 << (i - 1);
+        if ((x & mask) !== 0) digit += 1;
+        if ((y & mask) !== 0) digit += 2;
+        key += digit;
+    }
+    return key;
+}
+
+function createBingLayer(provider) {
+    var config = tileLayers[provider];
+    var layer = L.tileLayer(config.url, config.options);
+    layer.getTileUrl = function (coords) {
+        return L.Util.template(this._url, { q: bingQuadKey(coords.x, coords.y, coords.z), x: coords.x, y: coords.y, z: coords.z });
+    };
+    return layer;
+}
 // 添加地图图层
 function addMapLayers(provider) {
     if (currentBaseLayer) {
         map.removeLayer(currentBaseLayer);
+        currentBaseLayer = null;
     }
     if (currentAnnoLayer) {
         map.removeLayer(currentAnnoLayer);
+        currentAnnoLayer = null;
     }
     var baseConfig = tileLayers[provider];
     if (baseConfig) {
@@ -330,7 +380,15 @@ function addMapLayers(provider) {
             tileUrl += randomKey;
         }
 
-        currentBaseLayer = L.tileLayer(tileUrl, baseConfig.options);
+        var nextBaseLayer = provider.startsWith('bing_') ? createBingLayer(provider) : L.tileLayer(tileUrl, baseConfig.options);
+        if (provider === 'bing_img') {
+            // 首张卫星瓦片可见后立即请求注记，不等待整屏底图完成。
+            nextBaseLayer.once('tileload', function () {
+                if (currentBaseLayer !== nextBaseLayer || currentAnnoLayer || !satelliteLabelsVisible) return;
+                addSatelliteAnnotationLayer('bing_img');
+            });
+        }
+        currentBaseLayer = nextBaseLayer;
         currentBaseLayer.addTo(map);
         if (provider === 'tianditu_vec') {
             var annoConfig = tileLayers.tianditu_vec_anno;
@@ -339,12 +397,49 @@ function addMapLayers(provider) {
             var annoConfig = tileLayers.tianditu_img_anno;
             currentAnnoLayer = L.tileLayer(annoConfig.url + randomKey, annoConfig.options).addTo(map);
         } else if (provider === 'gaode_img') {
-            var annoConfig = tileLayers.gaode_img_anno;
-            currentAnnoLayer = L.tileLayer(annoConfig.url, annoConfig.options).addTo(map);
+            addSatelliteAnnotationLayer('gaode_img');
         }
     }
 }
 
+// 卫星注记独立于底图：Bing 用前景中文注记层，高德用其文字注记层。
+function addSatelliteAnnotationLayer(provider) {
+    if (!map || !satelliteLabelsVisible || currentAnnoLayer) return;
+    if (provider === 'bing_img') {
+        currentAnnoLayer = createBingLayer('bing_img_anno').addTo(map);
+    } else if (provider === 'gaode_img') {
+        var annoConfig = tileLayers.gaode_img_anno;
+        currentAnnoLayer = L.tileLayer(annoConfig.url, annoConfig.options).addTo(map);
+    }
+}
+
+function setSatelliteLabelsVisible(visible) {
+    satelliteLabelsVisible = !!visible;
+    if (currentAnnoLayer) {
+        map.removeLayer(currentAnnoLayer);
+        currentAnnoLayer = null;
+    }
+    if (satelliteLabelsVisible && (currentMapProvider === 'bing_img' || currentMapProvider === 'gaode_img')) {
+        addSatelliteAnnotationLayer(currentMapProvider);
+    }
+}
+
+function setSatelliteProvider(provider) {
+    if (provider !== 'bing_img' && provider !== 'gaode_img') return;
+    if (currentMapProvider === provider) return;
+    currentMapProvider = provider;
+    switchColorPool(false);
+    addMapLayers(provider);
+    if (dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
+        assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);
+        redrawAllNotams();
+    }
+    mapViewMode = '2d';
+    updateMapModeControl();
+}
+
+window.setSatelliteLabelsVisible = setSatelliteLabelsVisible;
+window.setSatelliteProvider = setSatelliteProvider;
 // 添加图层切换控件
 function addLayerControl() {
     var control = document.getElementById('mapModeControl');
@@ -362,7 +457,10 @@ function updateMapModeControl() {
     var control = document.getElementById('mapModeControl');
     if (!control) return;
     var modes = ['vector', 'satellite', 'globe'];
-    var activeMode = mapViewMode === '3d' ? 'globe' : (currentMapProvider === 'gaode_img' ? 'satellite' : 'vector');
+    var activeMode = mapViewMode === '3d' ? 'globe' : ((currentMapProvider === 'gaode_img' || currentMapProvider === 'bing_img') ? 'satellite' : 'vector');
+    var satelliteActive = mapViewMode !== '3d' && (currentMapProvider === 'gaode_img' || currentMapProvider === 'bing_img');
+    document.body.classList.toggle('satellite-active', satelliteActive);
+    if (!satelliteActive && typeof window.closeSatelliteFxArea === 'function') window.closeSatelliteFxArea();
     control.style.setProperty('--active-index', String(Math.max(0, modes.indexOf(activeMode))));
     control.querySelectorAll('button[data-map-mode]').forEach(function(button) {
         var active = button.dataset.mapMode === activeMode;
@@ -372,7 +470,7 @@ function updateMapModeControl() {
 }
 
 function selectMapMode(mode) {
-    var activeMode = mapViewMode === '3d' ? 'globe' : (currentMapProvider === 'gaode_img' ? 'satellite' : 'vector');
+    var activeMode = mapViewMode === '3d' ? 'globe' : ((currentMapProvider === 'gaode_img' || currentMapProvider === 'bing_img') ? 'satellite' : 'vector');
     // 已经处于该模式时不重复销毁/创建图层，也不重新触发地图动画。
     if (mode === activeMode) return;
     if (mode === 'globe') {
@@ -381,7 +479,7 @@ function selectMapMode(mode) {
     }
     if (window.NotamGlobe && window.NotamGlobe.isActive()) window.NotamGlobe.leave();
     currentMapProvider = mode === 'satellite' ? 'gaode_img' : 'gaode_vec';
-    switchColorPool(currentMapProvider === 'gaode_vec');
+    switchColorPool(currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec');
     addMapLayers(currentMapProvider);
     if (dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
         assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);

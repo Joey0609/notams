@@ -1026,3 +1026,17 @@ body:not(.globe-active) .globe-fx-area {display: none !important;}
 /* 三角往气泡里压 1px（-8 而不是 -9），把气泡底边和三角之间的接缝盖住，看着更干净 */
 .globe-notam-popup::before { content: ""; position: absolute; left: calc(var(--popup-pointer-x, 50%) - 9px); top: -8px; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid rgba(255,255,255,.97); filter: drop-shadow(0 -1px 1px rgba(0,0,0,.12)); }
 .globe-notam-popup.globe-popup-above::before { top: auto; bottom: -8px; border-bottom: 0; border-top: 9px solid rgba(255,255,255,.97); filter: drop-shadow(0 1px 1px rgba(0,0,0,.12)); }
+/* 二维卫星功能：卫星模式以“功能”替换导出，面板沿用 3D 的液态玻璃布局。 */
+body.satellite-active #exportButton,
+body.satellite-active .export-area {display: none !important;}
+body:not(.satellite-active) #satelliteFxButton,
+body:not(.satellite-active) .satellite-fx-area {display: none !important;}
+.satellite-fx-area {position: absolute;left: 12px;bottom: 40px;width: 280px;max-height: 0;background-color: rgba(255,255,255,.95);border-radius: 8px;overflow-y: auto;overflow-x: hidden;box-shadow: 0 2px 8px rgba(0,0,0,.3);transition: max-height .3s ease,bottom .3s ease;z-index: 2;}
+.satellite-fx-area.is-open {border-radius: 18px;background-color: rgba(255,255,255,.46);background-image: radial-gradient(120% 90% at 8% 0%,rgba(255,255,255,.78) 0%,rgba(255,255,255,.22) 55%,rgba(255,255,255,0) 100%),linear-gradient(170deg,rgba(255,255,255,.58) 0%,rgba(236,244,255,.36) 58%,rgba(255,255,255,.50) 100%);-webkit-backdrop-filter: blur(26px) saturate(180%) brightness(1.03);backdrop-filter: blur(26px) saturate(180%) brightness(1.03);box-shadow: 0 20px 52px rgba(14,32,62,.24),0 3px 10px rgba(14,32,62,.14),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.38),inset 0 0 0 1px rgba(255,255,255,.62);}
+.satellite-source-switch {display: grid;grid-template-columns: 1fr 1fr;gap: 6px;}
+.satellite-source-switch button {min-height: 32px;border: 1px solid rgba(52,152,219,.34);border-radius: 8px;background: rgba(255,255,255,.38);color: #31516f;font-size: 12px;font-weight: bold;cursor: pointer;transition: transform .2s ease,background .2s ease,border-color .2s ease,color .2s ease;user-select: none;}
+.satellite-source-switch button.active {border-color: rgba(25,112,177,.72);background: linear-gradient(135deg,#1877b9,#274b8f);color: #fff;box-shadow: 0 3px 8px rgba(24,119,185,.25);}
+@media (hover: hover) {.satellite-source-switch button:not(.active):hover {background: rgba(52,152,219,.16);border-color: rgba(52,152,219,.58);}.satellite-source-switch button:active {transform: scale(.97);}}
+@media (max-width: 768px) {.satellite-fx-area {bottom: 90px;}}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {.satellite-fx-area.is-open {background-color: rgba(255,255,255,.97);}}
+@media (prefers-reduced-transparency: reduce) {.satellite-fx-area.is-open {background-color: rgba(255,255,255,.97);-webkit-backdrop-filter:none;backdrop-filter:none;}}

@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <link rel="stylesheet" href="statics/styles.css">
+    <link rel="stylesheet" href="statics/styles.css?v=satellite-tools-v1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.114.0/Build/Cesium/Widgets/widgets.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <!-- Leaflet -->
@@ -190,6 +190,28 @@
             </div>
         </div>
 
+        <div class="export-btn satellite-fx-btn" id="satelliteFxButton">功能</div>
+        <div class="satellite-fx-area" id="satelliteFxArea" aria-label="卫星地图功能设置">
+            <div class="export-content">
+                <h4 class="globe-fx-title">卫星地图功能</h4>
+                <div class="export-section">
+                    <div class="globe-fx-row">
+                        <label class="globe-fx-label" for="satelliteLabelsToggle">地图注记</label>
+                        <label class="globe-fx-switch">
+                            <input type="checkbox" id="satelliteLabelsToggle" role="switch" aria-label="显示地图注记" checked>
+                            <span class="globe-fx-track" aria-hidden="true"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="export-section">
+                    <div class="globe-fx-label" style="margin-bottom: 8px;">卫星瓦片源</div>
+                    <div class="satellite-source-switch" role="group" aria-label="卫星瓦片源">
+                        <button type="button" data-satellite-provider="bing_img">Bing 卫星</button>
+                        <button type="button" data-satellite-provider="gaode_img">高德卫星</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="export-area" id="exportArea">
             <div class="export-content">
                 <div class="export-section">
@@ -282,7 +304,7 @@
     <script src="scripts/notamsDrawer.js"></script>
     <script src="scripts/browserConsoleLog.js"></script>
     <script src="scripts/buttons.js"></script>
-    <script src="scripts/scripts.js"></script>
+    <script src="scripts/scripts.js?v=satellite-tools-v2"></script>
     <script src="statics/leaflet/leaflet-image.js"></script>
     <script src="scripts/customAreaSelect.js"></script>
     <script src="scripts/dataFetching.js"></script>
