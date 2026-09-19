@@ -539,6 +539,29 @@ body.nav-row-tight #manualToggle:active:not(.is-touching) {transform: scale(0.95
     cursor: pointer;
 }
 
+/* 3D 球面复用上面这套测距观感（.measure-distance-label / .measure-result-badge 原样拿来），
+   这里只补「绝对定位」：二维那边是 Leaflet 的 divIcon 负责定位，
+   球面上由 globe.js 在 postRender 里按经纬度投影写 left/top（和球面气泡同一套）。 */
+.globe-measure-label {
+    position: absolute;
+    z-index: 21;
+    pointer-events: none;
+    transform: translate(14px, 14px);   /* 标签往右下让开指针，和二维的 .latlng-query-hint 一致 */
+}
+
+.globe-measure-badge {
+    position: absolute;
+    z-index: 21;
+    transform: translate(-50%, -50%);   /* 公里牌以折线终点为中心，等价于 Leaflet marker 的默认锚点 */
+}
+
+/* 测距中换成十字光标，与 2D 的 #allmap.measure-mode 对应。
+   Cesium 会往 canvas 上写行内 cursor，作者级 !important 能压过行内普通声明。 */
+#globeMap.measure-mode,
+#globeMap.measure-mode canvas {
+    cursor: crosshair !important;
+}
+
 #allmap.measure-mode,
 #allmap.measure-mode .leaflet-container {
     cursor: crosshair !important;

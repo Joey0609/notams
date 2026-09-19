@@ -206,8 +206,10 @@
         return Number.isFinite(degrees) ? '第' + segmentIndex + '段倾角: ' + degrees.toFixed(1) + '°' : '';
     }
 
-    function getActiveSegmentInclination(points, previewPoint) {
-        if (!measureStartIsLaunchSite || !points || points.length === 0) return null;
+    function getActiveSegmentInclination(points, previewPoint, startIsLaunchSite) {
+        // 起点是不是发射场：2D 用模块里那份状态；3D 球面自己记，所以允许显式传进来
+        const fromLaunchSite = startIsLaunchSite === undefined ? measureStartIsLaunchSite : !!startIsLaunchSite;
+        if (!fromLaunchSite || !points || points.length === 0) return null;
         const to = previewPoint || points[points.length - 1];
         const from = previewPoint ? points[points.length - 1] : points[points.length - 2];
         if (!from || !to) return null;
@@ -217,7 +219,9 @@
             degrees,
             segmentIndex: previewPoint ? points.length : points.length - 1,
         } : null;
-    }    function toRad(deg) {
+    }
+
+    function toRad(deg) {
         return (deg * Math.PI) / 180;
     }
 
@@ -317,8 +321,10 @@
         clearQueryOverlay();
     }
 
-    function createSegmentInclinationLabels(points) {
-        if (!measureStartIsLaunchSite) return [];
+    function createSegmentInclinationLabels(points, startIsLaunchSite) {
+        // 2D 用模块里那份状态；3D 球面自己记，所以允许显式传进来
+        const fromLaunchSite = startIsLaunchSite === undefined ? measureStartIsLaunchSite : !!startIsLaunchSite;
+        if (!fromLaunchSite) return [];
 
         const labels = [];
         for (let i = 1; i < points.length; i++) {
@@ -341,15 +347,17 @@
         return labels;
     }
 
-    function createPersistedMeasure(points, meters) {
+    function createPersistedMeasure(points, meters, startIsLaunchSite) {
         if (!points || points.length < 2) return 0;
 
+        // 记录这条测距的起点到底是不是发射场：球面那边要照着同一规则补每段倾角标签
+        const fromLaunchSite = startIsLaunchSite === undefined ? measureStartIsLaunchSite : !!startIsLaunchSite;
         const line = L.polyline(buildWrappedRings(buildGeodesicPath(points)), {
             color: '#f59e0b',
             weight: 3,
             opacity: 0.95,
         }).addTo(map);
-        const inclinationLabels = createSegmentInclinationLabels(points);
+        const inclinationLabels = createSegmentInclinationLabels(points, fromLaunchSite);
 
         const endPoint = points[points.length - 1];
         const labelIcon = L.divIcon({
@@ -367,7 +375,11 @@
             zIndexOffset: 1000,
         });
 
-        const storeItem = { points: points.map(function(point) { return { lat: point.lat, lng: point.lng }; }) };
+        // startIsLaunchSite 一起存下来：球面那边要靠它决定「要不要补每段倾角标签」（和 2D 同规则）
+        const storeItem = {
+            points: points.map(function(point) { return { lat: point.lat, lng: point.lng }; }),
+            startIsLaunchSite: fromLaunchSite,
+        };
         const item = { line, label, inclinationLabels, storeItem };
         persistedMeasures.push(item);
         window.__notamMeasurements.push(storeItem);
@@ -381,17 +393,24 @@
             if (!closeBtn) return;
             closeBtn.onclick = function (e) {
                 L.DomEvent.stop(e);
-                if (item.line) map.removeLayer(item.line);
-                if (item.label) map.removeLayer(item.label.group);
-                item.inclinationLabels.forEach((inclinationLabel) => map.removeLayer(inclinationLabel.group));
-                persistedMeasures = persistedMeasures.filter((x) => x !== item);
-                window.__notamMeasurements = window.__notamMeasurements.filter((x) => x !== item.storeItem);
-                if (window.NotamGlobe) window.NotamGlobe.refresh(true);
+                removePersistedMeasure(item);
             };
         });
 
         label.addTo(map);
         return inclinationLabels.length;
+    }
+
+    /* 删掉一次已完成的测距：二维图层 + 记录 + 通知球面重建。
+       （3D 那颗公里牌上的 × 也走这里，见文件末尾的 removeGlobeMeasure —— 两边删的是同一份记录。） */
+    function removePersistedMeasure(item) {
+        if (!item) return;
+        if (item.line) map.removeLayer(item.line);
+        if (item.label) map.removeLayer(item.label.group);
+        (item.inclinationLabels || []).forEach((inclinationLabel) => map.removeLayer(inclinationLabel.group));
+        persistedMeasures = persistedMeasures.filter((x) => x !== item);
+        window.__notamMeasurements = window.__notamMeasurements.filter((x) => x !== item.storeItem);
+        if (window.NotamGlobe) window.NotamGlobe.refresh(true);
     }
 
     function updateSnapHint(latlng) {
@@ -464,7 +483,7 @@
         }
     }
 
-    function getSnapCandidates() {
+    function getSnapCandidates(extraPoints) {
         const candidates = [];
         const seen = new Set();
 
@@ -492,8 +511,11 @@
 
         // 测距过程中，允许吸附到已落点（包含起点）；每个世界副本都要有一份，
         // 否则在别的副本里点回自己刚下的点就吸不上了。
-        for (let i = 0; i < measurePoints.length; i++) {
-            const point = measurePoints[i];
+        // extraPoints 是给 3D 球面用的：它的选点存在 globe.js 里，不在下面的 measurePoints 里。
+        const livePoints = measurePoints.concat(extraPoints || []);
+        for (let i = 0; i < livePoints.length; i++) {
+            const point = livePoints[i];
+            if (!point || !Number.isFinite(point.lat) || !Number.isFinite(point.lng)) continue;
             getWrapLngOffsets().forEach((offset) => {
                 addUniqueCandidate(L.latLng(point.lat, point.lng + offset), candidates, seen, false);
             });
@@ -806,11 +828,51 @@
     }
 
 
+    /* ── 给 3D 球面复用的那一层 ──
+       globe.js 不重写任何测距数学与格式：走这里的同一批函数，所以同一条线在 2D / 3D 报出的
+       数字与文案完全一致；吸附候选也直接用 2D 那份（发射场 / 落区 / 多边形中心 / 已选点），
+       两种模式吸的是同一批点。3D 只负责把结果画到球面上。 */
     window.NotamMeasure = {
-        addGlobeMeasure: function(rawPoints) {
+        SNAP_PX: SNAP_PX,
+        /* 当前的工具状态（'none' / 'measure' / 'latlng'）：切回 2D 再进 3D 时，
+           globe.js 用它把球面的工具状态对齐回来（按钮写着「测距中」球面就得能测距）。 */
+        currentTool: function () { return activeTool; },
+        formatDistance: formatDistance,
+        formatInclination: formatInclination,
+        /* 两点距离：直接用 Leaflet 的 map.distance（2D 的 totalDistance 也是它逐段累加），
+           两种模式数字必然相同，不会出现「球面比平面多几百米」这种怪事。 */
+        distanceBetween: function (a, b) {
+            if (!a || !b) return 0;
+            return map.distance(L.latLng(a.lat, a.lng), L.latLng(b.lat, b.lng));
+        },
+        pathDistance: function (points) {
+            return totalDistance((points || []).map(function (point) { return L.latLng(point.lat, point.lng); }));
+        },
+        activeSegmentInclination: getActiveSegmentInclination,
+        segmentInclinationDegrees: segmentInclinationDegrees,
+        /* 两点之间的大圆中点：2D 用它放每段的倾角标签，球面用同一个点放同一块标签 */
+        greatCircleMidpoint: function (a, b) {
+            if (!a || !b) return null;
+            return interpolateGreatCircle(a, b, 2)[1];
+        },
+        snapCandidates: function (extraPoints) { return getSnapCandidates(extraPoints); },
+        addGlobeMeasure: function(rawPoints, startIsLaunchSite) {
             var points = (rawPoints || []).map(function(point) { return L.latLng(point.lat, point.lng); });
-            if (points.length < 2) return;
-            createPersistedMeasure(points, totalDistance(points));
+            if (points.length < 2) return 0;
+            // 返回倾角标签数：3D 完成提示要按 2D 的文案带上「已显示 N 段倾角」
+            return createPersistedMeasure(points, totalDistance(points), startIsLaunchSite);
+        },
+        /* 3D 球面上那颗公里牌的 × 走这里：按下标删掉这次测距（二维图层与记录一起删） */
+        removeGlobeMeasure: function (index) {
+            var store = window.__notamMeasurements || [];
+            var target = store[index];
+            if (!target) return;
+            var item = persistedMeasures.find(function (measure) { return measure.storeItem === target; });
+            if (item) removePersistedMeasure(item);
+            else {
+                store.splice(index, 1);
+                if (window.NotamGlobe) window.NotamGlobe.refresh(true);
+            }
         },
         stopFromGlobe: function() {
             if (isMeasuring) stopMeasure();

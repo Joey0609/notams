@@ -8,8 +8,19 @@
     var popups = [];      // 打开着的气泡：2D 里固定弹窗和新弹窗可以并存，这里也支持多个
     var POPUP_TIP = 8;    // 下三角高度，与 styles.css 里 .globe-notam-popup::before 的 border 宽度一致
     var highlighted = {};
-    var measurePoints = [];
-    var measurePreview = null;
+    var measurePoints = [];          // 正在测的点（3D 自己的草稿，2D 那份各自独立）
+    var measureStartIsLaunchSite = false;   // 第一个点是不是吸附到发射场：决定要不要显示该段倾角
+    var measureFixed = null;         // 已确定的折线（实线）
+    var measurePreview = null;       // 最后一点 → 光标 的预览段（虚线）
+    var measureSnap = null;          // 吸附提示（小球）
+    var measureFixedKey = '';        // 已确定折线的点集签名：没变就不动它（避免每帧重建几何）
+    var measureSnapKey = '';         // 吸附点的签名
+    var measureCursor = null;        // 最近一次光标落点：refresh() 重建实体后用它把草稿补回来
+    var measureSnapPoint = null;     // 最近一次吸附到的点
+    var measureLabel = null;         // 里程标签（DOM，复用 2D 的 .measure-distance-label）
+    var measureLabelAnchor = null;   // 标签贴在哪个经纬度上（每帧投影，和气泡同一套）
+    var measureOverlays = [];        // 已完成测距的公里牌 + 每段倾角标签（DOM，复用 2D 的 CSS）
+    var measureOverlaysKey = '';     // 这些 DOM 的签名，只在测距列表变化时重建
     var tool = 'none';
     var refreshTimer = null;
     var entitiesById = {};
@@ -26,12 +37,25 @@
     function makeViewer() {
         if (viewer) return viewer;
         if (!available()) return null;
-        // Esri 的预缓存 XYZ 瓦片使用 Web Mercator；不走 ArcGIS 元数据初始化，避免资源对象未建立时停止渲染。
+        // Bing 卫星瓦片采用 QuadKey，不是普通 XYZ；服务端已允许 GitHub Pages 跨域请求。
         var imagery = new Cesium.UrlTemplateImageryProvider({
-            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            url: 'https://ecn.t3.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=1',
             tilingScheme: new Cesium.WebMercatorTilingScheme(),
             maximumLevel: 19,
-            credit: new Cesium.Credit('Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community')
+            credit: new Cesium.Credit('© Microsoft Bing Maps'),
+            customTags: {
+                quadkey: function (provider, x, y, level) {
+                    var key = '';
+                    for (var i = level; i > 0; --i) {
+                        var digit = 0;
+                        var mask = 1 << (i - 1);
+                        if ((x & mask) !== 0) digit += 1;
+                        if ((y & mask) !== 0) digit += 2;
+                        key += digit;
+                    }
+                    return key;
+                }
+            }
         });
         viewer = new Cesium.Viewer('globeMap', {
             imageryProvider: false,
@@ -229,6 +253,9 @@
         addMarkers(window.landingZoneMarkers || [], 'landing');
         addMeasures();
         Object.keys(highlighted).forEach(function (id) { if (highlighted[id]) highlight(id, true); });
+        syncMeasureOverlays();   // 公里牌 / 倾角标签跟着 __notamMeasurements 重建 + 贴位
+        // removeAll() 把正在测的草稿实体也一起清掉了，这里补画回来（否则重建后预览会凭空消失）
+        if (tool === 'measure' && measurePoints.length) drawMeasure(measureCursor, measureSnapPoint);
         viewer.scene.requestRender();
     }
 
@@ -420,26 +447,350 @@
         return total;
     }
 
-    function drawPreview(cursor) {
-        if (!viewer) return;
-        if (measurePreview) viewer.entities.remove(measurePreview);
-        var points = measurePoints.slice();
-        if (cursor) points.push(cursor);
-        if (points.length < 2) return;
-        measurePreview = viewer.entities.add({ polyline: { positions: Cesium.Cartesian3.fromDegreesArray(points.reduce(function (out, p) { out.push(p.lng, p.lat); return out; }, [])), width: 3, material: Cesium.Color.fromCssColorString('#f59e0b'), clampToGround: true } });
-        if (hud) { hud.textContent = '测距: ' + formatDistance(globeDistance(points)) + '；双击结束，右键退出'; hud.hidden = false; }
+    function formatDistance(meters) { return meters < 1000 ? meters.toFixed(0) + ' m' : (meters / 1000).toFixed(2) + ' km'; }
+
+    /* ══════════════════ 测距（球面） ══════════════════
+
+       和 2D 完全同一套逻辑与观感：
+       · 数值、文案、吸附候选全部走 window.NotamMeasure —— 同一个 formatDistance、同一个
+         map.distance、同一张候选点表，同一条线在 2D / 3D 报出的数字不会不一样；
+       · 观感直接复用 2D 的 CSS（.measure-distance-label / .measure-result-badge），
+         这里把它们做成贴在球面上的 HTML 覆盖层：和气泡同一套，postRender 里按经纬度投影定位；
+       · 鼠标语义照 2D：单击选点（14px 内吸附到发射场 / 落区 / 已选点）、移动画虚线预览 +
+         光标处实时里程、双击结束、右键「结束当前并退出」、ESC 清空当前测距。
+
+       ⚠ 本 viewer 是 requestRenderMode: true + maximumRenderTimeChange: Infinity（见 makeViewer）：
+         增删实体、挪覆盖层都不会自动重绘，每一处改动后面都必须自己 requestRender()。
+         之前「选中第一个点之后到测距完成前一片空白」正是两个原因叠出来的：
+         ① 只有一个点时 drawPreview() 直接 return —— 连上一帧的预览都先删掉了，什么也不剩；
+         ② 全程没调过 requestRender()，就算建了实体也不会画到屏幕上。 */
+
+    function measureApi() { return window.NotamMeasure || null; }
+
+    function measureFormat(meters) {
+        var api = measureApi();
+        return api && api.formatDistance ? api.formatDistance(meters) : formatDistance(meters);
     }
 
-    function formatDistance(meters) { return meters < 1000 ? meters.toFixed(0) + ' m' : (meters / 1000).toFixed(2) + ' km'; }
+    /* 整条折线的长度：优先用 2D 那套（map.distance 累加），拿不到才退回球面测地距离 */
+    function measurePathDistance(points) {
+        var api = measureApi();
+        return api && api.pathDistance ? api.pathDistance(points) : globeDistance(points);
+    }
+
+    function cartesianOf(point) { return Cesium.Cartesian3.fromDegrees(point.lng, point.lat); }
+
+    /* 经纬度 → 画布坐标（和气泡定位同一个转换）；点在地球背面时返回 undefined */
+    function screenOf(point) {
+        if (!viewer || !point) return null;
+        return Cesium.SceneTransforms.wgs84ToWindowCoordinates(viewer.scene, cartesianOf(point));
+    }
+
+    /* 吸附：照 2D 的 getSnappedResult —— 候选点落在指针 14px 内就吸过去。
+       候选表直接用 2D 那份（发射场 / 落区 / 多边形中心 / 已选点），保证两种模式吸的是同一批点。 */
+    function snapMeasurePoint(raw, screen) {
+        var result = { point: raw, snapped: false, isLaunchSite: false };
+        var api = measureApi();
+        if (!raw || !screen || !api || typeof api.snapCandidates !== 'function') return result;
+        var candidates = api.snapCandidates(measurePoints);
+        var threshold = typeof api.SNAP_PX === 'number' ? api.SNAP_PX : 14;
+        var best = null;
+        var bestDist = Infinity;
+        for (var i = 0; i < candidates.length; i++) {
+            var projected = screenOf(candidates[i].latlng);
+            if (!projected) continue;
+            var dx = projected.x - screen.x;
+            var dy = projected.y - screen.y;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance <= threshold && distance < bestDist) { best = candidates[i]; bestDist = distance; }
+        }
+        if (!best) return result;
+        return { point: { lat: best.latlng.lat, lng: best.latlng.lng }, snapped: true, isLaunchSite: !!best.isLaunchSite };
+    }
+
+    function ensureMeasureLabel() {
+        if (measureLabel) return measureLabel;
+        measureLabel = document.createElement('div');
+        measureLabel.className = 'measure-distance-label globe-measure-label';
+        measureLabel.hidden = true;
+        popupContainer().appendChild(measureLabel);
+        return measureLabel;
+    }
+
+    function placeMeasureLabel() {
+        if (!measureLabel) return;
+        var screen = measureLabelAnchor ? screenOf(measureLabelAnchor) : null;
+        if (!screen) { measureLabel.hidden = true; return; }
+        measureLabel.hidden = false;
+        measureLabel.style.left = screen.x + 'px';
+        measureLabel.style.top = screen.y + 'px';
+    }
+
+    function showMeasureLabel(anchor, html) {
+        var label = ensureMeasureLabel();
+        measureLabelAnchor = anchor;
+        if (label.innerHTML !== html) label.innerHTML = html;
+        placeMeasureLabel();   // 先摆到位再等下一帧，避免闪一下左上角
+    }
+
+    function hideMeasureLabel() {
+        measureLabelAnchor = null;
+        if (measureLabel) measureLabel.hidden = true;
+    }
+
+    /* 折线的「离地一点点」抬升：拾取到的点都落在椭球面上（高度 0）。
+       ① 一点都不抬的话，普通折线和球面共面会 z-fighting；
+       ② 抬升量按相机高度取（约 0.1 像素：一像素 ≈ 相机高度 × 0.0013），任何缩放级别都看不出来。
+
+       ★ 为什么这里不用 clampToGround：贴地折线（GroundPolylinePrimitive）的几何是**异步**构建的，
+         删了重建、甚至只是改了位置，都要等几何重算完才画得出来；而这条线每一帧都跟着鼠标走，
+         于是屏幕上一帧有一帧没有 —— 就是「虚线一直在闪」。
+         普通折线的位置更新是当帧写顶点缓冲，跟手不闪。 */
+    function measureHeightOffset() {
+        var height = viewer && viewer.camera.positionCartographic ? viewer.camera.positionCartographic.height : 0;
+        return Math.max(1, height * 1e-4);
+    }
+
+    function measurePositions(points) {
+        var height = measureHeightOffset();
+        var values = [];
+        for (var i = 0; i < points.length; i++) values.push(points[i].lng, points[i].lat, height);
+        return Cesium.Cartesian3.fromDegreesArrayHeights(values);
+    }
+
+    function measurePointKey(point) { return point.lat.toFixed(6) + ',' + point.lng.toFixed(6); }
+
+    /* 画草稿：① 实线（已确定的折线）② 虚线（最后一点 → 光标）③ 吸附小球 ④ 里程标签。
+       cursor 为空 = 不画预览段，标签退回贴在最后一个点上（对应 2D 的 updateLines(null)）。
+
+       ⚠ 三件覆盖物一律「就地更新」：删实体 = 销毁几何，重新 add 又要重建一遍。
+         点集没变的（已确定的折线）连碰都不碰；预览段和吸附点也只改 positions / position。 */
+    function drawMeasure(cursor, snapPoint) {
+        if (!viewer) return;
+        measureCursor = cursor || null;
+        measureSnapPoint = snapPoint || null;
+
+        // ① 已确定的折线：只有点集真的变了才更新
+        if (measurePoints.length < 2) {
+            if (measureFixed) { viewer.entities.remove(measureFixed); measureFixed = null; measureFixedKey = ''; }
+        } else {
+            var key = measurePoints.map(measurePointKey).join(';');
+            if (!measureFixed) {
+                measureFixed = viewer.entities.add({ polyline: {
+                    positions: measurePositions(measurePoints),
+                    width: 3,
+                    material: Cesium.Color.fromCssColorString('#f59e0b').withAlpha(0.95)
+                } });
+                measureFixedKey = key;
+            } else if (key !== measureFixedKey) {
+                measureFixed.polyline.positions = measurePositions(measurePoints);
+                measureFixedKey = key;
+            }
+        }
+
+        // ② 预览段：存在就改 positions，只有「该消失」时才 remove
+        if (cursor && measurePoints.length) {
+            var ends = [measurePoints[measurePoints.length - 1], cursor];
+            if (!measurePreview) {
+                measurePreview = viewer.entities.add({ polyline: {
+                    positions: measurePositions(ends),
+                    width: 2,
+                    material: new Cesium.PolylineDashMaterialProperty({
+                        color: Cesium.Color.fromCssColorString('#f59e0b').withAlpha(0.8),
+                        dashLength: 12   // 观感对齐 2D 的 dashArray: '6, 6'
+                    })
+                } });
+            } else {
+                measurePreview.polyline.positions = measurePositions(ends);
+            }
+        } else if (measurePreview) {
+            viewer.entities.remove(measurePreview);
+            measurePreview = null;
+        }
+
+        // ③ 吸附小球：位置真的变了才动（对应 2D 的 snapHint 圆点）
+        if (!measureSnapPoint) {
+            if (measureSnap) { viewer.entities.remove(measureSnap); measureSnap = null; measureSnapKey = ''; }
+        } else {
+            var snapKey = measurePointKey(measureSnapPoint);
+            if (!measureSnap) {
+                measureSnap = viewer.entities.add({
+                    position: Cesium.Cartesian3.fromDegrees(measureSnapPoint.lng, measureSnapPoint.lat, measureHeightOffset()),
+                    point: {
+                        pixelSize: 10,   // 对齐 2D 的 circleMarker(radius 5)：半径 5px → 直径 10px
+                        color: Cesium.Color.fromCssColorString('#f59e0b').withAlpha(0.15),
+                        outlineColor: Cesium.Color.fromCssColorString('#f59e0b'),
+                        outlineWidth: 2
+                    }
+                });
+                measureSnapKey = snapKey;
+            } else if (snapKey !== measureSnapKey) {
+                measureSnap.position = Cesium.Cartesian3.fromDegrees(measureSnapPoint.lng, measureSnapPoint.lat, measureHeightOffset());
+                measureSnapKey = snapKey;
+            }
+        }
+
+        if (!measurePoints.length) {
+            // 还没落第一个点：和 2D 一样只给吸附提示，不显示里程（2D 的 updateLines 此时直接 return）
+            hideMeasureLabel();
+        } else {
+            var api = measureApi();
+            var anchor = cursor || measurePoints[measurePoints.length - 1];
+            var total = measurePathDistance(measurePoints);
+            if (cursor && api && api.distanceBetween) {
+                total += api.distanceBetween(measurePoints[measurePoints.length - 1], cursor);
+            }
+            var inclination = api && api.activeSegmentInclination
+                ? api.activeSegmentInclination(measurePoints, cursor || null, measureStartIsLaunchSite)
+                : null;
+            showMeasureLabel(anchor, measureFormat(total)
+                + (inclination ? '<br>' + api.formatInclination(inclination.degrees, inclination.segmentIndex) : ''));
+        }
+
+        // requestRenderMode：不叫这一声，上面改过的实体和刚挪过的标签都不会出现在屏幕上
+        viewer.scene.requestRender();
+    }
+
+    function clearMeasureDraft() {
+        measurePoints = [];
+        measureStartIsLaunchSite = false;
+        measureCursor = null;
+        measureSnapPoint = null;
+        measureFixedKey = '';
+        measureSnapKey = '';
+        if (viewer) {
+            if (measureFixed) { viewer.entities.remove(measureFixed); measureFixed = null; }
+            if (measurePreview) { viewer.entities.remove(measurePreview); measurePreview = null; }
+            if (measureSnap) { viewer.entities.remove(measureSnap); measureSnap = null; }
+        }
+        hideMeasureLabel();
+        if (viewer) viewer.scene.requestRender();
+    }
+
+    /* 结束当前测距，对应 2D 的 finishMeasure() / finishCurrentIfPossible()：
+       requireTwoPoints = true（双击）：不足两个点只提示、草稿留着；
+       requireTwoPoints = false（右键）：够两个点就落库，不足则静默丢弃 —— 随后退出测距模式。 */
+    function finishMeasure(requireTwoPoints) {
+        if (measurePoints.length >= 2) {
+            var total = measurePathDistance(measurePoints);
+            var api = measureApi();
+            // 把「起点是不是发射场」一起交给 2D：它决定要不要生成每段倾角标签（两种模式同规则）
+            var inclinationCount = api && api.addGlobeMeasure
+                ? api.addGlobeMeasure(measurePoints.slice(), measureStartIsLaunchSite)
+                : 0;
+            note('测距完成: ' + measureFormat(total)
+                + (inclinationCount ? '，已显示 ' + inclinationCount + ' 段倾角' : ''), 'success');
+        } else if (requireTwoPoints) {
+            note('请至少点击两个点再结束测距');
+            return;
+        }
+        clearMeasureDraft();
+    }
+
+    /* 已完成测距的覆盖层，和 2D 一一对应：
+       · 折线终点一块公里牌（.measure-result-badge + × ，× 调 2D 的 removeGlobeMeasure 删这次测距）；
+       · 起点是发射场时，每段大圆中点再挂一个「第N段倾角」标签（2D 的 createSegmentInclinationLabels 同规则，
+         连 CSS 类都是同一个 .measure-distance-label）。
+       DOM 只在「测距列表变了」时重建，之后每帧只改 left/top（和气泡同一个时机）。 */
+    function createMeasureBadge(index, text) {
+        var el = document.createElement('div');
+        el.className = 'measure-result-marker globe-measure-badge';
+        el.innerHTML = '<div class="measure-result-badge">'
+            + '<span class="measure-result-text">' + text + '</span>'
+            + '<button type="button" class="measure-result-close" aria-label="删除测距">&times;</button>'
+            + '</div>';
+        el.querySelector('.measure-result-close').addEventListener('click', function (event) {
+            event.stopPropagation();
+            if (window.NotamMeasure) window.NotamMeasure.removeGlobeMeasure(index);
+        });
+        popupContainer().appendChild(el);
+        return el;
+    }
+
+    function createMeasureLabelOverlay(html) {
+        var el = document.createElement('div');
+        el.className = 'measure-distance-label globe-measure-label';
+        el.innerHTML = html;
+        popupContainer().appendChild(el);
+        return el;
+    }
+
+    function measureOverlaysSignature(items) {
+        return items.map(function (measure) {
+            var points = (measure && measure.points) || [];
+            return (measure && measure.startIsLaunchSite ? 'L' : '-') + points.map(measurePointKey).join(';');
+        }).join('|');
+    }
+
+    function buildMeasureOverlays(items) {
+        measureOverlays.forEach(function (overlay) { if (overlay.el.parentNode) overlay.el.parentNode.removeChild(overlay.el); });
+        measureOverlays = [];
+        var api = measureApi();
+
+        items.forEach(function (measure, index) {
+            var points = (measure && measure.points) || [];
+            if (points.length < 2) return;
+            measureOverlays.push({
+                el: createMeasureBadge(index, measureFormat(measurePathDistance(points))),
+                anchor: points[points.length - 1]
+            });
+            if (!measure.startIsLaunchSite || !api || !api.segmentInclinationDegrees || !api.greatCircleMidpoint) return;
+            for (var i = 1; i < points.length; i++) {
+                var degrees = api.segmentInclinationDegrees(points[i - 1], points[i]);
+                if (!Number.isFinite(degrees)) continue;
+                measureOverlays.push({
+                    el: createMeasureLabelOverlay(api.formatInclination(degrees, i)),
+                    anchor: api.greatCircleMidpoint(points[i - 1], points[i])
+                });
+            }
+        });
+    }
+
+    /* 每帧把里程标签、公里牌、倾角标签贴回各自的经纬度（和气泡的 syncPopups 同一时机）；
+       测距列表变了才重建 DOM。refresh() 也会调一次，保证图层重建后立刻补上。 */
+    function syncMeasureOverlays() {
+        var items = window.__notamMeasurements || [];
+        var signature = measureOverlaysSignature(items);
+        if (signature !== measureOverlaysKey) {
+            measureOverlaysKey = signature;
+            buildMeasureOverlays(items);
+        }
+        if (measureLabel && measureLabelAnchor) placeMeasureLabel();
+        for (var i = 0; i < measureOverlays.length; i++) {
+            var overlay = measureOverlays[i];
+            var screen = overlay.anchor ? screenOf(overlay.anchor) : null;
+            if (!screen) { overlay.el.hidden = true; continue; }
+            overlay.el.hidden = false;
+            overlay.el.style.left = screen.x + 'px';
+            overlay.el.style.top = screen.y + 'px';
+        }
+    }
+
+    /* 测距中给球面容器挂 .measure-mode（CSS 里换成十字光标，与 2D 的 #allmap.measure-mode 对应） */
+    function applyMeasureCursorClass() {
+        var container = document.getElementById('globeMap');
+        if (container) container.classList.toggle('measure-mode', tool === 'measure');
+    }
 
     function bindEvents() {
         handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-        // 每渲染一帧就把打开的气泡贴回锚点：滚轮缩放、拖拽旋转、惯性滑行期间气泡都跟着航警走
-        viewer.scene.postRender.addEventListener(syncPopups);
+        // 每渲染一帧就把打开的气泡、测距标签 / 公里牌贴回各自的经纬度：
+        // 滚轮缩放、拖拽旋转、惯性滑行期间它们都跟着地面走
+        viewer.scene.postRender.addEventListener(function () { syncPopups(); syncMeasureOverlays(); });
+
+        // 单击（2D 的 onMapClick）：吸附后落点；第一个点如果是吸附到发射场，之后一直显示该段倾角
         handler.setInputAction(function (movement) {
+            if (tool === 'measure') {
+                var raw = pickPosition(movement.position);
+                if (!raw) return;   // 点到球面外，和 2D 点在地图外一样不落点
+                var snap = snapMeasurePoint(raw, movement.position);
+                measurePoints.push({ lat: snap.point.lat, lng: snap.point.lng });
+                if (measurePoints.length === 1) measureStartIsLaunchSite = snap.isLaunchSite;
+                drawMeasure(null, snap.snapped ? snap.point : null);
+                return;
+            }
             var point = pickPosition(movement.position);
             if (tool === 'latlng') { updateHud(point); return; }
-            if (tool === 'measure') { if (point) { measurePoints.push(point); drawPreview(); } return; }
             var picked = viewer.scene.pick(movement.position);
             if (Cesium.defined(picked) && picked.id && picked.id.__layer) {
                 var entityPosition = picked.id.position && typeof picked.id.position.getValue === 'function' ? picked.id.position.getValue(Cesium.JulianDate.now()) : null;
@@ -448,26 +799,54 @@
             }
             else closeUnpinnedPopups();   // 点空白只关没固定的，PIN 住的留着（和 2D 一致）
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+        // 移动（2D 的 onMapMove）：虚线预览段 + 光标处的实时里程，标签跟着光标走
         handler.setInputAction(function (movement) {
-            var point = pickPosition(movement.endPosition);
-            if (tool === 'latlng') updateHud(point);
-            if (tool === 'measure' && measurePoints.length) drawPreview(point);
+            if (tool === 'measure') {
+                var raw = pickPosition(movement.endPosition);
+                if (!raw) { drawMeasure(null, null); return; }   // 移到球面外：收掉预览段，只留已确定的折线
+                var snap = snapMeasurePoint(raw, movement.endPosition);
+                drawMeasure(snap.point, snap.snapped ? snap.point : null);
+                return;
+            }
+            if (tool === 'latlng') updateHud(pickPosition(movement.endPosition));
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+        // 双击结束当前测距（2D 的 onMapDblClick → finishMeasure）
         handler.setInputAction(function () {
             if (tool !== 'measure') return;
-            if (measurePoints.length < 2) { note('请至少选择两个点再结束测距'); return; }
-            if (window.NotamMeasure) window.NotamMeasure.addGlobeMeasure(measurePoints.slice());
-            note('测距完成: ' + formatDistance(globeDistance(measurePoints)), 'success');
-            measurePoints = [];
-            if (measurePreview) viewer.entities.remove(measurePreview);
-            measurePreview = null;
-            refresh(true);
+            finishMeasure(true);
         }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
+        // 右键（2D 的 onMapRightClick）：先把够两个点的这次测距落库，再退出测距模式
         handler.setInputAction(function () {
-            if (tool === 'measure' && window.NotamMeasure) window.NotamMeasure.stopFromGlobe();
-            else if (tool === 'latlng' && window.NotamMeasure) window.NotamMeasure.stopFromGlobe();
+            if (tool === 'measure') {
+                finishMeasure(false);
+                if (window.NotamMeasure) window.NotamMeasure.stopFromGlobe();
+                note('已退出测距模式');
+                return;
+            }
+            if (tool === 'latlng' && window.NotamMeasure) {
+                window.NotamMeasure.stopFromGlobe();
+                note('已退出经纬度查询');
+            }
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
     }
+
+    /* ESC（2D 的 onKeyDown）：测距中只清空这一次的草稿、留在测距模式；经纬度查询中则退出查询。
+       2D 那边这段监听只在测距 / 查询期间才绑上，这里用工具状态做等价判断。 */
+    document.addEventListener('keydown', function (event) {
+        if (!active || event.key !== 'Escape') return;
+        if (tool === 'measure') {
+            clearMeasureDraft();
+            note('已清除当前测距');
+            return;
+        }
+        if (tool === 'latlng' && window.NotamMeasure) {
+            window.NotamMeasure.stopFromGlobe();
+            note('已退出经纬度查询');
+        }
+    });
 
     /* ══════════════════ 3D 功能面板：晨昏光照 / 显示时刻 / 倍速播放 ══════════════════
 
@@ -882,6 +1261,13 @@
         window.mapViewMode = '3d';
         document.body.classList.add('globe-active');
         refresh();
+        // 补回工具状态：切回 2D 再进 3D 时 2D 那边可能仍在测距 / 查询中（按钮写着「测距中」），
+        // 球面这边必须跟着进同一个状态，否则点了没反应、和按钮显示对不上。
+        if (window.NotamMeasure && typeof window.NotamMeasure.currentTool === 'function') {
+            setActiveTool(window.NotamMeasure.currentTool());
+        } else {
+            applyMeasureCursorClass();
+        }
         fxOnEnter();   // 相机已经摆好（fxDefaultFade 依赖相机到地心的距离），再把晨昏/时刻落地
         window.requestAnimationFrame(function () { instance.resize(); instance.scene.requestRender(); });
         if (typeof window.updateMapModeControl === 'function') window.updateMapModeControl();
@@ -895,10 +1281,10 @@
         }
         active = false;
         tool = 'none';
-        measurePoints = [];
-        if (measurePreview) viewer.entities.remove(measurePreview);
-        measurePreview = null;
-        // 切回二维：没固定的气泡关掉；PIN 住的留在列表里（元素随容器一起隐藏），再进 3D 时原样出现
+        clearMeasureDraft();
+        applyMeasureCursorClass();
+        // 切回二维：没固定的气泡关掉；PIN 住的留在列表里（元素随容器一起隐藏），再进 3D 时原样出现。
+        // 公里牌 / 倾角标签（DOM）同理：留着，容器一隐藏就一起看不见，回 3D 时 syncMeasureOverlays() 会重新贴回来。
         closeUnpinnedPopups();
         if (hud) hud.hidden = true;
         document.body.classList.remove('globe-active');
@@ -909,10 +1295,10 @@
 
     function setActiveTool(next) {
         tool = next || 'none';
-        measurePoints = [];
-        if (measurePreview && viewer) viewer.entities.remove(measurePreview);
-        measurePreview = null;
+        clearMeasureDraft();
+        applyMeasureCursorClass();
         if (hud) hud.hidden = tool === 'none';
+        if (viewer) viewer.scene.requestRender();
     }
 
     function highlight(id, enabled) {
