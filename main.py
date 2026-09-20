@@ -1,5 +1,6 @@
 import configparser
 import hashlib
+import hmac
 import json
 import os
 import re
@@ -686,7 +687,8 @@ def compute_data_hash(data, include_sources=None):
         source = str((data.get('SOURCE', []) or ['NOTAM'])[index] if index < len(data.get('SOURCE', []) or []) else 'NOTAM').upper()
         if requested is None or source in requested:
             records.append('|'.join((str(data['CODE'][index]), str(data['TIME'][index]), str(data['PLATID'][index]), source, str(data['GEOMETRY'][index]))))
-    return hashlib.sha256('\n'.join(sorted(records)).encode('utf-8')).hexdigest()
+    secret_key = os.environ.get('NOTAM_HASH_SECRET', 'notams-default-integrity-key').encode('utf-8')
+    return hmac.new(secret_key, '\n'.join(sorted(records)).encode('utf-8'), hashlib.sha256).hexdigest()
 
 def is_valid_fetch_result(data):
     """Only complete fetches may trigger downstream updates."""
