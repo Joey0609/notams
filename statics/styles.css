@@ -120,18 +120,30 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 .leaflet-popup-content-wrapper {border-radius: 8px;}
 /* NOTAM弹出窗口样式 */
 .notam-popup {font-family: "微软雅黑", Arial, sans-serif;min-width: 240px;}
-.notam-popup-header {display: flex;align-items: center;justify-content: space-between;gap: 8px;background: linear-gradient(135deg, #243064 0%, #381d57 100%);margin: -12px -12px 8px -12px;padding: 8px 12px;border-radius: 6px 6px 0 0;}
-.notam-popup-header h4 {flex: 1 1 auto;min-width: 0;margin: 0;padding: 0;font-size: 14px;color: #fff;font-weight: bold;text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);}
-/* 标题栏右侧控件（图钉 / 复制）与右上角关闭按钮：三个图标按钮完全同尺寸（24px 圆形，
+.notam-popup-header {display: flex;align-items: center;justify-content: space-between;gap: 8px;contain: inline-size;background: linear-gradient(135deg, #243064 0%, #381d57 100%);margin: -12px -12px 8px -12px;padding: 8px 12px;border-radius: 6px 6px 0 0;}
+.notam-popup-header h4 {flex: 1 1 auto;min-width: 0;margin: 0;padding: 0;overflow: hidden;text-overflow: clip;white-space: nowrap;font-size: 14px;color: #fff;font-weight: bold;text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);}
+/* 标题栏右侧控件（原文 / 隐藏 / 图钉 / 复制）与关闭按钮：图标按钮完全同尺寸（24px 圆形，
    图钉/复制图标 14×14，关闭图标 16×16 以抵消 × 字形本身偏小） */
 .leaflet-popup.notam-info-popup {--popup-control-size: 24px;--popup-icon-size: 14px;--popup-close-icon-size: 16px;}
 .popup-header-actions {display: flex;align-items: center;gap: 6px;flex: 0 0 auto;height: var(--popup-control-size, 24px);}
-.popup-pin, .popup-copy-raw {box-sizing: border-box;display: inline-flex;align-items: center;justify-content: center;flex: 0 0 auto;width: var(--popup-control-size, 24px);height: var(--popup-control-size, 24px);padding: 0;line-height: 1;color: #fff;background: rgba(255, 255, 255, 0.18);border: 1px solid rgba(255, 255, 255, 0.45);border-radius: 50%;cursor: pointer;transition: background 0.2s, color 0.2s;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
-.popup-pin:hover, .popup-copy-raw:hover {background: rgba(255, 255, 255, 0.34);}
-.popup-pin:active, .popup-copy-raw:active {background: rgba(255, 255, 255, 0.5);}
+.popup-pin, .popup-copy-raw, .popup-toggle-raw, .popup-hide {box-sizing: border-box;display: inline-flex;align-items: center;justify-content: center;flex: 0 0 auto;width: var(--popup-control-size, 24px);height: var(--popup-control-size, 24px);padding: 0;line-height: 1;color: #fff;background: rgba(255, 255, 255, 0.18);border: 1px solid rgba(255, 255, 255, 0.45);border-radius: 50%;cursor: pointer;transition: background .2s, color .2s, border-radius .24s ease, width .24s ease, padding .24s ease;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+.popup-pin:hover, .popup-copy-raw:hover, .popup-toggle-raw:hover, .popup-hide:hover {background: rgba(255, 255, 255, 0.34);}
+.popup-pin:active, .popup-copy-raw:active, .popup-toggle-raw:active, .popup-hide:active {background: rgba(255, 255, 255, 0.5);}
 .popup-pin[data-pinned="true"] {color: #243064;background: #fff;border-color: #fff;}
+/* 「原文 / 结构化」切换按钮的激活态：和固定按钮（[data-pinned="true"]）完全同一套观感 —— 白底 + 深蓝图标，
+   状态由 setPopupRawView() 写在 data-raw-view 上（点一次切到原文并变白，再点一次回结构化并恢复）。
+   图标本身用 currentColor，所以只要改 color 就跟着变深蓝。
+   这条排在 :hover 那条之后、且特异性相同，所以已经是白底时悬停不会再被半透明白盖掉（与图钉一致）。 */
+.popup-toggle-raw[data-raw-view="true"] {color: #243064;background: #fff;border-color: #fff;}
+.popup-hide {overflow: hidden;gap: 0;}
+.popup-hide-icon {display: inline-flex;flex: 0 0 var(--popup-icon-size, 14px);width: var(--popup-icon-size, 14px);align-items: center;justify-content: center;overflow: hidden;opacity: 1;transition: flex-basis .18s ease, width .18s ease, opacity .12s ease, transform .18s ease;}
+.popup-hide-label {display: block;max-width: 0;overflow: hidden;white-space: nowrap;opacity: 0;transition: max-width .2s ease .04s, opacity .16s ease;}
+.popup-hide[data-confirming="true"] {width: 44px;padding: 0 8px;gap: 0;border-radius: 12px;background: #a73737;border-color: rgba(255,255,255,.72);}
+.popup-hide[data-confirming="true"]:hover {background: #c24545;}
+.popup-hide[data-confirming="true"] .popup-hide-icon {flex-basis: 0;width: 0;opacity: 0;transform: scale(.65);}
+.popup-hide[data-confirming="true"] .popup-hide-label {max-width: 28px;opacity: 1;}
 /* 图标一律 block + 固定 14×14，避免 SVG 的基线空隙把圆形撑高 */
-.popup-pin svg, .popup-copy-raw svg {display: block;width: var(--popup-icon-size, 14px);height: var(--popup-icon-size, 14px);}
+.popup-pin svg, .popup-copy-raw svg, .popup-toggle-raw svg, .popup-hide svg {display: block;width: var(--popup-icon-size, 14px);height: var(--popup-icon-size, 14px);}
 /* 关闭按钮：与上面两个控件同尺寸同底色；× 由 JS 换成同一套图标 */
 .leaflet-popup.notam-info-popup a.leaflet-popup-close-button {position: absolute;top: 8px;right: 7px;box-sizing: border-box;display: flex;align-items: center;justify-content: center;width: var(--popup-control-size, 24px);height: var(--popup-control-size, 24px);padding: 0;font-size: 15px;line-height: 1;color: #fff;background: rgba(255, 255, 255, 0.18);border: 1px solid rgba(255, 255, 255, 0.45);border-radius: 50%;text-decoration: none;transition: background 0.2s;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
 /* × 的字形在 Material 图标里只占 14/24，比图钉/复制的字形小一圈，所以给它 16px（9.3px 宽）
@@ -161,6 +173,16 @@ body,html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-famil
 .popup-detail {display: block;max-height: 4em;overflow-y: auto;overflow-wrap: break-word;word-break: break-word;padding-right: 2px;scrollbar-width: thin;}
 .popup-detail::-webkit-scrollbar {width: 4px;}
 .popup-detail::-webkit-scrollbar-thumb {background: rgba(0, 0, 0, 0.18);border-radius: 2px;}
+.popup-structured-view, .popup-raw-view {width: 100%;height: 100%;}
+.popup-raw-view {overflow: hidden;}
+/* 原文视图底下也要有同一条白色渐隐：它和上面的「航警详情」一样是个滚动区，
+   切到原文时如果只有它没有渐隐，文字看起来就像被硬切掉一段（渐隐本身要保留）。
+   渐变与 .popup-detail-wrap::after 逐字一致，两个视图切换时底部观感不变。 */
+.popup-raw-view {position: relative;}
+.popup-raw-view::after {content: '';position: absolute;left: 0;right: 0;bottom: 0;height: 2.4em;background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);pointer-events: none;}
+.popup-raw-content {box-sizing: border-box;width: 100%;height: 100%;margin: 0;padding: 3px 2px 3px 0;overflow-y: auto;overflow-wrap: break-word;white-space: pre-wrap;word-break: break-word;font: 12px/1.4 "微软雅黑", Arial, sans-serif;color: #333;scrollbar-width: thin;}
+.popup-raw-content::-webkit-scrollbar {width: 4px;}
+.popup-raw-content::-webkit-scrollbar-thumb {background: rgba(0, 0, 0, 0.18);border-radius: 2px;}
 .notam-popup-buttons {display: flex;gap: 6px;margin-top: 8px;}
 .notam-popup-buttons .copy {flex: 1;padding: 6px 10px;font-size: 12px;font-weight: bold;}
 .copy-coord {background: #007906 !important;}
@@ -1022,7 +1044,7 @@ body:not(.globe-active) .globe-fx-area {display: none !important;}
 .leaflet-popup.notam-info-popup .popup-header-actions a.leaflet-popup-close-button { position: static; top: auto; right: auto; }
 .globe-notam-popup .popup-header-actions .globe-popup-close { position: static; flex: 0 0 auto; width: 24px; height: 24px; padding: 0; font-size: 0; line-height: 1; background: rgba(255,255,255,.18); }
 .globe-notam-popup .popup-header-actions .globe-popup-close::after { content: '×'; font-size: 18px; }
-@media (prefers-reduced-motion: reduce) { .map-mode-control::before { transition: none; } .globe-notam-popup { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .map-mode-control::before, .globe-notam-popup, .popup-hide, .popup-hide-icon, .popup-hide-label { transition: none; } }
 /* 三角往气泡里压 1px（-8 而不是 -9），把气泡底边和三角之间的接缝盖住，看着更干净 */
 .globe-notam-popup::before { content: ""; position: absolute; left: calc(var(--popup-pointer-x, 50%) - 9px); top: -8px; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid rgba(255,255,255,.97); filter: drop-shadow(0 -1px 1px rgba(0,0,0,.12)); }
 .globe-notam-popup.globe-popup-above::before { top: auto; bottom: -8px; border-bottom: 0; border-top: 9px solid rgba(255,255,255,.97); filter: drop-shadow(0 1px 1px rgba(0,0,0,.12)); }

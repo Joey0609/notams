@@ -1141,13 +1141,17 @@ function notamDetailHtml(rawMessage, maxLines = 0) {
     return escapeNotamText(full).replace(/\n/g, '<br>') + NOTAM_DETAIL_TRAILING_BREAK;
 }
 
-/* 弹窗标题栏：左侧标题 + 右侧「图钉」（固定弹窗）与「复制」（复制原始报文），两个图标同为 14×14 */
+/* 弹窗标题栏：左侧标题 + 右侧「隐藏 / 图钉 / 复制 / 关闭」；隐藏需二次确认。 */
 const POPUP_PIN_ICON = "<svg width='14' height='14' viewBox='0 0 24 24' aria-hidden='true'>" +
     "<path fill='currentColor' d='M16 9V4h1V2H7v2h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z'/></svg>";
 const POPUP_COPY_ICON = "<svg width='14' height='14' viewBox='0 0 24 24' aria-hidden='true'>" +
     "<path fill='currentColor' d='M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z'/></svg>";
 const POPUP_CLOSE_ICON = "<svg width='14' height='14' viewBox='0 0 24 24' aria-hidden='true'>" +
     "<path fill='currentColor' d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>";
+const POPUP_HIDE_ICON = "<svg width='14' height='14' viewBox='0 0 24 24' aria-hidden='true'>" +
+    "<path fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Zm13 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM3 3l18 18'/></svg>";
+const POPUP_RAW_ICON = "<svg width='14' height='14' viewBox='0 0 24 24' aria-hidden='true'>" +
+    "<path fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M5 3h10l4 4v14H5zM15 3v5h4M8 12h8M8 16h8'/></svg>";
 
 let popupRawSeq = 0;
 const popupRawMessages = new Map();
@@ -1162,16 +1166,85 @@ function popupRawMessage(key) {
     return popupRawMessages.get(key) || '';
 }
 
-function buildNotamPopupHeader(title, rawMessage, headerStyle) {
+function buildNotamPopupHeader(title, rawMessage, headerStyle, notamIndex) {
     const key = registerPopupRawMessage(rawMessage);
     const styleAttr = headerStyle ? " style='" + headerStyle + "'" : '';
+    const hideButton = Number.isInteger(notamIndex) && notamIndex >= 0
+        ? "<button class='popup-hide' data-notam-index='" + notamIndex + "' data-confirming='false' title='隐藏航警' aria-label='隐藏航警'>" +
+            "<span class='popup-hide-icon'>" + POPUP_HIDE_ICON + "</span>" +
+            "<span class='popup-hide-label' aria-hidden='true'>确认</span>" +
+          "</button>"
+        : '';
     return "<div class='notam-popup-header'" + styleAttr + ">" +
         "<h4>" + title + "</h4>" +
         "<div class='popup-header-actions'>" +
+        "<button class='popup-toggle-raw' data-raw-key='" + key + "' data-raw-view='false' title='查看航警原文' aria-label='查看航警原文'>" + POPUP_RAW_ICON + "</button>" +
+        hideButton +
         "<button class='popup-pin' data-pinned='false' title='固定弹窗' aria-label='固定弹窗'>" + POPUP_PIN_ICON + "</button>" +
         "<button class='popup-copy-raw' data-raw-key='" + key + "' title='复制原始报文' aria-label='复制原始报文'>" + POPUP_COPY_ICON + "</button>" +
         "</div>" +
         "</div>";
+}
+
+/* 与侧边栏眼睛按钮一致：只从地图隐藏，原始数据和侧边栏条目仍保留。 */
+function hideAutoNotamFromPopup(index) {
+    if (!Number.isInteger(index) || index < 0 || !polygonAuto[index]) return false;
+    visibleState[index] = false;
+    if (map && typeof map.removeLayer === 'function') map.removeLayer(polygonAuto[index]);
+    if (typeof updateSidebar === 'function') updateSidebar();
+    if (window.NotamGlobe) window.NotamGlobe.refresh(true);
+    return true;
+}
+
+function setPopupHideConfirmation(button, confirming) {
+    if (!button) return;
+    button.dataset.confirming = confirming ? 'true' : 'false';
+    const label = confirming ? '确认' : '隐藏航警';
+    button.title = label;
+    button.setAttribute('aria-label', label);
+}
+
+function setPopupRawView(container, owner, rawView, button) {
+    if (!container || !container.querySelector) return;
+    if (owner) owner.__rawView = !!rawView;
+    const body = container.querySelector('.notam-popup-body');
+    const structured = container.querySelector('.popup-structured-view');
+    const raw = container.querySelector('.popup-raw-view');
+    if (!body || !structured || !raw) return;
+    if (rawView && !owner.__rawBodyHeight) {
+        owner.__rawBodyHeight = Math.ceil(body.getBoundingClientRect().height);
+    }
+    if (owner.__rawBodyHeight) body.style.height = owner.__rawBodyHeight + 'px';
+    structured.hidden = !!rawView;
+    raw.hidden = !rawView;
+    const toggle = button || container.querySelector('.popup-toggle-raw');
+    if (toggle) {
+        toggle.dataset.rawView = rawView ? 'true' : 'false';
+        toggle.title = rawView ? '显示结构化信息' : '查看航警原文';
+        toggle.setAttribute('aria-label', toggle.title);
+    }
+}
+
+function togglePopupRawView(popup, button) {
+    if (!popup || !popup.getElement) return;
+    const container = popup.getElement();
+    const current = button && button.dataset.rawView === 'true';
+    setPopupRawView(container, popup, !current, button);
+}
+window.setPopupRawView = setPopupRawView;
+
+/* 展开确认后，点击弹窗其它位置、地图或任意其它控件都会收起，避免确认状态残留。 */
+function bindPopupHideCollapse(popup, container) {
+    if (!popup || !container || typeof document === 'undefined') return;
+    if (popup.__hideCollapseHandler) document.removeEventListener('click', popup.__hideCollapseHandler);
+    popup.__hideCollapseHandler = function(event) {
+        const button = container.querySelector ? container.querySelector('.popup-hide[data-confirming="true"]') : null;
+        const target = event && event.target;
+        if (!button || !target || typeof target.closest !== 'function') return;
+        if (target.closest('.popup-hide') === button) return;
+        setPopupHideConfirmation(button, false);
+    };
+    document.addEventListener('click', popup.__hideCollapseHandler);
 }
 
 /* 固定状态记在 popup 对象上：Leaflet 重新定位（点击同一多边形）会执行
@@ -1217,12 +1290,31 @@ function ensurePopupActionDelegation(container, popup) {
                 setPopupPinned(popup, popup.__pinned !== true);
                 return;
             }
+            const rawButton = target.closest('.popup-toggle-raw[data-raw-key]');
+            if (rawButton) {
+                event.stopPropagation();
+                togglePopupRawView(popup, rawButton);
+                return;
+            }
+            const hideButton = target.closest('.popup-hide[data-notam-index]');
+            if (hideButton) {
+                event.stopPropagation();
+                if (hideButton.dataset.confirming !== 'true') {
+                    setPopupHideConfirmation(hideButton, true);
+                    return;
+                }
+                if (hideAutoNotamFromPopup(Number(hideButton.getAttribute('data-notam-index')))) {
+                    popup.close();
+                }
+                return;
+            }
             const copyButton = target.closest('.popup-copy-raw[data-raw-key]');
             if (copyButton) {
                 event.stopPropagation();
                 handleCopy(popupRawMessage(copyButton.getAttribute('data-raw-key')));
             }
         });
+        bindPopupHideCollapse(popup, container);
     }
     if (typeof popup._updateContent === 'function' && !popup.__pinContentPatched) {
         popup.__pinContentPatched = true;
@@ -1233,6 +1325,7 @@ function ensurePopupActionDelegation(container, popup) {
             if (closeButton && element && closeButton.parentElement !== element) element.appendChild(closeButton);
             originalUpdateContent.apply(this, arguments);
             applyPopupPinState(this, container);
+            setPopupRawView(container, this, this.__rawView === true);
             applyPopupCloseIcon(this);
             movePopupCloseIntoHeader(this, container);
         };
@@ -1266,6 +1359,8 @@ function bindPopupActions(layer) {
         applyPopupCloseIcon(popup);
         movePopupCloseIntoHeader(popup);
         ensurePopupActionDelegation(popup.getElement ? popup.getElement() : null, popup);
+        popup.__rawView = false;
+        popup.__rawBodyHeight = null;
         // 每次重新打开都回到未固定状态（重新定位不会触发 popupopen，固定状态因此保留）
         setPopupPinned(popup, false);
     });
@@ -1273,6 +1368,12 @@ function bindPopupActions(layer) {
     layer.on('popupclose', function(e) {
         const popup = e && e.popup;
         if (!popup) return;
+        if (popup.__hideCollapseHandler) {
+            document.removeEventListener('click', popup.__hideCollapseHandler);
+            popup.__hideCollapseHandler = null;
+        }
+        popup.__rawView = false;
+        popup.__rawBodyHeight = null;
         // 关闭后恢复默认「点击地图即关闭、被新弹窗顶掉」，下次打开由 Leaflet 重新绑定
         setPopupPinned(popup, false);
     });
@@ -1311,6 +1412,13 @@ function buildNotamPopupRows(options) {
     return rows + (settings.extraRows || '');
 }
 
+function buildNotamPopupRawView(rawMessage) {
+    const raw = String(rawMessage == null ? '' : rawMessage).replace(/\r\n?/g, '\n');
+    return "<div class='popup-raw-view' hidden>" +
+        "<pre class='popup-raw-content'>" + escapeNotamText(raw || '暂无航警原文') + "</pre>" +
+        "</div>";
+}
+
 window.extractNotamDetails = extractNotamDetails;
 window.buildNotamPopupRows = buildNotamPopupRows;
 
@@ -1341,8 +1449,9 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
 
         // 统一布局：标题栏右侧「复制」按钮；内容为 持续时间 / 航警编号 + 飞行情报区（编号在前）/ 航警详情
         popupContent = "<div class='notam-popup'>" +
-            buildNotamPopupHeader(popupTitle, rawmessage) +
+            buildNotamPopupHeader(popupTitle, rawmessage, '', numm) +
             "<div class='notam-popup-body'>" +
+            "<div class='popup-structured-view'>" +
             buildNotamPopupRows({
                 timeText: timestr,
                 code: codee,
@@ -1352,6 +1461,8 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
                 detailLabel: isMsi ? '海警详情' : '航警详情',
                 rawMessage: rawmessage
             }) +
+            "</div>" +
+            buildNotamPopupRawView(rawmessage) +
             "</div>" +
             "</div>";
     } else {
@@ -1375,7 +1486,7 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
         className: 'notam-info-popup'
     });
 
-    // 标题栏「图钉 / 复制」按钮
+    // 标题栏「隐藏 / 图钉 / 复制」按钮
     bindPopupActions(tmpPolygon);
 
     // 存储多边形引用

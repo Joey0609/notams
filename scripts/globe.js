@@ -274,11 +274,37 @@
         var entry = { el: document.createElement('div'), layer: null, anchor: null, anchorTop: 0, pinned: false, panLeft: 0, hideTimer: null, open: false };
         entry.el.className = 'globe-notam-popup';
         entry.el.hidden = true;
+        entry.collapseHideConfirmation = function (event) {
+            var button = entry.el.querySelector('.popup-hide[data-confirming="true"]');
+            var target = event && event.target;
+            if (!button || !target || typeof target.closest !== 'function') return;
+            if (target.closest('.popup-hide') === button) return;
+            if (typeof window.setPopupHideConfirmation === 'function') window.setPopupHideConfirmation(button, false);
+        };
+        document.addEventListener('click', entry.collapseHideConfirmation);
         entry.el.addEventListener('click', function (event) {
             var close = event.target.closest('.globe-popup-close');
             if (close) { closePopup(entry); return; }
             var pin = event.target.closest('.popup-pin');
             if (pin) { entry.pinned = !entry.pinned; applyPopupPinState(entry); return; }
+            var rawButton = event.target.closest('.popup-toggle-raw[data-raw-key]');
+            if (rawButton) {
+                if (typeof window.setPopupRawView === 'function') {
+                    var rawView = rawButton.dataset.rawView === 'true';
+                    window.setPopupRawView(entry.el, entry, !rawView, rawButton);
+                }
+                return;
+            }
+            var hide = event.target.closest('.popup-hide[data-notam-index]');
+            if (hide) {
+                if (hide.dataset.confirming !== 'true') {
+                    if (typeof window.setPopupHideConfirmation === 'function') window.setPopupHideConfirmation(hide, true);
+                    return;
+                }
+                var index = Number(hide.getAttribute('data-notam-index'));
+                if (typeof window.hideAutoNotamFromPopup === 'function' && window.hideAutoNotamFromPopup(index)) closePopup(entry);
+                return;
+            }
             var copy = event.target.closest('.popup-copy-raw[data-raw-key]');
             if (copy && typeof window.handleCopy === 'function') window.handleCopy(window.popupRawMessage(copy.dataset.rawKey));
         });
@@ -296,6 +322,7 @@
         entry.layer = null;
         applyPopupPinState(entry);
         entry.el.classList.remove('is-visible');
+        document.removeEventListener('click', entry.collapseHideConfirmation);
         window.clearTimeout(entry.hideTimer);
         entry.hideTimer = window.setTimeout(function () {
             if (entry.open) return;
@@ -401,7 +428,11 @@
         var iconOptions = layer.options && layer.options.icon && layer.options.icon.options;
         entry.anchorTop = iconOptions && iconOptions.popupAnchor ? Math.abs(iconOptions.popupAnchor[1]) : 0;
         // 新气泡 / 换了一个航警回到未固定；同一个航警再点一次只是重绘内容，固定状态保留（与 2D 一致）
-        if (!wasOpen || entry.layer !== layer) entry.pinned = false;
+        if (!wasOpen || entry.layer !== layer) {
+            entry.pinned = false;
+            entry.__rawView = false;
+            entry.__rawBodyHeight = null;
+        }
         entry.layer = layer;
         entry.anchor = position;   // 世界坐标；之后每帧都拿它重算屏幕位置，跟着视角一起动
         entry.open = true;
@@ -409,6 +440,12 @@
         entry.el.hidden = false;
         if (popups.indexOf(entry) === -1) popups.push(entry);
         applyPopupPinState(entry);
+        // 内容刚被 innerHTML 重写过，和固定状态一样要把「原文 / 结构化」重新套用一次：
+        // 否则同一个航警再点一次会把 DOM 重置回结构化视图，而按钮上的 data-raw-view（决定它变不变白）
+        // 还停在旧值，状态和画面对不上（2D 那边是在 _updateContent 的补丁里做这件事）。
+        if (typeof window.setPopupRawView === 'function' && entry.el.querySelector('.popup-toggle-raw')) {
+            window.setPopupRawView(entry.el, entry, entry.__rawView === true);
+        }
         syncPopupToAnchor(entry);
         if (wasOpen) {
             entry.el.classList.add('is-visible');   // 已经开着，换内容不重播动画，免得闪
