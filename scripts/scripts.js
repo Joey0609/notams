@@ -193,9 +193,21 @@ const colorPoolSatelliteFocused = [
     "#ff00e5ff", "#6ec6ffff", "#00ffd5ff", "#ff6b6bff", "#e8ff3aff"
 ];
 
+// MSI 独立颜色池：不复用任何 NOTAM（聚焦或外部段）颜色。
+const colorPoolVectorMsi = [
+    "#004d40", "#5d4037", "#37474f", "#6d1b7b", "#0d47a1",
+    "#bf360c", "#33691e", "#3e2723", "#01579b", "#4e342e"
+];
+
+const colorPoolSatelliteMsi = [
+    "#ff6f00", "#76ff03", "#40c4ff", "#ff4081", "#b2ff59",
+    "#ff80ab", "#18ffff", "#ffd740", "#ea80fc", "#84ffff"
+];
+
 // 当前使用的颜色池
 let currentColorPool = colorPoolVector;
 let currentFocusedColorPool = colorPoolVectorFocused;
+let currentMsiColorPool = colorPoolVectorMsi;
 let currentColor_idx = 0;
 
 function randomColor() {
@@ -206,6 +218,7 @@ function randomColor() {
 function switchColorPool(isVectorMap) {
     currentColorPool = isVectorMap ? colorPoolVector : colorPoolSatellite;
     currentFocusedColorPool = isVectorMap ? colorPoolVectorFocused : colorPoolSatelliteFocused;
+    currentMsiColorPool = isVectorMap ? colorPoolVectorMsi : colorPoolSatelliteMsi;
     currentColor_idx = 0; // 重置索引
 }
 
@@ -297,7 +310,7 @@ function makeMap() {
     // 创建Leaflet地图
     map = L.map('allmap', {
         center: [36, 103],
-        zoom: 6,
+        zoom: 4,
         minZoom: 3,
         worldCopyJump: false,
         zoomControl: false,  // 关闭默认缩放控件，稍后添加到右下角
@@ -504,7 +517,7 @@ function redrawAllNotams() {
     originalPolygonStyles = {};  // 清除缓存的样式
     
     for (var i = 0; i < dict.NUM; i++) {
-        var color = getColorForCode(dict.CODE[i]);
+        var color = getColorForRecord(i);
         drawNot(dict.TIME[i], dict.CODE[i], dict.ALTITUDE[i], i, color, 0, dict.RAWMESSAGE[i], dict.SOURCE?.[i] || 'NOTAM', dict.FIR?.[i] || '', dict.GEOMETRY?.[i] || '');
         
         if (currentVisibleState[i] === false && polygonAuto[i]) {
@@ -513,6 +526,7 @@ function redrawAllNotams() {
     }
     
     visibleState = currentVisibleState;
+    if (typeof applyNotamTypeFilter === 'function') applyNotamTypeFilter();
     if (window.NotamGlobe) window.NotamGlobe.refresh(true);
 }
 
@@ -1379,23 +1393,28 @@ function bindPopupActions(layer) {
     });
 }
 
-/* 统一的航警弹窗信息行：持续时间 / 航警编号 + 飞行情报区（编号在前）/ 航警详情 */
+/* 统一的航警弹窗信息行：持续时间 / 编号（可选独占一行）/ 航警详情 */
 function buildNotamPopupRows(options) {
     const settings = options || {};
+    const codeRow = settings.fullWidthCode
+        ? "<div class='popup-info-row'>" +
+            "<span class='popup-label'>" + (settings.codeLabel || '航警编号') + ":</span>" +
+            "<span class='popup-value'>" + (settings.code || '') + "</span>" +
+          "</div>"
+        : "<div class='popup-info-row row-horizontal'>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>" + (settings.codeLabel || '航警编号') + ":</span>" +
+            "<span class='popup-value'>" + (settings.code || '') + "</span>" +
+            "</div>" +
+            "<div class='popup-col'>" +
+            "<span class='popup-label'>" + (settings.regionLabel || '飞行情报区') + ":</span>" +
+            "<span class='popup-value'>" + (settings.regionValue || '-') + "</span>" +
+            "</div>" +
+          "</div>";
     let rows = "<div class='popup-info-row'>" +
         "<span class='popup-label'>持续时间:</span>" +
         "<span class='popup-value'>" + (settings.timeText || '') + "</span>" +
-        "</div>" +
-        "<div class='popup-info-row row-horizontal'>" +
-        "<div class='popup-col'>" +
-        "<span class='popup-label'>" + (settings.codeLabel || '航警编号') + ":</span>" +
-        "<span class='popup-value'>" + (settings.code || '') + "</span>" +
-        "</div>" +
-        "<div class='popup-col'>" +
-        "<span class='popup-label'>" + (settings.regionLabel || '飞行情报区') + ":</span>" +
-        "<span class='popup-value'>" + (settings.regionValue || '-') + "</span>" +
-        "</div>" +
-        "</div>";
+        "</div>" + codeRow;
 
     // 详情默认取全部行（不截断、不加省略号），超出部分由滚动区 + 底部渐隐查看
     const detailLines = typeof settings.detailLines === 'number' ? settings.detailLines : 0;
@@ -1444,10 +1463,7 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
         var normalizedSource = (sourceType || 'NOTAM').toUpperCase();
         var isMsi = normalizedSource.startsWith('MSI');
         var popupTitle = isMsi ? 'MSI 信息' : 'NOTAM 信息';
-        var regionLabel = isMsi ? '关键词' : '飞行情报区';
-        var regionValue = isMsi ? extractMsiKeywords(rawmessage) : (fir || 'UNKNOWN');
-
-        // 统一布局：标题栏右侧「复制」按钮；内容为 持续时间 / 航警编号 + 飞行情报区（编号在前）/ 航警详情
+        // MSI 的第二行仅保留海警编号；NOTAM 仍保留编号和飞行情报区并排。
         popupContent = "<div class='notam-popup'>" +
             buildNotamPopupHeader(popupTitle, rawmessage, '', numm) +
             "<div class='notam-popup-body'>" +
@@ -1456,8 +1472,9 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
                 timeText: timestr,
                 code: codee,
                 codeLabel: isMsi ? '海警编号' : '航警编号',
-                regionLabel: regionLabel,
-                regionValue: regionValue,
+                regionLabel: '飞行情报区',
+                regionValue: fir || 'UNKNOWN',
+                fullWidthCode: isMsi,
                 detailLabel: isMsi ? '海警详情' : '航警详情',
                 rawMessage: rawmessage
             }) +
@@ -1539,6 +1556,7 @@ function pullOut(stri) {
 var polygonAuto = [];           // 自动获取的多边形
 var groupColors = {};           // 外部段 CLASSIFY → color
 var groupColorsFocused = {};    // 聚焦段 CLASSIFY → color
+var msiColors = {};             // MSI 行号 → 独立颜色
 var visibleState = {};          // index → true/false
 
 /* 为一段 CLASSIFY 分配颜色；targetMap/pool 可指定目标映射与颜色池 */
@@ -1556,6 +1574,14 @@ function assignGroupColors(classify, targetMap, pool) {
 function assignAllGroupColors(focusedClassify, classify) {
     assignGroupColors(focusedClassify || {}, groupColorsFocused, currentFocusedColorPool);
     assignGroupColors(classify || {}, groupColors, currentColorPool);
+    Object.keys(msiColors).forEach(key => { delete msiColors[key]; });
+    if (!dict) return;
+    let msiColorIndex = 0;
+    for (let index = 0; index < dict.NUM; index++) {
+        if (getNotamDisplayType(dict.SOURCE?.[index]) === 'MSI') {
+            msiColors[index] = currentMsiColorPool[msiColorIndex++ % currentMsiColorPool.length];
+        }
+    }
 }
 
 function getColorForCode(code) {
@@ -1571,4 +1597,11 @@ function getColorForCode(code) {
         }
     }
     return currentColorPool[0];
+}
+
+function getColorForRecord(index) {
+    if (dict && getNotamDisplayType(dict.SOURCE?.[index]) === 'MSI') {
+        return msiColors[index] || currentMsiColorPool[0];
+    }
+    return getColorForCode(dict?.CODE?.[index]);
 }

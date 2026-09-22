@@ -882,17 +882,6 @@ def filter_expired_records(data, grace_hours=24):
     print(f"过滤过期数据: 移除 {expired_count} 条（结束时间早于当前时间24h）")
 
 
-def remove_msi_fully_overlapped_by_notam(data):
-    """Remove MSI records whose canonical geometry and time exactly equal a NOTAM."""
-    size = min(*(len(data.get(field, []) or []) for field in ('CODE', 'TIME', 'PLATID', 'GEOMETRY', 'SOURCE')))
-    notam_keys = {(str(data['GEOMETRY'][i]), _normalize_time_key(data['TIME'][i])) for i in range(size) if str(data['SOURCE'][i]).upper().startswith('NOTAM')}
-    keep = [i for i in range(size) if not (str(data['SOURCE'][i]).upper().startswith('MSI') and (str(data['GEOMETRY'][i]), _normalize_time_key(data['TIME'][i])) in notam_keys)]
-    if len(keep) == size: return
-    for field in RECORD_FIELDS:
-        values = data.get(field, []) or []
-        data[field] = [values[i] for i in keep]
-    print(f'去重重合数据: 移除 {size - len(keep)} 条与NOTAM完全重合的MSI')
-
 def _is_unknown_fir(fir_value):
     text = str(fir_value or '').strip().upper()
     return text in {'', 'UNKNOWN', 'UNK', 'NONE', 'NULL', 'N/A'}
@@ -1252,7 +1241,6 @@ def fetch(source_fetcher=None):
     backfill_fir_from_text(dataDict, fir_candidates)
     harmonize_fir_by_platid(dataDict)
     filter_expired_records(dataDict, grace_hours=24)
-    remove_msi_fully_overlapped_by_notam(dataDict)
     dataDict['ALTITUDE'] = extract_altitude(dataDict['RAWMESSAGE'])
 
     # 行号空间 = 聚焦段 → 外部段 → MSI 段，两个 NOTAM 段各自排序与分类

@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <link rel="stylesheet" href="statics/styles.css?v=popup-raw-v1">
+    <link rel="stylesheet" href="statics/styles.css?v=popup-raw-v2">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.114.0/Build/Cesium/Widgets/widgets.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <!-- Leaflet -->
@@ -31,6 +31,10 @@
     <div class="smoke">
         <div id="allmap" class="div1"></div>
         <div id="globeMap" class="div1" aria-label="三维航警地球"></div>
+        <div id="notamTypeControl" class="notam-type-control" role="group" aria-label="航警类型筛选">
+            <button type="button" data-notam-type="NOTAM" class="active">NOTAM <span class="notam-type-count">0</span></button>
+            <button type="button" data-notam-type="MSI" class="active">MSI <span class="notam-type-count">0</span></button>
+        </div>
         <div id="mapModeControl" class="map-mode-control" role="group" aria-label="地图模式">
             <button type="button" data-map-mode="vector">矢量地图</button>
             <button type="button" data-map-mode="satellite">卫星地图</button>
@@ -304,13 +308,13 @@
     <script src="scripts/notamsDrawer.js"></script>
     <script src="scripts/browserConsoleLog.js"></script>
     <script src="scripts/buttons.js"></script>
-    <script src="scripts/scripts.js?v=popup-raw-v1"></script>
+    <script src="scripts/scripts.js?v=msi-code-row-v1"></script>
     <script src="statics/leaflet/leaflet-image.js"></script>
     <script src="scripts/customAreaSelect.js"></script>
-    <script src="scripts/dataFetching.js"></script>
+    <script src="scripts/dataFetching.js?v=notam-source-filter-v1"></script>
     <script src="scripts/measureTool.js"></script>
     <script src="scripts/globe.js"></script>
-    <script src="scripts/sidebar.js"></script>
+    <script src="scripts/sidebar.js?v=notam-source-filter-v1"></script>
     <script src="scripts/archiveSearch.js"></script>
     <script src="scripts/notification.js"></script>
     <script src="scripts/exportImage.js"></script>

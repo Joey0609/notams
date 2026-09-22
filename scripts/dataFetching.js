@@ -52,15 +52,76 @@ if (!isSitePaused()) {
 
 let dict = null;
 
+// 每类航警独立控制当前会话的显示，不改变单条航警自己的隐藏状态。
+let notamTypeVisibility = { NOTAM: true, MSI: true };
+
+function getNotamDisplayType(source) {
+    return String(source || 'NOTAM').trim().toUpperCase().startsWith('MSI') ? 'MSI' : 'NOTAM';
+}
+
+function isNotamTypeVisible(index) {
+    if (!dict) return true;
+    return notamTypeVisibility[getNotamDisplayType(dict.SOURCE?.[index])] !== false;
+}
+
+function syncNotamTypeControl() {
+    const control = document.getElementById('notamTypeControl');
+    if (!control) return;
+    control.querySelectorAll('button[data-notam-type]').forEach(button => {
+        const type = button.dataset.notamType;
+        const active = notamTypeVisibility[type] !== false;
+        const count = dict ? Array.from({ length: dict.NUM }, (_, index) => index)
+            .filter(index => getNotamDisplayType(dict.SOURCE?.[index]) === type).length : 0;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+        const countElement = button.querySelector('.notam-type-count');
+        if (countElement) countElement.textContent = String(count);
+    });
+}
+
+function applyNotamTypeFilter() {
+    if (dict) {
+        for (let i = 0; i < polygonAuto.length; i++) {
+            const polygon = polygonAuto[i];
+            if (!polygon) continue;
+            if (visibleState[i] !== false && isNotamTypeVisible(i)) polygon.addTo(map);
+            else map.removeLayer(polygon);
+        }
+    }
+    syncNotamTypeControl();
+    if (typeof updateSidebar === 'function') updateSidebar();
+    if (window.NotamGlobe) window.NotamGlobe.refresh(true);
+}
+
+function toggleNotamTypeFilter(type) {
+    if (!type) return;
+    notamTypeVisibility[type] = notamTypeVisibility[type] === false;
+    applyNotamTypeFilter();
+}
+
+function bindNotamTypeControl() {
+    const control = document.getElementById('notamTypeControl');
+    if (!control || control.__bound) return;
+    control.__bound = true;
+    control.addEventListener('click', event => {
+        const button = event.target.closest('button[data-notam-type]');
+        if (button) toggleNotamTypeFilter(button.dataset.notamType);
+    });
+    syncNotamTypeControl();
+}
+
+bindNotamTypeControl();
+
 function drawAllAutoNotams() {
     clearAllPolygons();
     if (!dict || dict.NUM === 0) return;
 
     for (let i = 0; i < dict.NUM; i++) {
-        const col = getColorForCode(dict.CODE[i]);
+        const col = getColorForRecord(i);
         drawNot(dict.TIME[i], dict.CODE[i], dict.ALTITUDE[i], i, col, 0, dict.RAWMESSAGE?.[i] || '', dict.SOURCE?.[i] || 'NOTAM', dict.FIR?.[i] || '', dict.GEOMETRY?.[i] || '');
         visibleState[i] = true;
     }
+    applyNotamTypeFilter();
 }
 
 function clearAllPolygons() {

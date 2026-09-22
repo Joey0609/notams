@@ -1,3 +1,4 @@
+:root {--notam-source-color:#34495e;--msi-source-color:#16a085;}
 /* 临时暂停服务弹窗：地图仍保持可见，仅覆盖交互界面 */
 .site-pause-overlay {
     position: fixed;
@@ -924,6 +925,14 @@ body.nav-row-tight #manualToggle:active:not(.is-touching) {transform: scale(0.95
 #globeMap { display: block; visibility: hidden; pointer-events: none; z-index: 1; background: #071321; opacity: 0; transform: scale(1.025); }
 body.globe-active #allmap { visibility: hidden; pointer-events: none; z-index: 1; opacity: 0; transform: scale(.985); transition: opacity .28s ease, transform .28s ease, visibility .28s step-end; }
 body.globe-active #globeMap { visibility: visible; pointer-events: auto; z-index: 2; opacity: 1; transform: scale(1); transition: opacity .42s ease .04s, transform .42s cubic-bezier(.2,.8,.2,1) .04s, visibility 0s; }
+.notam-type-control {position:fixed;top:12px;left:12px;z-index:300;display:flex;gap:6px;padding:0;background:transparent;}
+.notam-type-control button {display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:64px;height:28px;padding:0 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#4b5f72;cursor:pointer;font:700 12px/1.2 "微软雅黑",sans-serif;letter-spacing:.04em;text-shadow:0 1px 1px rgba(255,255,255,.75);transition:background .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease;-webkit-tap-highlight-color:transparent;}
+.notam-type-control button::before {content:"";width:8px;height:8px;border-radius:50%;background:var(--notam-source-color);box-shadow:0 0 0 1px rgba(255,255,255,.52);}
+.notam-type-control button[data-notam-type="MSI"]::before {background:var(--msi-source-color);}
+.notam-type-count {font-variant-numeric:tabular-nums;}
+.notam-type-control button.active {border-color:rgba(84,135,181,.45);background:rgba(255,255,255,.94);color:#203b56;box-shadow:0 2px 7px rgba(43,79,115,.16),inset 0 1px 0 rgba(255,255,255,.96);}
+@media (hover:hover) {.notam-type-control button:not(.active):hover {background:rgba(255,255,255,.42);color:#274b70;}.notam-type-control button:active {transform:scale(.97);}}
+.notam-type-control button:focus-visible {outline:2px solid rgba(24,119,185,.65);outline-offset:2px;}
 .map-mode-control {
     position: fixed; top: 12px; right: 12px; z-index: 300;
     display: flex; flex-direction: column; gap: var(--mode-gap); padding: 4px; border-radius: 13px;
@@ -1040,6 +1049,7 @@ body:not(.globe-active) .globe-fx-area {display: none !important;}
 #globeMap .cesium-viewer-bottom a[href*="cesium.com"],
 #globeMap .cesium-credit-logoContainer {display: none !important;}
 @media (max-width: 600px) { .map-mode-control { --mode-height: 27px; --mode-gap: 2px; top: 8px; right: 8px; padding: 4px; } .map-mode-control button { min-width: 74px; padding: 0 8px; font-size: 11px; } }
+@media (max-width: 600px) {.notam-type-control {top:8px;left:8px;}.notam-type-control button {min-width:49px;height:27px;padding:0 7px;font-size:11px;}}
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .map-mode-control { background: rgba(246,248,252,.96); } }
 .leaflet-popup.notam-info-popup .popup-header-actions a.leaflet-popup-close-button { position: static; top: auto; right: auto; }
 .globe-notam-popup .popup-header-actions .globe-popup-close { position: static; flex: 0 0 auto; width: 24px; height: 24px; padding: 0; font-size: 0; line-height: 1; background: rgba(255,255,255,.18); }

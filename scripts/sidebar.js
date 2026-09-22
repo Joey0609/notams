@@ -215,7 +215,7 @@ function updateSidebar() {
     const countEl = document.getElementById('notamCount');
     
     // 计算总数（自动航警 + 历史航警）
-    const autoCount = dict ? dict.NUM : 0;
+    const autoCount = dict ? Array.from({ length: dict.NUM }, (_, i) => i).filter(i => isNotamTypeVisible(i)).length : 0;
     const archiveCount = archiveDict ? archiveDict.NUM : 0;
     const totalCount = autoCount + archiveCount;
 
@@ -241,33 +241,53 @@ function updateSidebar() {
     
     // 显示自动获取的航警
     if (dict && dict.NUM > 0) {
+        const visibleNotamIndexes = [];
+        const visibleMsiIndexes = [];
+        for (let index = 0; index < dict.NUM; index++) {
+            if (!isNotamTypeVisible(index)) continue;
+            (getNotamDisplayType(dict.SOURCE?.[index]) === 'MSI' ? visibleMsiIndexes : visibleNotamIndexes).push(index);
+        }
+        const visibleIndexes = visibleNotamIndexes.concat(visibleMsiIndexes);
+
         html += '<div style="font-weight: bold; padding: 10px; background: #ecf0f1; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">' +
-            '<span>自动获取航警 (' + dict.NUM + ')</span>' +
+            '<span>自动获取数据 (' + autoCount + ')</span>' +
             '<div style="display: flex; gap: 5px;">' +
             '<button onclick="event.stopPropagation(); showAllAutoNotams()" title="全部显示" style="padding: 3px 8px; font-size: 12px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">全部显示</button>' +
             '<button onclick="event.stopPropagation(); hideAllAutoNotams()" title="全部隐藏" style="padding: 3px 8px; font-size: 12px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">全部隐藏</button>' +
             '</div>' +
             '</div>';
-        
-        for (let i = 0; i < dict.NUM; i++) {
+
+        if (visibleNotamIndexes.length > 0) {
+            html += '<div style="font-weight: bold; padding: 7px 10px; color: var(--notam-source-color); border-bottom: 1px solid #e5e7eb;">NOTAM (' + visibleNotamIndexes.length + ')</div>';
+        }
+
+        for (let position = 0; position < visibleIndexes.length; position++) {
+            if (position === visibleNotamIndexes.length && visibleMsiIndexes.length > 0) {
+                html += '<div style="font-weight: bold; padding: 7px 10px; margin-top: 8px; color: var(--msi-source-color); border-top: 2px solid var(--msi-source-color); border-bottom: 1px solid #e5e7eb;">海警 MSI (' + visibleMsiIndexes.length + ')</div>';
+            }
+            const i = visibleIndexes[position];
             const code = dict.CODE[i];
             const sourceType = (dict.SOURCE?.[i] || 'NOTAM').toUpperCase();
+            const isMsi = getNotamDisplayType(sourceType) === 'MSI';
             // 只有聚焦段（前 FOCUSED_NUM 行）会生成 data/archiveMatch/match{idx}.json，
             // 其余行不渲染「历史航警匹配」按钮
             const focusedRows = Number(dict.FOCUSED_NUM || 0);
-            const canArchiveMatch = sourceType === 'NOTAM' && i < focusedRows;
+            const canArchiveMatch = !isMsi && i < focusedRows;
             const matchButton = canArchiveMatch ? `
                         <button class="icon-btn"
                             onclick="event.stopPropagation(); archiveNOTAMmatch(${i})"
                             title="历史航警匹配">
                             <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81836 6.72729V14H13.0911" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 24C4 35.0457 12.9543 44 24 44V44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C16.598 4 10.1351 8.02111 6.67677 13.9981" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.005 12L24.0038 24.0088L32.4832 32.4882" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>` : '';
-            const copyTitle = sourceType === 'MSI' ? '复制原始海警' : '复制原始航警';
+            const copyTitle = isMsi ? '复制原始海警' : '复制原始航警';
             const rawTime = dict.TIME[i] || '';
             const prettyTime = convertTime(rawTime);
             const rawMessage = dict.RAWMESSAGE?.[i] || '';
-            const col = getColorForCode(code);
+            const col = getColorForRecord(i);
             const visible = visibleState[i] !== false;
+            const colorControl = isMsi
+                ? `<div class="color-picker-wrapper" title="MSI 使用独立颜色池"><div class="color-preview" style="background:${col}"></div></div>`
+                : `<div class="color-picker-wrapper" onclick="event.stopPropagation();"><div class="color-preview" style="background:${col}"><input type="color" class="color-picker" value="${col.substring(0, 7)}" onchange="event.stopPropagation(); changeGroupColor('${code}', this.value, ${i})"></div></div>`;
             html += `
             <div class="notam-item" style="--group-color:${col}; cursor:pointer;"
                 onmouseenter="this.style.background='rgba(0,0,0,0.06)'; hoverHighlightNotam(${i});"
@@ -278,16 +298,10 @@ function updateSidebar() {
                 <div class="notam-content">
                     <div class="notam-header">
                         <div style="display:flex; align-items:center; gap:10px;">
-                            <div class="color-picker-wrapper" onclick="event.stopPropagation();">
-                                <div class="color-preview" style="background:${col}">
-                                <input type="color" class="color-picker" value="${col.substring(0, 7)}"
-                                    onchange="event.stopPropagation(); changeGroupColor('${code}', this.value, ${i})">
-                                </div>
-                                
-                            </div>
+                            ${colorControl}
 
                             <span class="notam-code">${code}</span>
-                            <span style="font-size:11px;padding:1px 6px;border-radius:10px;background:${sourceType === 'MSI' ? '#16a085' : '#34495e'};color:#fff;">${sourceType}</span>
+                            <span style="font-size:11px;padding:1px 6px;border-radius:10px;background:${isMsi ? 'var(--msi-source-color)' : 'var(--notam-source-color)'};color:#fff;">${sourceType}</span>
                         </div>
 
                         
@@ -523,7 +537,7 @@ function toggleVisibility(idx) {
     visibleState[idx] = !visibleState[idx];
     const poly = polygonAuto[idx];
     if (poly) {
-        if (visibleState[idx]) poly.addTo(map);
+        if (visibleState[idx] && isNotamTypeVisible(idx)) poly.addTo(map);
         else map.removeLayer(poly);
     }
     updateSidebar();
@@ -536,8 +550,7 @@ document.getElementById('btnRefresh').onclick = () => {
 function showAllAutoNotams() {
     if (!dict || dict.NUM === 0) return;
     for (let i = 0; i < dict.NUM; i++) visibleState[i] = true;
-    polygonAuto.forEach(p => p && p.addTo(map));
-    updateSidebar();
+    applyNotamTypeFilter();
 }
 
 function hideAllAutoNotams() {

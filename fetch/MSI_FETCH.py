@@ -14,6 +14,7 @@ from html.parser import HTMLParser
 
 import requests
 import urllib3
+from fetch.sources.common import is_relevant_aerospace_area
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -75,11 +76,6 @@ HTML_URLS = [
 
 MIN_BLOCK_LENGTH = 50
 INTER_REQUEST_DELAY = 1
-AEROSPACE_KEYWORDS = [
-    "ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "REENTRY",
-    "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE", "SPACECRAFT", "AER0SPACE"
-]
-
 try:
     import config as msi_config  # type: ignore
 
@@ -134,8 +130,12 @@ class _TextExtractor(HTMLParser):
 
 
 def _is_aerospace_text(text):
-    upper = str(text or "").upper()
-    return any(k in upper for k in AEROSPACE_KEYWORDS)
+    """Apply the same aerospace-area semantic rules as NOTAM.
+
+    MSI messages do not include the NOTAM Q-line altitude, so only that
+    source-specific altitude requirement is disabled here.
+    """
+    return is_relevant_aerospace_area(text, require_full_altitude=False)
 
 
 def _split_text_blocks(text):

@@ -197,8 +197,13 @@ def extract_circle_area(text: str):
     return center, radius, radius_match.group('unit')
 
 
-def is_relevant_area_notam(message: str) -> bool:
-    """Fetch-time semantic filter; geometry is validated later by add_area_records()."""
+def is_relevant_aerospace_area(message: str, *, require_full_altitude: bool) -> bool:
+    """Return whether a notice describes a civilian aerospace hazard area.
+
+    NOTAM and MSI use the same semantic inclusion/exclusion rules.  Only NOTAM
+    carries the Q-line altitude field, so its caller additionally requires the
+    full surface-to-unlimited vertical range.
+    """
     text = _raw_text(message)
     is_relevant = (
         ('A TEMPORARY' in text and ('-' in text))
@@ -209,7 +214,6 @@ def is_relevant_area_notam(message: str) -> bool:
         or ('SPACE VEHICLE' in text and 'REENTRY' in text)
         or ('SPACE' in text and 'LAUNCH' in text)
         or ('SPACE' in text and 'SPLASHDOWN' in text)
-        # or ('SPACE DEBRIS' in text and ('RETURN' in text or 'REENTRY' in text or 'RE-ENTRY' in text))
         or ('ROCKET' in text and 'LAUNCH' in text)
         or ('ROCKET' in text and 'REENTRY' in text)
         or ('ROCKET' in text and 'RETURN' in text)
@@ -229,15 +233,20 @@ def is_relevant_area_notam(message: str) -> bool:
         or ('AIRSPACE' in text and 'STARLINK' in text)
         or ('AIRSPACE' in text and 'STARSHIP' in text)
         or ('AIRSPACE' in text and 'SPLASHDOWN' in text)
-        
     )
     not_relevant = (
         ('MISSILE' in text)
         # or ('SPACE DEBRIS' in text)
         or ('TRACEX' in text or 'TORPEX' in text or 'GUNEX' in text or 'LASEX' in text)
-        or extract_altitude(text) != FULL_ALTITUDE_RANGE
     )
+    if require_full_altitude:
+        not_relevant = not_relevant or extract_altitude(text) != FULL_ALTITUDE_RANGE
     return is_relevant and not not_relevant
+
+
+def is_relevant_area_notam(message: str) -> bool:
+    """NOTAM wrapper for the shared aerospace-area semantic filter."""
+    return is_relevant_aerospace_area(message, require_full_altitude=True)
 
 def extract_altitude(raw_message: str) -> str:
     pattern = re.compile(
