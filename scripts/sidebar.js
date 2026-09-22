@@ -147,14 +147,18 @@ function convertTime(utcTimeStr) {
         return '时间未知';
     }
     
-    const regex = /(\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/;
-    const match = utcTimeStr.match(regex);
-    if (!match) {
+    const regex = /(\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/g;
+    const matches = [...String(utcTimeStr).matchAll(regex)];
+    if (!matches.length) {
         console.warn('时间格式不匹配:', utcTimeStr);
         return utcTimeStr; // 返回原始字符串
     }
 
-    const [, startDay, startMonth, startTime, startYear, endDay, endMonth, endTime, endYear] = match;
+    // 对 DAILY 等多段时间，侧栏显示第一段开始至最后一段结束。
+    const firstMatch = matches[0];
+    const lastMatch = matches[matches.length - 1];
+    const [, startDay, startMonth, startTime, startYear] = firstMatch;
+    const [, , , , , endDay, endMonth, endTime, endYear] = lastMatch;
     
     // 月份映射表（支持大小写）
     const monthMap = {

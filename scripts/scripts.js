@@ -320,6 +320,10 @@ function makeMap() {
 
     map.getPane('overlayPane').style.zIndex = 400;
     map.getPane('markerPane').style.zIndex = 350;   // 在落区多边形下
+    // 自动航警按来源固定分层：MSI 始终在下，NOTAM 始终在上。
+    // pane 的层级同时决定可见覆盖与鼠标命中顺序，因此重合时优先点击 NOTAM。
+    map.createPane('autoMsiPane').style.zIndex = 401;
+    map.createPane('autoNotamPane').style.zIndex = 402;
 
     // 添加缩放控件到右下角
     L.control.zoom({
@@ -1432,9 +1436,17 @@ function buildNotamPopupRows(options) {
 }
 
 function buildNotamPopupRawView(rawMessage) {
-    const raw = String(rawMessage == null ? '' : rawMessage).replace(/\r\n?/g, '\n');
+    // 原文视图也按详情区的排版规则展示：清理空行和连续空白，保留有效分行，
+    // 再在正文末尾补一处 <br>，避免最后一行贴在渐隐边缘。
+    const raw = String(rawMessage == null ? '' : rawMessage)
+        .replace(/\r\n?/g, '\n')
+        .split('\n')
+        .map(line => line.replace(/[\t ]+/g, ' ').trim())
+        .filter(line => line !== '')
+        .join('\n');
+    const rawHtml = escapeNotamText(raw || '暂无航警原文').replace(/\n/g, '<br>') + '<br><br>';
     return "<div class='popup-raw-view' hidden>" +
-        "<pre class='popup-raw-content'>" + escapeNotamText(raw || '暂无航警原文') + "</pre>" +
+        "<pre class='popup-raw-content'>" + rawHtml + "</pre>" +
         "</div>";
 }
 
@@ -1444,7 +1456,15 @@ window.buildNotamPopupRows = buildNotamPopupRows;
 // 绘制NOTAM多边形
 function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceType = 'NOTAM', fir = '', geometry = '') {
     var timestr = is_self ? null : convertTime(timee);
-    const style = { color: col, weight: 1, opacity: 1, fillColor: col, fillOpacity: 0.5 };
+    const isMsi = !is_self && String(sourceType || '').toUpperCase().startsWith('MSI');
+    const style = {
+        color: col,
+        weight: 1,
+        opacity: 1,
+        fillColor: col,
+        fillOpacity: 0.5,
+        pane: is_self ? 'overlayPane' : (isMsi ? 'autoMsiPane' : 'autoNotamPane')
+    };
     var tmpPolygon = geometryToLayer(geometry, style);
     if (!tmpPolygon) return;
     tmpPolygon.addTo(map);
@@ -1460,8 +1480,6 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
     }
 
     if (!is_self) {
-        var normalizedSource = (sourceType || 'NOTAM').toUpperCase();
-        var isMsi = normalizedSource.startsWith('MSI');
         var popupTitle = isMsi ? 'MSI 信息' : 'NOTAM 信息';
         // MSI 的第二行仅保留海警编号；NOTAM 仍保留编号和飞行情报区并排。
         popupContent = "<div class='notam-popup'>" +
