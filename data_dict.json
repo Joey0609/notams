@@ -76,6 +76,7 @@
         "CODE": [
             "A0096/26",
             "A0370/26",
+            "A0540/26",
             "A1257/26",
             "A1258/26",
             "A1483/26",
@@ -90,6 +91,7 @@
         "TIME": [
             "28 SEP 12:23 2026 UNTIL 04 OCT 14:47 2026",
             "28 SEP 12:15 2026 UNTIL 04 OCT 14:08 2026",
+            "28 SEP 12:15 2026 UNTIL 04 OCT 14:45 2026",
             "26 SEP 13:43 2026 UNTIL 02 OCT 15:58 2026",
             "28 SEP 21:07 2026 UNTIL 05 OCT 01:08 2026",
             "28 SEP 12:15 2026 UNTIL 28 SEP 15:50 2026",
@@ -104,6 +106,7 @@
         "PLATID": [
             "FIMM_I_FIMPYOYX_A0096_26",
             "MKJK_I_MKJKYNYX_A0370_26",
+            "TNCF_I_TNCCYNYX_A0540_26",
             "NTTT_I_NTAAYNYX_A1257_26",
             "NTTT_I_NTAAYNYX_A1258_26",
             "TTZP_I_TTPPYNYX_A1483_26",
@@ -118,6 +121,7 @@
         "RAWMESSAGE": [
             "A0096/26 NOTAMR A0095/26\r\nQ) FIMM/QRALW/IV/NBO/AE/000/999/2025S07540E005\r\n A) FIMM B) 2609281223 C) 2610041447 EST\r\n D) 28 1223-1447\r\n29 1223-1447\r\n30 1223-1447\r\n01 1223-1447\r\n02 1223-1447\r\n03 1223-1447\r\n04 1223-1447\r\n E) STATIONARY ALTITUDE RESERVATION FOR HAZARDOUS OPERATIONS FM SFC\r\nTO UNL FOR ATMOSPHERIC RE-ENTRY AND SPLASHDOWN OF SPACE X STARSHIP\r\nFTL-14 ROCKET WI AN AREA BOUNDED BY FLW COORD:\r\n2630S 07500E\r\n2704S 07318E\r\n2436S 07206E\r\n2342S 07500E TO BEGINNING\r\nPRIMARY RE-ENTRY BTN 1223 TO 1447 ON 28 SEP 2026 BACK UP RE-ENTRY BTN\r\n1223 TO 1447 FM 28 SEP 2026 TO 04 OCT 2026 \r\n F) SFC G) UNL\n\nCREATED: 17 SEP 2026 16:41\nSOURCE: FIMPYOYX",
             "A0370/26 NOTAMN\r\nQ) MKJK/QRTCA/IV/BO/W/000/999/1713N07808W999\r\nA) MKJK\r\nB) 2609281215 C) 2610041408\r\nD) DAILY 1215-1408\r\nE) RESTRICTED AREA (DEBRIS RESPONSE AREA) ACT DUE LAUNCH OF SPACEX STARSHIP FLT-14; \r\nALL FLT PROHIBITED WI THE FLW COORD: \r\n2000N 08200W\r\n2000N 07855W\r\n1907N 07630W\r\n1830N 07500W\r\n1700N 07300W\r\n1656N 07303W\r\n1700N 07312W\r\n1724N 07417W\r\n1836N 07712W\r\n1926N 08012W\r\n2000N 08200W.\r\nF) SFC G) UNL\n\nCREATED: 23 SEP 2026 23:09\nSOURCE: MKJKYNYX",
+            "A0540/26 NOTAMN\r\nQ) TNCF/QRDCA/IV/BO/W/000/999/1700N07140W250\r\nA) TNCF\r\nB) 2609281215 C) 2610041445\r\nD) 1215-1445\r\nE) DEBRIS RESPONSE AREAS(DRA) WITHIN CUR FIR MAY BE ACTIVATED IF\r\nREQUIRED DUE TO STARSHIP FLT 14 LAUNCH MALFUNCTION. IF\r\nACTIVATED, DRA ESTABLISHED AS TEMPORARY DANGER AREA. DRA\r\nBOUNDED BY: 1700N07140W-1626N07140W-1657N07304W-1700N07300W\r\nAND 1600N07029W-1548N06956W-1524N06830W-1502N06712W-1534N06705W-\r\n1600N06813W. DEPARTURES WITHIN CUR TMA MAY EXPECT GND DELAYS. \r\nACFT WITHIN CUR FIR MAY EXPECT AIRBORNE HOLDING. ATC WILL ADVISE\r\nDRA ACTIVATION AND RESUMPTION OF NORMAL OPS.DRA ACTIVATION, IF\r\nREQUIRED, MAY OCCUR ON 260928. SHOULD THE LAUNCH BE POSTPONED,\r\nDRA MAY BE ACTIVATED, IF REQUIRED, ON ANY OF THE FOLLOWING\r\nBACKUP DATES: 260929, 260930, 261001, 261002, 261003, OR\r\n261004.\r\nF) SFC G) UNL\n\nCREATED: 23 SEP 2026 11:56\nSOURCE: TNCCYNYX",
             "A1257/26 NOTAMN\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2858S12112W113\r\nA) NTTT\r\nB) 2609261343 C) 2610021558\r\nD) 26 1343-1721\r\n27 1436-1707\r\n28 1315-1653\r\n29 1301-1639\r\n30 1247-1625\r\n01 1234-1612\r\n02 1220-1558\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX R-3 IN\r\nTAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING POINTS: \r\n3000S 12153W, 2759S 12244W, 2709S 12043W, 2843S 12000W,\r\n3000S 12000W, 3000S 12153W \r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : SCIZ\r\n\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2323/26\r\n\r\nF) SFC G) UNL\n\nCREATED: 21 SEP 2026 18:36\nSOURCE: NTAAYNYX",
             "A1258/26 NOTAMN\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2459S13459W839\r\nA) NTTT\r\nB) 2609282107 C) 2610050108\r\nD) 28 2107-0108\r\n29 2107-0108\r\n30 2107-0108\r\n01 2107-0108\r\n02 2107-0108\r\n03 2107-0108\r\n04 2107-0108\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nSTARSHIP FLT-14 IN TAHITI FIR WITHIN AN AREA BOUNDED BY\r\nFOLLOWING POINTS: \r\n1951S 14900W, 1923S 14849W, 2458S 13310W, 2610S 12909W,\r\n2734S 12303W, 2800S 12000W, 2911S 12000W, 2806S 12506W,\r\n2611S 13250W, 1951S 14900W \r\n\r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : SCIZ \r\nTHE FRENCH VERSION OF THIS NOTAM IS C2324/26\r\nF) SFC G) UNL\n\nCREATED: 21 SEP 2026 18:59\nSOURCE: NTAAYNYX",
             "A1483/26 NOTAMN\r\nQ) TTZP/QRDCA/IV/BO/W/000/999/1450N05112W999\r\nA) TTZP\r\nB) 2609281215 C) 2609281550\r\nE) DANGER AREA ACTIVATED WITHIN THE PIARCO FIR DUE TO THE LAUNCH OF\r\nTHE 'SPACE X STARSHIP FLIGHT 14' ROCKET. THE PIARCO ACC STRONGLY\r\nCAUTIONS AIRCRAFT NOT TO OPERATE WITHIN THE DANGER AREA BOUNDED BY\r\nCOORDINATES: 1115N05618W - 0926N05310W - 0855N05700W - 0855N05733W -\r\n0931N05847W - 1115N05618W\r\nPRIMARY LAUNCH DATE: 260928\r\nBACK-UP DATES: 260929 260930 261001 261002 261003 261004\r\nF) SFC G) UNL\n\nCREATED: 23 SEP 2026 14:08\nSOURCE: TTPPYNYX",
@@ -130,6 +134,7 @@
             "W3078/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/NBO/W/000/999/4615S11109W980\r\nA)SCIZ B)2609261343 C)2610021558\r\nD)SEP 26 BTN 1343-1721  27 BTN 1436-1707  28 BTN 1315-1653  \r\n29 BTN 1301-1639  30 BTN 1247-1625\r\nOCT 01 BTN 1234-1612  02 BTN 1220-1558\r\nE)ZONE ...D... IN WATERS PACIFIC OCEAN DUE TO SPACE VEHICLE RE-ENTRY\r\nAND SPLASHDOWN ACTIVITY.\r\nTHE AFECCTED AREA IS BOUNDED BY NXT GEO COORD: \r\n300000S/1215300W\r\n300000S/1200000W\r\n284300S/1200000W\r\n382100S/1150400W\r\n490900S/1072200W\r\n590900S/0953400W\r\n595800S/0990500W\r\n443400S/1141300W\r\n300000S/1215300W\r\nINSTRUCTIONS SANTIAGO OCEANIC CONTROL 10024KHZ FANS 1A EQUIPPED\r\nINFO PROVIDED BY SPACE X\r\nF)SFC G)UNL\n\nCREATED: 21 SEP 2026 13:10\nSOURCE: SCSCYNYX"
         ],
         "ALTITUDE": [
+            "0 ~ INF 米",
             "0 ~ INF 米",
             "0 ~ INF 米",
             "0 ~ INF 米",
@@ -155,11 +160,13 @@
             "NOTAM",
             "NOTAM",
             "NOTAM",
+            "NOTAM",
             "NOTAM"
         ],
         "FIR": [
             "FIMM",
             "MKJK",
+            "TNCF",
             "NTTT",
             "NTTT",
             "TTZP",
@@ -174,6 +181,7 @@
         "GEOMETRY": [
             "PATH|M=S2630E07500|L=S2704E07318|L=S2436E07206|L=S2342E07500|Z",
             "PATH|M=N2000W08200|L=N2000W07855|L=N1907W07630|L=N1830W07500|L=N1700W07300|L=N1656W07303|L=N1700W07312|L=N1724W07417|L=N1836W07712|L=N1926W08012|Z",
+            "PATH|M=N1657W07304|L=N1626W07140|L=N1600W07029|L=N1548W06956|L=N1502W06712|L=N1534W06705|L=N1600W06813|L=N1700W07140|L=N1700W07300|Z",
             "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
             "PATH|M=S1951W14900|L=S1923W14849|L=S2458W13310|L=S2610W12909|L=S2734W12303|L=S2800W12000|L=S2911W12000|L=S2806W12506|L=S2611W13250|Z",
             "PATH|M=N1115W05618|L=N0926W05310|L=N0855W05700|L=N0855W05733|L=N0931W05847|Z",
@@ -186,27 +194,28 @@
             "PATH|M=S300000W1215300|L=S300000W1200000|L=S284300W1200000|L=S382100W1150400|L=S490900W1072200|L=S590900W0953400|L=S595800W0990500|L=S443400W1141300|Z"
         ],
         "CLASSIFY": {
-            "c149135411": [
+            "c203519382": [
+                "A1257/26",
+                "B1887/26",
+                "W3078/26"
+            ],
+            "c237079329": [
                 "A0096/26",
                 "A0370/26",
+                "A0540/26",
                 "A1258/26",
                 "A3392/26",
                 "B1881/26",
                 "B1882/26",
                 "W3068/26"
             ],
-            "c203519382": [
-                "A1257/26",
-                "B1887/26",
-                "W3078/26"
-            ],
             "c729120828": [
                 "A1483/26",
                 "A1487/26"
             ]
         },
-        "NUM": 12,
-        "HASH": "b3cf5b4153fcd0077c629611521f0f018677856f99ad1d48990b442371ec3179"
+        "NUM": 13,
+        "HASH": "d885b334705eb1b73b2f59b581cb2e9147c3acc6c8804744eff53ca7f53ac018"
     },
     "MSI_DATA": {
         "CODE": [
@@ -301,8 +310,123 @@
         "NUM": 9,
         "HASH": "4271fbb8d004503391a029e0b613bc5a50ac89489f8002e9d10d0c1f9f863fc5"
     },
-    "HASH": "6fe7143e8db7fd8c833327309b2744c7bb6b970ee8e7b196602652d2d5595622",
-    "HASH_NOTAM": "ca3c346c90764b8d47773c3b5a251383fdabd7e83c3930cf9bc15536c5cab4a9",
+    "USCG_NOTMAR_DATA": {
+        "CODE": [
+            "NOTMAR 40014",
+            "NOTMAR 53052",
+            "NOTMAR 53418",
+            "NOTMAR 53791",
+            "NOTMAR 53801",
+            "NOTMAR 53866",
+            "NOTMAR 53878",
+            "NOTMAR 54068",
+            "NOTMAR 54098"
+        ],
+        "TIME": [
+            "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
+            "03 SEP 00:00 2026 UNTIL 02 OCT 23:59 2026",
+            "10 SEP 00:00 2026 UNTIL 02 OCT 23:59 2026",
+            "16 SEP 00:00 2026 UNTIL 05 OCT 23:59 2026",
+            "16 SEP 00:00 2026 UNTIL 05 OCT 23:59 2026",
+            "28 SEP 00:00 2026 UNTIL 04 OCT 23:59 2026",
+            "16 SEP 00:00 2026 UNTIL 03 OCT 23:59 2026",
+            "21 SEP 00:00 2026 UNTIL 07 OCT 23:59 2026",
+            "21 SEP 00:00 2026 UNTIL 08 OCT 23:59 2026"
+        ],
+        "PLATID": [
+            "USCG:40014:1",
+            "USCG:53052:1",
+            "USCG:53418:1",
+            "USCG:53791:1",
+            "USCG:53801:1",
+            "USCG:53866:1",
+            "USCG:53878:1",
+            "USCG:54068:1",
+            "USCG:54098:1"
+        ],
+        "RAWMESSAGE": [
+            "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
+            "USCG NOTMAR 53052\nA) USCG\nE) Hazardous operations will be conducted for STRATOLAUNCH, Operation Super Kristy Hazardous operation areas are bounded by the following coordinates and times:\n\nHazard Area A:\n33.8166666667N\t-121.0833333333W\n33.7N\t-121.55W\n34.9333333333N\t-123.4W\n35.6666666667N, -124.1333333333W\n35.9N, -123.8833333333W\n35N, -122.5833333333W\n35.2166666667N,\t-121.0166666667W\n34.8166666667N,\t-120.5666666667W\n34.2N, -120.8W (TO BEGINNING)\n\n282000Z SEP TO 290500Z SEP                             \n30200Z SEP TO 010500Z OCT                               \n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Stratolaunch at RangeOps@stratolaunch.com, 661-584-2365, or on VHF-FM Chan. 06 or 16.",
+            "USCG NOTMAR 53418\nA) USCG\nE) Space Operations/Safety Zone/Government Supported (Safety)\n\nFrom: 2026-09-10 To: 2026-10-02\n\nLocation:\n37-52-12.000N/075-21-18.000W\n37-43-12.000N/075-02-42.000W\n37-06-00.000N/074-50-42.000W\n37-02-24.000N/075-03-36.000W\n37-36-36.000N/075-16-12.000W\n37-45-18.000N/075-27-36.000W\n37-51-00.000N/075-28-26.400W\n37-52-12.000N/075-21-18.000W\n\nThe Launch Director, National Aeronautics and Space Administration - Wallops Flight Facility, Wallops Island, Virginia, has advised that the areas in the Atlantic Ocean including the existing Danger Zone off Wallops Island and Chincoteague Inlet (depicted as 334.130) as shown on National Ocean Service Chart, will be hazardous to navigation because of a rocket launch during the periods and times.                          \n\nThe test windows are:                \nPrimary:\tOct 1, 07:30AM - Oct 1, 02:00PM\t(1130Z01OCT2026 - 1800Z01OCT2026)\t\t\t\t\t\n\t\t\nPublic ship avoidance area is in effect and bound by:                                              \n15 NAUTICAL MILE HAZARD AREA AT CENTER POINT 37-43.73N /75-12.98W\n17 NAUTICAL MILE HAZARD AREA AT CENTER POINT 37-17.74N /75-1.12W\n\nDuring the launch window, contact Wallops Plot via Marine Band (VHF) 12 and 22, or land line 757-824-1685. Outside the launch window contact WFF-DL-NOTMAR@mail.nasa.gov .\nMSI# 53418.",
+            "USCG NOTMAR 53791\nA) USCG\nE) Gulf of America - Hazardous Space Operations --- On September 28, 2026, between 1215Z and 1414Z, rocket launching operations are scheduled to take place near Boca Chica, TX.  Back-up launch dates and times include the following: \n• 291215Z SEP 26 to 291414Z SEP 26\n• 301215Z SEP 26 to 301414Z SEP 26\n• 011215Z OCT 26 to 011414Z OCT 26\n• 021215Z OCT 26 to 021414Z OCT 26 \n• 031215Z OCT 26 to 031414Z OCT 26 \n• 041215Z OCT 26 to 041414Z OCT 26 • \nNavigation hazards from rocket launching activity may include free falling debris and/or descending vehicles or vehicle components under various means of control.  Vessels should operate in a heightened state of awareness during the launch time and avoid all waters within rocket flight trajectories originating from the launch site near Boca Chica/Starbase, Texas, and extending across the Gulf of America.  Free falling rocket launching components will land within the indicated high-risk hazard area.  To ensure range clearance, mariners are requested to avoid the high-risk hazard area three hours prior to the launch window.  For additional information regarding the launch, mariners can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143 or access: www.navcen.uscg.gov/msi",
+            "USCG NOTMAR 53801\nA) USCG\nE) Gulf of America - Caribbean Sea --- Space launch operations, which may be hazardous to surface vessels, will be conducted within portions of the following hazard areas for Starship Flight 14:\nA.  High Risk Hazard Area:\n25-12-00N 092-58-00W,\n25-31-00N 093-52-00W,\n25-42-00N 095-24-00W,\n26-02-00N 096-32-00W,\n26-04-00N 096-49-00W,\n26-04-00N 097-04-00W,\n26-04-00N 097-10-00W,\n26-02-00N 097-13-00W,\n25-58-00N 097-13-00W,\n25-48-00N 097-05-00W,\n25-41-00N 096-47-00W,\n25-02-00N 095-05-00W,\n24-29-00N 094-08-00W,\n24-20-00N 093-32-00W,\n24-25-00N 092-52-00W and\n24-45-00N 092-43-00W.\nB.  Hazard Area:\n25-58-00N 097-13-00W,\n26-02-00N 097-13-00W,\n26-04-00N 097-10-00W,\n26-04-00N 097-04-00W,\n26-04-00N 096-49-00W,\n26-01-00N 096-17-00W,\n26-01-00N 095-12-00W,\n25-59-00N 094-36-00W,\n25-59-00N 094-05-00W,\n25-25-00N 093-06-00W,\n25-31-00N 091-46-00W,\n23-32-00N 088-52-00W,\n23-04-00N 088-33-00W,\n22-03-00N 086-24-00W,\n21-38-00N 084-59-00W,\n20-59-00N 082-38-00W,\n20-43-00N 081-42-00W,\n20-07-00N 079-44-00W,\n19-46-00N 078-47-00W,\n19-23-00N 078-04-00W,\n19-19-00N 078-18-00W,\n19-34-00N 079-19-00W,\n19-44-00N 079-44-00W,\n20-12-00N 081-13-00W,\n20-43-00N 083-13-00W,\n21-06-00N 084-54-00W,\n21-43-00N 086-42-00W,\n21-59-00N 087-26-00W,\n22-39-00N 089-10-00W,\n22-45-00N 089-41-00W,\n22-58-00N 092-36-00W,\n24-18-00N 095-02-00W,\n25-38-00N 096-49-00W and\n25-48-00N 097-05-00W.\nPrimary and backup launch day hazard periods include:\n • 28/1215Z Sep 26 to 28/1414Z Sep 26\n • 29/1215Z Sep 26 to 29/1414Z Sep 26\n • 30/1215Z Sep 26 to 30/1414Z Sep 26\n • 01/1215Z Oct 26 to 01/1414Z Oct 26\n • 02/1215Z Oct 26 to 02/1414Z Oct 26\n • 03/1215Z Oct 26 to 03/1414Z Oct 26\n • 04/1215Z Oct 26 to 04/1414Z Oct 26 •  \nNavigation hazards within the hazard areas may include free falling debris and/or descending vehicles or vehicle components under various means of control. Free falling rocket launching components will land within the high risk hazard area. Mariners should avoid waters within the defined hazard areas during the scheduled launch window. The high risk hazard area should be avoided three hours prior to the earliest launch to ensure range clearance. For additional information, contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
+            "USCG NOTMAR 53866\nA) USCG\nE) Potential for space debris from the launch of the Starship-Super Heavy Starship | Flight 14 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from September 28, 2026 to October 4, 2026 between 0427-0833 HST (1427-1833 UTC) in an area bounded by the following coordinates: \n\n23-55N 144-37E, \n26-07N 151-14E, \n27-41N 156-20E, \n29-25N 165-03E, \n30-26N 172-41E, \n30-56N 180-00W, \n31-11N 175-00W, \n31-17N 171-29W, \n30-33N 161-15W, \n29-37N 155-40W, \n28-49N 151-35W, \n26-53N 145-26W, \n26-50N 145-28W, \n24-03N 154-32W, \n23-46N 156-11W, \n24-52N 159-19W, \n27-38N 167-49W, \n29-25N 175-00W, \n29-45N 176-35W, \n29-49N 180-00W, \n29-41N 176-14E, \n29-13N 170-10E, \n28-28N 164-59E, \n26-39N 156-15E, \n23-28N 144-48E",
+            "USCG NOTMAR 53878\nA) USCG\nE) Hazardous operations will be conducted for Space X, R-3 Launch operations. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n29.8N                                       -117.65W \n34.46666667N                         -120.3W \n34.66666667N                         -120.6W \n34.65N                                     -120.65W \n34.5N                                       -120.65W \n29.58333333N                         -118.2W \n29.86666667N                         -117.9W \n(TO BEGINNING)\n\n261156Z SEP TO 261521Z SEP 2026---- (PRIMARY) \n271249Z SEP TO 271507Z SEP 2026---- (BACKUP DAY) \n281128Z SEP TO 281453Z SEP 2026---- (BACKUP DAY) \n291114Z SEP TO 291439Z SEP 2026---- (BACKUP DAY) \n301100Z SEP TO 301425Z SEP 2026---- (BACKUP DAY) \n011047Z OCT TO 011412Z OCT 2026---- (BACKUP DAY) \n021033Z OCT TO 021358Z OCT 2026---- (BACKUP DAY) \n\nHazard Area B:\n29.8N                                       -117.65W \n29.86666667N                         -117.9W \n29.58333333N                         -118.2W \n29.4N                                       -118.13333333W \n29.25N                                     -118.03333333W \n29.03333333N                         -117.98333333W \n28.2N                                       -117.31666667W \n28.83333333N                         -117.31666667W \n29.6N                                       -117.26666667W \n(TO BEGINNING)\n\n261156Z SEP TO 261539Z SEP 2026---- (PRIMARY) \n271249Z SEP TO 271525Z SEP 2026---- (BACKUP DAY) \n281128Z SEP TO 281511Z SEP 2026---- (BACKUP DAY) \n291114Z SEP TO 291457Z SEP 2026---- (BACKUP DAY) \n301100Z SEP TO 301443Z SEP 2026---- (BACKUP DAY) \n011047Z OCT TO 011430Z OCT 2026---- (BACKUP DAY) \n021033Z OCT TO 021416Z OCT 2026---- (BACKUP DAY) \n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
+            "USCG NOTMAR 54068\nA) USCG\nE) Hazardous operations will be conducted for Space X, Starlink g15-25 Launch operations. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n29.8N                                       -117.65W \n34.46666667N                         -120.3W \n34.66666667N                         -120.6W \n34.65N                                     -120.65W \n34.5N                                       -120.65W \n29.58333333N                         -118.2W \n29.86666667N                         -117.9W \n(TO BEGINNING)\n\n301600Z SEP TO 302025Z SEP 2026---- (PRIMARY) \n011600Z OCT TO 012025Z OCT 2026---- (BACKUP DAY) \n021600Z OCT TO 022025Z OCT 2026---- (BACKUP DAY) \n031600Z OCT TO 032025Z OCT 2026---- (BACKUP DAY) \n041600Z OCT TO 042025Z OCT 2026---- (BACKUP DAY) \n051600Z OCT TO 052025Z OCT 2026---- (BACKUP DAY) \n061600Z OCT TO 062025Z OCT 2026---- (BACKUP DAY) \n\nHazard Area B:\n29.8N                                       -117.65W \n29.86666667N                         -117.9W \n29.58333333N                         -118.2W \n29.4N                                       -118.13333333W \n29.25N                                     -118.03333333W \n29.03333333N                         -117.98333333W \n28.2N                                       -117.31666667W \n28.83333333N                         -117.31666667W \n29.6N                                       -117.26666667W \n(TO BEGINNING)\n\n301600Z SEP TO 302043Z SEP 2026---- (PRIMARY) \n011600Z OCT TO 012043Z OCT 2026---- (BACKUP DAY) \n021600Z OCT TO 022043Z OCT 2026---- (BACKUP DAY) \n031600Z OCT TO 032043Z OCT 2026---- (BACKUP DAY) \n041600Z OCT TO 042043Z OCT 2026---- (BACKUP DAY) \n051600Z OCT TO 052043Z OCT 2026---- (BACKUP DAY) \n061600Z OCT TO 062043Z OCT 2026---- (BACKUP DAY) \n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
+            "USCG NOTMAR 54098\nA) USCG\nE) Hazardous operations will be conducted for Space X, Transporter-18 Launch Operations. Hazardous operation areas are bounded by the following coordinates and times:\n\nHazard Area A: \n34.45N, -120.43333333W\n34.71666667N, -120.6W \n34.6N, -120.71666667W \n33.16666667N, -120.96666667W \n30.7N, -121.55W \n30.45N, -121.6W \n30.45N, -121.4W \n30.55N, -121.31666667W \n30.71666667N, -121.25W \n31.5N, -121.2W \n33.13333333N, -120.85W \n33.15N, -120.75W \n34.06666667N, -120.5W (TO BEGINNING)\n             \n011808Z OCT TO 011950Z OCT 2026---- (PRIMARY) \n021808Z OCT TO 021950Z OCT 2026---- (BACKUP DAY) \n031808Z OCT TO 031950Z OCT 2026---- (BACKUP DAY) \n041808Z OCT TO 041950Z OCT 2026---- (BACKUP DAY) \n051808Z OCT TO 051950Z OCT 2026---- (BACKUP DAY) \n061808Z OCT TO 061950Z OCT 2026---- (BACKUP DAY) \n071808Z OCT TO 071950Z OCT 2026---- (BACKUP DAY) \n\nHazard Area B:\n30.46666667N, -121.7W \n30.45N, -121.4W \n30.06666667N, -120.9W \n29.81666667N, -120.86666667W \n29.46666667N, -121.21666667W \n29.48333333N, -121.51666667W \n29.86666667N, -122W \n30.11666667N, -122.05W (TO BEGINNING)\n            \n011808Z OCT TO 012009Z OCT 2026---- (PRIMARY) \n021808Z OCT TO 022009Z OCT 2026---- (BACKUP DAY) \n031808Z OCT TO 032009Z OCT 2026---- (BACKUP DAY) \n041808Z OCT TO 042009Z OCT 2026---- (BACKUP DAY) \n051808Z OCT TO 052009Z OCT 2026---- (BACKUP DAY) \n061808Z OCT TO 062009Z OCT 2026---- (BACKUP DAY) \n071808Z OCT TO 072009Z OCT 2026---- (BACKUP DAY) \n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16."
+        ],
+        "ALTITUDE": [
+            "None",
+            "None",
+            "None",
+            "None",
+            "None",
+            "None",
+            "None",
+            "None",
+            "None"
+        ],
+        "SOURCE": [
+            "NOTMAR",
+            "NOTMAR",
+            "NOTMAR",
+            "NOTMAR",
+            "NOTMAR",
+            "NOTMAR",
+            "NOTMAR",
+            "NOTMAR",
+            "NOTMAR"
+        ],
+        "FIR": [
+            "7",
+            "11",
+            "5",
+            "8",
+            "8",
+            "14",
+            "11",
+            "11",
+            "11"
+        ],
+        "GEOMETRY": [
+            "PATH|M=N284334W0804111|L=N284306W0804048|L=N284215W0804005|L=N284127W0803930|L=N284025W0803841|L=N283919W0803753|L=N283813W0803708|L=N283706W0803611|L=N283553W0803504|L=N283517W0803437|L=N283446W0803425|L=N283411W0803412|L=N283345W0803407|L=N283307W0803403|L=N283233W0803355|L=N283201W0803346|L=N283122W0803330|L=N283119W0803330|L=N283035W0803310|L=N283023W0803304|L=N283016W0803258|L=N282922W0803231|L=N282847W0803214|L=N282759W0803147|L=N282758W0803143|L=N282735W0803133|L=N282728W0803132|L=N282712W0803131|L=N282701W0803136|L=N282657W0803144|L=N282650W0803211|L=N282652W0803215|L=N282650W0803226|L=N282616W0803344|L=N282601W0803407|L=N282532W0803436|L=N282500W0803458|L=N282443W0803507|L=N282412W0803326|L=N282453W0803259|L=N282457W0803251|L=N282509W0803226|L=N282522W0803151|L=N282528W0803120|L=N282537W0803053|L=N282542W0803042|L=N282552W0803026|L=N282605W0803015|L=N282617W0803004|L=N282637W0802954|L=N282659W0802948|L=N282721W0802947|L=N282744W0802950|L=N282805W0802954|L=N282832W0803008|L=N282938W0803045|L=N283025W0803109|L=N283121W0803141|L=N283200W0803157|L=N283300W0803213|L=N283444W0803234|L=N283545W0803258|L=N283609W0803312|L=N283643W0803338|L=N283742W0803431|L=N283848W0803531|L=N283951W0803616|L=N284122W0803720|L=N284334W0803907|Z",
+            "PATH|M=N355400W1235300|L=N354000W1240800|L=N345600W1232400|L=N334200W1213300|L=N334900W1210500|L=N341200W1204800|L=N344900W1203400|L=N351300W1210100|L=N350000W1223500|Z",
+            "PATH|M=N375212W0752118|L=N375100W0752826|L=N374518W0752736|L=N373636W0751612|L=N370224W0750336|L=N370600W0745042|L=N374312W0750242|Z",
+            "PATH|M=N260400W0964900|L=N260400W0970400|L=N260400W0971000|L=N260200W0971300|L=N255800W0971300|L=N254800W0970500|L=N254100W0964700|L=N250200W0950500|L=N242900W0940800|L=N242000W0933200|L=N242500W0925200|L=N244500W0924300|L=N251200W0925800|L=N253100W0935200|L=N254200W0952400|L=N260200W0963200|Z",
+            "PATH|M=N260400W0964900|L=N260400W0970400|L=N260400W0971000|L=N260200W0971300|L=N255800W0971300|L=N254800W0970500|L=N253800W0964900|L=N241800W0950200|L=N225800W0923600|L=N224500W0894100|L=N223900W0891000|L=N215900W0872600|L=N214300W0864200|L=N210600W0845400|L=N204300W0831300|L=N201200W0811300|L=N194400W0794400|L=N193400W0791900|L=N191900W0781800|L=N192300W0780400|L=N194600W0784700|L=N200700W0794400|L=N204300W0814200|L=N205900W0823800|L=N213800W0845900|L=N220300W0862400|L=N230400W0883300|L=N233200W0885200|L=N253100W0914600|L=N252500W0930600|L=N255900W0940500|L=N255900W0943600|L=N260100W0951200|L=N260100W0961700|Z",
+            "PATH|M=N294858W1800000|L=N292458W1750000|L=N273759W1674858|L=N245158W1591858|L=N234558W1561059|L=N240300W1543159|L=N264959W1452758|L=N265259W1452559|L=N294012W1565928|L=N294500W1763459|Z",
+            "PATH|M=N344000W1203600|L=N343900W1203900|L=N343000W1203900|L=N290200W1175900|L=N281200W1171900|L=N293600W1171600|L=N342800W1201800|Z",
+            "PATH|M=N344000W1203600|L=N343900W1203900|L=N343000W1203900|L=N290200W1175900|L=N281200W1171900|L=N293600W1171600|L=N342800W1201800|Z",
+            "PATH|M=N344300W1203600|L=N343600W1204300|L=N331000W1205800|L=N300700W1220300|L=N295200W1220000|L=N292900W1213100|L=N292800W1211300|L=N294900W1205200|L=N300400W1205400|L=N330900W1204500|L=N340400W1203000|L=N342700W1202600|Z"
+        ],
+        "CLASSIFY": {
+            "c150116365": [
+                "NOTMAR 53052"
+            ],
+            "c150377491": [
+                "NOTMAR 53418"
+            ],
+            "c150640913": [
+                "NOTMAR 53866"
+            ],
+            "c195715809": [
+                "NOTMAR 54068",
+                "NOTMAR 54098"
+            ],
+            "c225656770": [
+                "NOTMAR 53791",
+                "NOTMAR 53801",
+                "NOTMAR 53878"
+            ],
+            "c796038164": [
+                "NOTMAR 40014"
+            ]
+        },
+        "NUM": 9,
+        "HASH": "f2bc899ac971ffeff64ff40804a986fbc4272aa2dffca33b99d1cb5a2c2649d8"
+    },
+    "HASH": "0e949b7f20dcabb68e5729ddb26c44781af7e200368db72e7f5cc934e4fb0291",
+    "HASH_NOTAM": "8de542fd39e6df9b9fa76f5248c3691418575e522e6864c398106555a456a35d",
     "HASH_FOCUSED": "b8fed809a418e8c4988cf3d3d480f157436fa782851adf27ddb2522559a66c62",
     "FETCH_VALID": true
 }
