@@ -1,4 +1,4 @@
-:root {--notam-source-color:#34495e;--msi-source-color:#16a085;}
+:root {--notam-source-color:#34495e;--msi-source-color:#16a085;--notmar-source-color:#7c3aed;}
 /* 临时暂停服务弹窗：地图仍保持可见，仅覆盖交互界面 */
 .site-pause-overlay {
     position: fixed;
@@ -491,6 +491,23 @@ body.nav-row-tight #manualToggle:active:not(.is-touching) {transform: scale(0.95
     background: #555;
 }
 
+.auto-data-section {margin-bottom: 10px;border: 1px solid #d8e0e5;border-radius: 6px;background: #fff;overflow: hidden;}
+.auto-data-header {display: flex;align-items: center;justify-content: space-between;gap: 8px;padding: 9px 10px;background: #ecf0f1;color: var(--notam-source-color);font-weight: bold;cursor: pointer;user-select: none;}
+.auto-data-header:focus-visible {outline: 2px solid #3498db;outline-offset: -2px;}
+.auto-data-title {display: inline-flex;align-items: center;min-width: 0;gap: 7px;}
+.auto-data-chevron {width: 7px;height: 7px;flex: 0 0 auto;border-right: 2px solid currentColor;border-bottom: 2px solid currentColor;transform: rotate(45deg) translateY(-2px);transition: transform .28s ease;}
+.auto-data-section.is-collapsed .auto-data-chevron {transform: rotate(-45deg) translate(-1px, 1px);}
+.auto-data-actions {display: flex;align-items: center;gap: 5px;flex: 0 0 auto;}
+.auto-data-actions button {padding: 3px 8px;border: 0;border-radius: 3px;background: #3498db;color: #fff;font-size: 12px;line-height: 1.35;cursor: pointer;transition: background .2s ease, transform .2s ease;}
+.auto-data-actions button:hover {background: #2980b9;transform: translateY(-1px);}
+.auto-data-actions button:active {transform: translateY(0);}
+.auto-data-content {display: grid;grid-template-rows: 1fr;opacity: 1;transition: grid-template-rows .32s ease, opacity .22s ease;}
+.auto-data-content-inner {min-height: 0;overflow: hidden;padding: 0 0 1px;}
+.auto-data-section.is-collapsed .auto-data-content {grid-template-rows: 0fr;opacity: 0;}
+@media (prefers-reduced-motion: reduce) {
+    .auto-data-chevron, .auto-data-content, .auto-data-actions button {transition: none;}
+}
+
 .notam-item {margin-bottom: 12px;padding: 10px;border-radius: 6px;background: #f8f9fa;border-left: 5px solid var(--group-color);position: relative;display: flex;flex-direction: row;justify-content: space-between;align-items: flex-start;}
 .notam-content {display: flex;flex-direction: column;gap: 6px;flex: 1;}
 .notam-header {display: flex;align-items: center;justify-content: flex-start;font-weight: bold;}
@@ -929,6 +946,7 @@ body.globe-active #globeMap { visibility: visible; pointer-events: auto; z-index
 .notam-type-control button {display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:64px;height:28px;padding:0 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#4b5f72;cursor:pointer;font:700 12px/1.2 "微软雅黑",sans-serif;letter-spacing:.04em;text-shadow:0 1px 1px rgba(255,255,255,.75);transition:background .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease;-webkit-tap-highlight-color:transparent;}
 .notam-type-control button::before {content:"";width:8px;height:8px;border-radius:50%;background:var(--notam-source-color);box-shadow:0 0 0 1px rgba(255,255,255,.52);}
 .notam-type-control button[data-notam-type="MSI"]::before {background:var(--msi-source-color);}
+.notam-type-control button[data-notam-type="NOTMAR"]::before {background:var(--notmar-source-color);}
 .notam-type-count {font-variant-numeric:tabular-nums;}
 .notam-type-control button.active {border-color:rgba(84,135,181,.45);background:rgba(255,255,255,.94);color:#203b56;box-shadow:0 2px 7px rgba(43,79,115,.16),inset 0 1px 0 rgba(255,255,255,.96);}
 @media (hover:hover) {.notam-type-control button:not(.active):hover {background:rgba(255,255,255,.42);color:#274b70;}.notam-type-control button:active {transform:scale(.97);}}

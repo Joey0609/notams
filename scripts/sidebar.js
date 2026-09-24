@@ -1,3 +1,5 @@
+let autoDataCollapsed = false;
+
 function toggleSidebar() {
     const sidebar = document.getElementById('notamSidebar');
     const listPage = document.getElementById('notamListPage');
@@ -247,50 +249,54 @@ function updateSidebar() {
     if (dict && dict.NUM > 0) {
         const visibleNotamIndexes = [];
         const visibleMsiIndexes = [];
+        const visibleNotmarIndexes = [];
         for (let index = 0; index < dict.NUM; index++) {
             if (!isNotamTypeVisible(index)) continue;
-            (getNotamDisplayType(dict.SOURCE?.[index]) === 'MSI' ? visibleMsiIndexes : visibleNotamIndexes).push(index);
+            const displayType = getNotamDisplayType(dict.SOURCE?.[index]);
+            (displayType === 'MSI' ? visibleMsiIndexes : (displayType === 'NOTMAR' ? visibleNotmarIndexes : visibleNotamIndexes)).push(index);
         }
-        const visibleIndexes = visibleNotamIndexes.concat(visibleMsiIndexes);
+        const visibleIndexes = visibleNotamIndexes.concat(visibleMsiIndexes, visibleNotmarIndexes);
 
-        html += '<div style="font-weight: bold; padding: 10px; background: #ecf0f1; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">' +
-            '<span>自动获取数据 (' + autoCount + ')</span>' +
-            '<div style="display: flex; gap: 5px;">' +
-            '<button onclick="event.stopPropagation(); showAllAutoNotams()" title="全部显示" style="padding: 3px 8px; font-size: 12px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">全部显示</button>' +
-            '<button onclick="event.stopPropagation(); hideAllAutoNotams()" title="全部隐藏" style="padding: 3px 8px; font-size: 12px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">全部隐藏</button>' +
+        html += '<section class="auto-data-section' + (autoDataCollapsed ? ' is-collapsed' : '') + '">' +
+            '<div class="auto-data-header" role="button" tabindex="0" aria-expanded="' + (!autoDataCollapsed) + '" onclick="toggleAutoDataSection(event)" onkeydown="if (event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); toggleAutoDataSection(event); }">' +
+            '<span class="auto-data-title"><span class="auto-data-chevron" aria-hidden="true"></span><span>NOTAM (' + visibleNotamIndexes.length + ')</span></span>' +
+            '<div class="auto-data-actions">' +
+            '<button onclick="event.stopPropagation(); showAllAutoNotams()" title="全部显示">全部显示</button>' +
+            '<button onclick="event.stopPropagation(); hideAllAutoNotams()" title="全部隐藏">全部隐藏</button>' +
             '</div>' +
-            '</div>';
-
-        if (visibleNotamIndexes.length > 0) {
-            html += '<div style="font-weight: bold; padding: 7px 10px; color: var(--notam-source-color); border-bottom: 1px solid #e5e7eb;">NOTAM (' + visibleNotamIndexes.length + ')</div>';
-        }
+            '</div>' +
+            '<div class="auto-data-content"><div class="auto-data-content-inner">';
 
         for (let position = 0; position < visibleIndexes.length; position++) {
             if (position === visibleNotamIndexes.length && visibleMsiIndexes.length > 0) {
                 html += '<div style="font-weight: bold; padding: 7px 10px; margin-top: 8px; color: var(--msi-source-color); border-top: 2px solid var(--msi-source-color); border-bottom: 1px solid #e5e7eb;">海警 MSI (' + visibleMsiIndexes.length + ')</div>';
             }
+            if (position === visibleNotamIndexes.length + visibleMsiIndexes.length && visibleNotmarIndexes.length > 0) {
+                html += '<div style="font-weight: bold; padding: 7px 10px; margin-top: 8px; color: var(--notmar-source-color); border-top: 2px solid var(--notmar-source-color); border-bottom: 1px solid #e5e7eb;">USCG NOTMAR (' + visibleNotmarIndexes.length + ')</div>';
+            }
             const i = visibleIndexes[position];
             const code = dict.CODE[i];
             const sourceType = (dict.SOURCE?.[i] || 'NOTAM').toUpperCase();
             const isMsi = getNotamDisplayType(sourceType) === 'MSI';
+            const isNotmar = getNotamDisplayType(sourceType) === 'NOTMAR';
             // 只有聚焦段（前 FOCUSED_NUM 行）会生成 data/archiveMatch/match{idx}.json，
             // 其余行不渲染「历史航警匹配」按钮
             const focusedRows = Number(dict.FOCUSED_NUM || 0);
-            const canArchiveMatch = !isMsi && i < focusedRows;
+            const canArchiveMatch = !isMsi && !isNotmar && i < focusedRows;
             const matchButton = canArchiveMatch ? `
                         <button class="icon-btn"
                             onclick="event.stopPropagation(); archiveNOTAMmatch(${i})"
                             title="历史航警匹配">
                             <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81836 6.72729V14H13.0911" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 24C4 35.0457 12.9543 44 24 44V44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C16.598 4 10.1351 8.02111 6.67677 13.9981" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.005 12L24.0038 24.0088L32.4832 32.4882" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>` : '';
-            const copyTitle = isMsi ? '复制原始海警' : '复制原始航警';
+            const copyTitle = isMsi ? '复制原始海警' : (isNotmar ? '复制原始 NOTMAR' : '复制原始航警');
             const rawTime = dict.TIME[i] || '';
             const prettyTime = convertTime(rawTime);
             const rawMessage = dict.RAWMESSAGE?.[i] || '';
             const col = getColorForRecord(i);
             const visible = visibleState[i] !== false;
-            const colorControl = isMsi
-                ? `<div class="color-picker-wrapper" title="MSI 使用独立颜色池"><div class="color-preview" style="background:${col}"></div></div>`
+            const colorControl = (isMsi || isNotmar)
+                ? `<div class="color-picker-wrapper" title="${isMsi ? 'MSI' : 'USCG NOTMAR'} 使用独立颜色池"><div class="color-preview" style="background:${col}"></div></div>`
                 : `<div class="color-picker-wrapper" onclick="event.stopPropagation();"><div class="color-preview" style="background:${col}"><input type="color" class="color-picker" value="${col.substring(0, 7)}" onchange="event.stopPropagation(); changeGroupColor('${code}', this.value, ${i})"></div></div>`;
             html += `
             <div class="notam-item" style="--group-color:${col}; cursor:pointer;"
@@ -305,7 +311,7 @@ function updateSidebar() {
                             ${colorControl}
 
                             <span class="notam-code">${code}</span>
-                            <span style="font-size:11px;padding:1px 6px;border-radius:10px;background:${isMsi ? 'var(--msi-source-color)' : 'var(--notam-source-color)'};color:#fff;">${sourceType}</span>
+                            <span style="font-size:11px;padding:1px 6px;border-radius:10px;background:${isMsi ? 'var(--msi-source-color)' : (isNotmar ? 'var(--notmar-source-color)' : 'var(--notam-source-color)')};color:#fff;">${sourceType}</span>
                         </div>
 
                         
@@ -337,6 +343,7 @@ ${matchButton}
                 
             </div>`;
         }
+        html += '</div></div></section>';
     }
 
     // 显示历史航警
@@ -400,6 +407,16 @@ ${matchButton}
     }
 
     container.innerHTML = html;
+}
+
+function toggleAutoDataSection(event) {
+    if (event) event.stopPropagation();
+    autoDataCollapsed = !autoDataCollapsed;
+    const section = document.querySelector('.auto-data-section');
+    if (!section) return;
+    section.classList.toggle('is-collapsed', autoDataCollapsed);
+    const header = section.querySelector('.auto-data-header');
+    if (header) header.setAttribute('aria-expanded', String(!autoDataCollapsed));
 }
 
 /* 复制历史航警原始信息 */
@@ -597,7 +614,7 @@ function archiveNOTAMmatch(index) {
     if (!dict || index >= dict.NUM) return;
     const sourceType = (dict.SOURCE?.[index] || 'NOTAM').toUpperCase();
     if (sourceType !== 'NOTAM') {
-        alert('MSI 不参与历史航警匹配');
+        alert('MSI 和 USCG NOTMAR 不参与历史航警匹配');
         return;
     }
     if (index >= Number(dict.FOCUSED_NUM || 0)) {

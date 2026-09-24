@@ -204,10 +204,21 @@ const colorPoolSatelliteMsi = [
     "#ff80ab", "#18ffff", "#ffd740", "#ea80fc", "#84ffff"
 ];
 
+// USCG NOTMAR 独立颜色池：与 NOTAM/MSI 均不复用。
+const colorPoolVectorNotmar = [
+    "#5b21b6", "#7c2d12", "#9d174d", "#1e3a8a", "#155e75",
+    "#713f12", "#4c1d95", "#831843", "#0f766e", "#7f1d1d"
+];
+const colorPoolSatelliteNotmar = [
+    "#d8b4fe", "#fdba74", "#f9a8d4", "#93c5fd", "#67e8f9",
+    "#fde047", "#c4b5fd", "#fda4af", "#5eead4", "#fca5a5"
+];
+
 // 当前使用的颜色池
 let currentColorPool = colorPoolVector;
 let currentFocusedColorPool = colorPoolVectorFocused;
 let currentMsiColorPool = colorPoolVectorMsi;
+let currentNotmarColorPool = colorPoolVectorNotmar;
 let currentColor_idx = 0;
 
 function randomColor() {
@@ -219,6 +230,7 @@ function switchColorPool(isVectorMap) {
     currentColorPool = isVectorMap ? colorPoolVector : colorPoolSatellite;
     currentFocusedColorPool = isVectorMap ? colorPoolVectorFocused : colorPoolSatelliteFocused;
     currentMsiColorPool = isVectorMap ? colorPoolVectorMsi : colorPoolSatelliteMsi;
+    currentNotmarColorPool = isVectorMap ? colorPoolVectorNotmar : colorPoolSatelliteNotmar;
     currentColor_idx = 0; // 重置索引
 }
 
@@ -320,8 +332,9 @@ function makeMap() {
 
     map.getPane('overlayPane').style.zIndex = 400;
     map.getPane('markerPane').style.zIndex = 350;   // 在落区多边形下
-    // 自动航警按来源固定分层：MSI 始终在下，NOTAM 始终在上。
+    // 自动航警按来源固定分层：NOTAM 最上、MSI 居中、USCG NOTMAR 最下。
     // pane 的层级同时决定可见覆盖与鼠标命中顺序，因此重合时优先点击 NOTAM。
+    map.createPane('autoNotmarPane').style.zIndex = 400;
     map.createPane('autoMsiPane').style.zIndex = 401;
     map.createPane('autoNotamPane').style.zIndex = 402;
 
@@ -1079,6 +1092,20 @@ function geometryToLayer(geometry, options) {
         points.push(center);
         return createWrappedPolygon(points, options);
     }
+    if (kind === 'POINT') {
+        const center = geometryCoordinate((parts.find(part => part.startsWith('C=')) || '').slice(2));
+        return center ? L.circleMarker(center, Object.assign({ radius: 7 }, options)) : null;
+    }
+    if (kind === 'LINE') {
+        const points = [];
+        for (const part of parts) {
+            if (!part.startsWith('M=') && !part.startsWith('L=')) continue;
+            const point = geometryCoordinate(part.slice(2));
+            if (!point) return null;
+            points.push(point);
+        }
+        return points.length >= 2 ? L.polyline(points, options) : null;
+    }
     if (kind !== 'PATH') return null;
     const points = [];
     for (const part of parts) {
@@ -1456,14 +1483,16 @@ window.buildNotamPopupRows = buildNotamPopupRows;
 // 绘制NOTAM多边形
 function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceType = 'NOTAM', fir = '', geometry = '') {
     var timestr = is_self ? null : convertTime(timee);
-    const isMsi = !is_self && String(sourceType || '').toUpperCase().startsWith('MSI');
+    const displayType = is_self ? 'NOTAM' : getNotamDisplayType(sourceType);
+    const isMsi = displayType === 'MSI';
+    const isNotmar = displayType === 'NOTMAR';
     const style = {
         color: col,
         weight: 1,
         opacity: 1,
         fillColor: col,
         fillOpacity: 0.5,
-        pane: is_self ? 'overlayPane' : (isMsi ? 'autoMsiPane' : 'autoNotamPane')
+        pane: is_self ? 'overlayPane' : (isNotmar ? 'autoNotmarPane' : (isMsi ? 'autoMsiPane' : 'autoNotamPane'))
     };
     var tmpPolygon = geometryToLayer(geometry, style);
     if (!tmpPolygon) return;
@@ -1480,7 +1509,7 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
     }
 
     if (!is_self) {
-        var popupTitle = isMsi ? 'MSI 信息' : 'NOTAM 信息';
+        var popupTitle = isMsi ? 'MSI 信息' : (isNotmar ? 'NOTMAR 信息' : 'NOTAM 信息');
         // MSI 的第二行仅保留海警编号；NOTAM 仍保留编号和飞行情报区并排。
         popupContent = "<div class='notam-popup'>" +
             buildNotamPopupHeader(popupTitle, rawmessage, '', numm) +
@@ -1489,11 +1518,11 @@ function drawNot(timee, codee, altitude, numm, col, is_self, rawmessage, sourceT
             buildNotamPopupRows({
                 timeText: timestr,
                 code: codee,
-                codeLabel: isMsi ? '海警编号' : '航警编号',
+                codeLabel: isMsi ? '海警编号' : (isNotmar ? 'NOTMAR 编号' : '航警编号'),
                 regionLabel: '飞行情报区',
                 regionValue: fir || 'UNKNOWN',
-                fullWidthCode: isMsi,
-                detailLabel: isMsi ? '海警详情' : '航警详情',
+                fullWidthCode: isMsi || isNotmar,
+                detailLabel: isMsi ? '海警详情' : (isNotmar ? 'NOTMAR 详情' : '航警详情'),
                 rawMessage: rawmessage
             }) +
             "</div>" +
@@ -1575,6 +1604,7 @@ var polygonAuto = [];           // 自动获取的多边形
 var groupColors = {};           // 外部段 CLASSIFY → color
 var groupColorsFocused = {};    // 聚焦段 CLASSIFY → color
 var msiColors = {};             // MSI 行号 → 独立颜色
+var notmarColors = {};          // USCG NOTMAR 行号 → 独立颜色
 var visibleState = {};          // index → true/false
 
 /* 为一段 CLASSIFY 分配颜色；targetMap/pool 可指定目标映射与颜色池 */
@@ -1593,11 +1623,15 @@ function assignAllGroupColors(focusedClassify, classify) {
     assignGroupColors(focusedClassify || {}, groupColorsFocused, currentFocusedColorPool);
     assignGroupColors(classify || {}, groupColors, currentColorPool);
     Object.keys(msiColors).forEach(key => { delete msiColors[key]; });
+    Object.keys(notmarColors).forEach(key => { delete notmarColors[key]; });
     if (!dict) return;
     let msiColorIndex = 0;
+    let notmarColorIndex = 0;
     for (let index = 0; index < dict.NUM; index++) {
         if (getNotamDisplayType(dict.SOURCE?.[index]) === 'MSI') {
             msiColors[index] = currentMsiColorPool[msiColorIndex++ % currentMsiColorPool.length];
+        } else if (getNotamDisplayType(dict.SOURCE?.[index]) === 'NOTMAR') {
+            notmarColors[index] = currentNotmarColorPool[notmarColorIndex++ % currentNotmarColorPool.length];
         }
     }
 }
@@ -1620,6 +1654,9 @@ function getColorForCode(code) {
 function getColorForRecord(index) {
     if (dict && getNotamDisplayType(dict.SOURCE?.[index]) === 'MSI') {
         return msiColors[index] || currentMsiColorPool[0];
+    }
+    if (dict && getNotamDisplayType(dict.SOURCE?.[index]) === 'NOTMAR') {
+        return notmarColors[index] || currentNotmarColorPool[0];
     }
     return getColorForCode(dict?.CODE?.[index]);
 }

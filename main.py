@@ -444,31 +444,34 @@ def build_section(data, indices, sort_by_code=True):
 
 
 def _segment_record_indices(data, focused_keys):
-    """Return ``(focused_notam, remaining_notam, msi)`` record positions."""
+    """Return ``(focused_notam, remaining_notam, msi, notmar)`` record positions."""
     codes = data.get('CODE', []) or []
     sources = data.get('SOURCE', []) or []
-    focused_index, remaining_index, msi_index = [], [], []
+    focused_index, remaining_index, msi_index, notmar_index = [], [], [], []
     for index in range(len(codes)):
         source = str(sources[index] if index < len(sources) else 'NOTAM').upper()
         if source.startswith('MSI'):
             msi_index.append(index)
+        elif source.startswith('NOTMAR'):
+            notmar_index.append(index)
         elif source.startswith('NOTAM'):
             key = _record_key(source, codes[index])
             (focused_index if key in focused_keys else remaining_index).append(index)
-    return focused_index, remaining_index, msi_index
+    return focused_index, remaining_index, msi_index, notmar_index
 
 
 def build_data_segments(data, focused_keys):
-    """Split the merged records into focused NOTAM, remaining NOTAM and MSI sections.
+    """Split records into focused NOTAM, remaining NOTAM, MSI and NOTMAR sections.
 
     Every section is sorted by CODE and classified on its own, so the focused and
     the remaining pool never share a classification group.
     """
-    focused_index, remaining_index, msi_index = _segment_record_indices(data, focused_keys)
+    focused_index, remaining_index, msi_index, notmar_index = _segment_record_indices(data, focused_keys)
     return (
         build_section(data, focused_index),
         build_section(data, remaining_index),
         build_section(data, msi_index),
+        build_section(data, notmar_index),
     )
 
 
@@ -538,6 +541,8 @@ def filter_data_by_source(data, include_sources):
             sections.append(data.get('NOTAM_DATA', {}))
         if 'MSI' in requested:
             sections.append(data.get('MSI_DATA', {}))
+        if 'NOTMAR' in requested:
+            sections.append(data.get('USCG_NOTMAR_DATA', {}))
         merged = _empty_record_data()
         for section in sections:
             for field in RECORD_FIELDS:
@@ -1214,8 +1219,8 @@ def fetch(source_fetcher=None):
     except Exception as exc:
         print(f'读取数据源配置失败: {exc}')
         enabled_sources = []
-    # MSI 只在第二批（剩余位置）抓取
-    notam_sources = [name for name in enabled_sources if name != 'msi']
+    # 与位置无关的海事源仅抓一次，放在第二批，避免聚焦/全量阶段重复请求。
+    notam_sources = [name for name in enabled_sources if name not in {'msi', 'uscg'}]
 
     batches = []
     focused_keys = set()
@@ -1230,7 +1235,7 @@ def fetch(source_fetcher=None):
 
     if remaining_stage:
         stage_label = '阶段2' if focus_enabled else '单阶段'
-        print(f'[FOCUSED] {stage_label}: 抓取 {len(remaining_stage)} 个位置（含 MSI）')
+        print(f'[FOCUSED] {stage_label}: 抓取 {len(remaining_stage)} 个位置（含 MSI / USCG NOTMAR）')
         remaining_batch = fetch_stage(current_config, remaining_stage)
         batches.append(remaining_batch)
         print(f'[FOCUSED] {stage_label}: 返回 {len(remaining_batch.data.get("CODE", []) or [])} 条记录')
@@ -1243,13 +1248,14 @@ def fetch(source_fetcher=None):
     filter_expired_records(dataDict, grace_hours=24)
     dataDict['ALTITUDE'] = extract_altitude(dataDict['RAWMESSAGE'])
 
-    # 行号空间 = 聚焦段 → 外部段 → MSI 段，两个 NOTAM 段各自排序与分类
-    focused_data, notam_data, msi_data = build_data_segments(dataDict, focused_keys)
+    # 行号空间 = 聚焦段 → 外部段 → MSI 段 → USCG NOTMAR 段。
+    focused_data, notam_data, msi_data, notmar_data = build_data_segments(dataDict, focused_keys)
     dataDict['NUM'] = len(dataDict['CODE'])
     dataDict['CLASSIFY'] = classify_data(dataDict)
     dataDict['HASH'] = compute_data_hash(dataDict)
     dataDict['HASH_NOTAM'] = compute_data_hash(dataDict, include_sources={'NOTAM'})
     dataDict['HASH_MSI'] = compute_data_hash(dataDict, include_sources={'MSI'})
+    dataDict['HASH_NOTMAR'] = compute_data_hash(dataDict, include_sources={'NOTMAR'})
     dataDict['HASH_FOCUSED'] = focused_data['HASH']
     dataDict['FOCUS_ENABLED'] = focus_enabled
     dataDict['FOCUSED_NUM'] = focused_data['NUM']
@@ -1261,6 +1267,7 @@ def fetch(source_fetcher=None):
         'FOCUSED_NOTAM_DATA': focused_data,
         'NOTAM_DATA': notam_data,
         'MSI_DATA': msi_data,
+        'USCG_NOTMAR_DATA': notmar_data,
         'HASH': dataDict['HASH'],
         'HASH_NOTAM': dataDict['HASH_NOTAM'],
         # 未启用聚焦段时写 None，下一轮启用后按「建立聚焦基线」处理，避免一次性轰炸

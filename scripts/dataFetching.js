@@ -20,11 +20,12 @@ function appendSection(target, section) {
 }
 
 function normalizeDataPayload(raw) {
-    // 顺序固定为 聚焦段 → 外部段 → MSI 段：页面行号即 data/archiveMatch/match{idx}.json 的编号
+    // 顺序固定为 聚焦段 → 外部段 → MSI 段 → USCG NOTMAR 段。
     const merged = buildEmptyDataDict();
     appendSection(merged, raw?.FOCUSED_NOTAM_DATA);
     appendSection(merged, raw?.NOTAM_DATA);
     appendSection(merged, raw?.MSI_DATA);
+    appendSection(merged, raw?.USCG_NOTMAR_DATA);
     merged.NUM = merged.CODE.length;
     merged.CLASSIFY_FOCUSED = raw?.FOCUSED_NOTAM_DATA?.CLASSIFY || {};
     merged.CLASSIFY = raw?.NOTAM_DATA?.CLASSIFY || {};
@@ -53,10 +54,13 @@ if (!isSitePaused()) {
 let dict = null;
 
 // 每类航警独立控制当前会话的显示，不改变单条航警自己的隐藏状态。
-let notamTypeVisibility = { NOTAM: true, MSI: true };
+let notamTypeVisibility = { NOTAM: true, MSI: true, NOTMAR: true };
 
 function getNotamDisplayType(source) {
-    return String(source || 'NOTAM').trim().toUpperCase().startsWith('MSI') ? 'MSI' : 'NOTAM';
+    const normalized = String(source || 'NOTAM').trim().toUpperCase();
+    if (normalized.startsWith('MSI')) return 'MSI';
+    if (normalized.startsWith('NOTMAR')) return 'NOTMAR';
+    return 'NOTAM';
 }
 
 function isNotamTypeVisible(index) {
