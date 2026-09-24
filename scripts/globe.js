@@ -92,8 +92,8 @@
             }
         });
         viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#14213d');
-        // 晨昏光照（3D 功能面板里的那个开关）初始关闭；开关、显示时刻、渐变动画全部交给下面的 fx 控制器。
-        viewer.scene.globe.enableLighting = false;
+        // 晨昏光照默认开启；开关、显示时刻、渐变动画全部交给下面的 fx 控制器。
+        viewer.scene.globe.enableLighting = true;
         // 时间只由我们自己的定时器推进（见 fxStep），所以关掉 Cesium 自带的时钟推进：
         // “实时跟随 / 冻结在选定时刻 / 倍速播放”三件事因此只有一条代码路径，也不会被 clockRange 之类的
         // 设置搅乱。viewer 的 animation / timeline 本来就关着，这里只是显式钉死。
@@ -919,7 +919,7 @@
     var FX_SPEED_MIN = 1;
     var FX_SPEED_MAX = 86400;            // 1 秒 = 1 天（地球自转一圈）
 
-    var fxEnabled = false;               // 开关状态
+    var fxEnabled = true;                // 开关状态，默认开启
     var fxMode = 'playing';              // 'playing' 播放中 | 'frozen' 冻结在显示时刻
     var fxMultiplier = 1;                // 倍速，1 = 真实速度（此时按真实时间对齐）
     var fxTime = null;                   // Cesium.JulianDate：当前显示时刻
