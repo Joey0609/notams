@@ -250,6 +250,8 @@
         var manualStates = typeof manualVisibleState !== 'undefined' ? manualVisibleState : {};
         manualItems.forEach(function (item, index) { if (item && item.polygon && manualStates[item.id] === false) return; addLayer(item && item.polygon, 'manual-' + index); });
         addMarkers(window.launchSiteMarkers || [], 'launch');
+        // 四级工位标记由二维地图独立管理；同步到 Cesium，避免切换 3D 后工位消失。
+        addMarkers(window.launchPadMarkers || [], 'launch-pad');
         addMarkers(window.landingZoneMarkers || [], 'landing');
         addMeasures();
         Object.keys(highlighted).forEach(function (id) { if (highlighted[id]) highlight(id, true); });
@@ -908,8 +910,7 @@
           这是 Cesium 的既定行为，产品上也决定不做提示。想让任何缩放都保留晨昏，
           把 FX_DEFAULT_FADEOUT / FX_DEFAULT_FADEIN 改成 0 / 1 即可。
 
-       开关、显示时刻、倍速都只存在这个模块的内存里：切到 2D 再回 3D 仍然保留，刷新页面就重置
-       （仓库不引入 localStorage，这次也不引入）。 */
+       开关、显示时刻、倍速由本模块维护，并由 appSettings.js 持久化到当前浏览器。 */
 
     var FX_DEFAULT_FADEOUT = 10000000;   // Cesium 1.114 默认 globe.lightingFadeOutDistance
     var FX_DEFAULT_FADEIN = 20000000;    // Cesium 1.114 默认 globe.lightingFadeInDistance
@@ -930,7 +931,6 @@
     var fxFadeFrom = 0, fxFadeTo = 0, fxFadeStart = 0, fxFadeDur = 0, fxFadeDone = null;
     var fxFadeCurrent = 0;               // 动画内部的当前强度（0 = 无晨昏，1 = 完整晨昏）
     var fxFadePinned = false;            // 那一对距离是否正被动画（或调试助手）接管
-
     function fxEl(id) { return document.getElementById(id); }
     function fxPad(value) { return (value < 10 ? '0' : '') + value; }
     /* JulianDate → 原生 Date。注意 Cesium 1.114 的 toDate 是**静态方法**（JulianDate.toDate(jd)），

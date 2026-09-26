@@ -100,8 +100,17 @@ function applyNotamTypeFilter() {
 function toggleNotamTypeFilter(type) {
     if (!type) return;
     notamTypeVisibility[type] = notamTypeVisibility[type] === false;
+    if (window.NotamAppSettings) window.NotamAppSettings.set('notamTypeVisibility', notamTypeVisibility);
     applyNotamTypeFilter();
 }
+
+function setNotamTypeVisibility(savedVisibility) {
+    ['NOTAM', 'MSI', 'NOTMAR'].forEach(type => {
+        if (typeof savedVisibility[type] === 'boolean') notamTypeVisibility[type] = savedVisibility[type];
+    });
+    applyNotamTypeFilter();
+}
+window.setNotamTypeVisibility = setNotamTypeVisibility;
 
 function bindNotamTypeControl() {
     const control = document.getElementById('notamTypeControl');

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="SpaceX">
+  <defs>
+    <mask id="badge-ring-cutout" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+      <rect width="64" height="64" fill="#fff"/>
+      <circle cx="32" cy="32" r="25" fill="none" stroke="#000" stroke-width="3.12"/>
+    </mask>
+    <clipPath id="logo-inner-disc">
+      <circle cx="32" cy="32" r="23.44"/>
+    </clipPath>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="#000" mask="url(#badge-ring-cutout)"/>
+  <g clip-path="url(#logo-inner-disc)">
+    <g transform="translate(16 16) scale(.6)" fill="#fff">
+      <path d="M15.172837 11.564688H3.6218369l-.627 1.193 12.8280001 9.351c2.43-1.407 5.074-2.833 7.95-4.24z"/>
+      <path d="m25.522837 29.179688 11.275 8.222h11.692l.484-1.089-16.836-12.323c-2.236 1.641-4.445 3.374-6.615 5.19"/>
+      <path d="M13.453837 37.382688H3.0028369l-.883-1.383c7.106-6.861 38.8880001-36.2720003 107.9720031-39.4230003 0 0-57.986003 1.956-96.638003 40.8060003"/>
+    </g>
+  </g>
+</svg>

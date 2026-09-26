@@ -7,6 +7,264 @@ var autoListExpanded = false;
 var polygon = [];
 var polygonAuto = [];
 var launchSiteMarkers = [];
+var allLaunchSiteGroups = [];
+// 境外工位数据入口：每项需提供 { name, lat, lng, siteName, content }；必须是工位坐标，不能用发射场中心代替。
+// 资料按 2026-09 可查公开信息整理；LC-39A-Starship 是 39A 范围内的开发区域标注，不代表独立发射台编号。
+var launchPadData = [
+    {
+        name: 'LC-36A', lat: 28.471832, lng: -80.538168, siteName: 'Cape Canaveral SFS / Blue Origin',
+        content: 'Blue Origin 的 New Glenn 发射台。2026 年 5 月地面热试验发生重大异常；场地清理已完成，主要修复仍在进行，公司目标为 2026 年内恢复飞行。<br><a href="https://www.blueorigin.com/news/new-glenn-return-to-flight" target="_blank" rel="noopener">Blue Origin：恢复飞行与修复进度</a>'
+    },
+    {
+        name: 'LC-36B（LC-11）', lat: 28.475534, lng: -80.538567, siteName: 'Cape Canaveral SFS / Blue Origin',
+        content: 'Blue Origin 于 2026 年 8 月启动 LC-36B 建设，计划支持更大型的 New Glenn 9x4。LC-36B 与历史 LC-11 是不同编号，不应视为同一发射台。<br><a href="https://www.blueorigin.com/news/returning-launch-complex-36-to-two-pads" target="_blank" rel="noopener">Blue Origin：LC-36B 建设</a>'
+    },
+    {
+        name: 'SLC-46', lat: 28.458493, lng: -80.528412, siteName: 'Cape Canaveral Spaceport / Space Florida',
+        content: 'Space Florida 管理的多用途发射场，可支持商业与政府任务。FAA 列示的发射场许可证有效至 2030 年；公开资料中可确认的较近发射包括 2017 年 ORS-5，2019 年执行 NASA Orion 中止逃逸测试。<br><a href="https://www.faa.gov/space/spaceports_by_state" target="_blank" rel="noopener">FAA：佛罗里达发射场资料</a>'
+    },
+    {
+        name: 'LC-12', lat: 28.480652, lng: -80.541971, siteName: 'Cape Canaveral SFS',
+        content: '历史 Atlas 火箭发射场，现已不是现役发射台。场区保留历史遗址/设施；公开资料显示 Blue Origin 曾租用该区域作相关用途，但当前具体使用情况未能从近期官方资料确认。<br><a href="https://ccspacemuseum.org/facilities/launch-complex-12/" target="_blank" rel="noopener">卡纳维拉尔角太空军博物馆：LC-12</a>'
+    },
+    {
+        name: 'LC-14', lat: 28.491131, lng: -80.546895, siteName: 'Cape Canaveral SFS / Stoke Space',
+        content: 'Stoke Space 的 Nova 发射场。Stoke 于 2026 年 2 月举行场地启用仪式，并于 9 月公布 Nova Pathfinder 首飞任务客户；首飞目标为 2027 年初，目前处于建设和任务准备阶段。<br><a href="https://www.stokespace.com/news/Manifest-Update-Nova-Pathfinder-Flight-1" target="_blank" rel="noopener">Stoke：Nova Pathfinder 首飞更新</a>'
+    },
+    {
+        name: 'LC-16', lat: 28.502078, lng: -80.551350, siteName: 'Cape Canaveral SFS / Relativity Space',
+        content: 'Relativity Space 的 Terran R 发射场。2026 年 7 月更新显示，水平总装设施、供电、运输起竖设备及发射支持系统仍在建设和安装；尚未进入 Terran R 运营发射阶段。<br><a href="https://www.relativityspace.com/press-release/2026/8/11/july-2026-company-update" target="_blank" rel="noopener">Relativity：2026 年 7 月进展</a>'
+    },
+    {
+        name: 'SLC-20', lat: 28.512194, lng: -80.556701, siteName: 'Cape Canaveral SFS / Space Florida',
+        content: 'Space Florida 改造的发射设施。Firefly 将其列为预留发射能力；目前未查到该公司已从 SLC-20 发射的公开记录，适合标注为可用/预留，而非正在常态发射。<br><a href="https://www.spaceflorida.gov/facilities/launch-complex-20" target="_blank" rel="noopener">Space Florida：SLC-20</a> · <a href="https://investors.fireflyspace.com/static-files/574d6243-0208-4f82-bbd9-42e4f494eefa" target="_blank" rel="noopener">Firefly：发射场状态</a>'
+    },
+    {
+        name: 'SLC-37A', lat: 28.534748, lng: -80.567502, siteName: 'Cape Canaveral SFS / SLC-37 改造区',
+        content: 'SLC-37 场区的一部分。该区域正处于退役设施清理及未来用途改造阶段；SpaceX Starship/Super Heavy 方案曾进入美国太空军环境评估，公开文件中的方案/审批条件不能等同于已具备发射能力。<br><a href="https://www.patrick.spaceforce.mil/Portals/14/documents/Enviromental%20Documents/Draft-SpaceX-Starship-Super-Heavy-CCSFS-Environmental-Impact-Statement.pdf?ver=rKQDMpws9EkIc4HABjGAJA%3D%3D" target="_blank" rel="noopener">美国太空军：SLC-37 环评文件</a>'
+    },
+    {
+        name: 'SLC-37B', lat: 28.531437, lng: -80.564259, siteName: 'Cape Canaveral SFS / SLC-37 改造区',
+        content: '曾用于 ULA Delta IV Heavy；最后一次发射于 2024 年 4 月完成。之后进入设施清理和改造阶段，SpaceX Starship/Super Heavy 是公开环境评估中的拟议用途，不能据此认定已投入发射。<br><a href="https://www.patrick.spaceforce.mil/Portals/14/documents/Enviromental%20Documents/Draft-SpaceX-Starship-Super-Heavy-CCSFS-Environmental-Impact-Statement.pdf?ver=rKQDMpws9EkIc4HABjGAJA%3D%3D" target="_blank" rel="noopener">美国太空军：SLC-37 环评文件</a>'
+    },
+    {
+        name: 'SLC-40', lat: 28.561951, lng: -80.577177, siteName: 'Cape Canaveral SFS / SpaceX',
+        content: 'SpaceX Falcon 9 现役发射场，已支持载人 Dragon 任务。NASA 记录显示，Crew-12 于 2026 年 2 月从此处发射。<br><a href="https://www.nasa.gov/news-release/nasas-spacex-crew-12-launches-to-international-space-station/" target="_blank" rel="noopener">NASA：Crew-12 发射</a>'
+    },
+    {
+        name: 'SLC-41', lat: 28.583469, lng: -80.582879, siteName: 'Cape Canaveral SFS / ULA',
+        content: 'ULA Atlas V 与 Vulcan 现役发射场。2026 年 2 月 Vulcan 从此处执行 USSF-87 任务；ULA 同年 8 月还在此进行面向 Amazon Leo 任务的 Vulcan 湿式彩排。<br><a href="https://newsroom.ulalaunch.com/releases/ula-vulcan-rocket-successfully-launches-the-future-of-defense" target="_blank" rel="noopener">ULA：Vulcan USSF-87</a> · <a href="https://blog.ulalaunch.com/blog/vulcan-wet-dress-rehearsal-planned" target="_blank" rel="noopener">ULA：2026 年 8 月彩排</a>'
+    },
+    {
+        name: 'LC-48', lat: 28.599126, lng: -80.588699, siteName: 'Kennedy Space Center',
+        content: 'NASA 建设的小型/中型运载器发射场。FAA 仍将其列为可支持此类运载器的场地；目前未能确认有已确定运营商或近期发射计划，暂按用途规划中/未确认投入发射处理。<br><a href="https://www.faa.gov/space/spaceports_by_state" target="_blank" rel="noopener">FAA：佛罗里达发射场列表</a>'
+    },
+    {
+        name: 'LC-39A Starship', lat: 28.608197, lng: -80.600975, siteName: 'Kennedy Space Center / SpaceX',
+        content: '位于 LC-39A 范围内的 Starship/Super Heavy 开发区域标注，不是独立的正式发射台编号。NASA 2026 年 7 月更新称相关场地方案仍在审查中。<br><a href="https://public.ksc.nasa.gov/environmental/starship-super-heavy-operations/" target="_blank" rel="noopener">NASA：Starship/Super Heavy 场地项目</a>'
+    },
+    {
+        name: 'LC-39A', lat: 28.608310, lng: -80.604129, siteName: 'Kennedy Space Center / SpaceX',
+        content: 'SpaceX 现役发射场，支持 Falcon 9 与 Falcon Heavy。NASA 发射记录显示，Roman Space Telescope 于 2026 年 8 月 30 日搭乘 Falcon Heavy 从 LC-39A 发射。<br><a href="https://public.ksc.nasa.gov/lsphistory/" target="_blank" rel="noopener">NASA：发射历史</a>'
+    },
+    {
+        name: 'LC-39B', lat: 28.627108, lng: -80.620855, siteName: 'Kennedy Space Center / NASA',
+        content: 'NASA Artemis 任务使用的 SLS 发射台。Artemis II 于 2026 年 4 月从此处发射；NASA 目前正为 Artemis III 做准备。原坐标列表中的“LC-30B”应更正为 LC-39B。<br><a href="https://www.nasa.gov/kennedy/partnerships/physicalassetsfaqs/" target="_blank" rel="noopener">NASA：LC-39B 近况</a>'
+    },
+    {
+        name: 'LP-0B', lat: 37.831169, lng: -75.491318, siteName: 'MARS / Wallops Flight Facility',
+        content: 'MARS 的固体燃料发射台，适用于小型至中型运载器，曾支持 Minotaur 系列任务。由 Virginia Spaceport Authority 运营。<br><a href="https://www.vaspace.org/our-facilities" target="_blank" rel="noopener">Virginia Space：MARS 设施</a>'
+    },
+    {
+        name: 'LP-0D（Rocket Lab LC-3）', lat: 37.832222, lng: -75.489827, siteName: 'MARS / Wallops Flight Facility / Rocket Lab',
+        content: 'Rocket Lab 在 Wallops 建设的 LC-3，面向 Neutron 运载火箭；属于新建中的重型火箭发射设施。<br><a href="https://www.rocketlabusa.com/launch/launch-complex-3/" target="_blank" rel="noopener">Rocket Lab：Launch Complex 3</a>'
+    },
+    {
+        name: 'LP-0C（Rocket Lab LC-2）', lat: 37.833247, lng: -75.488218, siteName: 'MARS / Wallops Flight Facility / Rocket Lab',
+        content: 'Rocket Lab Electron 与 HASTE 在美国东海岸的发射台。Virginia Space 已记录其 2026 年 2 月从 Pad 0-C 执行的 HASTE 发射。<br><a href="https://www.vaspace.org/completed-missions" target="_blank" rel="noopener">Virginia Space：已完成任务</a>'
+    },
+    {
+        name: 'LP-0A', lat: 37.833870, lng: -75.487687, siteName: 'MARS / Wallops Flight Facility',
+        content: '液体燃料发射台，历史上主要支持 Antares/Cygnus 货运任务；由 Virginia Spaceport Authority 运营。<br><a href="https://www.vaspace.org/our-facilities" target="_blank" rel="noopener">Virginia Space：MARS 设施</a>'
+    },
+    {
+        name: 'ELS', lat: 5.304585, lng: -52.834530, siteName: '圭亚那航天中心（CSG）',
+        content: '原 Soyuz 发射综合体，Soyuz 在库鲁的发射于 2022 年停止。旧场正在改造为 ELM2 多型号发射区，规划支持 Maia 等新型运载器。<br><a href="https://centrespatialguyanais.cnes.fr/en/installations-lancement" target="_blank" rel="noopener">CNES：发射设施与 ELM2</a>'
+    },
+    {
+        name: 'ELA-4', lat: 5.264608, lng: -52.792065, siteName: '圭亚那航天中心（CSG） / Ariane 6',
+        content: 'Ariane 6 专用发射综合体，是欧洲新一代重型运载火箭的发射设施。<br><a href="https://cnes.fr/projets/ariane-6/assemblage-lancement" target="_blank" rel="noopener">CNES：ELA-4 与 Ariane 6</a>'
+    },
+    {
+        name: 'ELV', lat: 5.236630, lng: -52.774939, siteName: '圭亚那航天中心（CSG） / Vega-C',
+        content: 'Vega-C 使用的发射场，沿用并改造自原 Ariane 1 发射区。CNES 记录显示，Vega-C 于 2026 年 9 月从该中心成功发射 VV30。<br><a href="https://centrespatialguyanais.cnes.fr/en/installations-lancement" target="_blank" rel="noopener">CNES：Vega-C 发射设施</a>'
+    },
+    {
+        name: 'ELD', lat: 5.233521, lng: -52.752296, siteName: '圭亚那航天中心（CSG） / ELM',
+        content: '原 Diamant 发射区，现改造为 ELM 多型号发射综合体，面向欧洲商业小型与微型运载器。CNES 于 2026 年公布 Sirius Space 入驻该区域。<br><a href="https://centrespatialguyanais.cnes.fr/en/news/elm-diamant-launch-complex-space-history-making" target="_blank" rel="noopener">CNES：ELM/Diamant 改造</a>'
+    },
+    {
+        name: 'Orbital Launch Pad（Isar Launch Pad A）', lat: 69.108266, lng: 15.590872, siteName: '安多亚太空港（Andøya Spaceport）',
+        content: '安多亚太空港为 Isar Aerospace 的 Spectrum 运载火箭提供轨道发射场地。2026 年 9 月，Spectrum 在此完成一次成功的卫星发射，成为欧洲大陆首次成功的轨道卫星发射。<br><a href="https://andoyaspace.no/news-articles/vi-er-stolte-av-a-ha-bidratt-til-a-skape-historie/" target="_blank" rel="noopener">Andøya Space：成功发射回顾</a>'
+    },
+    {
+        name: 'Innospace Pad', lat: -2.317641, lng: -44.368004, siteName: '阿尔坎塔拉航天中心（CLA）',
+        content: 'INNOSPACE 在阿尔坎塔拉的商业发射台。2026 年 8 月，SEBIT 首次试飞在正常离台后因飞行轨迹异常被安全终止；HANBIT-Nano 后续任务仍在准备中。<br><a href="https://www.innospc.com/myboard/sub04_02/994684" target="_blank" rel="noopener">INNOSPACE：SEBIT 首飞情况</a>'
+    },
+    {
+        name: 'PAD1', lat: 25.996301, lng: -97.154399, siteName: 'Starbase / SpaceX',
+        content: 'Starbase 南德克萨斯发射场的发射设施。该区域用于 SpaceX Starship 项目。'
+    },
+    {
+        name: 'PAD2', lat: 25.997169, lng: -97.156870, siteName: 'Starbase / SpaceX',
+        content: 'Starbase 南德克萨斯发射场的另一处发射设施。该区域用于 SpaceX Starship 项目。'
+    },
+    {
+        name: 'Launch Site One', lat: 31.422879, lng: -104.757178, siteName: 'Blue Origin / West Texas',
+        content: 'Blue Origin 位于德克萨斯州西部的亚轨道发射场，用于 New Shepard 亚轨道飞行任务。'
+    },
+    {
+        name: 'SLC-11', lat: 34.576364, lng: -120.632014, siteName: 'Vandenberg Space Force Base',
+        content: '范登堡太空军基地内的历史发射综合体，现为退役设施。'
+    },
+    {
+        name: 'SLC-6', lat: 34.581333, lng: -120.626365, siteName: 'Vandenberg Space Force Base',
+        content: '范登堡太空军基地的发射综合体，曾为多种运载火箭和任务进行改造。'
+    },
+    {
+        name: 'SLC-4E', lat: 34.632029, lng: -120.610647, siteName: 'Vandenberg Space Force Base / SpaceX',
+        content: 'SpaceX Falcon 9 在范登堡的现役发射台，主要执行极轨及太阳同步轨道任务。'
+    },
+    {
+        name: 'SLC-4W', lat: 34.633146, lng: -120.615812, siteName: 'Vandenberg Space Force Base',
+        content: '范登堡 SLC-4 西侧历史发射区，现主要作为助推器着陆区域使用。'
+    },
+    {
+        name: 'SLC-3E', lat: 34.640080, lng: -120.589481, siteName: 'Vandenberg Space Force Base / ULA',
+        content: 'ULA 在范登堡的现役发射台，服务 Atlas V 与 Vulcan 等任务。'
+    },
+    {
+        name: 'SLC-576E', lat: 34.739587, lng: -120.619085, siteName: 'Vandenberg Space Force Base',
+        content: '范登堡基地内的发射综合体标记。'
+    },
+    {
+        name: 'SLC-2W', lat: 34.755622, lng: -120.622357, siteName: 'Vandenberg Space Force Base',
+        content: '范登堡基地内的历史发射综合体，现已停止原有发射任务。'
+    },
+    {
+        name: 'Rocket Lab LC-1A', lat: -39.261602, lng: 177.865066, siteName: 'Rocket Lab Launch Complex 1 / Mahia',
+        content: 'Rocket Lab 位于新西兰马希亚的 LC-1A 发射台，用于 Electron 任务。'
+    },
+    {
+        name: 'Rocket Lab LC-1B', lat: -39.260682, lng: 177.865147, siteName: 'Rocket Lab Launch Complex 1 / Mahia',
+        content: 'Rocket Lab 位于新西兰马希亚的 LC-1B 发射台，与 LC-1A 共同组成 Launch Complex 1。'
+    },
+    {
+        name: 'Orbital Launch Pad', lat: -19.957920, lng: 148.113022, siteName: '鲍文轨道航天港（Bowen Orbital Spaceport）',
+        content: '鲍文轨道航天港位于澳大利亚昆士兰州，是澳大利亚首个获准实施轨道发射活动的商业发射场。'
+    },
+    {
+        name: 'First Launch Pad', lat: 13.733323, lng: 80.234795, siteName: '萨迪什·达万航天中心（SDSC）',
+        content: '萨迪什·达万航天中心的第一发射台，服务印度运载火箭任务。'
+    },
+    {
+        name: 'Second Launch Pad', lat: 13.719701, lng: 80.230276, siteName: '萨迪什·达万航天中心（SDSC）',
+        content: '萨迪什·达万航天中心的第二发射台，支持多型印度运载火箭。'
+    },
+    {
+        name: 'Palmachim Pad 1', lat: 31.884702, lng: 34.680190, siteName: '帕尔马希姆空军基地',
+        content: '帕尔马希姆基地的发射台，用于以色列运载火箭及相关航天任务。'
+    },
+    {
+        name: 'Safir Launch Pad', lat: 35.234615, lng: 53.920938, siteName: '塞姆南航天中心',
+        content: '塞姆南航天中心的 Safir 运载火箭发射台。'
+    },
+    {
+        name: 'Imam Khomeini Spaceport', lat: 35.237016, lng: 53.950552, siteName: '伊玛目霍梅尼航天发射场',
+        content: '伊朗伊玛目霍梅尼航天发射场，位于塞姆南省，支持伊朗轨道运载火箭任务。'
+    },
+    {
+        name: 'Launch Platform', lat: 36.200577, lng: 55.333922, siteName: '沙赫鲁德导弹测试场',
+        content: '沙赫鲁德导弹测试场（Shahroud Missile Test Site）位于伊朗塞姆南省沙赫鲁德市近郊，约于 1998 年启用，是伊朗重要的固体燃料弹道导弹与军用卫星试验、发射基地，由伊斯兰革命卫队航空航天部队管辖。'
+    },
+    {
+        name: 'Site 43/3', lat: 62.927257, lng: 40.449509, siteName: '普列谢茨克航天发射场',
+        content: '普列谢茨克航天发射场 Site 43/3 工位。'
+    },
+    {
+        name: 'Site 43/4', lat: 62.928841, lng: 40.456525, siteName: '普列谢茨克航天发射场',
+        content: '普列谢茨克航天发射场 Site 43/4 工位。'
+    },
+    {
+        name: 'Site 35/1', lat: 62.927918, lng: 40.574809, siteName: '普列谢茨克航天发射场',
+        content: '普列谢茨克航天发射场 Site 35/1 工位。'
+    },
+    {
+        name: 'Site 133/3', lat: 62.886974, lng: 40.847069, siteName: '普列谢茨克航天发射场',
+        content: '普列谢茨克航天发射场 Site 133/3 工位。'
+    },
+    {
+        name: 'Site 81/24', lat: 46.070884, lng: 62.984624, siteName: '拜科努尔航天发射场',
+        content: '拜科努尔航天发射场 Site 81/24 工位。'
+    },
+    {
+        name: 'Site 200/39', lat: 46.039600, lng: 63.031647, siteName: '拜科努尔航天发射场',
+        content: '拜科努尔航天发射场 Site 200/39 工位。'
+    },
+    {
+        name: 'Site 31/6', lat: 45.996112, lng: 63.564155, siteName: '拜科努尔航天发射场',
+        content: '拜科努尔航天发射场 Site 31/6 工位。'
+    },
+    {
+        name: 'Site 45/1', lat: 45.943276, lng: 63.652939, siteName: '拜科努尔航天发射场',
+        content: '拜科努尔航天发射场 Site 45/1 工位。'
+    },
+    {
+        name: 'Site 1S', lat: 51.884174, lng: 128.334872, siteName: '东方航天发射场',
+        content: '东方航天发射场 Site 1S 工位。'
+    },
+    {
+        name: 'Site 1A', lat: 51.874928, lng: 128.358394, siteName: '东方航天发射场',
+        content: '东方航天发射场 Site 1A 工位。'
+    },
+    {
+        name: 'Site 2A', lat: 51.871563, lng: 128.382564, siteName: '东方航天发射场',
+        content: '东方航天发射场 Site 2A 工位。'
+    },
+    {
+        name: 'Pad 1', lat: 39.660010, lng: 124.705343, siteName: '西海卫星发射场',
+        content: '西海卫星发射场 Pad 1 工位。'
+    },
+    {
+        name: 'Pad 2', lat: 39.652704, lng: 124.736341, siteName: '西海卫星发射场',
+        content: '西海卫星发射场 Pad 2 工位。'
+    },
+    {
+        name: 'LC-2', lat: 34.431864, lng: 127.534148, siteName: '罗老航天中心',
+        content: '罗老航天中心 LC-2 发射工位。'
+    },
+    {
+        name: 'LC-1', lat: 34.431830, lng: 127.536230, siteName: '罗老航天中心',
+        content: '罗老航天中心 LC-1 发射工位。'
+    },
+    {
+        name: 'LA-Y2', lat: 30.400941, lng: 130.975581, siteName: '种子岛航天中心',
+        content: '种子岛航天中心 LA-Y2 发射工位。'
+    },
+    {
+        name: 'LA-Y1', lat: 30.400976, lng: 130.977541, siteName: '种子岛航天中心',
+        content: '种子岛航天中心 LA-Y1 发射工位。'
+    },
+    {
+        name: 'Space One Launch Pad', lat: 33.544263, lng: 135.889436, siteName: 'Space One Launch Pad',
+        content: '和歌山县串本町 Space One Launch Pad。'
+    },
+    {
+        name: 'Mu Pad', lat: 31.251006, lng: 131.082024, siteName: '内之浦航天中心',
+        content: '内之浦航天中心 Mu Pad 发射工位。'
+    }
+];
+var launchPadMarkers = [];
 var landingZoneMarkers = [];
 
 const MSI_AEROSPACE_KEYWORDS = ["ROCKET", "LAUNCH", "SPACE", "RE-ENTRY", "REENTRY", "DEBRIS", "AEROSPACE", "SATELLITE", "MISSILE", "SPACECRAFT"];
@@ -241,6 +499,8 @@ function isVectorMap() {
 // ==================== 颜色系统结束 ====================
 
 function getRandomTileLayer() {
+    var savedProvider = window.NotamAppSettings && window.NotamAppSettings.get('mapProvider');
+    if (savedProvider && tileLayers[savedProvider]) return savedProvider;
     var providers = [
         'gaode_vec',     // 高德矢量
         // 'bing_vec',      // Bing 中文街道
@@ -261,6 +521,7 @@ var currentBaseLayer = null;
 var currentAnnoLayer = null;
 // 卫星地图注记的显示状态；切换 Bing / 高德底图时保持此选择。
 var satelliteLabelsVisible = true;
+if (window.NotamAppSettings) satelliteLabelsVisible = window.NotamAppSettings.get('satelliteLabelsVisible', true) !== false;
 
 switchColorPool(currentMapProvider === 'bing_vec' || currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec');
 
@@ -319,10 +580,17 @@ function handleCopy(text) {
 // 初始化地图
 makeMap();
 function makeMap() {
+    // 地图聚焦位置和缩放级别不持久化；清理旧版本保存过的视图设置。
+    if (window.NotamAppSettings && window.NotamAppSettings.remove) {
+        window.NotamAppSettings.remove('mapView');
+        window.NotamAppSettings.remove('mapZoom');
+    }
+    var initialCenter = [36, 103];
+    var initialZoom = 4;
     // 创建Leaflet地图
     map = L.map('allmap', {
-        center: [36, 103],
-        zoom: 4,
+        center: initialCenter,
+        zoom: initialZoom,
         minZoom: 3,
         worldCopyJump: false,
         zoomControl: false,  // 关闭默认缩放控件，稍后添加到右下角
@@ -331,7 +599,8 @@ function makeMap() {
     });
 
     map.getPane('overlayPane').style.zIndex = 400;
-    map.getPane('markerPane').style.zIndex = 350;   // 在落区多边形下
+    // 发射场、工位和回收场标记要覆盖 NOTAM/MSI/NOTMAR 多边形（400–402）。
+    map.getPane('markerPane').style.zIndex = 600;
     // 自动航警按来源固定分层：NOTAM 最上、MSI 居中、USCG NOTMAR 最下。
     // pane 的层级同时决定可见覆盖与鼠标命中顺序，因此重合时优先点击 NOTAM。
     map.createPane('autoNotmarPane').style.zIndex = 400;
@@ -390,6 +659,7 @@ function createBingLayer(provider) {
 }
 // 添加地图图层
 function addMapLayers(provider) {
+    if (window.NotamAppSettings) window.NotamAppSettings.set('mapProvider', provider);
     if (currentBaseLayer) {
         map.removeLayer(currentBaseLayer);
         currentBaseLayer = null;
@@ -445,6 +715,7 @@ function addSatelliteAnnotationLayer(provider) {
 
 function setSatelliteLabelsVisible(visible) {
     satelliteLabelsVisible = !!visible;
+    if (window.NotamAppSettings) window.NotamAppSettings.set('satelliteLabelsVisible', satelliteLabelsVisible);
     if (currentAnnoLayer) {
         map.removeLayer(currentAnnoLayer);
         currentAnnoLayer = null;
@@ -465,6 +736,7 @@ function setSatelliteProvider(provider) {
         redrawAllNotams();
     }
     mapViewMode = '2d';
+    if (window.NotamAppSettings) window.NotamAppSettings.set('mapMode', provider === 'bing_img' || provider === 'gaode_img' ? 'satellite' : 'vector');
     updateMapModeControl();
 }
 
@@ -504,7 +776,10 @@ function selectMapMode(mode) {
     // 已经处于该模式时不重复销毁/创建图层，也不重新触发地图动画。
     if (mode === activeMode) return;
     if (mode === 'globe') {
-        if (window.NotamGlobe) window.NotamGlobe.enter();
+        if (window.NotamGlobe) {
+            if (window.NotamAppSettings) window.NotamAppSettings.set('mapMode', 'globe');
+            window.NotamGlobe.enter();
+        }
         return;
     }
     if (window.NotamGlobe && window.NotamGlobe.isActive()) window.NotamGlobe.leave();
@@ -516,6 +791,7 @@ function selectMapMode(mode) {
         redrawAllNotams();
     }
     mapViewMode = '2d';
+    if (window.NotamAppSettings) window.NotamAppSettings.set('mapMode', mode === 'satellite' ? 'satellite' : 'vector');
     updateMapModeControl();
     if (window.NotamGlobe) window.NotamGlobe.refresh(true);
 }
@@ -619,8 +895,8 @@ function siteInit() {
     // 监听地图缩放事件，动态切换海南发射场显示模式
     map.on('zoomend', function() {
         updateHainanSitesDisplay(sites);
+        updateLaunchSiteZoomDisplay();
     });
-
     var landingZones = [
         {
             name: '蓝箭航天火箭回收着陆场',
@@ -639,42 +915,149 @@ function siteInit() {
             icon: 'statics/land2.png',
             content: "<b><large>甘肃民勤</large></b><br>" +
                 "<b>CZ-12A火箭回收着陆场</b>，位于甘肃武威市民勤县境内，是用于CZ-12A等运载火箭一级回收的着陆场。"
+        },
+        {
+            name: 'SpaceX LZ-1',
+            lat: 28.485737,
+            lng: -80.542929,
+            icon: 'statics/landing-spacex.svg',
+            showOnlyAtZoom13: true,
+            content: "<b><large>美国佛罗里达·卡纳维拉尔角</large></b><br><b>SpaceX LZ-1</b>，猎鹰 9 号一级助推器陆上回收着陆区。"
+        },
+        {
+            name: 'SpaceX LZ-2',
+            lat: 28.487751,
+            lng: -80.544946,
+            icon: 'statics/landing-spacex.svg',
+            showOnlyAtZoom13: true,
+            content: "<b><large>美国佛罗里达·卡纳维拉尔角</large></b><br><b>SpaceX LZ-2</b>，猎鹰 9 号一级助推器陆上回收着陆区。"
+        },
+        {
+            name: 'SpaceX LZ-40',
+            lat: 28.563522,
+            lng: -80.574351,
+            icon: 'statics/landing-spacex.svg',
+            showOnlyAtZoom13: true,
+            content: "<b><large>美国佛罗里达·卡纳维拉尔角</large></b><br><b>SpaceX LZ-40</b>，SpaceX 位于 SLC-40 附近的助推器回收着陆区。"
         }
     ];
 
     landingZones.forEach(function(landingZone) {
-        drawLandingZone(landingZone.lat, landingZone.lng, landingZone.name, landingZone.content, landingZone.icon);
+        drawLandingZone(landingZone.lat, landingZone.lng, landingZone.name, landingZone.content, landingZone.icon, landingZone.showOnlyAtZoom13);
     });
 
     if (Number(drawForeignLaunchSite) === 1) {
         drawForeignLaunchSites();
     }
+    initializeLaunchPadMarkers();
+    updateLaunchSiteZoomDisplay();
 }
 
 // 绘制发射场标记
-function drawLaunchsite(lat, lng, title, content, iconUrl) {
-    var icon = L.icon({
-        iconUrl: iconUrl,
-        iconSize: iconUrl.includes('launch1') ? [22, 22] : [22, 22],
-        iconAnchor: iconUrl.includes('launch1') ? [11, 11] : [11, 11],
-        popupAnchor: [0, -40]
-    });
-
-    var markerGroup = createWrappedMarkerGroup(lat, lng, icon, content);
+function drawLaunchsite(lat, lng, title, content, iconUrl, isForeign) {
+    var markerGroup = createWrappedMarkerGroup(lat, lng, createLaunchSiteIcon('site'), content);
+    markerGroup._launchSiteLatLng = [lat, lng];
+    markerGroup._isForeignLaunchSite = !!isForeign;
     markerGroup.addTo(map);
     launchSiteMarkers.push(markerGroup);
+    allLaunchSiteGroups.push(markerGroup);
 }
 
-function drawLandingZone(lat, lng, title, content, iconUrl){
-    var icon = L.icon({
+// 发射场与工位使用独立的简洁 SVG 图标；工位图标预留给有可靠坐标的数据。
+function createLaunchSiteIcon(kind) {
+    if (kind === 'point') {
+        return L.divIcon({ className: 'launch-map-icon launch-map-point launch-marker-enter', html: '<span></span>', iconSize: [12, 12], iconAnchor: [6, 6] });
+    }
+    // 发射场与工位统一使用项目原有图标。
+    return L.icon({ iconUrl: 'statics/launch.png', iconSize: [22, 22], iconAnchor: [11, 11], popupAnchor: [0, -40], className: 'launch-marker-enter' });
+}
+
+function createLandingZonePointIcon() {
+    return L.divIcon({
+        className: 'landing-map-icon launch-marker-enter',
+        html: '<span class="landing-map-dot"></span>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+    });
+}
+
+function updateLaunchSiteZoomDisplay() {
+    if (!map) return;
+    var zoom = map.getZoom();
+    var visualKind = zoom < 4 ? 'point' : 'site';
+    allLaunchSiteGroups.forEach(function(group) {
+        if (group && typeof group.eachLayer === 'function' && group._launchVisualKind !== visualKind) {
+            var icon = createLaunchSiteIcon(visualKind);
+            group.eachLayer(function(marker) { marker.setIcon(icon); });
+            group._launchVisualKind = visualKind;
+        }
+        var isForeign = !!group._isForeignLaunchSite;
+        if (isForeign && zoom >= 13) {
+            if (map.hasLayer(group)) map.removeLayer(group);
+            var markerIndex = launchSiteMarkers.indexOf(group);
+            if (markerIndex >= 0) launchSiteMarkers.splice(markerIndex, 1);
+        } else if (isForeign && zoom < 13) {
+            if (!map.hasLayer(group)) group.addTo(map);
+            if (!launchSiteMarkers.includes(group)) launchSiteMarkers.push(group);
+        }
+    });
+    var landingKind = zoom < 4 ? 'point' : 'site';
+    landingZoneMarkers.forEach(function(group) {
+        if (!group || typeof group.eachLayer !== 'function') return;
+        if (group._showOnlyAtZoom13) {
+            if (zoom >= 13) {
+                if (!map.hasLayer(group)) group.addTo(map);
+            } else if (map.hasLayer(group)) {
+                map.removeLayer(group);
+            }
+        }
+        if (group._landingVisualKind !== landingKind) {
+            var icon = landingKind === 'point'
+                ? createLandingZonePointIcon()
+                : L.icon({ iconUrl: group._landingIconUrl, iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -40], className: 'launch-marker-enter' });
+            group.eachLayer(function(marker) { marker.setIcon(icon); });
+            group._landingVisualKind = landingKind;
+        }
+    });
+    // 四级只显示境外工位；国内发射场保持三级样式，国内工位不展开。
+    launchPadMarkers.forEach(function(group) {
+        if (!group) return;
+        if (zoom >= 13 && group._isForeignLaunchPad) group.addTo(map);
+        else map.removeLayer(group);
+    });
+}
+
+function initializeLaunchPadMarkers() {
+    launchPadMarkers = launchPadData.map(function(pad) {
+        if (!Number.isFinite(pad.lat) || !Number.isFinite(pad.lng)) {
+            console.warn('[工位标记] 缺少有效坐标，已跳过:', pad.name);
+            return null;
+        }
+        var popup = '<b>' + (pad.name || '未命名工位') + '</b>' +
+            (pad.siteName ? '<br>所属发射场：' + pad.siteName : '') +
+            (pad.content ? '<br>' + pad.content : '');
+        // 工位暂时与发射场统一使用 statics/launch.png，避免使用未定义的专属图标。
+        var group = createWrappedMarkerGroup(pad.lat, pad.lng, createLaunchSiteIcon('site'), popup);
+        group._isForeignLaunchPad = true;
+        if (map.getZoom() >= 13) group.addTo(map);
+        return group;
+    }).filter(Boolean);
+}
+
+function drawLandingZone(lat, lng, title, content, iconUrl, showOnlyAtZoom13){
+    var pointMode = map.getZoom() < 4;
+    var icon = pointMode ? createLandingZonePointIcon() : L.icon({
         iconUrl: iconUrl,
-        iconSize: [20, 20],
-        iconAnchor: [10, 10],
+        iconSize: [26, 26],
+        iconAnchor: [13, 13],
         popupAnchor: [0, -40]
     });
 
     var markerGroup = createWrappedMarkerGroup(lat, lng, icon, content);
-    markerGroup.addTo(map);
+    markerGroup._landingIconUrl = iconUrl;
+    markerGroup._landingVisualKind = pointMode ? 'point' : 'site';
+    markerGroup._showOnlyAtZoom13 = !!showOnlyAtZoom13;
+    if (!markerGroup._showOnlyAtZoom13 || map.getZoom() >= 13) markerGroup.addTo(map);
     landingZoneMarkers.push(markerGroup);
 }
 
@@ -696,44 +1079,56 @@ function drawForeignLaunchSites() {
                 "<b><a href='https://sat.huijiwiki.com/wiki/圭亚那航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>圭亚那航天中心</a>（Guiana Space Centre，CSG；法语：Centre Spatial Guyanais）</b>，位于南美洲法属圭亚那库鲁西北部，1964 年建立、1968 年开始运作，由欧洲空间局、法国国家空间研究中心和阿丽亚娜空间公司共同使用。"
         },
         {
+            name: '安多亚太空港',
+            lat: 69.108266,
+            lng: 15.590872,
+            content: "<b><large>挪威安多亚岛</large></b><br><b><a href='https://sat.huijiwiki.com/wiki/安多亚太空港' target='_blank' rel='noopener' style='text-decoration: none; font-weight: bold;'>安多亚太空港</a>（Andøya Spaceport）</b>位于挪威北部安多亚岛，Isar Aerospace 于此运营 Spectrum 轨道火箭发射。高纬度与面向海洋的发射方向适合极轨和太阳同步轨道任务；2026 年 9 月完成欧洲大陆首次成功的轨道卫星发射。<br><a href='https://andoyaspace.no/news-articles/vi-er-stolte-av-a-ha-bidratt-til-a-skape-historie/' target='_blank' rel='noopener'>Andøya Space：发射近况</a>"
+        },
+        {
+            name: '鲍文轨道航天港',
+            lat: -19.957920,
+            lng: 148.113022,
+            content: "<b><large>澳大利亚昆士兰州鲍文</large></b><br><b><a href='https://sat.huijiwiki.com/wiki/鲍文轨道航天港' target='_blank' rel='noopener' style='text-decoration: none; font-weight: bold;'>鲍文轨道航天港</a>（Bowen Orbital Spaceport）</b>是澳大利亚首个获得实施轨道发射活动许可的商业发射场。"
+        },
+        {
             name: '拜科努尔航天发射场',
-            lat: 45.965,
-            lng: 63.305,
+            lat: 46.039600,
+            lng: 63.031647,
             content: "<b><large>哈萨克斯坦拜科努尔</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/拜科努尔航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>拜科努尔航天发射场</a>（Baikonur Cosmodrome）</b>，位于哈萨克斯坦南部，1955 年建立，是世界上第一个轨道与载人航天发射场，目前由俄罗斯租借至 2050 年，俄罗斯多数卫星和所有载人飞船都在此发射。"
         },
         {
             name: '普列谢茨克航天发射场',
-            lat: 62.925556,
-            lng: 40.577778,
+            lat: 62.927918,
+            lng: 40.574809,
             content: "<b><large>俄罗斯阿尔汉格尔斯克</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/普列谢茨克航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>普列谢茨克航天发射场</a>（Plesetsk Cosmodrome）</b>，位于阿尔汉格尔斯克州米尔内，1957 年建立，最初是 R-7 洲际弹道导弹基地；因纬度较高，适合闪电轨道、高倾角近地轨道与太阳同步轨道发射。"
         },
         {
             name: '东方航天发射场',
-            lat: 51.884553,
-            lng: 128.334778,
+            lat: 51.884174,
+            lng: 128.334872,
             content: "<b><large>俄罗斯阿穆尔</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/东方航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>东方航天发射场</a>（Vostochny Cosmodrome）</b>，又称沃斯托克尼航天发射场，位于远东阿穆尔州，2016 年 4 月 28 日首次发射，用于降低俄罗斯对拜科努尔航天发射场的依赖。"
         },
         {
             name: '火箭实验室发射综合体1号',
-            lat: -39.2615,
-            lng: 177.864876,
+            lat: -39.261142,
+            lng: 177.8651065,
             content: "<b><large>新西兰马希亚</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/火箭实验室发射综合体1号' target='_blank' style='text-decoration: none; font-weight: bold;'>火箭实验室发射综合体1号</a>（Rocket Lab Launch Complex 1）</b>，又称马希亚发射综合体，位于新西兰北岛马希亚半岛南端的阿胡里点，由火箭实验室拥有并运营；2017 年 5 月 25 日发射电子号，成为第一个执行轨道发射的私人发射场。"
         },
         {
             name: '种子岛航天中心',
-            lat: 30.4,
-            lng: 130.97,
+            lat: 30.4009585,
+            lng: 130.976561,
             content: "<b><large>日本鹿儿岛</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/种子岛航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>种子岛航天中心</a>（Tanegashima Space Center，TNSC）</b>，位于九州以南约 40 公里的种子岛东南海岸，总面积约 9.7 平方公里，1969 年建立，是日本最大的火箭发射基地，现由日本宇宙航空研究开发机构管理。"
         },
         {
             name: '罗老航天中心',
-            lat: 34.431867,
-            lng: 127.535069,
+            lat: 34.431847,
+            lng: 127.535189,
             content: "<b><large>韩国全罗南道</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/罗老航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>罗老航天中心</a>（Naro Space Center）</b>，位于全罗南道高兴郡，2009 年 7 月启用，由国有的韩国航空航天研究院运营，设有两座发射台、控制塔以及火箭总装与测试设施。"
         },
@@ -760,8 +1155,8 @@ function drawForeignLaunchSites() {
         },
         {
             name: '西海卫星发射场',
-            lat: 39.66,
-            lng: 124.705,
+            lat: 39.656357,
+            lng: 124.720842,
             content: "<b><large>朝鲜东仓里</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/西海卫星发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>西海卫星发射场</a>（Sohae Satellite Launching Station）</b>，又称东仓洞航天发射中心，位于朝鲜西北部靠近中国边界的丘陵地带，2012 年 4 月首次发射光明星 3 号失败，同年 12 月发射成功。"
         },
@@ -781,8 +1176,8 @@ function drawForeignLaunchSites() {
         },
         {
             name: '中大西洋区域发射场',
-            lat: 37.84341,
-            lng: -75.478195,
+            lat: 37.832883,
+            lng: -75.488912,
             content: "<b><large>美国弗吉尼亚</large></b><br>" +
                 "<b><a href='https://sat.huijiwiki.com/wiki/中大西洋区域发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>中大西洋区域发射场</a>（Mid-Atlantic Regional Spaceport，MARS）</b>，位于弗吉尼亚州沃洛普斯岛南端，隶属于沃洛普斯飞行设施，2006 年启用的商业航天发射设施。"
         },
@@ -794,18 +1189,31 @@ function drawForeignLaunchSites() {
                 "<b><a href='https://sat.huijiwiki.com/wiki/塞姆南航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>塞姆南航天中心</a>（Semnan Space Center）</b>，位于塞姆南市东南约 50 公里，2009 年启用，是伊朗主要的航天发射场。"
         },
         {
+            name: '沙赫鲁德导弹测试场',
+            lat: 36.200577,
+            lng: 55.333922,
+            content: "<b><large>伊朗塞姆南省沙赫鲁德</large></b><br><b><a href='https://sat.huijiwiki.com/wiki/沙赫鲁德导弹测试场' target='_blank' rel='noopener' style='text-decoration: none; font-weight: bold;'>沙赫鲁德导弹测试场</a>（Shahroud Missile Test Site）</b>位于德黑兰东北约 370 千米，约于 1998 年启用，是伊朗重要的固体燃料弹道导弹与军用卫星试验、发射基地，由伊斯兰革命卫队航空航天部队管辖。"
+        },
+        {
             name: '阿尔坎塔拉航天中心',
-            lat: -2.333333,
-            lng: -44.4,
+            lat: -2.317641,
+            lng: -44.368004,
             content: "<b><large>巴西马拉尼昂</large></b><br>" +
-                "<b><a href='https://sat.huijiwiki.com/wiki/阿尔坎塔拉航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>阿尔坎塔拉航天中心</a>（Alcantara Space Center）</b>，位于巴西马拉尼昂州阿尔坎塔拉半岛，1982 年启用，是巴西航天局的主要航天发射中心。"
+                "<b><a href='https://sat.huijiwiki.com/wiki/阿尔坎塔拉航天中心' target='_blank' style='text-decoration: none; font-weight: bold;'>阿尔坎塔拉航天中心</a>（Alcantara Space Center）</b>，位于巴西马拉尼昂州阿尔坎塔拉半岛，1982 年启用，是巴西重要的航天发射中心；该标记按要求放在 INNOSPACE 商业发射台坐标。"
         },
         {
             name: '纪伊太空发射场',
-            lat: 33.544167,
-            lng: 135.889444,
+            lat: 33.544263,
+            lng: 135.889436,
             content: "<b><large>日本和歌山</large></b><br>" +
-                "<b><a href='https://sat.huijiwiki.com/wiki/纪伊太空发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>纪伊太空发射场</a>（Space Port Kii）</b>，位于和歌山县串本町，2024 年 3 月首次发射凯洛斯 1 号，是日本第一个民营火箭发射场，由航天公司 Space One 运营。"
+                "<b><a href='https://sat.huijiwiki.com/wiki/纪伊太空发射场' target='_blank' rel='noopener' style='text-decoration: none; font-weight: bold;'>纪伊太空发射场</a>（Space Port Kii）</b>，位于和歌山县串本町，是 Space One 运营的民营火箭发射场。"
+        },
+        {
+            name: '内之浦航天中心',
+            lat: 31.251006,
+            lng: 131.082024,
+            content: "<b><large>日本鹿儿岛</large></b><br>" +
+                "<b><a href='https://sat.huijiwiki.com/wiki/内之浦航天中心' target='_blank' rel='noopener' style='text-decoration: none; font-weight: bold;'>内之浦航天中心</a>（Uchinoura Space Center，USC）</b>位于鹿儿岛县肝付町。这里曾承担日本多数科学卫星发射任务，现继续用于亚轨道与 Epsilon 火箭发射，并设有深空探测通信设施。"
         }
     ].map(site => ({
         ...site,
@@ -818,7 +1226,7 @@ function drawForeignLaunchSites() {
             return;
         }
 
-        drawLaunchsite(site.lat, site.lng, site.name, site.content, site.icon);
+        drawLaunchsite(site.lat, site.lng, site.name, site.content, site.icon, true);
     });
 }
 
@@ -847,39 +1255,23 @@ function initHainanSites(sites) {
     const centerLng = (wenchang.lng + commercial.lng) / 2;
     
     // 创建合并后的标记（低缩放级别显示）
-    const mergedIcon = L.icon({
-        iconUrl: 'statics/launch.png',
-        iconSize: [22, 22],
-        iconAnchor: [11, 11],
-        popupAnchor: [0, -40]
-    });
-    
     const mergedContent = "<b><large>海南文昌</large></b><br>" +
         "<b><a href='https://baike.baidu.com/item/文昌航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>文昌航天发射场</a>" +
         "（Wenchang Spacecraft Launch Site, WSLS）</b>位于中国海南省文昌市，是中国首座滨海航天发射场，也是世界现有的少数低纬度航天发射场之一。<br><br>" +
         "<b><a href='https://baike.baidu.com/item/海南商业航天发射场' target='_blank' style='text-decoration: none; font-weight: bold;'>海南商业航天发射场</a>（Hainan Commercial Spacecraft Launch Site）</b>，" +
         "是我国首个开工建设的商业航天发射场，由海南国际商业航天发射有限公司投建，致力于打造国际一流、市场化运营的航天发射场，进一步提升我国民商运载火箭发射能力。";
     
-    hainanMergedMarker = createWrappedMarkerGroup(centerLat, centerLng, mergedIcon, mergedContent);
+    hainanMergedMarker = createWrappedMarkerGroup(centerLat, centerLng, createLaunchSiteIcon('site'), mergedContent);
+    hainanMergedMarker._launchSiteLatLng = [centerLat, centerLng];
+    allLaunchSiteGroups.push(hainanMergedMarker);
     
     // 创建分离的标记（高缩放级别显示）
-    const wenchangIcon = L.icon({
-        iconUrl: 'statics/launch.png',
-        iconSize: [22, 22],
-        iconAnchor: [11, 11],
-        popupAnchor: [0, -40]
-    });
-    
-    const wenchangMarker = createWrappedMarkerGroup(wenchang.lat, wenchang.lng, wenchangIcon, wenchang.content);
-    
-    const commercialIcon = L.icon({
-        iconUrl: 'statics/launch.png',
-        iconSize: [22, 22],
-        iconAnchor: [11, 11],
-        popupAnchor: [0, -40]
-    });
-    
-    const commercialMarker = createWrappedMarkerGroup(commercial.lat, commercial.lng, commercialIcon, commercial.content);
+    const wenchangMarker = createWrappedMarkerGroup(wenchang.lat, wenchang.lng, createLaunchSiteIcon('site'), wenchang.content);
+    wenchangMarker._launchSiteLatLng = [wenchang.lat, wenchang.lng];
+    allLaunchSiteGroups.push(wenchangMarker);
+    const commercialMarker = createWrappedMarkerGroup(commercial.lat, commercial.lng, createLaunchSiteIcon('site'), commercial.content);
+    commercialMarker._launchSiteLatLng = [commercial.lat, commercial.lng];
+    allLaunchSiteGroups.push(commercialMarker);
     
     hainanSeparateMarkers = [wenchangMarker, commercialMarker];
     
@@ -890,7 +1282,7 @@ function initHainanSites(sites) {
 // 根据缩放级别更新海南发射场的显示状态
 function updateHainanSitesDisplay(sites) {
     const currentZoom = map.getZoom();
-    const ZOOM_THRESHOLD = 10; // 缩放级别阈值，大于等于此值时分开显示
+    const ZOOM_THRESHOLD = 10; // zoom >= 10 时海南两个发射场分开显示
     
     if (currentZoom >= ZOOM_THRESHOLD) {
         // 高缩放级别：分开显示
@@ -922,6 +1314,7 @@ function updateHainanSitesDisplay(sites) {
             }
         }
     }
+    updateLaunchSiteZoomDisplay();
 }
 
 // 高亮NOTAM
