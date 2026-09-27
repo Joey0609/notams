@@ -28,5 +28,6 @@ class DINSDataSource(DataSource):
 
 
 def _stable_id(code, coordinates):
-    digest = hashlib.sha256(f'{code}|{coordinates}'.encode('utf-8')).hexdigest()[:16]
+    full_digest = hashlib.sha256(f'{code}|{coordinates}'.encode('utf-8')).hexdigest()
+    digest = full_digest
     return f'dins:{digest}'
