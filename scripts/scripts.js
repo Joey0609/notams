@@ -1263,14 +1263,17 @@ function initHainanSites(sites) {
     
     hainanMergedMarker = createWrappedMarkerGroup(centerLat, centerLng, createLaunchSiteIcon('site'), mergedContent);
     hainanMergedMarker._launchSiteLatLng = [centerLat, centerLng];
+    hainanMergedMarker._isHainanMerged = true;
     allLaunchSiteGroups.push(hainanMergedMarker);
     
     // 创建分离的标记（高缩放级别显示）
     const wenchangMarker = createWrappedMarkerGroup(wenchang.lat, wenchang.lng, createLaunchSiteIcon('site'), wenchang.content);
     wenchangMarker._launchSiteLatLng = [wenchang.lat, wenchang.lng];
+    wenchangMarker._isHainanSeparate = true;
     allLaunchSiteGroups.push(wenchangMarker);
     const commercialMarker = createWrappedMarkerGroup(commercial.lat, commercial.lng, createLaunchSiteIcon('site'), commercial.content);
     commercialMarker._launchSiteLatLng = [commercial.lat, commercial.lng];
+    commercialMarker._isHainanSeparate = true;
     allLaunchSiteGroups.push(commercialMarker);
     
     hainanSeparateMarkers = [wenchangMarker, commercialMarker];

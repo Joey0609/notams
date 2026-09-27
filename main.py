@@ -73,24 +73,12 @@ def classify_data(data):
     codes = data.get("CODE", [])
     times = data.get("TIME", [])
 
-    # 解析时间区间
-    def parse_time(t):
-        """
-        例子: '25 NOV 04:01 2025 UNTIL 25 NOV 04:41 2025'
-        """
-        try:
-            parts = t.split(" UNTIL ")
-            start = datetime.strptime(parts[0], "%d %b %H:%M %Y").timestamp()
-            end = datetime.strptime(parts[1], "%d %b %H:%M %Y").timestamp()
-            return start, end
-        except:
-            return None, None
-
-    items = []  # (idx, start_ts, end_ts)
+    # TIME 可包含由分号分隔的多个生效窗口（例如 MSI 每日重复时段）。
+    items = []  # (idx, [(start_ts, end_ts), ...])
     for i, t in enumerate(times):
-        s, e = parse_time(t)
-        if s and e:
-            items.append((i, s, e))
+        windows = _parse_time_windows(t)
+        if windows:
+            items.append((i, [(start.timestamp(), end.timestamp()) for start, end in windows]))
 
     if not items:
         return {}
@@ -111,41 +99,48 @@ def classify_data(data):
 
     # 判断重叠并归类
     for i in range(len(items)):
-        idx1, s1, e1 = items[i]
-        d1 = e1 - s1
-        if d1 <= 0:
-            continue
-
+        idx1, windows1 = items[i]
         for j in range(i + 1, len(items)):
-            idx2, s2, e2 = items[j]
-            d2 = e2 - s2
-            if d2 <= 0:
-                continue
-
-            overlap = max(0, min(e1, e2) - max(s1, s2))
-            if overlap <= 0:
-                continue
-
-            r1 = overlap / d1
-            r2 = overlap / d2
-
-            #根据窗口长度调整阈值
-            max_duration = max(d1, d2)
-            if max_duration <= 10800: 
-                if abs(s2-s1)>15*60:
+            idx2, windows2 = items[j]
+            matched = False
+            for s1, e1 in windows1:
+                d1 = e1 - s1
+                if d1 <= 0:
                     continue
-                min_threshold = 0.4
-                max_threshold = 1.6
-            else: 
-                min_threshold = 0.8
-                max_threshold = 1.2
-            
-            if min_threshold <= r1 <= max_threshold and min_threshold <= r2 <= max_threshold:
+                for s2, e2 in windows2:
+                    d2 = e2 - s2
+                    if d2 <= 0:
+                        continue
+                    overlap = max(0, min(e1, e2) - max(s1, s2))
+                    if overlap <= 0:
+                        continue
+
+                    r1 = overlap / d1
+                    r2 = overlap / d2
+
+                    # 根据单个窗口长度沿用原有阈值；重复时段逐段比较，
+                    # 避免把两次时段之间的空档当成有效持续时间。
+                    max_duration = max(d1, d2)
+                    if max_duration <= 10800:
+                        if abs(s2 - s1) > 15 * 60:
+                            continue
+                        min_threshold = 0.4
+                        max_threshold = 1.6
+                    else:
+                        min_threshold = 0.8
+                        max_threshold = 1.2
+
+                    if min_threshold <= r1 <= max_threshold and min_threshold <= r2 <= max_threshold:
+                        matched = True
+                        break
+                if matched:
+                    break
+            if matched:
                 union(idx1, idx2)
 
     # 输出分组
     groups = {}
-    for idx, _, _ in items:
+    for idx, _ in items:
         root = find(idx)
         groups.setdefault(root, []).append(idx)
 

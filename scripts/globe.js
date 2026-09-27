@@ -24,6 +24,7 @@
     var tool = 'none';
     var refreshTimer = null;
     var entitiesById = {};
+    var globeDisplayTier = 0;
 
     function note(message, type) {
         if (typeof window.showNotification === 'function') window.showNotification(message, type || 'info');
@@ -128,6 +129,15 @@
             viewer.creditDisplay.removeStaticCredit(defaultCredit);
         }
         viewer.camera.setView({ destination: Cesium.Cartesian3.fromDegrees(103, 36, 18000000) });
+        // moveEnd 只会在相机移动完成后触发；网络慢时卫星瓦片可能还在加载，导致分级标记迟迟不更新。
+        // changed 在相机移动过程中触发，且 updateGlobeDisplayTier 只在跨级时重建一次标记。
+        viewer.camera.percentageChanged = 0.001;
+        viewer.camera.changed.addEventListener(function () {
+            if (active) updateGlobeDisplayTier(false);
+        });
+        viewer.camera.moveEnd.addEventListener(function () {
+            if (active) updateGlobeDisplayTier(false);
+        });
         createUi();
         bindEvents();
         return viewer;
@@ -184,7 +194,8 @@
         entitiesById[id] = entity;
     }
 
-    function addMarkers(items, prefix) {
+    function addMarkers(items, prefix, options) {
+        options = options || {};
         var count = 0;
         var seen = {};
         function normalizeLongitude(lng) {
@@ -197,20 +208,20 @@
             if (!item) return;
             if (Array.isArray(item)) { item.forEach(visit); return; }
             if (typeof item.eachLayer === 'function' && !item.getLatLng) { item.eachLayer(visit); return; }
-            if (!item.getLatLng || !layerVisible(item)) return;
+            if (!item.getLatLng || (!options.ignoreVisibility && !layerVisible(item))) return;
             var p = item.getLatLng();
             var lng = normalizeLongitude(p.lng);
             var key = p.lat.toFixed(6) + ',' + lng.toFixed(6);
             if (seen[key]) return; // Leaflet 的世界环绕副本在球面上只显示一次。
             seen[key] = true;
             var iconOptions = item.options && item.options.icon && item.options.icon.options;
-            var imageUrl = iconOptions && iconOptions.iconUrl;
-            var iconSize = iconOptions && iconOptions.iconSize;
+            var imageUrl = options.iconUrl || (iconOptions && iconOptions.iconUrl);
+            var iconSize = options.iconSize || (iconOptions && iconOptions.iconSize);
             var markerOptions = {
                 id: prefix + '-' + (++count),
                 position: Cesium.Cartesian3.fromDegrees(lng, p.lat)
             };
-            if (imageUrl) {
+            if (imageUrl && !options.pointMode) {
                 markerOptions.billboard = {
                     image: imageUrl,
                     width: iconSize ? iconSize[0] : 22,
@@ -219,7 +230,13 @@
                     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                 };
             } else {
-                markerOptions.point = { pixelSize: 9, color: Cesium.Color.WHITE, outlineColor: Cesium.Color.fromCssColorString('#0f3d63'), outlineWidth: 2, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND };
+                markerOptions.point = {
+                    pixelSize: options.pointMode ? 6 : 9,
+                    color: Cesium.Color.fromCssColorString(options.pointColor || '#ffffff'),
+                    outlineColor: Cesium.Color.fromCssColorString('#0f3d63'),
+                    outlineWidth: 2,
+                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                };
             }
             var entity = viewer.entities.add(markerOptions);
             // 记住对应的 Leaflet 标记：点击时 showPopup() 要用它的 getPopup().getContent()。
@@ -242,6 +259,7 @@
 
     function refresh() {
         if (!viewer || !active) return;
+        var tier = globeDisplayTier || globeDisplayTierFromCamera();
         viewer.entities.removeAll();
         entitiesById = {};
         (window.polygonAuto || []).forEach(function (layer, index) { addLayer(layer, 'auto-' + index); });
@@ -249,16 +267,70 @@
         var manualItems = typeof manualNotams !== 'undefined' ? manualNotams : [];
         var manualStates = typeof manualVisibleState !== 'undefined' ? manualVisibleState : {};
         manualItems.forEach(function (item, index) { if (item && item.polygon && manualStates[item.id] === false) return; addLayer(item && item.polygon, 'manual-' + index); });
-        addMarkers(window.launchSiteMarkers || [], 'launch');
-        // 四级工位标记由二维地图独立管理；同步到 Cesium，避免切换 3D 后工位消失。
-        addMarkers(window.launchPadMarkers || [], 'launch-pad');
-        addMarkers(window.landingZoneMarkers || [], 'landing');
+        refreshDisplayMarkers(tier);
         addMeasures();
         Object.keys(highlighted).forEach(function (id) { if (highlighted[id]) highlight(id, true); });
         syncMeasureOverlays();   // 公里牌 / 倾角标签跟着 __notamMeasurements 重建 + 贴位
         // removeAll() 把正在测的草稿实体也一起清掉了，这里补画回来（否则重建后预览会凭空消失）
         if (tool === 'measure' && measurePoints.length) drawMeasure(measureCursor, measureSnapPoint);
         viewer.scene.requestRender();
+    }
+
+    // 缩放跨级时只替换发射场类图标，不重建航警几何；避免图标更新等待多边形重建。
+    function refreshDisplayMarkers(tier) {
+        if (!viewer || !active) return;
+        viewer.entities.values.slice().forEach(function (entity) {
+            if (/^(launch|launch-pad|landing)-/.test(String(entity.id || ''))) viewer.entities.remove(entity);
+        });
+        var siteGroups = window.allLaunchSiteGroups || window.launchSiteMarkers || [];
+        siteGroups = siteGroups.filter(function (group) {
+            if (group._isForeignLaunchSite && tier >= 4) return false;
+            if (group._isHainanMerged && tier >= 3) return false;
+            if (group._isHainanSeparate && tier < 3) return false;
+            return true;
+        });
+        addMarkers(siteGroups, 'launch', {
+            ignoreVisibility: true,
+            pointMode: tier === 1,
+            pointColor: '#1687e8',
+            iconUrl: 'statics/launch.png',
+            iconSize: [22, 22]
+        });
+
+        // 四级仅展开海外工位；其它层级不显示工位。
+        if (tier >= 4) {
+            var foreignPads = (window.launchPadMarkers || []).filter(function (group) { return group._isForeignLaunchPad; });
+            addMarkers(foreignPads, 'launch-pad', { ignoreVisibility: true, iconUrl: 'statics/launch.png', iconSize: [22, 22] });
+        }
+
+        var landingGroups = (window.landingZoneMarkers || []).filter(function (group) {
+            return !group._showOnlyAtZoom13 || tier >= 4;
+        });
+        addMarkers(landingGroups, 'landing', {
+            ignoreVisibility: true,
+            pointMode: tier === 1,
+            pointColor: '#ec6f91'
+        });
+    }
+
+    // 将 2D 使用的高度换算关系反解成等效 zoom，让 3D 相机跨越相同的四级阈值。
+    function globeDisplayTierFromCamera() {
+        if (!viewer || !viewer.camera.positionCartographic) return 1;
+        var height = Math.max(1, viewer.camera.positionCartographic.height);
+        var zoom = 2 + Math.log(22000000 / height) / Math.LN2;
+        return zoom < 4 ? 1 : zoom < 10 ? 2 : zoom < 13 ? 3 : 4;
+    }
+
+    function updateGlobeDisplayTier(force) {
+        var nextTier = globeDisplayTierFromCamera();
+        if (!force && nextTier === globeDisplayTier) return;
+        globeDisplayTier = nextTier;
+        if (force) {
+            refresh();
+        } else if (active) {
+            refreshDisplayMarkers(nextTier);
+            viewer.scene.requestRender();
+        }
     }
 
     /* ── 气泡 ──
@@ -1292,12 +1364,13 @@
         if (!instance) { note('3D 地球当前不可用，已保留二维地图'); return; }
         var center = window.map ? map.getCenter() : { lat: 36, lng: 103 };
         var zoom = window.map ? map.getZoom() : 6;
-        var height = Math.max(250000, 22000000 / Math.pow(2, Math.max(0, zoom - 2)));
+        // 与 Leaflet zoom 共用缩放映射；保留 5 km 近地安全下限，避免 13 级以上被 250 km 截断。
+        var height = Math.max(5000, 22000000 / Math.pow(2, Math.max(0, zoom - 2)));
         instance.camera.setView({ destination: Cesium.Cartesian3.fromDegrees(center.lng, center.lat, height) });
         active = true;
         window.mapViewMode = '3d';
         document.body.classList.add('globe-active');
-        refresh();
+        updateGlobeDisplayTier(true);
         // 补回工具状态：切回 2D 再进 3D 时 2D 那边可能仍在测距 / 查询中（按钮写着「测距中」），
         // 球面这边必须跟着进同一个状态，否则点了没反应、和按钮显示对不上。
         if (window.NotamMeasure && typeof window.NotamMeasure.currentTool === 'function') {
