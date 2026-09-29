@@ -424,6 +424,7 @@
 
         if (!snapHint) {
             snapHint = createWrappedLayerSet(latlng, (lat, lng) => L.circleMarker([lat, lng], {
+                pane: 'measureHintPane',
                 radius: 5,
                 color: '#f59e0b',
                 weight: 2,
@@ -434,6 +435,10 @@
         } else {
             snapHint.setLatLng(latlng);
         }
+
+        snapHint.layers.forEach((layer) => {
+            if (typeof layer.bringToFront === 'function') layer.bringToFront();
+        });
     }
 
     function flashSnapHint(latlng) {

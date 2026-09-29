@@ -640,6 +640,12 @@ body.nav-row-tight #manualToggle:active:not(.is-touching) {transform: scale(0.95
     pointer-events: auto !important;
 }
 
+/* 测距吸附圆环覆盖航警和站点图标，但不参与鼠标命中。 */
+#allmap .leaflet-measureHint-pane {
+    z-index: 625;
+    pointer-events: none;
+}
+
 #allmap.latlng-query-mode .leaflet-marker-icon,
 #allmap.latlng-query-mode .leaflet-interactive {
     pointer-events: none !important;

@@ -189,7 +189,24 @@ def extract_circle_area(text: str):
     )
     radius_match = re.search(r'RADIUS(?:OF|IS)?(?P<radius>\d+(?:\.\d+)?)(?P<unit>KM|NM)', compact)
     if not center_match or not radius_match:
-        return None
+        # 发射航警常先给发射台坐标，随后用“CIRCLE OF 10NM AROUND THE
+        # LAUNCHER”指代该圆心；这类写法没有 CENTER 关键字。
+        launcher_center = re.search(
+            r'LAUNCH(?:PAD|ER)(?:COORD(?:INATE)?S?)?[:\-]?' + coordinate,
+            compact,
+        )
+        launcher_radius = re.search(
+            r'CIRCLE(?:OF)?(?P<radius>\d+(?:\.\d+)?)(?P<unit>KM|NM)'
+            r'AROUND(?:THE)?LAUNCHER',
+            compact,
+        )
+        if not launcher_center or not launcher_radius:
+            return None
+        center = standardize_coordinate(launcher_center.group('center'))
+        radius = float(launcher_radius.group('radius'))
+        if not center or radius <= 0:
+            return None
+        return center, radius, launcher_radius.group('unit')
     center = standardize_coordinate(center_match.group('center'))
     radius = float(radius_match.group('radius'))
     if not center or radius <= 0:
@@ -335,23 +352,31 @@ def add_area_records(
 ) -> int:
     """Append one authoritative drawable geometry per described area."""
     from .base import append_record
-    from .geometry import geometry_from_notam
+    from .geometry import geometries_from_notam
 
     normalized_raw = normalize_coordinate_notation(raw_message)
     groups = extract_coordinate_groups(normalized_raw)
     circle = extract_circle_area(normalized_raw)
-    geometry = geometry_from_notam(normalized_raw, groups, circle)
-    if not geometry:
+    geometries = geometries_from_notam(normalized_raw, groups, circle)
+    if not geometries:
         return 0
 
     altitude = extract_altitude(raw_message)
-    common = dict(
-        CODE=code, TIME=time_value, PLATID=platid,
-        RAWMESSAGE=html.unescape(str(raw_message or '')), ALTITUDE=altitude,
-        SOURCE=source_type, FIR=fir or 'UNKNOWN', GEOMETRY=geometry,
-    )
-    append_record(output, **common)
-    return 1
+    area_count = len(geometries)
+    for area_index, geometry in enumerate(geometries, start=1):
+        area_suffix = f' AREA {area_index}' if area_count > 1 else ''
+        append_record(
+            output,
+            CODE=f'{code}{area_suffix}',
+            TIME=time_value,
+            PLATID=f'{platid}:AREA:{area_index}' if area_count > 1 else platid,
+            RAWMESSAGE=html.unescape(str(raw_message or '')),
+            ALTITUDE=altitude,
+            SOURCE=source_type,
+            FIR=fir or 'UNKNOWN',
+            GEOMETRY=geometry,
+        )
+    return area_count
 
 
 def deduplicate_by_code(data):
@@ -367,7 +392,9 @@ def deduplicate_by_code(data):
     for index, code in enumerate(data.get('CODE', []) or []):
         raw_values = field_values['RAWMESSAGE']
         raw_message = raw_values[index] if index < len(raw_values) else ''
-        key = notam_dedup_key(raw_message, code)
+        geometry_values = field_values['GEOMETRY']
+        geometry = geometry_values[index] if index < len(geometry_values) else ''
+        key = (notam_dedup_key(raw_message, code), geometry)
         if not key or key in seen:
             continue
         seen.add(key)

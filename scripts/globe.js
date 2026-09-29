@@ -348,14 +348,6 @@
         var entry = { el: document.createElement('div'), layer: null, anchor: null, anchorTop: 0, pinned: false, panLeft: 0, hideTimer: null, open: false };
         entry.el.className = 'globe-notam-popup';
         entry.el.hidden = true;
-        entry.collapseHideConfirmation = function (event) {
-            var button = entry.el.querySelector('.popup-hide[data-confirming="true"]');
-            var target = event && event.target;
-            if (!button || !target || typeof target.closest !== 'function') return;
-            if (target.closest('.popup-hide') === button) return;
-            if (typeof window.setPopupHideConfirmation === 'function') window.setPopupHideConfirmation(button, false);
-        };
-        document.addEventListener('click', entry.collapseHideConfirmation);
         entry.el.addEventListener('click', function (event) {
             var close = event.target.closest('.globe-popup-close');
             if (close) { closePopup(entry); return; }
@@ -396,7 +388,6 @@
         entry.layer = null;
         applyPopupPinState(entry);
         entry.el.classList.remove('is-visible');
-        document.removeEventListener('click', entry.collapseHideConfirmation);
         window.clearTimeout(entry.hideTimer);
         entry.hideTimer = window.setTimeout(function () {
             if (entry.open) return;
@@ -731,7 +722,8 @@
                         pixelSize: 10,   // 对齐 2D 的 circleMarker(radius 5)：半径 5px → 直径 10px
                         color: Cesium.Color.fromCssColorString('#f59e0b').withAlpha(0.15),
                         outlineColor: Cesium.Color.fromCssColorString('#f59e0b'),
-                        outlineWidth: 2
+                        outlineWidth: 2,
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY
                     }
                 });
                 measureSnapKey = snapKey;

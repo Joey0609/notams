@@ -606,6 +606,8 @@ function makeMap() {
     map.createPane('autoNotmarPane').style.zIndex = 400;
     map.createPane('autoMsiPane').style.zIndex = 401;
     map.createPane('autoNotamPane').style.zIndex = 402;
+    // 测距吸附提示使用独立图层，具体层级由 styles.css 统一管理。
+    map.createPane('measureHintPane');
 
     // 添加缩放控件到右下角
     L.control.zoom({
@@ -1674,18 +1676,27 @@ function togglePopupRawView(popup, button) {
 }
 window.setPopupRawView = setPopupRawView;
 
-/* 展开确认后，点击弹窗其它位置、地图或任意其它控件都会收起，避免确认状态残留。 */
-function bindPopupHideCollapse(popup, container) {
-    if (!popup || !container || typeof document === 'undefined') return;
-    if (popup.__hideCollapseHandler) document.removeEventListener('click', popup.__hideCollapseHandler);
-    popup.__hideCollapseHandler = function(event) {
-        const button = container.querySelector ? container.querySelector('.popup-hide[data-confirming="true"]') : null;
+/*
+ * 页面级捕获监听：展开确认后，点地图、正文或其它按钮都会收起。
+ * 使用捕获阶段是因为弹窗按钮自己的 click 会 stopPropagation；若在冒泡阶段监听，
+ * 点「原文 / 图钉 / 复制」时收不到事件。监听只注册一次，也不会因弹窗关闭后重开而失效。
+ */
+function collapsePopupHideConfirmations(exceptButton) {
+    if (typeof document === 'undefined' || !document.querySelectorAll) return;
+    document.querySelectorAll('.popup-hide[data-confirming="true"]').forEach(function(button) {
+        if (button !== exceptButton) setPopupHideConfirmation(button, false);
+    });
+}
+
+if (typeof document !== 'undefined' && !document.__popupHideCollapseBound) {
+    document.__popupHideCollapseBound = true;
+    document.addEventListener('click', function(event) {
         const target = event && event.target;
-        if (!button || !target || typeof target.closest !== 'function') return;
-        if (target.closest('.popup-hide') === button) return;
-        setPopupHideConfirmation(button, false);
-    };
-    document.addEventListener('click', popup.__hideCollapseHandler);
+        const clickedHideButton = target && typeof target.closest === 'function'
+            ? target.closest('.popup-hide')
+            : null;
+        collapsePopupHideConfirmations(clickedHideButton);
+    }, true);
 }
 
 /* 固定状态记在 popup 对象上：Leaflet 重新定位（点击同一多边形）会执行
@@ -1755,7 +1766,6 @@ function ensurePopupActionDelegation(container, popup) {
                 handleCopy(popupRawMessage(copyButton.getAttribute('data-raw-key')));
             }
         });
-        bindPopupHideCollapse(popup, container);
     }
     if (typeof popup._updateContent === 'function' && !popup.__pinContentPatched) {
         popup.__pinContentPatched = true;
@@ -1809,10 +1819,6 @@ function bindPopupActions(layer) {
     layer.on('popupclose', function(e) {
         const popup = e && e.popup;
         if (!popup) return;
-        if (popup.__hideCollapseHandler) {
-            document.removeEventListener('click', popup.__hideCollapseHandler);
-            popup.__hideCollapseHandler = null;
-        }
         popup.__rawView = false;
         popup.__rawBodyHeight = null;
         // 关闭后恢复默认「点击地图即关闭、被新弹窗顶掉」，下次打开由 Leaflet 重新绑定

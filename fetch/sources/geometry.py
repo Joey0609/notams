@@ -1,6 +1,6 @@
 """Canonical NOTAM area geometry.
 
-The parser emits one compact string that is authoritative for map rendering.
+The parser emits compact strings that are authoritative for map rendering.
 It deliberately keeps parsing and polygon repair out of source adapters and
 out of the browser.
 """
@@ -171,22 +171,30 @@ def _arc_path_geometry(text: str) -> str:
     return '|'.join(commands)
 
 
-def geometry_from_notam(text: str, coordinate_groups: Sequence[Sequence[str]], circle: Optional[Tuple[str, float, str]]) -> str:
-    """Return the single serialised drawable geometry, or an empty string."""
+def geometries_from_notam(text: str, coordinate_groups: Sequence[Sequence[str]], circle: Optional[Tuple[str, float, str]]) -> List[str]:
+    """Return every distinct drawable area described by one NOTAM."""
     sector = _sector_geometry(text)
     if sector:
-        return sector
+        return [sector]
     arc_path = _arc_path_geometry(text)
     if arc_path:
-        return arc_path
+        return [arc_path]
+
+    geometries = []
     if circle:
         center, radius, unit = circle
-        return f'CIRCLE|C={center}|R={radius:g}{unit.upper()}'
+        geometries.append(f'CIRCLE|C={center}|R={radius:g}{unit.upper()}')
     for group in coordinate_groups:
         geometry = path_geometry(group)
-        if geometry:
-            return geometry
-    return ''
+        if geometry and geometry not in geometries:
+            geometries.append(geometry)
+    return geometries
+
+
+def geometry_from_notam(text: str, coordinate_groups: Sequence[Sequence[str]], circle: Optional[Tuple[str, float, str]]) -> str:
+    """Return the first drawable geometry for compatibility with older callers."""
+    geometries = geometries_from_notam(text, coordinate_groups, circle)
+    return geometries[0] if geometries else ''
 
 
 _UNIT_METERS = {'KM': 1000.0, 'NM': 1852.0}
