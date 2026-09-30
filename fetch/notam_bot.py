@@ -105,29 +105,47 @@ def send_notification(email_draft: dict) -> bool:
     return ok
 
 
-def send_two_notifications(added_draft: dict, full_draft: dict, return_details: bool = False):
+def send_two_notifications(
+    added_draft: dict,
+    full_draft: dict,
+    return_details: bool = False,
+    removed_draft: dict = None,
+):
     """
-    发送两条 QQ 消息：
+    发送 QQ 变更消息：
       第一条：新增航警（图片仅新增 + 文字仅新增）
-      第二条：全部航警（图片全部 + 文字全部）
-    两条之间间隔 3 秒。
+      可选第二条：移除航警
+      最后一条：全部航警（图片全部 + 文字全部）
+    相邻消息之间间隔 3 秒。
 
     return_details=True 时分别返回两条消息的发送结果，供调用方准确记录
     已经通过 QQ Bot 送达的新增航警。
     """
+    result = {'added': False, 'removed': False, 'full': False}
+
     # 第一条：新增航警
     print('[notam_bot] === 发送第一条消息：新增航警 ===')
-    ok1 = send_notification(added_draft)
-    if not ok1:
+    result['added'] = send_notification(added_draft)
+    if not result['added']:
         print('[notam_bot] 第一条消息发送失败，继续尝试第二条')
 
     import time
     time.sleep(3)
 
-    # 第二条：全部航警
-    print('[notam_bot] === 发送第二条消息：全部航警 ===')
-    ok2 = send_notification(full_draft)
+    if removed_draft is not None:
+        # 第二条：移除航警，必须在当前航警汇总之前发送
+        print('[notam_bot] === 发送第二条消息：移除航警 ===')
+        result['removed'] = send_notification(removed_draft)
+        time.sleep(3)
+
+    # 最后一条：全部航警
+    print('[notam_bot] === 发送最后一条消息：当前航警 ===')
+    result['full'] = send_notification(full_draft)
 
     if return_details:
-        return {'added': ok1, 'full': ok2}
-    return ok1 and ok2
+        return result
+    return (
+        result['added']
+        and result['full']
+        and (result['removed'] if removed_draft is not None else True)
+    )

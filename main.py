@@ -660,6 +660,15 @@ def notify_notam_changes(previous_data, current_data, now=None, mail_enabled=Non
             from fetch.notam_bot import send_notification, send_two_notifications
             qq_result = {'added': False, 'full': False, 'removed': False}
 
+            removed_draft = None
+            if removed_count > 0:
+                # 删除消息只保留“移除航警”段，仍由 notam_bot 统一去坐标和年份，符合 QQ 格式。
+                removed_draft = generate_change_email_draft(
+                    notification_previous, notification_current, include_match=False, include_website=False,
+                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6,
+                    section_mode='removed_only'
+                )
+
             if added_count > 0:
                 # 第一条：仅新增航警图片 + 新增航警文字(无坐标)
                 added_only_data = filter_data_by_platids(current_data, pending_platids)
@@ -674,15 +683,14 @@ def notify_notam_changes(previous_data, current_data, now=None, mail_enabled=Non
                     code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6,
                     section_mode='current'
                 )
-                qq_result.update(send_two_notifications(added_draft, full_draft, return_details=True))
-
-            if removed_count > 0:
-                # 删除消息只保留“移除航警”段，仍由 notam_bot 统一去坐标和年份，符合 QQ 格式。
-                removed_draft = generate_change_email_draft(
-                    notification_previous, notification_current, include_match=False, include_website=False,
-                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6,
-                    section_mode='removed_only'
-                )
+                qq_result.update(send_two_notifications(
+                    added_draft,
+                    full_draft,
+                    return_details=True,
+                    removed_draft=removed_draft,
+                ))
+            elif removed_draft is not None:
+                # 没有新增时，删除消息单独发送，避免构造空的“当前航警”消息。
                 qq_result['removed'] = send_notification(removed_draft)
 
             if qq_result.get('added') or qq_result.get('full'):
