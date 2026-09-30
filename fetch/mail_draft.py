@@ -581,6 +581,16 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
         else:
             lines.append('- 无新增航警')
 
+    if section_mode == 'removed_only':
+        lines.append('移除航警：')
+        if removed_ids:
+            for pid in removed_ids:
+                item = prev_map[pid]
+                lines.append(f"- {_code_with_emoji(item['CODE'])}")
+                lines.append(f"  {_time_of(item)}")
+        else:
+            lines.append('- 无移除航警')
+
     if section_mode == 'all':
         lines.append('移除航警：')
         if removed_ids:

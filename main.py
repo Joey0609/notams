@@ -644,30 +644,52 @@ def notify_notam_changes(previous_data, current_data, now=None, mail_enabled=Non
     else:
         print('MAIL.enabled=false，已跳过邮件发送')
 
-    # QQ Bot 通知独立于邮件发送
-    if added_count > 0:
+    # QQ Bot 通知独立于邮件发送。删除航警也必须发送 QQ 通知。
+    if added_count > 0 or removed_count > 0:
         try:
             # 两条消息共用聚焦数据的颜色和 emoji 映射，保证图片一致
             from fetch.mail_draft import _build_code_to_color_map, _build_code_emoji_map
             code_to_color = _build_code_to_color_map(current_data)
             code_emoji_map = _build_code_emoji_map(current_data)
+            if removed_count > 0:
+                # 删除记录已不在 current_data 中，补入旧快照的分组 emoji；当前记录优先。
+                removed_emoji_map = _build_code_emoji_map(notification_previous)
+                removed_emoji_map.update(code_emoji_map)
+                code_emoji_map = removed_emoji_map
 
-            # 第一条：仅新增航警图片 + 新增航警文字(无坐标)
-            added_only_data = filter_data_by_platids(current_data, pending_platids)
-            added_draft = generate_change_email_draft(
-                {}, added_only_data, include_match=False, include_website=False,
-                code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='added_only'
-            )
-            # 第二条：全部聚焦航警图片 + 当前聚焦航警文字
-            full_draft = generate_change_email_draft(
-                previous_data, current_data, include_match=False, include_website=False,
-                code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6, section_mode='current'
-            )
-            from fetch.notam_bot import send_two_notifications
-            qq_result = send_two_notifications(added_draft, full_draft, return_details=True)
+            from fetch.notam_bot import send_notification, send_two_notifications
+            qq_result = {'added': False, 'full': False, 'removed': False}
+
+            if added_count > 0:
+                # 第一条：仅新增航警图片 + 新增航警文字(无坐标)
+                added_only_data = filter_data_by_platids(current_data, pending_platids)
+                added_draft = generate_change_email_draft(
+                    {}, added_only_data, include_match=False, include_website=False,
+                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6,
+                    section_mode='added_only'
+                )
+                # 第二条：全部聚焦航警图片 + 当前聚焦航警文字
+                full_draft = generate_change_email_draft(
+                    previous_data, current_data, include_match=False, include_website=False,
+                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6,
+                    section_mode='current'
+                )
+                qq_result.update(send_two_notifications(added_draft, full_draft, return_details=True))
+
+            if removed_count > 0:
+                # 删除消息只保留“移除航警”段，仍由 notam_bot 统一去坐标和年份，符合 QQ 格式。
+                removed_draft = generate_change_email_draft(
+                    notification_previous, notification_current, include_match=False, include_website=False,
+                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6,
+                    section_mode='removed_only'
+                )
+                qq_result['removed'] = send_notification(removed_draft)
+
             if qq_result.get('added') or qq_result.get('full'):
                 recorded_count = record_notified_notam_numbers(pending_codes)
                 print(f"已记录 {recorded_count} 个通过 QQ Bot 发送的航警编号")
+            if qq_result.get('removed'):
+                print(f"已通过 QQ Bot 发送 {removed_count} 个删除航警通知")
         except Exception as exc:
             print(f"QQ Bot 通知发送失败: {exc}")
     else:
