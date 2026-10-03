@@ -510,7 +510,7 @@ def extract_areas_with_time(msg_text, base_year):
 def fetch_url_with_retry(url, max_retries=3):
     for attempt in range(max_retries):
         try:
-            response = requests.get(url, headers=make_headers(), timeout=20, verify=False)
+            response = requests.get(url, headers=make_headers(), timeout=20)
             if response.status_code == 200:
                 try:
                     return response.json()
@@ -528,7 +528,7 @@ def fetch_url_with_retry(url, max_retries=3):
 def fetch_text_with_retry(url, max_retries=3):
     for attempt in range(max_retries):
         try:
-            response = requests.get(url, headers=make_headers(), timeout=30, verify=False)
+            response = requests.get(url, headers=make_headers(), timeout=30)
             if response.status_code == 200:
                 return response.text
             print(f"[warn] text request failed status={response.status_code}, retry {attempt + 1}/{max_retries}")
