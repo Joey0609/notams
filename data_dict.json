@@ -288,7 +288,6 @@
     "USCG_NOTMAR_DATA": {
         "CODE": [
             "NOTMAR 40014",
-            "NOTMAR 53866",
             "NOTMAR 54068",
             "NOTMAR 54442",
             "NOTMAR 54929",
@@ -304,7 +303,6 @@
         ],
         "TIME": [
             "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
-            "28 SEP 00:00 2026 UNTIL 04 OCT 23:59 2026",
             "21 SEP 00:00 2026 UNTIL 18 OCT 23:59 2026",
             "25 SEP 00:00 2026 UNTIL 12 OCT 23:59 2026",
             "01 OCT 00:00 2026 UNTIL 20 OCT 23:59 2026",
@@ -320,7 +318,6 @@
         ],
         "PLATID": [
             "USCG:40014:1",
-            "USCG:53866:1",
             "USCG:54068:1",
             "USCG:54442:1",
             "USCG:54929:1",
@@ -336,7 +333,6 @@
         ],
         "RAWMESSAGE": [
             "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
-            "USCG NOTMAR 53866\nA) USCG\nE) Potential for space debris from the launch of the Starship-Super Heavy Starship | Flight 14 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from September 28, 2026 to October 4, 2026 between 0427-0833 HST (1427-1833 UTC) in an area bounded by the following coordinates: \n\n23-55N 144-37E, \n26-07N 151-14E, \n27-41N 156-20E, \n29-25N 165-03E, \n30-26N 172-41E, \n30-56N 180-00W, \n31-11N 175-00W, \n31-17N 171-29W, \n30-33N 161-15W, \n29-37N 155-40W, \n28-49N 151-35W, \n26-53N 145-26W, \n26-50N 145-28W, \n24-03N 154-32W, \n23-46N 156-11W, \n24-52N 159-19W, \n27-38N 167-49W, \n29-25N 175-00W, \n29-45N 176-35W, \n29-49N 180-00W, \n29-41N 176-14E, \n29-13N 170-10E, \n28-28N 164-59E, \n26-39N 156-15E, \n23-28N 144-48E",
             "USCG NOTMAR 54068\nA) USCG\nE) Hazardous operations will be conducted for Space X, Starlink g15-25 Launch operations. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n29.8N                                       -117.65W \n34.46666667N                         -120.3W \n34.66666667N                         -120.6W \n34.65N                                     -120.65W \n34.5N                                       -120.65W \n29.58333333N                         -118.2W \n29.86666667N                         -117.9W \n(TO BEGINNING)\n\n102300Z OCT TO 110325Z OCT 2026---- (PRIMARY)\n112300Z OCT TO 120325Z OCT 2026---- (BACKUP DAY)\n122300Z OCT TO 130325Z OCT 2026---- (BACKUP DAY)\n132300Z OCT TO 140325Z OCT 2026---- (BACKUP DAY)\n142300Z OCT TO 150325Z OCT 2026---- (BACKUP DAY)\n152300Z OCT TO 160325Z OCT 2026---- (BACKUP DAY)\n162300Z OCT TO 170325Z OCT 2026---- (BACKUP DAY)\n\nHazard Area B:\n29.8N                                       -117.65W \n29.86666667N                         -117.9W \n29.58333333N                         -118.2W \n29.4N                                       -118.13333333W \n29.25N                                     -118.03333333W \n29.03333333N                         -117.98333333W \n28.2N                                       -117.31666667W \n28.83333333N                         -117.31666667W \n29.6N                                       -117.26666667W \n(TO BEGINNING)\n\n102300Z OCT TO 110343Z OCT 2026---- (PRIMARY)\n112300Z OCT TO 120343Z OCT 2026---- (BACKUP DAY)\n122300Z OCT TO 130343Z OCT 2026---- (BACKUP DAY)\n132300Z OCT TO 140343Z OCT 2026---- (BACKUP DAY)\n142300Z OCT TO 150343Z OCT 2026---- (BACKUP DAY)\n152300Z OCT TO 160343Z OCT 2026---- (BACKUP DAY)\n162300Z OCT TO 170343Z OCT 2026---- (BACKUP DAY)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
             "USCG NOTMAR 54442\nA) USCG\nE) Hazardous operations will be conducted for Space X, SDA-T1A Launch Operations. Hazardous operation areas are bounded by the following coordinates and times:\n\nHazard Area A: \n30.38333333N, -119.86666667W \n31.33333333N, -120.05W \n32.53333333N, -120.23333333W \n34.55N, -120.7W \n34.66666667N, -120.63333333W \n34.63333333N, -120.45W \n32.5N, -120.15W \n30.68333333N, -119.8W \n30.4N, -119.81666667W (TO BEGINNING)\n             \n050806Z OCT TO 050852Z OCT 2026---- (PRIMARY) \n060759Z OCT TO 060845Z OCT 2026---- (BACKUP DAY) \n070751Z OCT TO 070837Z OCT 2026---- (BACKUP DAY) \n080744Z OCT TO 080830Z OCT 2026---- (BACKUP DAY) \n090736Z OCT TO 090822Z OCT 2026---- (BACKUP DAY) \n100729Z OCT TO 100815Z OCT 2026---- (BACKUP DAY) \n110721Z OCT TO 110807Z OCT 2026---- (BACKUP DAY) \n\nHazard Area B:\n30.35N, -119.93333333W \n30.33333333N, -119.51666667W \n29.78333333N, -118.81666667W \n29.41666667N, -118.75W \n28.91666667N, -119.26666667W \n28.93333333N, -119.68333333W \n29.5N, -120.38333333W \n29.86666667N, -120.45W (TO BEGINNING)\n            \n050806Z OCT TO 050911Z OCT 2026---- (PRIMARY) \n060759Z OCT TO 060904Z OCT 2026---- (BACKUP DAY) \n070751Z OCT TO 070856Z OCT 2026---- (BACKUP DAY) \n080744Z OCT TO 080849Z OCT 2026---- (BACKUP DAY) \n090736Z OCT TO 090841Z OCT 2026---- (BACKUP DAY) \n100729Z OCT TO 100834Z OCT 2026---- (BACKUP DAY) \n110721Z OCT TO 110826Z OCT 2026---- (BACKUP DAY) \n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
             "USCG NOTMAR 54929\nA) USCG\nE) Los Angeles Reentry Splashdown site\nHazardous operations for NASA Crew-12 Reentry, including splashdown in the Pacific Ocean, will occur between 05 OCT 2026, 16:35 UTC and 19 OCT 2026, 19:05 UTC. Hazardous operation areas are bounded by the following coordinates:\n\nHazard area:\n33.783333N, -119.25W\n33.75N, -119.3W\n33.6N, -119.3W\n33.55N, -119.233333W\n33.55N, -119.116667W\n33.616667N, -119.033333W\n33.75N, -119.033333W\n33.783333N, -119.083333W\n33.783333N, -119.25W\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
@@ -351,7 +347,6 @@
             "USCG NOTMAR 54985\nA) USCG\nE) Hazardous operations will be conducted for Vandenberg Space Force Base, Western Range Operation W7600. Hazardous operation areas are bounded by the following coordinates and times:\n\nHazard Area A: \n34.633N, -120.600W\n34.917N, -120.600W\n34.917N, -121.300W\n34.633N, -121.300W\n(TO BEGINNING)\n\n 090531Z OCT TO 091232Z OCT 2026---- DO 2604 (PRIMARY)\n100531Z OCT TO 101232Z OCT 2026---- DO 2604 (BACKUP DAY)\n\nHazard Area B:\n34.983N, -124.300W\n35.033N, -122.333W\n34.267N, -122.250W\n33.900N, -124.217W\n\nSurface vessels are strongly advised to avoid this area defined during specified dates / times. During operations, frontier control will be managing hazardous area surface traffic on VHF CH 16 and CH 6. For more details or comments contact 2 ROPS/DOS via telephone at commercial 805-606-8825 OR DSN 276-8825, or email: 2ROPS.DOS@US.AF.MIL."
         ],
         "ALTITUDE": [
-            "None",
             "None",
             "None",
             "None",
@@ -379,12 +374,10 @@
             "NOTMAR",
             "NOTMAR",
             "NOTMAR",
-            "NOTMAR",
             "NOTMAR"
         ],
         "FIR": [
             "7",
-            "14",
             "11",
             "11",
             "11",
@@ -400,7 +393,6 @@
         ],
         "GEOMETRY": [
             "PATH|M=N284334W0804111|L=N284306W0804048|L=N284215W0804005|L=N284127W0803930|L=N284025W0803841|L=N283919W0803753|L=N283813W0803708|L=N283706W0803611|L=N283553W0803504|L=N283517W0803437|L=N283446W0803425|L=N283411W0803412|L=N283345W0803407|L=N283307W0803403|L=N283233W0803355|L=N283201W0803346|L=N283122W0803330|L=N283119W0803330|L=N283035W0803310|L=N283023W0803304|L=N283016W0803258|L=N282922W0803231|L=N282847W0803214|L=N282759W0803147|L=N282758W0803143|L=N282735W0803133|L=N282728W0803132|L=N282712W0803131|L=N282701W0803136|L=N282657W0803144|L=N282650W0803211|L=N282652W0803215|L=N282650W0803226|L=N282616W0803344|L=N282601W0803407|L=N282532W0803436|L=N282500W0803458|L=N282443W0803507|L=N282412W0803326|L=N282453W0803259|L=N282457W0803251|L=N282509W0803226|L=N282522W0803151|L=N282528W0803120|L=N282537W0803053|L=N282542W0803042|L=N282552W0803026|L=N282605W0803015|L=N282617W0803004|L=N282637W0802954|L=N282659W0802948|L=N282721W0802947|L=N282744W0802950|L=N282805W0802954|L=N282832W0803008|L=N282938W0803045|L=N283025W0803109|L=N283121W0803141|L=N283200W0803157|L=N283300W0803213|L=N283444W0803234|L=N283545W0803258|L=N283609W0803312|L=N283643W0803338|L=N283742W0803431|L=N283848W0803531|L=N283951W0803616|L=N284122W0803720|L=N284334W0803907|Z",
-            "PATH|M=N294858W1800000|L=N292458W1750000|L=N273759W1674858|L=N245158W1591858|L=N234558W1561059|L=N240300W1543159|L=N264959W1452758|L=N265259W1452559|L=N294012W1565928|L=N294500W1763459|Z",
             "PATH|M=N344000W1203600|L=N343900W1203900|L=N343000W1203900|L=N290200W1175900|L=N281200W1171900|L=N293600W1171600|L=N342800W1201800|Z",
             "PATH|M=N344000W1203800|L=N343300W1204200|L=N295200W1202700|L=N293000W1202300|L=N285600W1194100|L=N285500W1191600|L=N292500W1184500|L=N343800W1202700|Z",
             "PATH|M=N334700W1191500|L=N334500W1191800|L=N333600W1191800|L=N333300W1191400|L=N333300W1190700|L=N333700W1190200|L=N334500W1190200|L=N334700W1190500|Z",
@@ -415,9 +407,6 @@
             "PATH|M=N350159W1221959|L=N345859W1241800|L=N335400W1241301|L=N341601W1221500|L=N343759W1203600|L=N345501W1203600|Z"
         ],
         "CLASSIFY": {
-            "c150640913": [
-                "NOTMAR 53866"
-            ],
             "c166893843": [
                 "NOTMAR 54068"
             ],
@@ -442,10 +431,10 @@
                 "NOTMAR 40014"
             ]
         },
-        "NUM": 14,
-        "HASH": "3a697f535457316df6a03b965107f584c0b0d093370edd4e566fb511f587ca7b"
+        "NUM": 13,
+        "HASH": "00b3354322b8221dacddb784e9a64c73468fa3d56802c38d6b003373adbd7616"
     },
-    "HASH": "f297038ce6d565e3a3743e5f25c417a990e0d283c81ad41bcaf3d3d34e50ed82",
+    "HASH": "e1678988dd85507952a6d00ba44b04375cd6c28a570da060c8af0b3f7f168aad",
     "HASH_NOTAM": "db2ff26ca096f7ab1852f20c815ea0d5610b32d5949724eab99e33f1cbb5e783",
     "HASH_FOCUSED": "f8173ccd9ef979db34168d719973f11faca7c7950c252876fe98bb1052d5d679",
     "FETCH_VALID": true
