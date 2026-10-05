@@ -15,6 +15,7 @@ from html.parser import HTMLParser
 import requests
 import urllib3
 from fetch.sources.common import is_relevant_aerospace_area
+from fetch.sources.geometry import path_geometry
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -189,13 +190,16 @@ def parse_cancel_time(msg_text, _created_on):
 
 
 def parse_msg_code(msg_text, msg_type):
+    chinese_code = re.search(r"[\u4e00-\u9fff]+航警\s*\d+/\d+", str(msg_text or ""))
+    if chinese_code:
+        return re.sub(r"\s+", "", chinese_code.group())
     escaped_type = re.escape(str(msg_type or ""))
     pattern = rf"({escaped_type}\s+\d+/\d+(?:\([A-Z0-9,]+\))?)"
     match = re.search(pattern, str(msg_text or ""), re.IGNORECASE)
     if match:
         return match.group(1).strip()
 
-    pattern2 = r"([A-Z]+\s+[IVX]*\s*\d+/\d+(?:\([A-Z0-9,]+\))?)"
+    pattern2 = r"\b([A-Z]+\s*[IVX]*\s*\d+/\d+(?:\([A-Z0-9,]+\))?)"
     match2 = re.search(pattern2, str(msg_text or ""))
     if match2:
         return match2.group(1).strip()
@@ -224,6 +228,35 @@ def parse_time_segment(time_text, base_year):
     """
     time_text = preprocess_text(time_text)
     windows = []
+
+    # 中国海事通告的中文每日时段使用北京时间，写入统一字段前转为 UTC。
+    chinese = re.search(
+        r"自(?:(\d{4})年)?(\d{1,2})月(\d{1,2})日至(\d{1,2})月(\d{1,2})日[，,\s]*每日\s*(\d{4})时至\s*(\d{4})时",
+        time_text,
+    )
+    if chinese:
+        year, sm, sd, em, ed, start, end = chinese.groups()
+        year = int(year) if year else base_year
+        try:
+            day = datetime(year, int(sm), int(sd))
+            last = datetime(year + (int(em) < int(sm)), int(em), int(ed))
+            while day <= last:
+                begin = day.replace(hour=int(start[:2]), minute=int(start[2:]))
+                finish = day.replace(hour=int(end[:2]), minute=int(end[2:]))
+                if finish <= begin:
+                    finish += timedelta(days=1)
+                windows.append(format_window(begin - timedelta(hours=8), finish - timedelta(hours=8)))
+                day += timedelta(days=1)
+        except ValueError:
+            return []
+        return windows
+
+    # 海事英文常用 UTC 和 DAILY FROM ... TO ...，转换为已有 DAILY 语法。
+    time_text = re.sub(r"(\d{4})\s+UTC", r"\1Z", time_text, flags=re.IGNORECASE)
+    time_text = re.sub(
+        r"DAILY\s+FROM\s+(\d{1,2})\s+TO\s+(\d{1,2})\s+([A-Z]{3})",
+        r"DAILY \1 THRU \2 \3", time_text, flags=re.IGNORECASE,
+    )
 
     pattern_daily_prefix = (
         r"DAILY\s+(\d{1,2})\s+([A-Z]{3})\s+THRU\s+(\d{1,2})\s+([A-Z]{3})(?:\s+(\d{2}))?:?\s*"
@@ -428,9 +461,35 @@ def check_against_blacklist(coords):
     return False
 
 
+def _msi_circle_geometry(msg_text):
+    """识别海事单圆心描述；不将普通单点误当作圆形区域。"""
+    coords = parse_coordinates_msi(msg_text)
+    if len(coords) != 1:
+        return ''
+    radius = re.search(r"(\d+(?:\.\d+)?)\s*海里\s*为半径", msg_text)
+    if radius and '圆形' not in msg_text:
+        return ''
+    if not radius:
+        radius = re.search(
+            r"(\d+(?:\.\d+)?)\s*(?:SEA\s+MILES|NAUTICAL\s+MILES?|NM)\s+RADIUS\s+OF",
+            msg_text, re.IGNORECASE,
+        )
+    if not radius or float(radius.group(1)) <= 0:
+        return ''
+    return f'CIRCLE|C={coords[0]}|R={float(radius.group(1)):g}NM'
+
+
+def _msi_area_geometry(coords, msg_text):
+    return _msi_circle_geometry(msg_text) if len(coords) == 1 else path_geometry(coords)
+
+
 def extract_areas_with_time(msg_text, base_year):
     areas = []
     area_counter = 1
+
+    if _msi_circle_geometry(msg_text):
+        windows = parse_time_segment(msg_text, base_year)
+        return [(1, parse_coordinates_msi(msg_text), ';'.join(windows))] if windows else []
 
     prefix_daily_pattern = r"(DAILY\s+\d{1,2}\s+[A-Z]{3}\s+THRU\s+\d{1,2}\s+[A-Z]{3}(?:\s+\d{2})?):"
     prefix_match = re.search(prefix_daily_pattern, msg_text, re.IGNORECASE)
@@ -558,7 +617,7 @@ def process_text_block_record(msg_text, source_tag="MSI_TEXT", category=""):
 
     valid_areas = []
     for area_number, coords, time_str in areas:
-        if len(coords) < 3 or not time_str:
+        if not _msi_area_geometry(coords, msg_text) or not time_str:
             continue
         valid_areas.append((area_number, coords, time_str))
 
@@ -570,6 +629,7 @@ def process_text_block_record(msg_text, source_tag="MSI_TEXT", category=""):
         _ = area_number
         local_result["CODE"].append(code)
         local_result["COORDINATES"].append("-".join(coords))
+        local_result["GEOMETRY"].append(_msi_area_geometry(coords, msg_text))
         local_result["TIME"].append(time_str)
         local_result["TRANSID"].append(msg_id)
         local_result["RAWMESSAGE"].append(msg_text)
@@ -580,6 +640,7 @@ def process_text_block_record(msg_text, source_tag="MSI_TEXT", category=""):
         for area_number, coords, time_str in valid_areas:
             local_result["CODE"].append(f"{code} AREA {area_number}")
             local_result["COORDINATES"].append("-".join(coords))
+            local_result["GEOMETRY"].append(_msi_area_geometry(coords, msg_text))
             local_result["TIME"].append(time_str)
             local_result["TRANSID"].append(msg_id)
             local_result["RAWMESSAGE"].append(msg_text)
@@ -662,6 +723,7 @@ def process_single_url(url):
         "SOURCE": [],
         "FIR": [],
         "ALTITUDE": [],
+        "GEOMETRY": [],
     }
 
     try:
@@ -679,7 +741,7 @@ def process_single_url(url):
 
         for smap in smaps:
             category = str(smap.get("category", ""))
-            if category not in ["ROCKET LAUNCHING", "SPACE DEBRIS"]:
+            if category not in ["ROCKET LAUNCHING", "ROCKET FIRING", "SPACE DEBRIS"]:
                 continue
             category_kept += 1
 
@@ -714,6 +776,7 @@ def process_single_url(url):
                 _ = area_number
                 local_result["CODE"].append(code)
                 local_result["COORDINATES"].append("-".join(coords))
+                local_result["GEOMETRY"].append(_msi_area_geometry(coords, msg_text))
                 local_result["TIME"].append(time_str)
                 local_result["TRANSID"].append(msg_id)
                 local_result["RAWMESSAGE"].append(msg_text)
@@ -726,6 +789,7 @@ def process_single_url(url):
                     area_code = f"{code} AREA {area_number}"
                     local_result["CODE"].append(area_code)
                     local_result["COORDINATES"].append("-".join(coords))
+                    local_result["GEOMETRY"].append(_msi_area_geometry(coords, msg_text))
                     local_result["TIME"].append(time_str)
                     local_result["TRANSID"].append(msg_id)
                     local_result["RAWMESSAGE"].append(msg_text)
@@ -755,6 +819,7 @@ def empty_payload():
         "SOURCE": [],
         "FIR": [],
         "ALTITUDE": [],
+        "GEOMETRY": [],
     }
 
 
@@ -786,6 +851,10 @@ def deduplicate_payload(payload):
             seen[dedupe_key] = len(result["CODE"])
             result["CODE"].append(code)
             result["COORDINATES"].append(coords)
+            geometries = payload.get('GEOMETRY', [])
+            result['GEOMETRY'].append(
+                geometries[i] if i < len(geometries) else path_geometry(coords.split('-'))
+            )
             result["TIME"].append(time_text)
             result["TRANSID"].append(transid)
             result["RAWMESSAGE"].append(raw)

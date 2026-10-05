@@ -232,6 +232,7 @@ def is_relevant_aerospace_area(message: str, *, require_full_altitude: bool) -> 
         or ('SPACE' in text and 'LAUNCH' in text)
         or ('SPACE' in text and 'SPLASHDOWN' in text)
         or ('ROCKET' in text and 'LAUNCH' in text)
+        or ('ROCKET FIRING' in text)
         or ('ROCKET' in text and 'REENTRY' in text)
         or ('ROCKET' in text and 'RETURN' in text)
         or ('ROCKET' in text and 'RE-ENTRY' in text)
