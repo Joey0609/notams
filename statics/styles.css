@@ -1115,3 +1115,84 @@ body:not(.satellite-active) .satellite-fx-area {display: none !important;}
 @media (max-width: 768px) {.satellite-fx-area {bottom: 90px;}}
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {.satellite-fx-area.is-open {background-color: rgba(255,255,255,.97);}}
 @media (prefers-reduced-transparency: reduce) {.satellite-fx-area.is-open {background-color: rgba(255,255,255,.97);-webkit-backdrop-filter:none;backdrop-filter:none;}}
+
+/* 首页工具栏：统一方形线条图标，来源滑轨独立于列表滚动。 */
+#notamListPage { display:flex; }
+#notamSidebarHeader { background:#233c52; padding:10px; gap:8px; }
+#notamSidebarHeader .sidebar-title { flex:1 1 auto; font-size:15px; }
+#notamSidebarHeader .sidebar-tools { gap:4px; }
+#notamSidebarHeader .sidebar-tool { width:28px; height:28px; aspect-ratio:1; display:grid; place-items:center; padding:0; margin:0; border:1px solid rgba(255,255,255,.16); border-radius:10px; background:rgba(255,255,255,.08); color:#edf7ff; cursor:pointer; transition:background .18s,transform .18s; }
+#notamSidebarHeader .sidebar-tool svg { width:16px; height:16px; pointer-events:none; }
+#notamSidebarHeader .sidebar-tool:hover { background:rgba(255,255,255,.2); }
+#notamSidebarHeader .sidebar-tool:active { transform:scale(.91); }
+#notamSidebarHeader .sidebar-tool.active { color:#18384e; background:#a6e0f2; border-color:#a6e0f2; }
+#notamSidebarHeader .sidebar-close { width:28px; height:34px; padding:0; }
+.sidebar-tool:focus-visible,.source-navigator button:focus-visible { outline:2px solid #44b7db; outline-offset:2px; }
+.source-navigator { position:relative; display:flex; flex-shrink:0; margin:8px 12px 2px; padding:4px; border:1px solid #d6e1e8; border-radius:12px; background:#eaf0f4; touch-action:none; user-select:none; cursor:grab; }
+.source-navigator.is-dragging { cursor:grabbing; }
+.source-thumb { position:absolute; top:4px; bottom:4px; left:4px; border-radius:8px; background:linear-gradient(145deg,rgba(69,105,130,.42),rgba(35,60,82,.58)); border:1px solid rgba(255,255,255,.48); box-sizing:border-box; backdrop-filter:blur(5px) saturate(160%); -webkit-backdrop-filter:blur(5px) saturate(160%); box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 0 rgba(20,40,60,.12),0 2px 5px rgba(35,60,82,.12); pointer-events:none; will-change:transform; }
+.source-navigator button { position:relative; z-index:1; flex:1; min-width:0; height:30px; padding:0 4px; display:flex; justify-content:center; align-items:center; gap:6px; border:0; border-radius:5px; background:transparent; color:#697781; font:600 12px/1 system-ui,sans-serif; cursor:inherit; transition:color .16s; }
+.source-navigator button.is-selected { color:#fff; }
+#notamListPage #notamList { max-height:none; }
+.source-empty { padding:20px; text-align:center; color:#8b99a5; font-size:13px; }
+@media(max-width:420px) {
+ #notamSidebarHeader { padding:10px; gap:4px; }
+ #notamSidebarHeader .sidebar-title { font-size:15px; }
+ #notamSidebarHeader .sidebar-tools { gap:3px; }
+ #notamSidebarHeader .sidebar-tool { width:28px; height:28px; border-radius:9px; }
+ #notamSidebarHeader .sidebar-close { width:22px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ #notamSidebarHeader .sidebar-tool,.source-navigator button { transition:none; }
+}
+
+/* 来源导航悬浮在列表之上，滚动内容从玻璃背后通过。 */
+#notamSidebarHeader .sidebar-title { padding-top:0; align-self:center; }
+#notamSidebarHeader { z-index:3; }
+#notamListPage .source-navigator { z-index:2; margin-bottom:-48px; background:rgba(234,240,244,.58); border-color:rgba(214,225,232,.65); backdrop-filter:blur(5px) saturate(140%); -webkit-backdrop-filter:blur(5px) saturate(140%); box-shadow:0 4px 12px rgba(35,60,82,.09),inset 0 1px 0 rgba(255,255,255,.55); }
+#notamListPage #notamList { padding-top:58px; }
+
+/* 列表上缘逐渐模糊：玻璃导航下方清晰，越接近标题栏越模糊。 */
+#notamListPage::after {
+    content:'';
+    position:absolute;
+    left:0;
+    right:0;
+    top:54px;
+    height:62px;
+    z-index:1;
+    pointer-events:none;
+    background:linear-gradient(to bottom,rgba(245,248,250,.44),rgba(245,248,250,0));
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.85) 25%,rgba(0,0,0,.35) 65%,transparent 100%);
+    -webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.85) 25%,rgba(0,0,0,.35) 65%,transparent 100%);
+}
+
+/* 工具按钮的轻微玻璃高光，随悬停增强。 */
+#notamSidebarHeader .sidebar-tool {
+    background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.05));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 0 5px rgba(150,211,239,.07);
+    transition:background .18s,transform .18s,box-shadow .18s;
+}
+#notamSidebarHeader .sidebar-tool:hover {
+    background:linear-gradient(145deg,rgba(255,255,255,.23),rgba(255,255,255,.1));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 9px rgba(150,211,239,.2);
+}
+#notamSidebarHeader .sidebar-tool.active {
+    background:#a6e0f2;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 8px rgba(166,224,242,.24);
+}
+@media(prefers-reduced-motion:reduce) {
+    #notamSidebarHeader .sidebar-tool { transition:none; }
+}
+
+/* 玻璃导航的轻微立体层次：上缘受光，下缘和外侧投影。 */
+#notamListPage .source-navigator {
+    box-shadow:0 5px 12px rgba(35,60,82,.12),0 1px 2px rgba(35,60,82,.08),inset 0 1px 0 rgba(255,255,255,.78),inset 0 -1px 0 rgba(67,92,111,.1);
+}
+#notamListPage .source-thumb {
+    box-shadow:0 3px 6px rgba(24,48,68,.22),inset 0 1px 0 rgba(255,255,255,.65),inset 0 -1px 0 rgba(18,40,58,.24);
+    border-top-color:rgba(255,255,255,.72);
+    border-bottom-color:rgba(39,67,88,.28);
+}

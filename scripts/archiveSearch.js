@@ -32,6 +32,12 @@ function toggleArchiveSidebar() {
     const isOpening = !sidebar.classList.contains('open');
     
     sidebar.classList.toggle('open');
+    const button = document.getElementById('btnArchiveSearch');
+    if (button) {
+        button.classList.toggle('active', isOpening);
+        button.setAttribute('aria-pressed', String(isOpening));
+        button.setAttribute('aria-expanded', String(isOpening));
+    }
     
     // 如果是打开面板，重置到初始位置
     if (isOpening && window.resetArchivePosition) {

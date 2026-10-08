@@ -105,10 +105,16 @@
         if (!btn) return;
         if (active) {
             btn.classList.add('active');
-            btn.textContent = '测距中';
+            if (!btn.classList.contains('sidebar-tool')) btn.textContent = '测距中';
+            btn.title = '测距中';
+            btn.setAttribute('aria-label', '测距中');
+            btn.setAttribute('aria-pressed', String(active));
         } else {
             btn.classList.remove('active');
-            btn.textContent = '测距';
+            if (!btn.classList.contains('sidebar-tool')) btn.textContent = '测距';
+            btn.title = '测距';
+            btn.setAttribute('aria-label', '测距');
+            btn.setAttribute('aria-pressed', String(active));
         }
     }
 
@@ -117,10 +123,16 @@
         if (!btn) return;
         if (active) {
             btn.classList.add('active');
-            btn.textContent = '经纬度查询中';
+            if (!btn.classList.contains('sidebar-tool')) btn.textContent = '经纬度查询中';
+            btn.title = '经纬度查询中';
+            btn.setAttribute('aria-label', '经纬度查询中');
+            btn.setAttribute('aria-pressed', String(active));
         } else {
             btn.classList.remove('active');
-            btn.textContent = '经纬度查询';
+            if (!btn.classList.contains('sidebar-tool')) btn.textContent = '经纬度查询';
+            btn.title = '经纬度查询';
+            btn.setAttribute('aria-label', '经纬度查询');
+            btn.setAttribute('aria-pressed', String(active));
         }
     }
 

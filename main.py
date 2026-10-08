@@ -1354,6 +1354,7 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     """
     send_notifications = notification_sender or notify_notam_changes
     from fetch.sources.msa.cache import reset_pending, commit_pending, needs_retry
+    from fetch.sources.msa.log import log as msa_log
     reset_pending()
     refresh_visits = visits_updater or update_visits
 
@@ -1372,8 +1373,17 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     msa_baseline = 'CHINA_MSA_DATA' not in previous_data
     previous_msa = filter_data_by_source(previous_data, {'MSA'})
     msa_has_additions = not msa_baseline and bool(get_new_notams_for_notification(previous_msa, current_msa))
+    msa_log('通知判定', f"抓取有效={fetch_result_valid}，旧 MSA {len(previous_msa.get('CODE', []))} 条，当前 {len(current_msa.get('CODE', []))} 条，首次 MSA 基线={msa_baseline}，符合条件的新增={msa_has_additions}，原通知状态={trigger}")
+    if not fetch_result_valid:
+        msa_log('通知判定', '上游抓取不完整，不发送 MSA 通知、不更新 visits 或缓存')
+    elif msa_baseline:
+        msa_log('通知判定', '首次建立 MSA 基线，已有 MSA 航警不作为新增补发；NOTAM 通知按原规则判定')
+    elif not msa_has_additions:
+        msa_log('通知判定', '无符合条件的 MSA 新增；取消、过期、仅正文修改不触发 MSA 通知')
     if trigger == 'idle' and msa_has_additions:
         trigger = 'notify'
+        msa_log('通知判定', 'MSA 新增触发邮件/QQ 通知，通知状态 idle → notify')
+    msa_log('更新判定', f"全量 HASH {'变化' if before_hash != after_hash else '未变化'}，更新 visits={should_update_visits(before_hash, dataDict)}；缓存沿用该条件，允许失败检查点补交")
 
     if should_update_visits(before_hash, dataDict):
         refresh_visits()
@@ -1409,6 +1419,7 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     if trigger == 'baseline':
         print('未检测到上一轮聚焦快照，已建立聚焦基线并跳过通知')
     elif trigger == 'notify':
+        msa_log('通知分发', '开始生成 NOTAM/MSA 通知数据；具体待发送数量与邮件/QQ 发送结果见后续通知日志')
         previous_notam = snapshot['focus_section'] if dataDict.get('FOCUS_ENABLED') else filter_data_by_source(previous_data, {'NOTAM'})
         notification_notam = current_focused if dataDict.get('FOCUS_ENABLED') else current_notam
         # 初次启用 MSA 只建立基线；同轮已有 NOTAM 变化仍正常推送。

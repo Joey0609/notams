@@ -9,6 +9,7 @@ from ..base import append_record, empty_data
 from ..common import is_relevant_aerospace_area
 from ..geometry import path_geometry
 from ...MSI_FETCH import format_window, parse_time_segment
+from .log import log
 
 
 CODE_RE = re.compile(r'([京冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼川贵云藏陕甘青宁新港澳台深连舟甬温]{1,3}航警)\s*(\d{1,5})\s*/\s*(\d{2,4})')
@@ -218,11 +219,14 @@ def parse_records(details, now=None):
     for item in details:
         cancelled.update(cancelled_codes(item['title']))
         cancelled.update(cancelled_codes(item['raw']))
+    log('正文筛选', f"开始检查 {len(details)} 篇公告，明确取消目标 {len(cancelled)} 个: {', '.join(sorted(cancelled)) or '无'}")
     seen = set()
     for item in details:
         raw, title = item['raw'], item['title']
         code = warning_code(title) or warning_code(raw)
         if not code or code in cancelled or not relevant(title + ' ' + raw) or code in seen:
+            why = '编号未识别' if not code else ('明确已取消' if code in cancelled else ('非航天相关' if not relevant(title + ' ' + raw) else '同编号重复'))
+            log('排除', f'{code or title or item["url"]}: {why}')
             continue
         seen.add(code)
         reason = []
@@ -235,6 +239,7 @@ def parse_records(details, now=None):
             else:
                 time_text = ';'.join(format_window(start, end) for start, end in windows)
             if windows and max(end for _, end in windows) < now - timedelta(hours=24):
+                log('排除', f'{code}: 活动已结束超过 24 小时，最后结束时间 {max(end for _, end in windows):%Y-%m-%d %H:%M} UTC')
                 continue
             if not time_text:
                 reason.append('活动时间未解析，不推断日期')
@@ -248,6 +253,8 @@ def parse_records(details, now=None):
             reason.append(str(exc))
         if not geometries:
             reason.append('未识别明确区域边界，未绘制')
+        log('时间解析', f"{code}: {time_text or '未解析，不推断活动日期'}")
+        log('区域解析', f"{code}: {len(geometries)} 个明确区域，类型 {', '.join(geometry.split('|', 1)[0] for geometry in geometries) or '无，保留文字条目'}")
         metadata = '\n'.join(filter(None, [title, f"发布单位: {item.get('authority', '')}",
                     f"发布时间: {item.get('published', '')}", f"修改时间: {item.get('modified', '')}",
                     f"官方原文: {item['url']}", '解析说明: ' + '；'.join(reason) if reason else '']))
@@ -256,5 +263,7 @@ def parse_records(details, now=None):
             append_record(output, CODE=code + suffix, TIME=time_text, PLATID=f'MSA:{code}{suffix}',
                           RAWMESSAGE=metadata + '\n\n' + raw, ALTITUDE='None', SOURCE='MSA', FIR='UNKNOWN', GEOMETRY=geometry)
         if reason:
+            log('解析说明', f"{code}: {'；'.join(reason)}")
             skipped.append({'code': code, 'url': item['url'], 'reason': '；'.join(reason)})
+    log('筛选汇总', f"保留 {len(output['CODE'])} 条区域记录，解析说明 {len(skipped)} 篇")
     return output, skipped

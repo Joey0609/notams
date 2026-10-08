@@ -16,7 +16,7 @@ function toggleSidebar() {
     
     // 打开时确保显示航警列表页
     if (!sidebar.classList.contains('open')) {
-        listPage.style.display = 'block';
+        listPage.style.display = 'flex';
         manualPage.style.display = 'none';
     }
     
@@ -46,7 +46,7 @@ function toggleSidebar() {
     }
 
     function onDragStart(e) {
-        if (!isNarrowScreen()) return;
+        if (!isNarrowScreen() || e.target.closest('button')) return;
         
         isDragging = true;
         startY = getClientY(e);
@@ -228,26 +228,10 @@ function updateSidebar() {
 
     countEl.textContent = totalCount;
 
-    // 添加页面切换按钮
-    let html = `
-        <div class="page-switch-card">
-            <button class="page-switch-btn" onclick="toggleArchiveSidebar()">
-                历史航警检索
-            </button>
-            <button class="page-switch-btn" onclick="switchToManualPage()">
-                手动绘制航警
-            </button>
-        </div>
-    `;
+    let html = '';
 
-    if (totalCount === 0) {
-        html += '<div style="text-align:center;color:#999;padding:30px;">暂无航警</div>';
-        container.innerHTML = html;
-        return;
-    }
-    
     // 显示自动获取的航警
-    if (dict && dict.NUM > 0) {
+    if (dict) {
         const visibleNotamIndexes = [];
         const visibleMsiIndexes = [];
         const visibleMsaIndexes = [];
@@ -261,7 +245,7 @@ function updateSidebar() {
             { key: 'MSI', label: 'MSI', indexes: visibleMsiIndexes, showActions: true },
             { key: 'MSA', label: 'MSA', indexes: visibleMsaIndexes, showActions: true },
             { key: 'NOTMAR', label: 'USCG NOTMAR', indexes: visibleNotmarIndexes, showActions: true },
-        ].filter(group => group.indexes.length > 0);
+        ];
 
         for (const group of groups) {
             const isCollapsed = autoDataCollapsed[group.key];
@@ -285,6 +269,7 @@ function updateSidebar() {
                 '</div>' +
                 '<div class="auto-data-content"><div class="auto-data-content-inner">';
 
+            if (!group.indexes.length) html += '<div class="source-empty">暂无航警</div>';
             for (const i of group.indexes) {
             const code = dict.CODE[i];
             const sourceType = (dict.SOURCE?.[i] || 'NOTAM').toUpperCase();
@@ -421,6 +406,7 @@ ${matchButton}
     }
 
     container.innerHTML = html;
+    window.NotamSourceNavigator?.refresh();
 }
 
 function toggleAutoDataSection(groupKey) {

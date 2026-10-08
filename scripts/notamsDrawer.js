@@ -63,7 +63,7 @@ function switchToListPage() {
     const listPage = document.getElementById('notamListPage');
     const manualPage = document.getElementById('manualDrawPage');
     
-    listPage.style.display = 'block';
+    listPage.style.display = 'flex';
     manualPage.style.display = 'none';
 }
 
