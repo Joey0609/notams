@@ -313,7 +313,9 @@ def get_new_notams_for_notification(previous_data, current_data, notified_number
         pid = str(platid)
         if pid in prev_ids:
             continue
-        if not record_has_lon_in_range(current_data, idx, 70.0, 180.0):
+        sources = current_data.get('SOURCE', []) or []
+        is_msa = idx < len(sources) and sources[idx] == 'MSA'
+        if not is_msa and not record_has_lon_in_range(current_data, idx, 70.0, 180.0):
             continue
         code = str(curr_codes[idx]) if idx < len(curr_codes) else ''
         normalized_code = normalize_notam_number(code)
@@ -343,6 +345,10 @@ def get_removed_notams_for_notification(previous_data, current_data, now=None, l
 
     pending = []
     for idx, platid in enumerate(previous_ids):
+        # 用户只要求中国航警的新增推送；撤销/过期不发送中国航警删除通知。
+        sources = previous_data.get('SOURCE', []) or []
+        if idx < len(sources) and sources[idx] == 'MSA':
+            continue
         pid = str(platid)
         if pid in current_ids:
             continue
@@ -439,20 +445,22 @@ def build_section(data, indices, sort_by_code=True):
 
 
 def _segment_record_indices(data, focused_keys):
-    """Return ``(focused_notam, remaining_notam, msi, notmar)`` record positions."""
+    """Return focused NOTAM, remaining NOTAM, MSI, China MSA, NOTMAR positions."""
     codes = data.get('CODE', []) or []
     sources = data.get('SOURCE', []) or []
-    focused_index, remaining_index, msi_index, notmar_index = [], [], [], []
+    focused_index, remaining_index, msi_index, msa_index, notmar_index = [], [], [], [], []
     for index in range(len(codes)):
         source = str(sources[index] if index < len(sources) else 'NOTAM').upper()
         if source.startswith('MSI'):
             msi_index.append(index)
+        elif source == 'MSA':
+            msa_index.append(index)
         elif source.startswith('NOTMAR'):
             notmar_index.append(index)
         elif source.startswith('NOTAM'):
             key = _record_key(source, codes[index])
             (focused_index if key in focused_keys else remaining_index).append(index)
-    return focused_index, remaining_index, msi_index, notmar_index
+    return focused_index, remaining_index, msi_index, msa_index, notmar_index
 
 
 def build_data_segments(data, focused_keys):
@@ -461,11 +469,12 @@ def build_data_segments(data, focused_keys):
     Every section is sorted by CODE and classified on its own, so the focused and
     the remaining pool never share a classification group.
     """
-    focused_index, remaining_index, msi_index, notmar_index = _segment_record_indices(data, focused_keys)
+    focused_index, remaining_index, msi_index, msa_index, notmar_index = _segment_record_indices(data, focused_keys)
     return (
         build_section(data, focused_index),
         build_section(data, remaining_index),
         build_section(data, msi_index),
+        build_section(data, msa_index),
         build_section(data, notmar_index),
     )
 
@@ -536,6 +545,8 @@ def filter_data_by_source(data, include_sources):
             sections.append(data.get('NOTAM_DATA', {}))
         if 'MSI' in requested:
             sections.append(data.get('MSI_DATA', {}))
+        if 'MSA' in requested:
+            sections.append(data.get('CHINA_MSA_DATA', {}))
         if 'NOTMAR' in requested:
             sections.append(data.get('USCG_NOTMAR_DATA', {}))
         merged = _empty_record_data()
@@ -602,8 +613,8 @@ def build_notification_previous_data(previous_data, current_data, removed_platid
 def notify_notam_changes(previous_data, current_data, now=None, mail_enabled=None, index_lookup=None):
     """Send the focused added/removed notifications through email and the QQ bot.
 
-    Both inputs must be focused NOTAM slices: only focused records are reported,
-    drawn in the overview image and used for the colour/emoji maps.
+    Inputs contain focused NOTAM (or all NOTAM without focus) plus China MSA.
+    MSA participates in additions only, not deletion notifications/history matching.
     """
     check_time = now or datetime.now(timezone.utc).replace(tzinfo=None)
     mail_on = MAIL_ENABLED if mail_enabled is None else bool(mail_enabled)
@@ -730,14 +741,10 @@ def is_valid_fetch_result(data):
         return False
 
 
-def should_update_visits(before_notam_hash, current_data):
-    """Refresh visits only after a valid NOTAM change, never for MSI-only updates.
-
-    ``HASH`` covers every source, including MSI. The visit counter must
-    therefore follow the NOTAM-specific hash.
-    """
-    current_notam_hash = current_data.get('HASH_NOTAM', current_data.get('HASH'))
-    return is_valid_fetch_result(current_data) and before_notam_hash != current_notam_hash
+def should_update_visits(before_hash, current_data):
+    """任意来源使全量 HASH 变化时同步更新 visits 和 MSA 缓存。"""
+    current_hash = current_data.get('HASH')
+    return is_valid_fetch_result(current_data) and current_hash is not None and before_hash != current_hash
 
 def load_previous_snapshot(path=SNAPSHOT_PATH):
     """Read the previous snapshot state without ever raising.
@@ -803,6 +810,9 @@ def should_keep_previous_snapshot(payload, existing):
     return (
         _section_num(existing.get('NOTAM_DATA')) > 0
         or _section_num(existing.get('FOCUSED_NOTAM_DATA')) > 0
+        or _section_num(existing.get('MSI_DATA')) > 0
+        or _section_num(existing.get('CHINA_MSA_DATA')) > 0
+        or _section_num(existing.get('USCG_NOTMAR_DATA')) > 0
     )
 
 
@@ -1245,7 +1255,7 @@ def fetch(source_fetcher=None):
         print(f'读取数据源配置失败: {exc}')
         enabled_sources = []
     # 与位置无关的海事源仅抓一次，放在第二批，避免聚焦/全量阶段重复请求。
-    notam_sources = [name for name in enabled_sources if name not in {'msi', 'uscg'}]
+    notam_sources = [name for name in enabled_sources if name not in {'msi', 'msa', 'uscg'}]
 
     batches = []
     focused_keys = set()
@@ -1260,12 +1270,17 @@ def fetch(source_fetcher=None):
 
     if remaining_stage:
         stage_label = '阶段2' if focus_enabled else '单阶段'
-        print(f'[FOCUSED] {stage_label}: 抓取 {len(remaining_stage)} 个位置（含 MSI / USCG NOTMAR）')
+        print(f'[FOCUSED] {stage_label}: 抓取 {len(remaining_stage)} 个位置（含 MSI / 中国航警 / USCG NOTMAR）')
         remaining_batch = fetch_stage(current_config, remaining_stage)
         batches.append(remaining_batch)
         print(f'[FOCUSED] {stage_label}: 返回 {len(remaining_batch.data.get("CODE", []) or [])} 条记录')
     else:
-        print('[FOCUSED] 阶段2: 没有剩余位置，已跳过（本轮不获取 MSI 数据）')
+        maritime_sources = [name for name in enabled_sources if name in {'msi', 'msa', 'uscg'}]
+        if maritime_sources:
+            # 海事来源与 ICAO 无关：即使所有位置均为聚焦位置，也要抓取一次。
+            batches.append(fetch_stage(current_config, focused_stage or all_codes, source_names=maritime_sources))
+        else:
+            print('[FOCUSED] 阶段2: 没有剩余位置或海事来源，已跳过')
 
     dataDict = merge_source_batches(batches)
     backfill_fir_from_text(dataDict, fir_candidates)
@@ -1273,13 +1288,17 @@ def fetch(source_fetcher=None):
     filter_expired_records(dataDict, grace_hours=24)
     dataDict['ALTITUDE'] = extract_altitude(dataDict['RAWMESSAGE'])
 
-    # 行号空间 = 聚焦段 → 外部段 → MSI 段 → USCG NOTMAR 段。
-    focused_data, notam_data, msi_data, notmar_data = build_data_segments(dataDict, focused_keys)
+    # 行号空间 = 聚焦段 → 外部段 → MSI 段 → 中国航警段 → USCG NOTMAR 段。
+    focused_data, notam_data, msi_data, msa_data, notmar_data = build_data_segments(dataDict, focused_keys)
+    # 返回值也使用与磁盘/浏览器一致的顺序，不能只排序磁盘 sections。
+    for field in RECORD_FIELDS:
+        dataDict[field] = [value for section in (focused_data, notam_data, msi_data, msa_data, notmar_data) for value in section[field]]
     dataDict['NUM'] = len(dataDict['CODE'])
     dataDict['CLASSIFY'] = classify_data(dataDict)
     dataDict['HASH'] = compute_data_hash(dataDict)
     dataDict['HASH_NOTAM'] = compute_data_hash(dataDict, include_sources={'NOTAM'})
     dataDict['HASH_MSI'] = compute_data_hash(dataDict, include_sources={'MSI'})
+    dataDict['HASH_MSA'] = compute_data_hash(dataDict, include_sources={'MSA'})
     dataDict['HASH_NOTMAR'] = compute_data_hash(dataDict, include_sources={'NOTMAR'})
     dataDict['HASH_FOCUSED'] = focused_data['HASH']
     dataDict['FOCUS_ENABLED'] = focus_enabled
@@ -1292,6 +1311,7 @@ def fetch(source_fetcher=None):
         'FOCUSED_NOTAM_DATA': focused_data,
         'NOTAM_DATA': notam_data,
         'MSI_DATA': msi_data,
+        'CHINA_MSA_DATA': msa_data,
         'USCG_NOTMAR_DATA': notmar_data,
         'HASH': dataDict['HASH'],
         'HASH_NOTAM': dataDict['HASH_NOTAM'],
@@ -1299,6 +1319,16 @@ def fetch(source_fetcher=None):
         'HASH_FOCUSED': dataDict['HASH_FOCUSED'] if focus_enabled else None,
         'FETCH_VALID': fetch_complete,
     }
+
+    # 快照保存已授权的缓存检查点；缓存写入失败后，新进程也能识别并补交。
+    from fetch.sources.msa.cache import pending_available
+    previous_payload = load_previous_snapshot(SNAPSHOT_PATH)['data']
+    cache_checkpoint = previous_payload.get('MSA_CACHE_HASH')
+    if fetch_complete and pending_available() and previous_payload.get('HASH') != dataDict['HASH']:
+        cache_checkpoint = dataDict['HASH']
+    if cache_checkpoint:
+        payload['MSA_CACHE_HASH'] = cache_checkpoint
+        dataDict['MSA_CACHE_HASH'] = cache_checkpoint
 
     if not fetch_complete:
         existing = load_previous_snapshot(SNAPSHOT_PATH)['data']
@@ -1323,6 +1353,8 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     must accept ``(previous_data, current_data, mail_enabled=...)``.
     """
     send_notifications = notification_sender or notify_notam_changes
+    from fetch.sources.msa.cache import reset_pending, commit_pending, needs_retry
+    reset_pending()
     refresh_visits = visits_updater or update_visits
 
     # Maintain the notification list on every scan, including unchanged data.
@@ -1331,18 +1363,33 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     snapshot = load_previous_snapshot(snapshot_path)
     previous_data = snapshot['data']
     before_hash = snapshot['hash'] or compute_data_hash(previous_data)
-    before_notam_hash = snapshot['hash_notam'] or compute_data_hash(
-        previous_data, include_sources={'NOTAM'}
-    )
 
     dataDict = fetch(source_fetcher=fetcher)
     after_hash = dataDict.get("HASH", None)
     fetch_result_valid = is_valid_fetch_result(dataDict)
     trigger = notification_trigger(snapshot, dataDict)
+    current_msa = filter_data_by_source(dataDict, {'MSA'})
+    msa_baseline = 'CHINA_MSA_DATA' not in previous_data
+    previous_msa = filter_data_by_source(previous_data, {'MSA'})
+    msa_has_additions = not msa_baseline and bool(get_new_notams_for_notification(previous_msa, current_msa))
+    if trigger == 'idle' and msa_has_additions:
+        trigger = 'notify'
 
-    if should_update_visits(before_notam_hash, dataDict):
+    if should_update_visits(before_hash, dataDict):
         refresh_visits()
+        try:
+            if commit_pending(expected_hash=dataDict.get('MSA_CACHE_HASH') or after_hash):
+                print('已按 visits 更新条件提交 MSA 增量缓存')
+        except Exception as exc:
+            print(f'MSA 缓存提交失败，继续通知；下轮按快照检查点重试: {exc}')
         print('检测到航警变化，已执行 update_visits')
+    elif fetch_result_valid:
+        checkpoint = dataDict.get('MSA_CACHE_HASH') or previous_data.get('MSA_CACHE_HASH')
+        try:
+            if needs_retry(checkpoint) and commit_pending(expected_hash=checkpoint):
+                print('已补交上轮失败的 MSA 缓存；未重复更新 visits')
+        except Exception as exc:
+            print(f'MSA 缓存补交失败，保留原缓存并继续通知: {exc}')
 
     if not fetch_result_valid:
         print('本次抓取结果为空，视为上游异常，已跳过 visits、历史匹配和通知')
@@ -1362,16 +1409,24 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     if trigger == 'baseline':
         print('未检测到上一轮聚焦快照，已建立聚焦基线并跳过通知')
     elif trigger == 'notify':
-        if dataDict.get('FOCUS_ENABLED'):
-            send_notifications(snapshot['focus_section'], current_focused, mail_enabled=mail_enabled)
+        previous_notam = snapshot['focus_section'] if dataDict.get('FOCUS_ENABLED') else filter_data_by_source(previous_data, {'NOTAM'})
+        notification_notam = current_focused if dataDict.get('FOCUS_ENABLED') else current_notam
+        # 初次启用 MSA 只建立基线；同轮已有 NOTAM 变化仍正常推送。
+        previous_pool = _empty_record_data()
+        current_pool = _empty_record_data()
+        for field in RECORD_FIELDS:
+            previous_pool[field] = list(previous_notam.get(field, [])) + list((current_msa if msa_baseline else previous_msa).get(field, []))
+            current_pool[field] = list(notification_notam.get(field, [])) + list(current_msa.get(field, []))
+        for pool in (previous_pool, current_pool):
+            pool['NUM'] = len(pool['CODE'])
+            pool['CLASSIFY'] = classify_data(pool)
+        if send_notifications is notify_notam_changes:
+            sections = build_data_segments(dataDict, _record_keys(current_focused))
+            send_notifications(previous_pool, current_pool, mail_enabled=mail_enabled, index_lookup=record_index_lookup(sections))
         else:
-            send_notifications(
-                filter_data_by_source(previous_data, {'NOTAM'}),
-                current_notam,
-                mail_enabled=mail_enabled,
-            )
+            send_notifications(previous_pool, current_pool, mail_enabled=mail_enabled)
     elif before_hash != after_hash:
-        print('仅MSI或非聚焦NOTAM数据变化，已跳过历史匹配与邮件发送')
+        print('仅海事更新/非聚焦NOTAM变化，或中国航警首次基线，已跳过通知')
     else:
         print('数据未变化，已跳过通知')
     return trigger

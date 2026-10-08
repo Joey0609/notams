@@ -89,6 +89,7 @@ def _source_registry():
     from .dins import DINSDataSource
     from .faa import FAADataSource
     from .msi import MSIDataSource
+    from .msa import MSADataSource
     from .uscg import USCGDataSource
 
     return {
@@ -96,5 +97,6 @@ def _source_registry():
         'daip': DAIPDataSource,
         'dins': DINSDataSource,
         'msi': MSIDataSource,
+        'msa': MSADataSource,
         'uscg': USCGDataSource,
     }

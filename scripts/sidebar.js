@@ -1,4 +1,4 @@
-let autoDataCollapsed = { NOTAM: false, MSI: false, NOTMAR: false };
+let autoDataCollapsed = { NOTAM: false, MSI: false, MSA: false, NOTMAR: false };
 let autoDataActionStates = {};
 
 function toggleSidebar() {
@@ -250,14 +250,16 @@ function updateSidebar() {
     if (dict && dict.NUM > 0) {
         const visibleNotamIndexes = [];
         const visibleMsiIndexes = [];
+        const visibleMsaIndexes = [];
         const visibleNotmarIndexes = [];
         for (let index = 0; index < dict.NUM; index++) {
             const displayType = getNotamDisplayType(dict.SOURCE?.[index]);
-            (displayType === 'MSI' ? visibleMsiIndexes : (displayType === 'NOTMAR' ? visibleNotmarIndexes : visibleNotamIndexes)).push(index);
+            ({ NOTAM: visibleNotamIndexes, MSI: visibleMsiIndexes, MSA: visibleMsaIndexes, NOTMAR: visibleNotmarIndexes }[displayType]).push(index);
         }
         const groups = [
             { key: 'NOTAM', label: 'NOTAM', indexes: visibleNotamIndexes, showActions: true },
             { key: 'MSI', label: 'MSI', indexes: visibleMsiIndexes, showActions: true },
+            { key: 'MSA', label: 'MSA', indexes: visibleMsaIndexes, showActions: true },
             { key: 'NOTMAR', label: 'USCG NOTMAR', indexes: visibleNotmarIndexes, showActions: true },
         ].filter(group => group.indexes.length > 0);
 
@@ -287,12 +289,13 @@ function updateSidebar() {
             const code = dict.CODE[i];
             const sourceType = (dict.SOURCE?.[i] || 'NOTAM').toUpperCase();
             const isMsi = getNotamDisplayType(sourceType) === 'MSI';
+            const isMsa = getNotamDisplayType(sourceType) === 'MSA';
             const isNotmar = getNotamDisplayType(sourceType) === 'NOTMAR';
             const displayCode = isNotmar ? String(code).replace(/^NOTMAR\s+/i, '') : code;
             // 只有聚焦段（前 FOCUSED_NUM 行）会生成 data/archiveMatch/match{idx}.json，
             // 其余行不渲染「历史航警匹配」按钮
             const focusedRows = Number(dict.FOCUSED_NUM || 0);
-            const canArchiveMatch = !isMsi && !isNotmar && i < focusedRows;
+            const canArchiveMatch = !isMsi && !isMsa && !isNotmar && i < focusedRows;
             const matchButton = canArchiveMatch ? `
                         <button class="icon-btn"
                             onclick="event.stopPropagation(); archiveNOTAMmatch(${i})"
@@ -301,12 +304,12 @@ function updateSidebar() {
                         </button>` : '';
             const copyTitle = isMsi ? '复制原始海警' : (isNotmar ? '复制原始 NOTMAR' : '复制原始航警');
             const rawTime = dict.TIME[i] || '';
-            const prettyTime = convertTime(rawTime);
+            const prettyTime = isMsa ? msaTimeText(rawTime) : convertTime(rawTime);
             const rawMessage = dict.RAWMESSAGE?.[i] || '';
             const col = getColorForRecord(i);
             const visible = visibleState[i] !== false && isNotamTypeVisible(i);
-            const colorControl = (isMsi || isNotmar)
-                ? `<div class="color-picker-wrapper" title="${isMsi ? 'MSI' : 'USCG NOTMAR'} 使用独立颜色池"><div class="color-preview" style="background:${col}"></div></div>`
+            const colorControl = (isMsi || isMsa || isNotmar)
+                ? `<div class="color-picker-wrapper" title="${isMsi ? 'MSI' : (isMsa ? 'MSA' : 'USCG NOTMAR')} 使用独立颜色池"><div class="color-preview" style="background:${col}"></div></div>`
                 : `<div class="color-picker-wrapper" onclick="event.stopPropagation();"><div class="color-preview" style="background:${col}"><input type="color" class="color-picker" value="${col.substring(0, 7)}" onchange="event.stopPropagation(); changeGroupColor('${code}', this.value, ${i})"></div></div>`;
             html += `
             <div class="notam-item" style="--group-color:${col}; cursor:pointer;"
@@ -321,7 +324,7 @@ function updateSidebar() {
                             ${colorControl}
 
                             <span class="notam-code">${displayCode}</span>
-                            <span style="font-size:11px;padding:1px 6px;border-radius:10px;background:${isMsi ? 'var(--msi-source-color)' : (isNotmar ? 'var(--notmar-source-color)' : 'var(--notam-source-color)')};color:#fff;">${sourceType}</span>
+                            <span style="font-size:11px;padding:1px 6px;border-radius:10px;background:${isMsi ? 'var(--msi-source-color)' : (isMsa ? 'var(--msa-source-color)' : (isNotmar ? 'var(--notmar-source-color)' : 'var(--notam-source-color)'))};color:#fff;">${sourceType}</span>
                         </div>
 
                         
@@ -629,7 +632,16 @@ function locateToNotam(index) {
     if (!dict || index >= dict.NUM) return;
     try {
         const layer = polygonAuto[index];
-        if (layer && typeof layer.getBounds === 'function') map.fitBounds(layer.getBounds(), { padding: [80, 80], maxZoom: 6 });
+        if (layer && typeof layer.getBounds === 'function') {
+            map.fitBounds(layer.getBounds(), { padding: [80, 80], maxZoom: 6 });
+            if (getNotamDisplayType(dict.SOURCE?.[index]) === 'MSA') {
+                const copies = typeof layer.getLayers === 'function' ? layer.getLayers() : [];
+                (copies.length ? copies[Math.floor(copies.length / 2)] : layer).openPopup();
+            }
+        } else if (getNotamDisplayType(dict.SOURCE?.[index]) === 'MSA') {
+            // 无区域的公告只打开文字，不用 Q 行/猜测点伪造落区。
+            showMsaTextPopup(index);
+        }
     } catch (e) { console.error(e); }
 }
 /* 定位历史航警 */
@@ -637,7 +649,7 @@ function archiveNOTAMmatch(index) {
     if (!dict || index >= dict.NUM) return;
     const sourceType = (dict.SOURCE?.[index] || 'NOTAM').toUpperCase();
     if (sourceType !== 'NOTAM') {
-        alert('MSI 和 USCG NOTMAR 不参与历史航警匹配');
+        alert('MSI、MSA 和 USCG NOTMAR 不参与历史航警匹配');
         return;
     }
     if (index >= Number(dict.FOCUSED_NUM || 0)) {

@@ -74,6 +74,7 @@ def _build_notam_map(data):
     geometries = _safe_get(data, 'GEOMETRY')
     platids = _safe_get(data, 'PLATID')
     raw_messages = _safe_get(data, 'RAWMESSAGE')
+    sources = _safe_get(data, 'SOURCE')
     # INDEX 是记录在全局行号空间中的位置；通知切片会用它保持 match.html?index=N 正确
     global_indices = _safe_get(data, 'INDEX')
     size = min(len(codes), len(times), len(geometries), len(platids))
@@ -84,7 +85,8 @@ def _build_notam_map(data):
         if not pid:
             continue
         records[pid] = {
-            'index': global_indices[i] if i < len(global_indices) else i,
+            'index': None if i < len(sources) and sources[i] == 'MSA' else (global_indices[i] if i < len(global_indices) else i),
+            'SOURCE': sources[i] if i < len(sources) else 'NOTAM',
             'CODE': str(codes[i]),
             'TIME': str(times[i]),
             'GEOMETRY': str(geometries[i]),
@@ -258,7 +260,7 @@ def _format_short_time(start, end):
 def _class_groups(items, code_to_class_map):
     groups = {}
     for item in items:
-        class_key = code_to_class_map.get(item['CODE'], f"__{item['PLATID']}")
+        class_key = f"__{item['PLATID']}" if item.get('SOURCE') == 'MSA' else code_to_class_map.get(item['CODE'], f"__{item['PLATID']}")
         groups.setdefault(class_key, []).append(item)
     return list(groups.values())
 
@@ -554,6 +556,8 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
 
     def _time_of(item):
         try:
+            if item.get('SOURCE') == 'MSA':
+                return '\n  '.join(_format_short_time(*parsed) for segment in item.get('TIME', '').split(';') if (parsed := _parse_display_time(segment))) or '活动时间未解析'
             parsed = _parse_display_time(item.get('TIME', ''))
             return _format_short_time(*parsed) if parsed else '时间未知'
         except Exception:
@@ -619,7 +623,7 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
             for group in _class_groups([curr_map[pid] for pid in all_current], code_to_class):
                 emoji = code_emoji_map.get(group[0]['CODE'], '')
                 prefix = f'{emoji} ' if emoji else ''
-                lines.append(f"- {prefix}{_merged_group_time(group)}")
+                lines.append(f"- {prefix}{_time_of(group[0]) if group[0].get('SOURCE') == 'MSA' else _merged_group_time(group)}")
                 lines.append('  ' + '，'.join(item['CODE'] for item in group))
         else:
             lines.append('- 无当前航警')

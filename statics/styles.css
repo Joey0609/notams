@@ -1,4 +1,4 @@
-:root {--notam-source-color:#34495e;--msi-source-color:#16a085;--notmar-source-color:#7c3aed;}
+:root {--notam-source-color:#34495e;--msi-source-color:#16a085;--msa-source-color:#c2410c;--notmar-source-color:#7c3aed;}
 /* 临时暂停服务弹窗：地图仍保持可见，仅覆盖交互界面 */
 .site-pause-overlay {
     position: fixed;
@@ -505,6 +505,7 @@ body.nav-row-tight #manualToggle:active:not(.is-touching) {transform: scale(0.95
 .auto-data-header {display: flex;align-items: stretch;justify-content: space-between;gap: 8px;min-height: 40px;padding: 0 8px 0 10px;background: transparent;color: var(--notam-source-color);font-weight: bold;border-bottom: 0;user-select: none;}
 .auto-data-section[data-source-group="MSI"] .auto-data-header {color: var(--msi-source-color);}
 .auto-data-section[data-source-group="NOTMAR"] .auto-data-header {color: var(--notmar-source-color);}
+.auto-data-section[data-source-group="MSA"] .auto-data-header {color: var(--msa-source-color);}
 .auto-data-toggle {display: flex;align-items: center;flex: 1 1 auto;min-width: 0;padding: 0;border: 0;background: transparent;color: inherit;font: inherit;text-align: left;cursor: pointer;}
 .auto-data-toggle:focus-visible, .auto-data-actions button:focus-visible {outline: 2px solid #3498db;outline-offset: -2px;}
 .auto-data-title {display: inline-flex;align-items: center;min-width: 0;gap: 9px;}
@@ -969,6 +970,7 @@ body.globe-active #globeMap { visibility: visible; pointer-events: auto; z-index
 .notam-type-control button {display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:64px;height:28px;padding:0 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#4b5f72;cursor:pointer;font:700 12px/1.2 "微软雅黑",sans-serif;letter-spacing:.04em;text-shadow:0 1px 1px rgba(255,255,255,.75);transition:background .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease;-webkit-tap-highlight-color:transparent;}
 .notam-type-control button::before {content:"";width:8px;height:8px;border-radius:50%;background:var(--notam-source-color);box-shadow:0 0 0 1px rgba(255,255,255,.52);}
 .notam-type-control button[data-notam-type="MSI"]::before {background:var(--msi-source-color);}
+.notam-type-control button[data-notam-type="MSA"]::before {background:var(--msa-source-color);}
 .notam-type-control button[data-notam-type="NOTMAR"]::before {background:var(--notmar-source-color);}
 .notam-type-count {font-variant-numeric:tabular-nums;}
 .notam-type-control button.active {border-color:rgba(84,135,181,.45);background:rgba(255,255,255,.94);color:#203b56;box-shadow:0 2px 7px rgba(43,79,115,.16),inset 0 1px 0 rgba(255,255,255,.96);}
