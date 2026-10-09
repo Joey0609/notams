@@ -334,8 +334,7 @@
             "NOTMAR 54980",
             "NOTMAR 54985",
             "NOTMAR 55061",
-            "NOTMAR 55066",
-            "NOTMAR 55528"
+            "NOTMAR 55066"
         ],
         "TIME": [
             "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
@@ -352,8 +351,7 @@
             "02 OCT 00:00 2026 UNTIL 20 OCT 23:59 2026",
             "02 OCT 00:00 2026 UNTIL 11 OCT 23:59 2026",
             "05 OCT 00:00 2026 UNTIL 23 OCT 23:59 2026",
-            "05 OCT 00:00 2026 UNTIL 17 OCT 23:59 2026",
-            "08 OCT 00:00 2026 UNTIL 14 OCT 23:59 2026"
+            "05 OCT 00:00 2026 UNTIL 17 OCT 23:59 2026"
         ],
         "PLATID": [
             "USCG:40014:1",
@@ -370,8 +368,7 @@
             "USCG:54980:1",
             "USCG:54985:1",
             "USCG:55061:1",
-            "USCG:55066:1",
-            "USCG:55528:1"
+            "USCG:55066:1"
         ],
         "RAWMESSAGE": [
             "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
@@ -388,11 +385,9 @@
             "USCG NOTMAR 54980\nA) USCG\nE) Hazardous operations for NASA Crew-12 Reentry, including splashdown in the Pacific Ocean, will occur between 05 OCT 2026, 16:20 UTC and 19 OCT 2026, 11:35 UTC. Hazardous operation areas are bounded by the following coordinates:\n\nHazard Area:\n27.116667N, -123.316667W\n25.5N, -124.166667W\n22.616667N, -126.9W\n18.35N, -130.65W\n19.383333N, -131.9W\n23.683333N, -128.166667W\n26.583333N, -125.433333W\n27.5N, -123.75W\n27.116667N, -123.316667W\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
             "USCG NOTMAR 54985\nA) USCG\nE) Hazardous operations will be conducted for Vandenberg Space Force Base, Western Range Operation W7600. Hazardous operation areas are bounded by the following coordinates and times:\n\nHazard Area A: \n34.633N, -120.600W\n34.917N, -120.600W\n34.917N, -121.300W\n34.633N, -121.300W\n(TO BEGINNING)\n\n 090531Z OCT TO 091232Z OCT 2026---- DO 2604 (PRIMARY)\n100531Z OCT TO 101232Z OCT 2026---- DO 2604 (BACKUP DAY)\n\nHazard Area B:\n34.983N, -124.300W\n35.033N, -122.333W\n34.267N, -122.250W\n33.900N, -124.217W\n\nSurface vessels are strongly advised to avoid this area defined during specified dates / times. During operations, frontier control will be managing hazardous area surface traffic on VHF CH 16 and CH 6. For more details or comments contact 2 ROPS/DOS via telephone at commercial 805-606-8825 OR DSN 276-8825, or email: 2ROPS.DOS@US.AF.MIL.",
             "USCG NOTMAR 55061\nA) USCG\nE) Hazardous operations will be conducted for Space X, TH-2. Hazardous operation areas are bounded by the following coordinates and times:\n\nHazard Area A: \n32.01666667N, -120.05W \n32.01666667N, -120W \n33.36666667N, -120.2W \n34.45N, -120.38333333W \n34.66666667N, -120.6W \n34.65N, -120.66666667W \n34.33333333N, -120.65W \n33.06666667N, -120.33333333W \n(TO BEGINNING)\n\n152344Z OCT TO 160407Z OCT 2026---- (PRIMARY) \n162335Z OCT TO 170358Z OCT 2026---- (BACKUP DAY) \n172326Z OCT TO 180349Z OCT 2026---- (BACKUP DAY) \n182317Z OCT TO 190340Z OCT 2026---- (BACKUP DAY) \n192308Z OCT TO 200331Z OCT 2026---- (BACKUP DAY) \n202259Z OCT TO 210322Z OCT 2026---- (BACKUP DAY) \n212250Z OCT TO 220313Z OCT 2026---- (BACKUP DAY) \n\nHazard Area B:\n27.66666667N, -119.26666667W \n28.68333333N, -119.88333333W\n28.95N, -119.91666667W \n30.75N, -119.78333333W \n28.91666667N, -118.76666667W \n28.65N, -118.71666667W \n(TO BEGINNING)\n\n152344Z OCT TO 160427Z OCT 2026---- (PRIMARY) \n162335Z OCT TO 170418Z OCT 2026---- (BACKUP DAY) \n172326Z OCT TO 180409Z OCT 2026---- (BACKUP DAY) \n182317Z OCT TO 190400Z OCT 2026---- (BACKUP DAY) \n192308Z OCT TO 200351Z OCT 2026---- (BACKUP DAY) \n202259Z OCT TO 210342Z OCT 2026---- (BACKUP DAY) \n212250Z OCT TO 220333Z OCT 2026---- (BACKUP DAY) \n\nMariners are strongly advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
-            "USCG NOTMAR 55066\nA) USCG\nE) The Tillamook UAS Test Range will be conducting operations in W-570 airspace on 13 – 16 Oct 2026.  Operations include the launch and recovery of various unmanned aircraft and flight testing in several locations within area W-570 including a operational area approximately 15 – 30 nautical miles west of Tillamock, centered on 45-23-47.05N, 124-33-32.69 W.  Mariners should use caution when transiting this area.  For more information, mariners can call Chris Strole, Tillamook Test Range Manager at (503) 944-1190 (Office) or (725) 577-2082 (Cell).",
-            "USCG NOTMAR 55528\nA) USCG\nE) Hazardous operations will be conducted for Launch Operation, EREBUS operation areas are bounded by the following coordinates and times:\n\nHazard Area A:\n36.1166666667N, -123.7666666667W\n36.2500000000N, -123.6666666667W\n36.0666666667N, -123.1333333333W\n35.3166666667N, -122.6333333333W\n35.2166666667N, -122.0333333333W\n35.1666666667N, -120.9833333333W\n34.9500000000N, -120.6500000000W\n34.6666666667N, -120.5666666667W\n34.1500000000N, -120.9166666667W\n34.1666666667N, -121.4166666667W\n33.4666666667N, -121.2833333333W\n33.4166666667N, -121.6500000000W\n34.2833333333N, -122.5166666667W\n\nHazard Times:\n131300Z OCT TO 131900Z OCT                           \n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Stratolaunch at RangeOps@stratolaunch.com, 661-584-2365, or on VHF-FM Chan. 06 or 16."
+            "USCG NOTMAR 55066\nA) USCG\nE) The Tillamook UAS Test Range will be conducting operations in W-570 airspace on 13 – 16 Oct 2026.  Operations include the launch and recovery of various unmanned aircraft and flight testing in several locations within area W-570 including a operational area approximately 15 – 30 nautical miles west of Tillamock, centered on 45-23-47.05N, 124-33-32.69 W.  Mariners should use caution when transiting this area.  For more information, mariners can call Chris Strole, Tillamook Test Range Manager at (503) 944-1190 (Office) or (725) 577-2082 (Cell)."
         ],
         "ALTITUDE": [
-            "None",
             "None",
             "None",
             "None",
@@ -424,7 +419,6 @@
             "NOTMAR",
             "NOTMAR",
             "NOTMAR",
-            "NOTMAR",
             "NOTMAR"
         ],
         "FIR": [
@@ -442,8 +436,7 @@
             "11",
             "11",
             "11",
-            "13",
-            "11"
+            "13"
         ],
         "GEOMETRY": [
             "PATH|M=N284334W0804111|L=N284306W0804048|L=N284215W0804005|L=N284127W0803930|L=N284025W0803841|L=N283919W0803753|L=N283813W0803708|L=N283706W0803611|L=N283553W0803504|L=N283517W0803437|L=N283446W0803425|L=N283411W0803412|L=N283345W0803407|L=N283307W0803403|L=N283233W0803355|L=N283201W0803346|L=N283122W0803330|L=N283119W0803330|L=N283035W0803310|L=N283023W0803304|L=N283016W0803258|L=N282922W0803231|L=N282847W0803214|L=N282759W0803147|L=N282758W0803143|L=N282735W0803133|L=N282728W0803132|L=N282712W0803131|L=N282701W0803136|L=N282657W0803144|L=N282650W0803211|L=N282652W0803215|L=N282650W0803226|L=N282616W0803344|L=N282601W0803407|L=N282532W0803436|L=N282500W0803458|L=N282443W0803507|L=N282412W0803326|L=N282453W0803259|L=N282457W0803251|L=N282509W0803226|L=N282522W0803151|L=N282528W0803120|L=N282537W0803053|L=N282542W0803042|L=N282552W0803026|L=N282605W0803015|L=N282617W0803004|L=N282637W0802954|L=N282659W0802948|L=N282721W0802947|L=N282744W0802950|L=N282805W0802954|L=N282832W0803008|L=N282938W0803045|L=N283025W0803109|L=N283121W0803141|L=N283200W0803157|L=N283300W0803213|L=N283444W0803234|L=N283545W0803258|L=N283609W0803312|L=N283643W0803338|L=N283742W0803431|L=N283848W0803531|L=N283951W0803616|L=N284122W0803720|L=N284334W0803907|Z",
@@ -460,8 +453,7 @@
             "PATH|M=N273000W1234500|L=N263500W1252600|L=N234100W1281000|L=N192300W1315400|L=N182100W1303900|L=N223700W1265400|L=N253000W1241000|L=N270700W1231900|Z",
             "PATH|M=N350159W1221959|L=N345859W1241800|L=N335400W1241301|L=N341601W1221500|L=N343759W1203600|L=N345501W1203600|Z",
             "PATH|M=N344000W1203600|L=N343900W1204000|L=N342000W1203900|L=N284100W1195300|L=N274000W1191600|L=N283900W1184300|L=N285500W1184600|L=N342700W1202300|Z",
-            "POINT|C=N452347W1243232",
-            "PATH|M=N361500W1234000|L=N360700W1234600|L=N341700W1223100|L=N332500W1213900|L=N332800W1211700|L=N341000W1212500|L=N340900W1205500|L=N344000W1203400|L=N345700W1203900|L=N351000W1205900|L=N351300W1220200|L=N351900W1223800|L=N360400W1230800|Z"
+            "POINT|C=N452347W1243232"
         ],
         "CLASSIFY": {
             "c166893843": [
@@ -475,9 +467,6 @@
             ],
             "c183671057": [
                 "NOTMAR 55066"
-            ],
-            "c183997715": [
-                "NOTMAR 55528"
             ],
             "c796038164": [
                 "NOTMAR 40014"
@@ -495,12 +484,12 @@
                 "NOTMAR 55061"
             ]
         },
-        "NUM": 16,
-        "HASH": "767851c97ae8ab485cb1758470689bd08b1965f7d02db5f72d2b94c55c32b775"
+        "NUM": 15,
+        "HASH": "cc5f6ad39b52a372499ad048617b0cc885b72907a3c3e055e147b87f0e304b69"
     },
-    "HASH": "4317f3f892ac997e28b8dda319d42570bb63ea2c086db03a9444a6b66218d9bc",
+    "HASH": "b435003ea0a1f4b7e3f165021e89e6777385957c1621f12a6f2f0b94e13503b5",
     "HASH_NOTAM": "db2168080cee5424b0e4036ac48561347e5b606cedb9e4f40b09aa4dc05a8e03",
     "HASH_FOCUSED": "a239100f587b87fa603ff371b1cc5599d57957e24d95e1aef10e82b080bdcff4",
     "FETCH_VALID": true,
-    "MSA_CACHE_HASH": "4317f3f892ac997e28b8dda319d42570bb63ea2c086db03a9444a6b66218d9bc"
+    "MSA_CACHE_HASH": "b435003ea0a1f4b7e3f165021e89e6777385957c1621f12a6f2f0b94e13503b5"
 }
