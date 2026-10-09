@@ -528,7 +528,8 @@ def _render_tiles_map(
 
 
 def generate_change_email_draft(previous_data, current_data, include_match=True, include_website=True,
-                                 code_to_color=None, code_emoji_map=None, max_zoom=14, section_mode='all'):
+                                 code_to_color=None, code_emoji_map=None, max_zoom=14, section_mode='all',
+                                 map_data=None):
     prev_map = _build_notam_map(previous_data or {})
     curr_map = _build_notam_map(current_data or {})
 
@@ -540,12 +541,13 @@ def generate_change_email_draft(previous_data, current_data, include_match=True,
     if code_emoji_map is None:
         code_emoji_map = _build_code_emoji_map(current_data or {})
 
-    polys = _collect_polygons(current_data or {})
+    map_source = map_data if map_data is not None else (current_data or {})
+    polys = _collect_polygons(map_source)
     image_bytes = None
     if polys:
         image_bytes = _render_tiles_map(
             polys,
-            current_data or {},
+            map_source,
             padding=100,
             provider='gaode_vec',
             code_to_color=code_to_color,

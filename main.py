@@ -663,21 +663,25 @@ def notify_notam_changes(previous_data, current_data, now=None, mail_enabled=Non
             code_to_color = _build_code_to_color_map(current_data)
             code_emoji_map = _build_code_emoji_map(current_data)
             if removed_count > 0:
-                # 删除记录已不在 current_data 中，补入旧快照的分组 emoji；当前记录优先。
+                # 删除记录已不在 current_data 中，补入旧快照的 emoji 和配色；当前记录优先。
                 removed_emoji_map = _build_code_emoji_map(notification_previous)
                 removed_emoji_map.update(code_emoji_map)
                 code_emoji_map = removed_emoji_map
+                removed_color_map = _build_code_to_color_map(notification_previous)
+                removed_color_map.update(code_to_color)
+                code_to_color = removed_color_map
 
-            from fetch.notam_bot import send_notification, send_two_notifications
+            from fetch.notam_bot import send_two_notifications
             qq_result = {'added': False, 'full': False, 'removed': False}
 
             removed_draft = None
             if removed_count > 0:
-                # 删除消息只保留“移除航警”段，仍由 notam_bot 统一去坐标和年份，符合 QQ 格式。
+                # 删除消息只保留“移除航警”段，配图也只取已移除航警的落区。
+                removed_only_data = filter_data_by_platids(notification_previous, removed_platids)
                 removed_draft = generate_change_email_draft(
                     notification_previous, notification_current, include_match=False, include_website=False,
                     code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6,
-                    section_mode='removed_only'
+                    section_mode='removed_only', map_data=removed_only_data
                 )
 
             if added_count > 0:
@@ -701,8 +705,18 @@ def notify_notam_changes(previous_data, current_data, now=None, mail_enabled=Non
                     removed_draft=removed_draft,
                 ))
             elif removed_draft is not None:
-                # 没有新增时，删除消息单独发送，避免构造空的“当前航警”消息。
-                qq_result['removed'] = send_notification(removed_draft)
+                # 只有删除时也发送当前航警汇总：先删除通知，再发当前列表。
+                current_draft = generate_change_email_draft(
+                    previous_data, current_data, include_match=False, include_website=False,
+                    code_to_color=code_to_color, code_emoji_map=code_emoji_map, max_zoom=6,
+                    section_mode='current'
+                )
+                qq_result.update(send_two_notifications(
+                    None,
+                    current_draft,
+                    return_details=True,
+                    removed_draft=removed_draft,
+                ))
 
             if qq_result.get('added') or qq_result.get('full'):
                 recorded_count = record_notified_notam_numbers(pending_codes)

@@ -112,40 +112,45 @@ def send_two_notifications(
     removed_draft: dict = None,
 ):
     """
-    发送 QQ 变更消息：
-      第一条：新增航警（图片仅新增 + 文字仅新增）
-      可选第二条：移除航警
-      最后一条：全部航警（图片全部 + 文字全部）
-    相邻消息之间间隔 3 秒。
+    按顺序发送 QQ 变更消息：
+      可选第一条：新增航警（图片仅新增 + 文字仅新增）
+      可选中间条：移除航警
+      最后一条：当前航警汇总（图片全部 + 文字全部）
+    相邻消息之间间隔 1.5 秒。
 
-    return_details=True 时分别返回两条消息的发送结果，供调用方准确记录
-    已经通过 QQ Bot 送达的新增航警。
+    return_details=True 时分别返回新增、移除和当前汇总消息的发送结果，
+    供调用方准确记录已经通过 QQ Bot 送达的新增航警。
     """
     result = {'added': False, 'removed': False, 'full': False}
 
-    # 第一条：新增航警
-    print('[notam_bot] === 发送第一条消息：新增航警 ===')
-    result['added'] = send_notification(added_draft)
-    if not result['added']:
-        print('[notam_bot] 第一条消息发送失败，继续尝试第二条')
-
     import time
-    time.sleep(3)
+
+    if added_draft is not None:
+        print('[notam_bot] === 发送消息：新增航警 ===')
+        result['added'] = send_notification(added_draft)
+        if not result['added']:
+            print('[notam_bot] 新增航警消息发送失败，继续尝试后续消息')
+        if removed_draft is not None or full_draft is not None:
+            time.sleep(1.5)
 
     if removed_draft is not None:
-        # 第二条：移除航警，必须在当前航警汇总之前发送
-        print('[notam_bot] === 发送第二条消息：移除航警 ===')
+        # 移除航警必须在当前航警汇总之前发送
+        print('[notam_bot] === 发送消息：移除航警 ===')
         result['removed'] = send_notification(removed_draft)
-        time.sleep(3)
+        if full_draft is not None:
+            time.sleep(1.5)
 
-    # 最后一条：全部航警
-    print('[notam_bot] === 发送最后一条消息：当前航警 ===')
-    result['full'] = send_notification(full_draft)
+    if full_draft is not None:
+        print('[notam_bot] === 发送最后一条消息：当前航警 ===')
+        result['full'] = send_notification(full_draft)
 
     if return_details:
         return result
-    return (
-        result['added']
-        and result['full']
-        and (result['removed'] if removed_draft is not None else True)
-    )
+    required_results = []
+    if added_draft is not None:
+        required_results.append(result['added'])
+    if removed_draft is not None:
+        required_results.append(result['removed'])
+    if full_draft is not None:
+        required_results.append(result['full'])
+    return bool(required_results) and all(required_results)
