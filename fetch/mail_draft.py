@@ -4,10 +4,11 @@ import re
 import json
 import math
 import os
+import time
 from datetime import datetime, timedelta
 
 import requests
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, UnidentifiedImageError
 import html
 from fetch.sources.geometry import geometry_circle, geometry_points
 
@@ -374,10 +375,36 @@ def _tile_url(x, y, z, provider='gaode_vec'):
     return f'http://t{server}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}'
 
 
-def _fetch_tile_image(url, session):
-    response = session.get(url, timeout=15, headers={'User-Agent': 'Mozilla/5.0'})
-    response.raise_for_status()
-    return Image.open(io.BytesIO(response.content)).convert('RGBA')
+def _fetch_tile_image(url, session, max_retries=2, retry_delay=0.5):
+    """下载一张底图瓦片；遇到可恢复错误时最多重试两次。"""
+    for attempt in range(max_retries + 1):
+        try:
+            response = session.get(url, timeout=15, headers={'User-Agent': 'Mozilla/5.0'})
+            response.raise_for_status()
+            with Image.open(io.BytesIO(response.content)) as image:
+                image.load()
+                return image.convert('RGBA')
+        except requests.exceptions.HTTPError as exc:
+            status_code = exc.response.status_code if exc.response is not None else None
+            retryable = status_code == 429 or (status_code is not None and 500 <= status_code < 600)
+            error = exc
+            if not retryable:
+                raise
+        except (
+            requests.exceptions.Timeout,
+            requests.exceptions.ConnectionError,
+            requests.exceptions.ChunkedEncodingError,
+            UnidentifiedImageError,
+            OSError,
+        ) as exc:
+            error = exc
+
+        if attempt >= max_retries:
+            raise error
+
+        delay = retry_delay * (attempt + 1)
+        print(f'[mail_draft] 瓦片请求失败，第 {attempt + 2}/{max_retries + 1} 次重试将在 {delay:.1f}s 后进行: {error}')
+        time.sleep(delay)
 
 
 def _render_tiles_map(
@@ -452,7 +479,8 @@ def _render_tiles_map(
             url = _tile_url(tile_x, tile_y, chosen_zoom, provider=provider)
             try:
                 tile = _fetch_tile_image(url, session)
-            except Exception:
+            except Exception as exc:
+                print(f'[mail_draft] 瓦片连续请求失败，使用灰色占位: {url} ({exc})')
                 tile = Image.new('RGBA', (256, 256), (240, 240, 240, 255))
 
             offset_x = int(tile_x * 256 - min_world_x)
