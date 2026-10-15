@@ -1893,8 +1893,72 @@ function msaContent(rawMessage) {
     return { title: split >= 0 ? text.split('\n')[0] : 'MSA', body: split >= 0 ? text.slice(split + 2) : text };
 }
 
+// 地图详情保持起止时间汇总；列表单独逐段显示。
+function convertTime(time) {
+    const matches = [...String(time || '').matchAll(/(\d{1,2} \w{3} \d{2}:\d{2} \d{4}) UNTIL (\d{1,2} \w{3} \d{2}:\d{2} \d{4})/gi)];
+    if (!matches.length) return formatNotamListTime(time);
+    return formatNotamListTime(`${matches[0][1]} UNTIL ${matches[matches.length - 1][2]}`) + ' 北京时间 (UTC+8)';
+}
+
+const expandedNotamTimes = new Set();
+const notamTimeObservers = new WeakMap();
+function initNotamTimeToggles(container) {
+    notamTimeObservers.get(container)?.disconnect();
+    const observer = new ResizeObserver(entries => {
+        entries.forEach(({ target }) => {
+            const width = target.clientWidth;
+            if (!width || target.__timeWidth === width) return;
+            target.__timeWidth = width;
+            const text = target.querySelector('.notam-time-text');
+            const button = target.querySelector('.notam-time-toggle');
+            // 按实际换行后的高度判断：超过三行时，只留两行正文和一行按钮。
+            const lineHeight = parseFloat(getComputedStyle(text).lineHeight);
+            text.style.transition = 'none';
+            text.style.height = 'auto';
+            const fullHeight = text.scrollHeight;
+            text.__fullHeight = fullHeight;
+            const overflow = fullHeight > lineHeight * 3 + 1;
+            const collapsed = overflow && !expandedNotamTimes.has(text.innerHTML);
+            button.hidden = !overflow;
+            target.classList.toggle('is-collapsed', collapsed);
+            text.style.height = `${collapsed ? lineHeight * 2 : fullHeight}px`;
+            void text.offsetHeight;
+            text.style.transition = '';
+        });
+    });
+    notamTimeObservers.set(container, observer);
+    container.querySelectorAll('.notam-time').forEach(time => {
+        const content = time.innerHTML.trim();
+        time.innerHTML = '<span class="notam-time-text">' + content + '</span>';
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'notam-time-toggle';
+        button.hidden = true;
+        const expanded = expandedNotamTimes.has(content);
+        button.innerHTML = '<span></span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+        function updateButton(open) {
+            button.setAttribute('aria-expanded', String(open));
+            button.querySelector('span').textContent = open ? '折叠' : '展开全部';
+        }
+        updateButton(expanded);
+        button.addEventListener('click', event => {
+            event.stopPropagation();
+            const open = button.getAttribute('aria-expanded') !== 'true';
+            if (open) expandedNotamTimes.add(content);
+            else expandedNotamTimes.delete(content);
+            const text = time.querySelector('.notam-time-text');
+            const lineHeight = parseFloat(getComputedStyle(text).lineHeight);
+            text.style.height = `${open ? text.__fullHeight : lineHeight * 2}px`;
+            time.classList.toggle('is-collapsed', !open);
+            updateButton(open);
+        });
+        time.appendChild(button);
+        observer.observe(time);
+    });
+}
+
 function msaTimeText(time) {
-    return String(time || '').split(';').filter(Boolean).map(convertTime).join('<br>') || '活动时间未解析';
+    return time ? convertTime(time) : '活动时间未解析';
 }
 
 function buildMsaPopupRows(time, code, rawMessage, geometry) {

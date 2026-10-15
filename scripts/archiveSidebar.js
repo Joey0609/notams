@@ -15,7 +15,7 @@ function toggleSidebar() {
     
     // 打开时确保显示航警列表页
     if (!sidebar.classList.contains('open')) {
-        listPage.style.display = 'block';
+        listPage.style.display = 'flex';
     }
     
     sidebar.classList.toggle('open');
@@ -132,21 +132,19 @@ function toggleSidebar() {
 
 
 // 北京时间转换
-function convertTime(utcTimeStr) {
+function formatNotamListTime(utcTimeStr) {
     // 处理空值或无效值
     if (!utcTimeStr || utcTimeStr === 'null' || utcTimeStr === 'undefined') {
         return '时间未知';
     }
     
-    const regex = /(\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/;
-    const match = utcTimeStr.match(regex);
-    if (!match) {
+    const regex = /(\d{1,2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{1,2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/gi;
+    const matches = [...String(utcTimeStr).matchAll(regex)];
+    if (!matches.length) {
         console.warn('时间格式不匹配:', utcTimeStr);
-        return utcTimeStr; // 返回原始字符串
+        return utcTimeStr;
     }
 
-    const [, startDay, startMonth, startTime, startYear, endDay, endMonth, endTime, endYear] = match;
-    
     // 月份映射表（支持大小写）
     const monthMap = {
         'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 
@@ -188,10 +186,13 @@ function convertTime(utcTimeStr) {
         };
     }
 
-    const s = toLocal(startDay, startMonth, startTime, startYear);
-    const e = toLocal(endDay, endMonth, endTime, endYear);
-    
-    return `${s.y}年${s.m}月${s.d}日 ${s.h}:${s.i} ~ ${e.y}年${e.m}月${e.d}日 ${e.h}:${e.i} 北京时间 (UTC+8)`;
+    // 多段活动时间逐段转换并换行，不能合并成连续区间。
+    return matches.map((match) => {
+        const [, startDay, startMonth, startTime, startYear, endDay, endMonth, endTime, endYear] = match;
+        const s = toLocal(startDay, startMonth, startTime, startYear);
+        const e = toLocal(endDay, endMonth, endTime, endYear);
+        return `${s.y}年${s.m}月${s.d}日 ${s.h}:${s.i} ~ ${e.y}年${e.m}月${e.d}日 ${e.h}:${e.i}`;
+    }).join('<br>');
 }
 
 // 全局状态变量
@@ -427,7 +428,7 @@ function updateMatchSidebar() {
     // 按排序后的顺序显示
     matchData.forEach((item, i) => {
         const rawTime = item.TIME || '';
-        const prettyTime = convertTime(rawTime);
+        const prettyTime = formatNotamListTime(rawTime);
         const col = getMatchColor(item.CODE);
         const visible = visibleMatchState[i] !== false;
         const relatedVisible = isRelatedGroupVisible(i);
@@ -467,7 +468,7 @@ function updateMatchSidebar() {
                             style="padding:5px 6px; margin:4px 0; background:rgba(0,0,0,0.03); border-radius:4px; cursor:pointer;"
                             onclick="event.stopPropagation(); locateRelatedMatchNotam(${i}, ${relIdx});">
                             <div style="font-weight:600; font-size:13px;">${rel.CODE || 'UNKNOWN'}</div>
-                            <div style="font-size:12px; color:#666; line-height:1.4;">${convertTime(rel.TIME || '')}</div>
+                            <div style="font-size:12px; color:#666; line-height:1.4;">${formatNotamListTime(rel.TIME || '')}</div>
                         </div>
                     `).join('')}
                 </div>` : ''}
@@ -501,6 +502,7 @@ function updateMatchSidebar() {
     });
     
     container.innerHTML = html;
+    initNotamTimeToggles(container);
 }
 
 function toggleMatchVisibility(idx) {

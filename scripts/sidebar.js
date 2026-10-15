@@ -144,25 +144,19 @@ function toggleSidebar() {
 
 
 // 北京时间转换（放在这里或 scripts.js 均可）
-function convertTime(utcTimeStr) {
+function formatNotamListTime(utcTimeStr) {
     // 处理空值或无效值
     if (!utcTimeStr || utcTimeStr === 'null' || utcTimeStr === 'undefined') {
         return '时间未知';
     }
     
-    const regex = /(\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/g;
+    const regex = /(\d{1,2}) (\w{3}) (\d{2}:\d{2}) (\d{4}) UNTIL (\d{1,2}) (\w{3}) (\d{2}:\d{2}) (\d{4})/gi;
     const matches = [...String(utcTimeStr).matchAll(regex)];
     if (!matches.length) {
         console.warn('时间格式不匹配:', utcTimeStr);
-        return utcTimeStr; // 返回原始字符串
+        return utcTimeStr;
     }
 
-    // 对 DAILY 等多段时间，侧栏显示第一段开始至最后一段结束。
-    const firstMatch = matches[0];
-    const lastMatch = matches[matches.length - 1];
-    const [, startDay, startMonth, startTime, startYear] = firstMatch;
-    const [, , , , , endDay, endMonth, endTime, endYear] = lastMatch;
-    
     // 月份映射表（支持大小写）
     const monthMap = {
         'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 
@@ -209,12 +203,13 @@ function convertTime(utcTimeStr) {
         };
     }
 
-    const s = toLocal(startDay, startMonth, startTime, startYear);
-    const e = toLocal(endDay, endMonth, endTime, endYear);
-    
-    // console.log('转换结果:', { start: s, end: e });
-    
-    return `${s.y}年${s.m}月${s.d}日 ${s.h}:${s.i} ~ ${e.y}年${e.m}月${e.d}日 ${e.h}:${e.i} 北京时间 (UTC+8)`;
+    // 多段活动时间逐段转换并换行，不能合并成连续区间。
+    return matches.map((match) => {
+        const [, startDay, startMonth, startTime, startYear, endDay, endMonth, endTime, endYear] = match;
+        const s = toLocal(startDay, startMonth, startTime, startYear);
+        const e = toLocal(endDay, endMonth, endTime, endYear);
+        return `${s.y}年${s.m}月${s.d}日 ${s.h}:${s.i} ~ ${e.y}年${e.m}月${e.d}日 ${e.h}:${e.i}`;
+    }).join('<br>');
 }
 
 function updateSidebar() {
@@ -289,7 +284,7 @@ function updateSidebar() {
                         </button>` : '';
             const copyTitle = isMsi ? '复制原始海警' : (isNotmar ? '复制原始 NOTMAR' : '复制原始航警');
             const rawTime = dict.TIME[i] || '';
-            const prettyTime = isMsa ? msaTimeText(rawTime) : convertTime(rawTime);
+            const prettyTime = formatNotamListTime(rawTime) || '活动时间未解析';
             const rawMessage = dict.RAWMESSAGE?.[i] || '';
             const col = getColorForRecord(i);
             const visible = visibleState[i] !== false && isNotamTypeVisible(i);
@@ -358,7 +353,7 @@ ${matchButton}
         for (let i = 0; i < archiveDict.NUM; i++) {
             const code = archiveDict.CODE[i];
             const rawTime = archiveDict.TIME[i] || '';
-            const prettyTime = convertTime(rawTime);
+            const prettyTime = formatNotamListTime(rawTime);
             const rawMessage = archiveDict.RAWMESSAGE?.[i] || '';
             const col = getColorForArchiveCode(code);
             const visible = archiveVisibleState[i] !== false;
@@ -406,6 +401,7 @@ ${matchButton}
     }
 
     container.innerHTML = html;
+    initNotamTimeToggles(container);
     window.NotamSourceNavigator?.refresh();
 }
 
@@ -563,9 +559,6 @@ function toggleVisibility(idx) {
         else map.removeLayer(poly);
     }
     updateSidebar();
-}
-document.getElementById('btnRefresh').onclick = () => {
-    refetchData();
 }
 
 // 自动获取航警批量操作

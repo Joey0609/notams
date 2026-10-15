@@ -50,7 +50,7 @@
         <!-- 统一侧边栏 - 包含航警列表和手动绘制两个页面 -->
         <div id="notamSidebar" class="notam-sidebar">
             <!-- 航警列表页面 -->
-            <div id="notamListPage" class="sidebar-page">
+            <div id="notamListPage" class="sidebar-page has-source-navigator">
                 <div id="notamSidebarHeader" class="sidebar-header">
                     <div class="sidebar-title">航警列表 <span id="notamCount">0</span> 条</div>
                     <div class="sidebar-tools"><button type="button" id="btnLatLngQuery" class="sidebar-tool" title="经纬度查询" aria-label="经纬度查询"><svg aria-hidden="true" data-lucide="map-pin-search"
@@ -122,22 +122,7 @@
   <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
   <path d="m15 5 4 4" />
 </svg></button>
-<button type="button" id="btnRefresh" class="sidebar-tool" title="刷新航警" aria-label="刷新航警"><svg aria-hidden="true" data-lucide="refresh-cw"
-  xmlns="http://www.w3.org/2000/svg"
-  
-  
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-  <path d="M21 3v5h-5" />
-  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-  <path d="M8 16H3v5" />
-</svg></button><button type="button" class="sidebar-close" aria-label="关闭航警列表" onclick="toggleSidebar()">×</button></div>
+<button type="button" class="sidebar-close" aria-label="关闭航警列表" onclick="toggleSidebar()">×</button></div>
                 </div>
                 <div id="sourceNavigator" class="source-navigator" role="group" aria-label="按来源定位航警"><div class="source-thumb" aria-hidden="true"></div><button type="button" data-source="NOTAM" aria-pressed="false"><span>NOTAM</span></button><button type="button" data-source="MSI" aria-pressed="false"><span>MSI</span></button><button type="button" data-source="MSA" aria-pressed="false"><span>MSA</span></button><button type="button" data-source="NOTMAR" aria-pressed="false"><span>NOTMAR</span></button></div>
                 <div id="notamList"></div>

@@ -45,11 +45,44 @@
             <div id="notamListPage" class="sidebar-page">
                 <div id="notamSidebarHeader" class="sidebar-header">
                     <div class="sidebar-title">历史航警匹配 <span id="notamCount">0</span> 条</div>
-                    <div>
-                        <button id="btnLatLngQuery" title="经纬度查询">经纬度查询</button>
-                        <button id="btnMeasure" title="地图测距">测距</button>
-                        <button id="btnBack" onclick="window.history.back()">返回</button>
-                        <button class="sidebar-close" onclick="toggleSidebar()">×</button>
+                    <div class="sidebar-tools">
+                        <button type="button" id="btnLatLngQuery" class="sidebar-tool" title="经纬度查询" aria-label="经纬度查询"><svg aria-hidden="true" data-lucide="map-pin-search"
+  xmlns="http://www.w3.org/2000/svg"
+
+
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M 12.248 21.969 a 1 1 0 0 1 -0.849 -0.17 C 9.539 20.193 4 14.993 4 10 a 8 8 0 0 1 16 0 C 20 10.42 19.961 10.841 19.888 11.262" />
+  <path d="m22 22-1.88-1.88" />
+  <circle cx="12" cy="10" r="3" />
+  <circle cx="18" cy="18" r="3" />
+</svg></button>
+                        <button type="button" id="btnMeasure" class="sidebar-tool" title="地图测距" aria-label="地图测距"><svg aria-hidden="true" data-lucide="ruler-dimension-line"
+  xmlns="http://www.w3.org/2000/svg"
+
+
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 15v-3" />
+  <path d="M14 15v-3" />
+  <path d="M18 15v-3" />
+  <path d="M2 8V4" />
+  <path d="M22 6H2" />
+  <path d="M22 8V4" />
+  <path d="M6 15v-3" />
+  <rect x="2" y="12" width="20" height="8" rx="2" />
+</svg></button>
+                        <button type="button" class="sidebar-close" aria-label="关闭匹配列表" onclick="toggleSidebar()">×</button>
                     </div>
                 </div>
                 <div id="notamList"></div>
@@ -130,7 +163,7 @@
             <div class="export-content">
                 <div class="export-section">
                     <h4>导出图片设置</h4>
-        
+
                     <!-- 导出范围 -->
                     <div style="margin-bottom: 12px;">
                         <label style="display: block; margin-bottom: 4px; font-weight: bold;">导出范围</label>
@@ -143,7 +176,7 @@
                             <button id="selectAreaBtn" class="select-area-btn" style="display: none;">选择区域</button>
                         </div>
                     </div>
-        
+
                     <div style="display: flex; gap: 12px; margin-bottom: 12px;">
                         <!-- 导出格式 -->
                         <div style="flex: 1;">
@@ -153,7 +186,7 @@
                                 <option value="jpeg">JPEG</option>
                             </select>
                         </div>
-                    
+
                         <!-- 图片质量 -->
                         <div style="flex: 1;">
                             <label style="display: block; margin-bottom: 4px; font-weight: bold;">质量</label>
