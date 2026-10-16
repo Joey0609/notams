@@ -432,10 +432,18 @@ def batches_are_complete(batches):
 
 
 def batches_have_success(batches):
-    """A partial scan is usable when at least one source succeeded."""
-    return bool(batches) and any(
-        result.success for batch in batches for result in batch.results
-    )
+    """同一来源的所有阶段成功，才允许更新该来源。"""
+    states = {}
+    for batch in batches:
+        for result in batch.results:
+            states[result.provider] = states.get(result.provider, True) and source_result_is_complete(result)
+    return any(states.values())
+
+
+def source_result_is_complete(result):
+    """部分请求失败也应冻结该来源，不能将缺失结果当成撤销。"""
+    return bool(result.success and not result.stats.get('queries_failed')
+                and not result.stats.get('failed_files'))
 
 
 def failed_source_types(batches):
@@ -448,29 +456,80 @@ def failed_source_types(batches):
         provider_types.get(str(result.provider or '').lower(), str(result.provider or '').upper())
         for batch in batches
         for result in batch.results
-        if not result.success
+        if not source_result_is_complete(result)
     }
 
 
-def retain_failed_source_data(current, previous_payload, failed_types):
-    """Keep the last saved rows for source families that failed this scan."""
-    if not failed_types or not isinstance(previous_payload, dict):
-        return current
-    previous = filter_data_by_source(previous_payload, failed_types)
-    kept = _empty_record_data()
-    for index, source in enumerate(current.get('SOURCE', []) or []):
-        if str(source).upper() in failed_types:
-            continue
-        for field in RECORD_FIELDS:
-            values = current.get(field, []) or []
-            kept[field].append(values[index] if index < len(values) else '')
-    for index in range(len(previous.get('CODE', []) or [])):
-        for field in RECORD_FIELDS:
-            values = previous.get(field, []) or []
-            kept[field].append(values[index] if index < len(values) else '')
-    for field in RECORD_FIELDS:
-        current[field] = kept[field]
-    return current
+def build_source_snapshots(batches, previous_payload, focused_batch, fir_candidates):
+    """各抓取来源独立保存最后一次完整结果，失败来源冻结后再统一去重。"""
+    from fetch.sources.base import FetchBatchResult
+
+    providers = {}
+    for batch in batches:
+        for result in batch.results:
+            entry = providers.setdefault(result.provider, {'ok': True, 'batches': [], 'focused': set()})
+            entry['ok'] = entry['ok'] and source_result_is_complete(result)
+            data = result.data
+            # 兼容旧的注入 fetcher；正式 manager 的每个 result 都保留独立来源数据。
+            if len(batch.results) == 1 and not data.get('CODE'):
+                data = batch.data
+            entry['batches'].append(FetchBatchResult(data=data))
+            if batch is focused_batch:
+                entry['focused'].update(_record_keys(data))
+
+    old_sources = previous_payload.get('SOURCE_SNAPSHOTS') or {}
+    snapshots = {}
+    failed = []
+    merged_batches = []
+    focused_keys = set()
+    for provider, entry in providers.items():
+        if entry['ok']:
+            established = True
+            data = merge_source_batches(entry['batches'])
+            backfill_fir_from_text(data, fir_candidates)
+            harmonize_fir_by_platid(data)
+            filter_expired_records(data, grace_hours=24)
+            data['ALTITUDE'] = extract_altitude(data['RAWMESSAGE'])
+            focused = entry['focused'] & _record_keys(data)
+        else:
+            failed.append(provider)
+            old = old_sources.get(provider)
+            if isinstance(old, dict):
+                established = old.get('ESTABLISHED', True)
+                data = {field: list(old.get(field, [])) for field in RECORD_FIELDS}
+                focused = {tuple(key) for key in old.get('FOCUSED_KEYS', [])}
+            else:
+                # 旧快照没有 adapter 归属，先保全同类旧记录；恢复成功后替换此兼容基线。
+                source_types = failed_source_types([FetchBatchResult(results=[
+                    result for batch in batches for result in batch.results
+                    if result.provider == provider
+                ])])
+                data = filter_data_by_source(previous_payload, source_types)
+                section_names = {'NOTAM': 'NOTAM_DATA', 'MSI': 'MSI_DATA',
+                                 'MSA': 'CHINA_MSA_DATA', 'NOTMAR': 'USCG_NOTMAR_DATA'}
+                established = any(section_names.get(source) in previous_payload for source in source_types)
+                focused = _record_keys(previous_payload.get('FOCUSED_NOTAM_DATA', {})) & _record_keys(data)
+            print(f'[来源冻结] {provider}: 沿用旧数据 {len(data.get("CODE", []))} 条')
+        snapshots[provider] = {field: list(data.get(field, [])) for field in RECORD_FIELDS}
+        snapshots[provider]['FOCUSED_KEYS'] = [list(key) for key in sorted(focused)]
+        snapshots[provider]['ESTABLISHED'] = established
+        focused_keys.update(focused)
+        merged_batches.append(FetchBatchResult(data=data))
+
+    # 成功来源在前，使它的新记录优先于兼容旧快照里归属不明的重复记录。
+    ordered = [batch for provider, batch in zip(providers, merged_batches) if providers[provider]['ok']]
+    ordered.extend(batch for provider, batch in zip(providers, merged_batches) if not providers[provider]['ok'])
+    return merge_source_batches(ordered), focused_keys, snapshots, failed
+
+
+def invalidate_history_matches(snapshot_path):
+    """只清理按行号生成的匹配缓存，保留历史数据库和其他文件。"""
+    directory = os.path.join(os.path.dirname(os.path.abspath(snapshot_path)), 'data', 'archiveMatch')
+    if not os.path.isdir(directory):
+        return
+    for entry in os.scandir(directory):
+        if re.fullmatch(r'match\d+\.json', entry.name) and entry.is_file(follow_symlinks=False):
+            os.remove(entry.path)
 
 
 def build_section(data, indices, sort_by_code=True):
@@ -584,6 +643,7 @@ def filter_data_by_source(data, include_sources):
     if isinstance(data, dict) and 'NOTAM_DATA' in data:
         sections = []
         if 'NOTAM' in requested:
+            sections.append(data.get('FOCUSED_NOTAM_DATA', {}))
             sections.append(data.get('NOTAM_DATA', {}))
         if 'MSI' in requested:
             sections.append(data.get('MSI_DATA', {}))
@@ -1314,6 +1374,7 @@ def fetch(source_fetcher=None):
     notam_sources = [name for name in enabled_sources if name not in {'msi', 'msa', 'uscg'}]
 
     batches = []
+    focused_batch = None
     focused_keys = set()
     if focus_enabled:
         print(f'[FOCUSED] 阶段1: 抓取 {len(focused_stage)} 个聚焦位置（数据源: {", ".join(notam_sources) or "无"}）')
@@ -1338,19 +1399,9 @@ def fetch(source_fetcher=None):
         else:
             print('[FOCUSED] 阶段2: 没有剩余位置或海事来源，已跳过')
 
-    dataDict = merge_source_batches(batches)
     previous_payload = load_previous_snapshot(SNAPSHOT_PATH)['data']
-    failed_types = failed_source_types(batches)
-    filter_expired_records(dataDict, grace_hours=24)
-    backfill_fir_from_text(dataDict, fir_candidates)
-    harmonize_fir_by_platid(dataDict)
-    dataDict['ALTITUDE'] = extract_altitude(dataDict['RAWMESSAGE'])
-    if failed_types:
-        print(f"部分数据源失败，沿用旧数据分段: {', '.join(sorted(failed_types))}")
-        retain_failed_source_data(dataDict, previous_payload, failed_types)
-        if 'NOTAM' in failed_types:
-            old_focused = previous_payload.get('FOCUSED_NOTAM_DATA', {})
-            focused_keys.update(_record_keys(old_focused))
+    dataDict, focused_keys, source_snapshots, failed_providers = build_source_snapshots(
+        batches, previous_payload, focused_batch, fir_candidates)
 
     # 行号空间 = 聚焦段 → 外部段 → MSI 段 → 中国航警段 → USCG NOTMAR 段。
     focused_data, notam_data, msi_data, msa_data, notmar_data = build_data_segments(dataDict, focused_keys)
@@ -1369,9 +1420,14 @@ def fetch(source_fetcher=None):
     dataDict['FOCUSED_NUM'] = focused_data['NUM']
     dataDict['NOTAM_NUM'] = focused_data['NUM'] + notam_data['NUM']
 
-    fetch_complete = batches_have_success(batches)
-    dataDict['FETCH_VALID'] = fetch_complete
-    dataDict['_FAILED_SOURCE_TYPES'] = sorted(failed_types)
+    fetch_valid = batches_have_success(batches)
+    dataDict['FETCH_VALID'] = fetch_valid
+    dataDict['FAILED_SOURCES'] = failed_providers
+    dataDict['MATCH_AVAILABLE'] = (
+        dataDict['NOTAM_NUM'] <= 500
+        and previous_payload.get('MATCH_AVAILABLE', False)
+        and previous_payload.get('HASH_NOTAM') == dataDict['HASH_NOTAM']
+    )
     payload = {
         'FOCUSED_NOTAM_DATA': focused_data,
         'NOTAM_DATA': notam_data,
@@ -1382,22 +1438,25 @@ def fetch(source_fetcher=None):
         'HASH_NOTAM': dataDict['HASH_NOTAM'],
         # 未启用聚焦段时写 None，下一轮启用后按「建立聚焦基线」处理，避免一次性轰炸
         'HASH_FOCUSED': dataDict['HASH_FOCUSED'] if focus_enabled else None,
-        'FETCH_VALID': fetch_complete,
+        'FETCH_VALID': fetch_valid,
+        'FAILED_SOURCES': failed_providers,
+        'SOURCE_SNAPSHOTS': source_snapshots,
+        'MATCH_AVAILABLE': dataDict['MATCH_AVAILABLE'],
     }
 
     # 快照保存已授权的缓存检查点；缓存写入失败后，新进程也能识别并补交。
     from fetch.sources.msa.cache import pending_available
     cache_checkpoint = previous_payload.get('MSA_CACHE_HASH')
-    if fetch_complete and pending_available() and previous_payload.get('HASH') != dataDict['HASH']:
+    if fetch_valid and pending_available() and previous_payload.get('HASH') != dataDict['HASH']:
         cache_checkpoint = dataDict['HASH']
     if cache_checkpoint:
         payload['MSA_CACHE_HASH'] = cache_checkpoint
         dataDict['MSA_CACHE_HASH'] = cache_checkpoint
 
-    if not fetch_complete:
+    if not fetch_valid:
         existing = load_previous_snapshot(SNAPSHOT_PATH)['data']
-        if should_keep_previous_snapshot(payload, existing):
-            print('部分数据源获取失败，跳过覆盖（防止部分快照触发误删除通知）')
+        if existing:
+            print('所有数据源均未完整成功，冻结旧快照，跳过覆盖')
             skipped = dict(existing)
             skipped['FETCH_VALID'] = False
             return skipped
@@ -1434,7 +1493,9 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     fetch_result_valid = is_valid_fetch_result(dataDict)
     trigger = notification_trigger(snapshot, dataDict)
     current_msa = filter_data_by_source(dataDict, {'MSA'})
-    msa_baseline = 'CHINA_MSA_DATA' not in previous_data
+    previous_msa_state = previous_data.get('SOURCE_SNAPSHOTS', {}).get('msa', {})
+    msa_baseline = ('CHINA_MSA_DATA' not in previous_data
+                    or previous_msa_state.get('ESTABLISHED') is False)
     previous_msa = filter_data_by_source(previous_data, {'MSA'})
     msa_has_additions = not msa_baseline and bool(get_new_notams_for_notification(previous_msa, current_msa))
     msa_log('通知判定', f"抓取有效={fetch_result_valid}，旧 MSA {len(previous_msa.get('CODE', []))} 条，当前 {len(current_msa.get('CODE', []))} 条，首次 MSA 基线={msa_baseline}，符合条件的新增={msa_has_additions}，原通知状态={trigger}")
@@ -1448,25 +1509,6 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
         trigger = 'notify'
         msa_log('通知判定', 'MSA 新增触发邮件/QQ 通知，通知状态 idle → notify')
 
-    changed_source_types = set()
-    for source_type, hash_key in (
-        ('NOTAM', 'HASH_NOTAM'), ('MSI', 'HASH_MSI'),
-        ('MSA', 'HASH_MSA'), ('NOTMAR', 'HASH_NOTMAR'),
-    ):
-        if source_type in set(dataDict.get('_FAILED_SOURCE_TYPES', [])):
-            continue
-        old_hash = previous_data.get(hash_key)
-        new_hash = dataDict.get(hash_key)
-        if old_hash is None:
-            old_hash = compute_data_hash(filter_data_by_source(previous_data, {source_type}))
-        if new_hash is None:
-            new_hash = compute_data_hash(filter_data_by_source(dataDict, {source_type}))
-        if old_hash != new_hash:
-            changed_source_types.add(source_type)
-    additional_notification_sources = changed_source_types - {'NOTAM', 'MSA'}
-    if trigger == 'idle' and additional_notification_sources:
-        trigger = 'notify'
-        msa_log('通知判定', f"来源数据变化触发通知: {', '.join(sorted(additional_notification_sources))}")
     msa_log('更新判定', f"全量 HASH {'变化' if before_hash != after_hash else '未变化'}，更新 visits={should_update_visits(before_hash, dataDict)}；缓存沿用该条件，允许失败检查点补交")
 
     if should_update_visits(before_hash, dataDict):
@@ -1498,9 +1540,26 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
 
     # 聚焦段变化才通知；匹配文件在行号空间变化（首次升级或 NOTAM 段变化）时重建
     if notam_num > 500:
+        dataDict['MATCH_AVAILABLE'] = False
+        invalidate_history_matches(snapshot_path)
         print(f'总航警数量 {notam_num} > 500，跳过历史匹配')
-    elif trigger == 'baseline' or snapshot['hash_notam'] != dataDict.get('HASH_NOTAM') or changed_source_types:
+    elif (trigger == 'baseline' or snapshot['hash_notam'] != dataDict.get('HASH_NOTAM')
+          or not previous_data.get('MATCH_AVAILABLE', False)):
         notam_match_archive(dataDict=current_notam, match_indices=range(focused_num))
+        dataDict['MATCH_AVAILABLE'] = True
+        # 匹配成功后才开放入口；生成期间和超过数量门槛时都不能读取旧行号结果。
+        try:
+            with open(snapshot_path, encoding='utf-8') as file:
+                saved_payload = json.load(file)
+            if saved_payload.get('HASH') == after_hash:
+                saved_payload['MATCH_AVAILABLE'] = True
+                with open(snapshot_path, 'w', encoding='utf-8') as file:
+                    json.dump(saved_payload, file, ensure_ascii=False, indent=4)
+            else:
+                dataDict['MATCH_AVAILABLE'] = False
+        except (OSError, ValueError) as exc:
+            dataDict['MATCH_AVAILABLE'] = False
+            print(f'保存历史匹配可用状态失败，本轮禁用匹配链接: {exc}')
 
     if trigger == 'baseline':
         print('未检测到上一轮聚焦快照，已建立聚焦基线并跳过通知')
@@ -1514,19 +1573,13 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
         for field in RECORD_FIELDS:
             previous_pool[field] = list(previous_notam.get(field, [])) + list((current_msa if msa_baseline else previous_msa).get(field, []))
             current_pool[field] = list(notification_notam.get(field, [])) + list(current_msa.get(field, []))
-        extra_sources = changed_source_types - {'NOTAM', 'MSA'}
-        if extra_sources:
-            previous_extra = filter_data_by_source(previous_data, extra_sources)
-            current_extra = filter_data_by_source(dataDict, extra_sources)
-            for field in RECORD_FIELDS:
-                previous_pool[field].extend(previous_extra.get(field, []))
-                current_pool[field].extend(current_extra.get(field, []))
         for pool in (previous_pool, current_pool):
             pool['NUM'] = len(pool['CODE'])
             pool['CLASSIFY'] = classify_data(pool)
         if send_notifications is notify_notam_changes:
             sections = build_data_segments(dataDict, _record_keys(current_focused))
-            send_notifications(previous_pool, current_pool, mail_enabled=mail_enabled, index_lookup=record_index_lookup(sections))
+            index_lookup = record_index_lookup(sections) if dataDict.get('MATCH_AVAILABLE') else {}
+            send_notifications(previous_pool, current_pool, mail_enabled=mail_enabled, index_lookup=index_lookup)
         else:
             send_notifications(previous_pool, current_pool, mail_enabled=mail_enabled)
     elif before_hash != after_hash:

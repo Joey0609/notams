@@ -651,9 +651,11 @@ def process_text_block_record(msg_text, source_tag="MSI_TEXT", category=""):
     return local_result
 
 
-def fetch_txt_records(url):
+def fetch_txt_records(url, strict=False):
     text = fetch_text_with_retry(url)
     if not text:
+        if strict:
+            raise RuntimeError(f'MSI TXT 获取失败或响应为空: {url}')
         return empty_payload()
 
     local_result = empty_payload()
@@ -680,9 +682,11 @@ def fetch_txt_records(url):
     return local_result
 
 
-def fetch_html_records(url):
+def fetch_html_records(url, strict=False):
     html_text = fetch_text_with_retry(url)
     if not html_text:
+        if strict:
+            raise RuntimeError(f'MSI HTML 获取失败或响应为空: {url}')
         return empty_payload()
 
     extractor = _TextExtractor()
@@ -713,7 +717,7 @@ def fetch_html_records(url):
     return local_result
 
 
-def process_single_url(url):
+def process_single_url(url, strict=False):
     local_result = {
         "CODE": [],
         "COORDINATES": [],
@@ -729,6 +733,8 @@ def process_single_url(url):
     try:
         print(f"[progress] requesting: {url}", flush=True)
         data = fetch_url_with_retry(url)
+        if strict and (not isinstance(data, dict) or not isinstance(data.get('smaps'), list)):
+            raise RuntimeError(f'MSI JSON 获取失败或响应结构无效: {url}')
         if not data:
             print("[filter] JSON关键词筛选: no_data_from_source", flush=True)
             return local_result
@@ -805,6 +811,8 @@ def process_single_url(url):
 
     except Exception as exc:
         print(f"[error] process URL failed {url}: {exc}", flush=True)
+        if strict:
+            raise
 
     return local_result
 
@@ -870,7 +878,7 @@ def deduplicate_payload(payload):
     return result
 
 
-def MSI_NAV_SEARCH():
+def MSI_NAV_SEARCH(strict=False):
     print("[progress] start MSI_NAV_SEARCH...", flush=True)
 
     result = empty_payload()
@@ -887,7 +895,7 @@ def MSI_NAV_SEARCH():
         )
 
     with ThreadPoolExecutor(max_workers=5) as executor:
-        future_to_url = {executor.submit(process_single_url, url): url for url in nav_urls}
+        future_to_url = {executor.submit(process_single_url, url, strict=strict): url for url in nav_urls}
         for future in as_completed(future_to_url):
             url = future_to_url[future]
             try:
@@ -896,18 +904,20 @@ def MSI_NAV_SEARCH():
                     result[key].extend(local_result[key])
             except Exception as exc:
                 print(f"[error] thread failed {url}: {exc}", flush=True)
+                if strict:
+                    raise
 
     # Extra plain-text and HTML sources.
     for url in TXT_URLS:
         print(f"[progress] requesting TXT source: {url}", flush=True)
-        txt_result = fetch_txt_records(url)
+        txt_result = fetch_txt_records(url, strict=strict)
         for key in result.keys():
             result[key].extend(txt_result[key])
         time.sleep(INTER_REQUEST_DELAY)
 
     for url in HTML_URLS:
         print(f"[progress] requesting HTML source: {url}", flush=True)
-        html_result = fetch_html_records(url)
+        html_result = fetch_html_records(url, strict=strict)
         for key in result.keys():
             result[key].extend(html_result[key])
         time.sleep(INTER_REQUEST_DELAY)
@@ -919,11 +929,13 @@ def MSI_NAV_SEARCH():
     return result
 
 
-def MSI_FETCH():
+def MSI_FETCH(strict=False):
     try:
-        return MSI_NAV_SEARCH()
+        return MSI_NAV_SEARCH(strict=strict)
     except Exception as exc:
         print(f"MSI_FETCH error: {exc}", flush=True)
+        if strict:
+            raise
         return empty_payload()
 
 

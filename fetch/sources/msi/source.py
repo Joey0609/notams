@@ -12,7 +12,7 @@ class MSIDataSource(DataSource):
         try:
             return SourceResult(
                 provider=self.name,
-                data=normalized_data(MSI_FETCH()),
+                data=normalized_data(MSI_FETCH(strict=True)),
                 success=True,
             )
         except Exception as exc:
