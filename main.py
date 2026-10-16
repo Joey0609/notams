@@ -424,11 +424,53 @@ def merge_source_batches(batches):
 
 
 def batches_are_complete(batches):
-    """Only a scan whose every stage succeeded may replace the snapshot."""
+    """Return whether every source requested by every stage succeeded."""
     return bool(batches) and all(
         batch.results and all(result.success for result in batch.results)
         for batch in batches
     )
+
+
+def batches_have_success(batches):
+    """A partial scan is usable when at least one source succeeded."""
+    return bool(batches) and any(
+        result.success for batch in batches for result in batch.results
+    )
+
+
+def failed_source_types(batches):
+    """Map failed adapters to the persisted source section they own."""
+    provider_types = {
+        'faa': 'NOTAM', 'daip': 'NOTAM', 'dins': 'NOTAM',
+        'msi': 'MSI', 'msa': 'MSA', 'uscg': 'NOTMAR',
+    }
+    return {
+        provider_types.get(str(result.provider or '').lower(), str(result.provider or '').upper())
+        for batch in batches
+        for result in batch.results
+        if not result.success
+    }
+
+
+def retain_failed_source_data(current, previous_payload, failed_types):
+    """Keep the last saved rows for source families that failed this scan."""
+    if not failed_types or not isinstance(previous_payload, dict):
+        return current
+    previous = filter_data_by_source(previous_payload, failed_types)
+    kept = _empty_record_data()
+    for index, source in enumerate(current.get('SOURCE', []) or []):
+        if str(source).upper() in failed_types:
+            continue
+        for field in RECORD_FIELDS:
+            values = current.get(field, []) or []
+            kept[field].append(values[index] if index < len(values) else '')
+    for index in range(len(previous.get('CODE', []) or [])):
+        for field in RECORD_FIELDS:
+            values = previous.get(field, []) or []
+            kept[field].append(values[index] if index < len(values) else '')
+    for field in RECORD_FIELDS:
+        current[field] = kept[field]
+    return current
 
 
 def build_section(data, indices, sort_by_code=True):
@@ -1297,10 +1339,18 @@ def fetch(source_fetcher=None):
             print('[FOCUSED] 阶段2: 没有剩余位置或海事来源，已跳过')
 
     dataDict = merge_source_batches(batches)
+    previous_payload = load_previous_snapshot(SNAPSHOT_PATH)['data']
+    failed_types = failed_source_types(batches)
+    filter_expired_records(dataDict, grace_hours=24)
     backfill_fir_from_text(dataDict, fir_candidates)
     harmonize_fir_by_platid(dataDict)
-    filter_expired_records(dataDict, grace_hours=24)
     dataDict['ALTITUDE'] = extract_altitude(dataDict['RAWMESSAGE'])
+    if failed_types:
+        print(f"部分数据源失败，沿用旧数据分段: {', '.join(sorted(failed_types))}")
+        retain_failed_source_data(dataDict, previous_payload, failed_types)
+        if 'NOTAM' in failed_types:
+            old_focused = previous_payload.get('FOCUSED_NOTAM_DATA', {})
+            focused_keys.update(_record_keys(old_focused))
 
     # 行号空间 = 聚焦段 → 外部段 → MSI 段 → 中国航警段 → USCG NOTMAR 段。
     focused_data, notam_data, msi_data, msa_data, notmar_data = build_data_segments(dataDict, focused_keys)
@@ -1319,8 +1369,9 @@ def fetch(source_fetcher=None):
     dataDict['FOCUSED_NUM'] = focused_data['NUM']
     dataDict['NOTAM_NUM'] = focused_data['NUM'] + notam_data['NUM']
 
-    fetch_complete = batches_are_complete(batches)
+    fetch_complete = batches_have_success(batches)
     dataDict['FETCH_VALID'] = fetch_complete
+    dataDict['_FAILED_SOURCE_TYPES'] = sorted(failed_types)
     payload = {
         'FOCUSED_NOTAM_DATA': focused_data,
         'NOTAM_DATA': notam_data,
@@ -1336,7 +1387,6 @@ def fetch(source_fetcher=None):
 
     # 快照保存已授权的缓存检查点；缓存写入失败后，新进程也能识别并补交。
     from fetch.sources.msa.cache import pending_available
-    previous_payload = load_previous_snapshot(SNAPSHOT_PATH)['data']
     cache_checkpoint = previous_payload.get('MSA_CACHE_HASH')
     if fetch_complete and pending_available() and previous_payload.get('HASH') != dataDict['HASH']:
         cache_checkpoint = dataDict['HASH']
@@ -1397,6 +1447,26 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     if trigger == 'idle' and msa_has_additions:
         trigger = 'notify'
         msa_log('通知判定', 'MSA 新增触发邮件/QQ 通知，通知状态 idle → notify')
+
+    changed_source_types = set()
+    for source_type, hash_key in (
+        ('NOTAM', 'HASH_NOTAM'), ('MSI', 'HASH_MSI'),
+        ('MSA', 'HASH_MSA'), ('NOTMAR', 'HASH_NOTMAR'),
+    ):
+        if source_type in set(dataDict.get('_FAILED_SOURCE_TYPES', [])):
+            continue
+        old_hash = previous_data.get(hash_key)
+        new_hash = dataDict.get(hash_key)
+        if old_hash is None:
+            old_hash = compute_data_hash(filter_data_by_source(previous_data, {source_type}))
+        if new_hash is None:
+            new_hash = compute_data_hash(filter_data_by_source(dataDict, {source_type}))
+        if old_hash != new_hash:
+            changed_source_types.add(source_type)
+    additional_notification_sources = changed_source_types - {'NOTAM', 'MSA'}
+    if trigger == 'idle' and additional_notification_sources:
+        trigger = 'notify'
+        msa_log('通知判定', f"来源数据变化触发通知: {', '.join(sorted(additional_notification_sources))}")
     msa_log('更新判定', f"全量 HASH {'变化' if before_hash != after_hash else '未变化'}，更新 visits={should_update_visits(before_hash, dataDict)}；缓存沿用该条件，允许失败检查点补交")
 
     if should_update_visits(before_hash, dataDict):
@@ -1427,7 +1497,9 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     current_focused = build_section(dataDict, global_rows[:focused_num], sort_by_code=False)
 
     # 聚焦段变化才通知；匹配文件在行号空间变化（首次升级或 NOTAM 段变化）时重建
-    if trigger == 'baseline' or snapshot['hash_notam'] != dataDict.get('HASH_NOTAM'):
+    if notam_num > 500:
+        print(f'总航警数量 {notam_num} > 500，跳过历史匹配')
+    elif trigger == 'baseline' or snapshot['hash_notam'] != dataDict.get('HASH_NOTAM') or changed_source_types:
         notam_match_archive(dataDict=current_notam, match_indices=range(focused_num))
 
     if trigger == 'baseline':
@@ -1442,6 +1514,13 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
         for field in RECORD_FIELDS:
             previous_pool[field] = list(previous_notam.get(field, [])) + list((current_msa if msa_baseline else previous_msa).get(field, []))
             current_pool[field] = list(notification_notam.get(field, [])) + list(current_msa.get(field, []))
+        extra_sources = changed_source_types - {'NOTAM', 'MSA'}
+        if extra_sources:
+            previous_extra = filter_data_by_source(previous_data, extra_sources)
+            current_extra = filter_data_by_source(dataDict, extra_sources)
+            for field in RECORD_FIELDS:
+                previous_pool[field].extend(previous_extra.get(field, []))
+                current_pool[field].extend(current_extra.get(field, []))
         for pool in (previous_pool, current_pool):
             pool['NUM'] = len(pool['CODE'])
             pool['CLASSIFY'] = classify_data(pool)

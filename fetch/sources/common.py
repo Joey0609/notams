@@ -225,7 +225,7 @@ def is_relevant_aerospace_area(message: str, *, require_full_altitude: bool) -> 
     is_relevant = (
         (require_full_altitude and 'A TEMPORARY' in text and '-' in text)
         or ('AEROSPACE' in text)
-        or 'AER0SPACE' in text
+        or ('AER0SPACE' in text)
         or ('CHINA' in text and 'DNG ZONE' in text and 'AERIAL' in text)
         or ('SPACE VEHICLE' in text and 'RE-ENTRY' in text)
         or ('SPACE VEHICLE' in text and 'REENTRY' in text)
