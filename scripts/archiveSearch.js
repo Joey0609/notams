@@ -538,16 +538,15 @@ function drawArchiveNotam(geometry, timee, codee, numm, col, rawmessage, sourceT
     var popupContent = "<div class='notam-popup'>" +
         buildNotamPopupHeader('历史NOTAM信息', rawmessage, 'background: linear-gradient(135deg, #1e9613ff 0%, #127209ff 100%);') +
         "<div class='notam-popup-body'>" +
+        "<div class='popup-structured-view'>" +
         buildNotamPopupRows({
             timeText: timestr,
             code: codee,
             regionValue: fir || '-',
-            rawMessage: rawmessage,
-            extraRows: "<div class='popup-info-row'>" +
-                "<span class='popup-label'>数据来源日期:</span>" +
-                "<span class='popup-value'>" + extractDateFromNotamTime(timee) + "</span>" +
-                "</div>"
+            rawMessage: rawmessage
         }) +
+        "</div>" +
+        buildNotamPopupRawView(rawmessage) +
         "</div>" +
         "</div>";
 

@@ -418,12 +418,15 @@ function drawNotArchive(geometry, timee, codee, altitude, numm, col, is_self, ra
         popupContent = "<div class='notam-popup'>" +
             buildNotamPopupHeader('NOTAM 信息', rawmessage) +
             "<div class='notam-popup-body'>" +
+            "<div class='popup-structured-view'>" +
             buildNotamPopupRows({
                 timeText: timestr,
                 code: codee,
                 regionValue: fir || '-',
                 rawMessage: rawmessage
             }) +
+            "</div>" +
+            buildNotamPopupRawView(rawmessage) +
             "</div>" +
             "</div>";
     } else {

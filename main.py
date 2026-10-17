@@ -1468,7 +1468,8 @@ def fetch(source_fetcher=None):
 
 def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
              notification_sender=None, visits_updater=None,
-             notify_list_path=NOTIFY_SEND_LIST_PATH):
+             notify_list_path=NOTIFY_SEND_LIST_PATH, area_alert_sender=None,
+             site_pause_path='scripts/sitePause.js'):
     """Run one full scan: fetch, rebuild history matches when needed, notify on focus changes.
 
     Only the focused stage drives mail/QQ notifications; the non-focused records stay
@@ -1586,6 +1587,17 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
         print('仅海事更新/非聚焦NOTAM变化，或中国航警首次基线，已跳过通知')
     else:
         print('数据未变化，已跳过通知')
+    # 最后追加双区域提醒。来源失败时不使用冻结数据触发新的区域提醒。
+    if not dataDict.get('FAILED_SOURCES'):
+        try:
+            from fetch.area_pair_alert import send_area_pair_alert
+            send_area_pair_alert(
+                current_notam, os.fspath(snapshot_path) + '.area_alert.json',
+                sender=area_alert_sender,
+                pause_path=site_pause_path, end_time_parser=_latest_end_time,
+            )
+        except Exception as exc:
+            print(f'双区域 QQ 提醒失败，下轮重试: {exc}')
     return trigger
 
 
