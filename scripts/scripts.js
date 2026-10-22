@@ -738,7 +738,8 @@ function setSatelliteProvider(provider) {
     currentMapProvider = provider;
     switchColorPool(false);
     addMapLayers(provider);
-    if (dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
+    // 匹配页不加载首页的 dict；仅在首页数据可用时重绘自动航警。
+    if (typeof dict !== 'undefined' && dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
         assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);
         redrawAllNotams();
     }
@@ -793,7 +794,7 @@ function selectMapMode(mode) {
     currentMapProvider = mode === 'satellite' ? 'gaode_img' : 'gaode_vec';
     switchColorPool(currentMapProvider === 'gaode_vec' || currentMapProvider === 'tianditu_vec');
     addMapLayers(currentMapProvider);
-    if (dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
+    if (typeof dict !== 'undefined' && dict && (dict.CLASSIFY || dict.CLASSIFY_FOCUSED)) {
         assignAllGroupColors(dict.CLASSIFY_FOCUSED, dict.CLASSIFY);
         redrawAllNotams();
     }
