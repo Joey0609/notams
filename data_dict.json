@@ -194,8 +194,8 @@
         "PLATID": [
             "92eadddd-47fd-4b24-a006-7769ce413bcf",
             "92eadddd-47fd-4b24-a006-7769ce413bcf",
-            "240fa00e-9912-4a36-96bf-1e28959a1415",
-            "240fa00e-9912-4a36-96bf-1e28959a1415",
+            "MSI_TXT_c6ecb807c812f1aa",
+            "MSI_TXT_c6ecb807c812f1aa",
             "a1ec86c7-cf8f-4e3e-98d5-f61322e1bd26",
             "a1ec86c7-cf8f-4e3e-98d5-f61322e1bd26"
         ],
@@ -252,7 +252,7 @@
             ]
         },
         "NUM": 6,
-        "HASH": "43545a7bedc4b06b6c7bf22f208076fa904703182233ea5a80165d06e7cccaf0"
+        "HASH": "898367637f6ca53e86468fcf851b773f27bf5d275eac6a51b42045bc9c4d5319"
     },
     "CHINA_MSA_DATA": {
         "CODE": [],
@@ -344,7 +344,7 @@
         "NUM": 5,
         "HASH": "6575911c0d1b22efcabd59ccf6821a75e5e1013842735a885e2dbcf7c58038e8"
     },
-    "HASH": "9a0907530f1ad8006062010d47edaeb69d2c3024d138229aacd78ce0da4a2d8f",
+    "HASH": "9014e97edb4495fa4379f196fe49b3a72a02c8f66a4ca37ddab8881f6acab277",
     "HASH_NOTAM": "e03bd0e5ea5cc170ea459b87f4ccc12c50f301a9e03f97ea76c0446a2283f091",
     "HASH_FOCUSED": "53736c88d6acb78b45c7e375319b5528e09313b7e36ba042241f05dc9aeefc00",
     "FETCH_VALID": true,
@@ -519,8 +519,8 @@
                 "92eadddd-47fd-4b24-a006-7769ce413bcf",
                 "a1ec86c7-cf8f-4e3e-98d5-f61322e1bd26",
                 "a1ec86c7-cf8f-4e3e-98d5-f61322e1bd26",
-                "240fa00e-9912-4a36-96bf-1e28959a1415",
-                "240fa00e-9912-4a36-96bf-1e28959a1415"
+                "MSI_TXT_c6ecb807c812f1aa",
+                "MSI_TXT_c6ecb807c812f1aa"
             ],
             "RAWMESSAGE": [
                 "201952Z OCT 26 HYDROARC 307/26. BARENTS SEA. RUSSIA. 1. HAZARDOUS OPERATIONS, ROCKET LAUNCHING 252100Z TO 312100Z OCT IN AREAS BOUND BY: A. 68-55.20N 051-20.35E, 68-40.47N 050-49.44E, 68-20.05N 049-23.23E, 68-02.05N 047-54.41E, 67-59.17N 047-04.45E, 68-14.22N 047-31.29E, 68-36.41N 048-56.04E, 68-53.30N 050-29.28E. B. 67-29.00N 045-02.00E, 67-33.00N 045-19.00E, 67-26.00N 045-30.00E, 67-22.00N 045-13.00E. 2. CANCEL THIS MSG 312200Z OCT 26.",
@@ -639,5 +639,5 @@
         }
     },
     "MATCH_AVAILABLE": true,
-    "MSA_CACHE_HASH": "9a0907530f1ad8006062010d47edaeb69d2c3024d138229aacd78ce0da4a2d8f"
+    "MSA_CACHE_HASH": "9014e97edb4495fa4379f196fe49b3a72a02c8f66a4ca37ddab8881f6acab277"
 }
