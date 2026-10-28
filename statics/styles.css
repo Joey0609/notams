@@ -1208,3 +1208,7 @@ body:not(.satellite-active) .satellite-fx-area {display: none !important;}
 @media (prefers-reduced-motion:reduce) {
     .notam-time-text,.notam-time-toggle svg {transition:none;}
 }
+
+/* 航警弹窗通过点击地图空白处关闭；固定时先取消固定。 */
+.leaflet-popup.notam-info-popup .popup-header-actions .leaflet-popup-close-button,
+.globe-notam-popup .notam-popup .popup-header-actions .globe-popup-close { display: none; }
