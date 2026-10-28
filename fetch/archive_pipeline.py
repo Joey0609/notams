@@ -1,7 +1,7 @@
-"""Recover observed NOTAM originals and re-run the current online parser.
+"""Archive successful FOCUS observations using the current NOTAM parser.
 
-Git snapshots are an observation archive, not a complete upstream archive. This
-module never calls main.run_scan(), sends notifications, or touches match files.
+This module maintains the observation baseline and removes early withdrawals.
+It does not run a scan, send notifications, or touch match files.
 """
 from __future__ import annotations
 
@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 import re
 import shutil
-import subprocess
 import tempfile
 
 from fetch.classify_notam_db import rebuild_notam_db_classify
@@ -24,7 +23,6 @@ from fetch.sources.manager import get_enabled_source_names
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MONTH_RE = re.compile(r'^\d{4}-\d{2}\.json$')
 TIME_FORMAT = '%d %b %H:%M %Y'
 STATE_FILE = 'active_notams.json'
 AVIATION_SOURCES = {'faa', 'daip', 'dins'}
@@ -222,81 +220,6 @@ def reparse_records(records, start, end):
     return output, dict(stats)
 
 
-def _git(root, *args):
-    return subprocess.check_output(['git', '-c', f'safe.directory={root}', *args], cwd=root)
-
-
-def collect_git_records(root, start, end, *, locations=None, ref='HEAD'):
-    """Stream blobs chronologically, with one snapshot before the range boundary."""
-    root = Path(root).resolve()
-    if _git(root, 'rev-parse', '--is-shallow-repository').strip() == b'true':
-        raise ValueError('Git recovery requires full history (checkout fetch-depth: 0)')
-    upper = (date.fromisoformat(end) + timedelta(days=1)).isoformat()
-    log = _git(root, 'log', '--reverse', '--diff-filter=AM', '--format=%H|%cI',
-               f'--since={start}T00:00:00Z', f'--before={upper}T00:00:00Z',
-               ref, '--', 'data_dict.json').decode().splitlines()
-    prior = _git(root, 'log', '-1', '--diff-filter=AM', '--format=%H|%cI',
-                 f'--before={start}T00:00:00Z', ref, '--', 'data_dict.json').decode().strip()
-    if prior:
-        log.insert(0, prior)
-    if not log:
-        raise ValueError('No Git NOTAM snapshots exist for the requested range')
-    records, cached_blobs, monthly = [], {}, Counter()
-    previous, withdrawn, observed_count, unknown_count = {}, set(), 0, 0
-    last_observation = None
-    proc = subprocess.Popen(['git', '-c', f'safe.directory={root}', 'cat-file', '--batch'],
-                            cwd=root, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    try:
-        for entry in log:
-            commit, observed = entry.split('|', 1)
-            proc.stdin.write((commit + ':data_dict.json\n').encode())
-            proc.stdin.flush()
-            header = proc.stdout.readline().decode().strip().split()
-            if len(header) != 3 or header[1] != 'blob':
-                raise ValueError(f'Missing NOTAM snapshot in commit {commit}')
-            raw = proc.stdout.read(int(header[2]))
-            proc.stdout.read(1)
-            monthly[observed[:7]] += 1
-            try:
-                if header[0] not in cached_blobs:
-                    snapshot = json.loads(raw)
-                    rows = list(iter_focus_records(snapshot, locations) if locations is not None
-                                else iter_snapshot_records(snapshot))
-                    cached_blobs[header[0]] = (rows, complete_aviation_snapshot(snapshot))
-                # A repeated blob can be a revert after a newer revision. Reuse
-                # parsing, but retain observation order when selecting versions.
-                rows, complete = cached_blobs[header[0]]
-                records.extend(rows)
-                if complete:
-                    now = datetime.fromisoformat(observed.replace('Z', '+00:00'))
-                    current = observation_rows(rows)
-                    withdrawn.update(early_withdrawals(previous, current, now))
-                    withdrawn.difference_update(current)
-                    previous = current
-                    last_observation = dict(observed_at=now.isoformat(), notices=[
-                        r for _, r in sorted(current.items())
-                        if datetime.fromisoformat(r['end']) > now])
-                    observed_count += 1
-                else:
-                    unknown_count += 1
-            except (ValueError, UnicodeError) as exc:
-                raise ValueError(f'Invalid NOTAM snapshot {commit}: {exc}') from exc
-    finally:
-        proc.stdin.close()
-        proc.stdout.close()
-        proc.wait()
-    return records, dict(snapshots=len(log), unique_blobs=len(cached_blobs),
-                         snapshots_by_month=dict(sorted(monthly.items())),
-                         first_snapshot=log[0].split('|')[1], last_snapshot=log[-1].split('|')[1],
-                         head=_git(root, 'rev-parse', ref).decode().strip(),
-                         ref=ref, complete_observations=observed_count,
-                         unproven_observations=unknown_count,
-                         withdrawn_notices=[list(k) for k in sorted(withdrawn)],
-                         last_observation=last_observation,
-                         upstream_complete=False,
-                         limitation='Only previously captured originals; upstream gaps cannot be reconstructed.')
-
-
 def _read_month(path):
     data = json.loads(path.read_text(encoding='utf-8'))
     size = data.get('NUM')
@@ -307,22 +230,18 @@ def _read_month(path):
     return [{field: data[field][i] for field in ARCHIVE_FIELDS} for i in range(size)]
 
 
-def update_archive(records, db_dir, *, rebuild_months=(), dry_run=False,
-                   withdrawn=(), observation=None):
+def update_archive(records, db_dir, *, withdrawn=(), observation=None):
     """Stage, validate and classify first; back up before replacing changed files."""
     db_dir = Path(db_dir).resolve()
     records = list(records)
-    rebuild_months = tuple(rebuild_months)
     withdrawn = set(map(tuple, withdrawn))
-    if not records and not withdrawn and observation is None and not rebuild_months:
+    if not records and not withdrawn and observation is None:
         return dict(changed_files=[], backup=None, months={}, written=False)
     db_dir.mkdir(parents=True, exist_ok=True)
-    incoming = {month: [] for month in rebuild_months}
+    incoming = {}
     removed_areas = 0
     if withdrawn:
         for path in db_dir.glob('????-??.json'):
-            if rebuild_months and path.stem not in rebuild_months:
-                continue
             removed = sum(identity(row) in withdrawn for row in _read_month(path))
             if removed:
                 incoming.setdefault(path.stem, [])
@@ -333,7 +252,7 @@ def update_archive(records, db_dir, *, rebuild_months=(), dry_run=False,
     months = {}
     for month, rows in incoming.items():
         path = db_dir / f'{month}.json'
-        existing = _read_month(path) if path.exists() and month not in rebuild_months else []
+        existing = _read_month(path) if path.exists() else []
         notice_ids = {identity(row) for row in rows} | withdrawn
         # Replace all areas of an amended notice, including obsolete AREA 2/3
         # when the latest parser now finds fewer described areas.
@@ -369,7 +288,7 @@ def update_archive(records, db_dir, *, rebuild_months=(), dry_run=False,
             if not target.exists() or json.loads(target.read_text(encoding='utf-8')) != observation:
                 changed.append(STATE_FILE)
         backup = None
-        if changed and not dry_run:
+        if changed:
             backup = ROOT / 'temp' / 'archive_backups' / datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
             backup.mkdir(parents=True)
             for name in changed:
@@ -393,4 +312,4 @@ def update_archive(records, db_dir, *, rebuild_months=(), dry_run=False,
                 raise
         return dict(changed_files=changed, backup=str(backup) if backup else None,
                     months=counts, removed_areas=removed_areas,
-                    written=bool(changed and not dry_run))
+                    written=bool(changed))

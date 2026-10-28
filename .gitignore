@@ -213,12 +213,15 @@ fetch/__pycache__
 temp
 .serena
 QQbotServer
-test
-tests
+test/
+tests/
+test_*.py
+*_test.py
 .firecrawl
 AGENTS.md
 
-# Keep the archive regression suite available in GitHub Actions.
-!/tests/
-/tests/*
-!/tests/test_archive_pipeline.py
+
+# One-off recovery tools and local investigation artifacts.
+/fetch/recover_notam_archive.py
+/.playwright-mcp/
+/outputs/
