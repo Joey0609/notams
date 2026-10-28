@@ -10,6 +10,7 @@ from fetch.Archive_Notam_Match import notam_match_archive
 from fetch.mail_draft import generate_change_email_draft
 from fetch.sendcloud_email import send_email_via_qq_smtp
 from fetch.sources import fetch_enabled_sources, get_enabled_source_names
+from fetch.archive_pipeline import archive_current_focus
 from fetch.visits import update_visits
 
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -1509,6 +1510,21 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     if trigger == 'idle' and msa_has_additions:
         trigger = 'notify'
         msa_log('通知判定', 'MSA 新增触发邮件/QQ 通知，通知状态 idle → notify')
+
+    if fetch_result_valid:
+        # Persist focused observations before visits/matching/notifications, so
+        # failures in those services cannot lose newly observed NOTAM originals.
+        focus_count = int(dataDict.get('FOCUSED_NUM', 0) or 0)
+        rows = order_notam_rows(dataDict, focus_count, int(dataDict.get('NOTAM_NUM', 0) or 0))
+        focused = build_section(dataDict, rows[:focus_count], sort_by_code=False)
+        try:
+            archived = archive_current_focus(
+                {'FOCUSED_NOTAM_DATA': focused, 'FETCH_VALID': True,
+                 'FAILED_SOURCES': dataDict.get('FAILED_SOURCES', [])},
+                load_config(), os.path.join(os.path.dirname(os.path.abspath(snapshot_path)), 'data', 'notam_db'))
+            print(f"[NOTAM archive] {archived}")
+        except Exception as exc:
+            print(f'FOCUS NOTAM 归档失败，下轮重试: {exc}')
 
     msa_log('更新判定', f"全量 HASH {'变化' if before_hash != after_hash else '未变化'}，更新 visits={should_update_visits(before_hash, dataDict)}；缓存沿用该条件，允许失败检查点补交")
 

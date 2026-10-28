@@ -67,6 +67,41 @@ fetch/sources/
 
 If you find a bug or want to improve the project, feel free to open an Issue or Pull Request.
 
+### NOTAM archive
+
+Every successful scan in `main.run_scan()` archives only the explicit FOCUS
+NOTAM section. It reuses the current relevance, time, altitude, geometry and
+multi-area parser. The existing update-and-deploy workflow publishes these
+monthly files along with the current snapshot; no separate monthly archive
+workflow or retired FAA archive endpoint is used.
+
+A NOTAM missing from the next complete aviation observation before its declared
+end time is removed from the database. Naturally expired records remain. Failed
+or partial aviation fetches cannot delete records. The observation baseline is
+stored in `data/notam_db/active_notams.json`; changing the configured focus scope
+starts a new baseline instead of inferring withdrawals across different scopes.
+
+```bash
+# Preview recovery of previously observed FOCUS originals.
+python -m fetch.recover_notam_archive --start 2026-01-01 --end 2026-10-29 --git-ref origin/main --dry-run --report temp/archive_preview.json
+
+# Rebuild the selected months, with automatic backups.
+python -m fetch.recover_notam_archive --start 2026-01-01 --end 2026-10-29 --git-ref origin/main --report temp/archive_recovery.json
+```
+
+Git recovery needs a full checkout. It reprocesses saved originals using current
+rules and applies the same early-withdrawal rule chronologically at snapshot
+commit times. Old snapshots without an explicit successful-fetch marker cannot
+prove a withdrawal and are not used as deletion evidence. Segmented snapshots
+use their FOCUS section; legacy flat snapshots are restricted by the current
+`ICAO_FOCUSED` locations. Date bounds use the UTC effective start date.
+
+This recovers this project's observations, **not complete upstream history**.
+Missed or previously discarded originals cannot be reconstructed. Reports retain
+that limitation; old `data/progress.json` success markers are not reused. Changed
+files are backed up under `temp/archive_backups/` before replacement. Recovery
+itself does not fetch upstream data or run notifications, visits, or matching.
+
 **Other Pages**
 
 [Baidu Tieba](https://tieba.baidu.com/p/9298301903)
