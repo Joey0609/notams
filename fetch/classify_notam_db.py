@@ -128,7 +128,7 @@ def rebuild_notam_db_classify(db_dir: str = "./data/notam_db") -> Dict[str, int]
     gidx_to_class_key: Dict[int, str] = {}
 
     for member_ids in groups.values():
-        codes = sorted(records[g]["code"] for g in sorted(member_ids))
+        codes = sorted(records[g]["code"] for g in member_ids)
         combined_str = "".join(codes)
         key_num = int.from_bytes(combined_str.encode("utf-8"), "big") % 998244353
         class_key = f"c{key_num}"

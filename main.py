@@ -146,11 +146,11 @@ def classify_data(data):
         groups.setdefault(root, []).append(idx)
 
     classify = {}
-    for n, (_, members) in enumerate(groups.items(), 1):
-        combined_str = "".join(sorted(codes[m] for m in sorted(members)))
+    for members in groups.values():
+        member_codes = sorted(codes[m] for m in members)
+        combined_str = "".join(member_codes)
         key = int.from_bytes(combined_str.encode('utf-8'), 'big') % 998244353
-        classify[f"c{key}"] = [codes[m] for m in members]
-        classify[f"c{key}"].sort()
+        classify[f"c{key}"] = member_codes
     classify = dict(sorted(classify.items()))
 
     return classify
@@ -461,6 +461,33 @@ def failed_source_types(batches):
     }
 
 
+def sorted_snapshot_records(data):
+    """Copy provider records in canonical order without changing merge/page order.
+
+    Apply one permutation to every parallel field. Fetch completion order must not
+    create snapshot diffs, while actual field values must remain unchanged.
+    """
+    columns = {field: list(data.get(field, []) or []) for field in RECORD_FIELDS}
+    sort_fields = ('SOURCE', 'CODE', 'TIME', 'PLATID', 'GEOMETRY',
+                   'RAWMESSAGE', 'ALTITUDE', 'FIR')
+
+    def value_at(field, index):
+        values = columns[field]
+        return values[index] if index < len(values) else ''
+
+    def sort_key(index):
+        values = [value_at(field, index) for field in sort_fields]
+        # Normally all values are strings. The final key also distinguishes old
+        # JSON null/numeric values from strings with the same representation.
+        return tuple(str(value) for value in values) + (
+            json.dumps(values, ensure_ascii=False, sort_keys=True),
+        )
+
+    positions = sorted(range(len(columns['CODE'])), key=sort_key)
+    return {field: [value_at(field, index) for index in positions]
+            for field in RECORD_FIELDS}
+
+
 def build_source_snapshots(batches, previous_payload, focused_batch, fir_candidates):
     """各抓取来源独立保存最后一次完整结果，失败来源冻结后再统一去重。"""
     from fetch.sources.base import FetchBatchResult
@@ -511,7 +538,8 @@ def build_source_snapshots(batches, previous_payload, focused_batch, fir_candida
                 established = any(section_names.get(source) in previous_payload for source in source_types)
                 focused = _record_keys(previous_payload.get('FOCUSED_NOTAM_DATA', {})) & _record_keys(data)
             print(f'[来源冻结] {provider}: 沿用旧数据 {len(data.get("CODE", []))} 条')
-        snapshots[provider] = {field: list(data.get(field, [])) for field in RECORD_FIELDS}
+        # Only canonicalize the persisted copy; keep first-seen merge precedence.
+        snapshots[provider] = sorted_snapshot_records(data)
         snapshots[provider]['FOCUSED_KEYS'] = [list(key) for key in sorted(focused)]
         snapshots[provider]['ESTABLISHED'] = established
         focused_keys.update(focused)
@@ -1514,12 +1542,16 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     if fetch_result_valid:
         # Persist focused observations before visits/matching/notifications, so
         # failures in those services cannot lose newly observed NOTAM originals.
-        focus_count = int(dataDict.get('FOCUSED_NUM', 0) or 0)
-        rows = order_notam_rows(dataDict, focus_count, int(dataDict.get('NOTAM_NUM', 0) or 0))
-        focused = build_section(dataDict, rows[:focus_count], sort_by_code=False)
+        focused_num = int(dataDict.get('FOCUSED_NUM', 0) or 0)
+        notam_num = int(dataDict.get('NOTAM_NUM', 0) or 0)
+        # Reuse one row order and one focused section for archive, matching and
+        # notifications instead of sorting/building the same records again.
+        global_rows = order_notam_rows(dataDict, focused_num, notam_num)
+        current_notam = build_section(dataDict, global_rows, sort_by_code=False)
+        current_focused = build_section(dataDict, global_rows[:focused_num], sort_by_code=False)
         try:
             archived = archive_current_focus(
-                {'FOCUSED_NOTAM_DATA': focused, 'FETCH_VALID': True,
+                {'FOCUSED_NOTAM_DATA': current_focused, 'FETCH_VALID': True,
                  'FAILED_SOURCES': dataDict.get('FAILED_SOURCES', [])},
                 load_config(), os.path.join(os.path.dirname(os.path.abspath(snapshot_path)), 'data', 'notam_db'))
             print(f"[NOTAM archive] {archived}")
@@ -1547,13 +1579,6 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
     if not fetch_result_valid:
         print('本次抓取结果为空，视为上游异常，已跳过 visits、历史匹配和通知')
         return trigger
-
-    focused_num = int(dataDict.get('FOCUSED_NUM', 0) or 0)
-    notam_num = int(dataDict.get('NOTAM_NUM', 0) or 0)
-    # 站点行号空间 = 聚焦段（按 CODE 排序）→ 外部段（按 CODE 排序）→ MSI 段
-    global_rows = order_notam_rows(dataDict, focused_num, notam_num)
-    current_notam = build_section(dataDict, global_rows, sort_by_code=False)
-    current_focused = build_section(dataDict, global_rows[:focused_num], sort_by_code=False)
 
     # 聚焦段变化才通知；匹配文件在行号空间变化（首次升级或 NOTAM 段变化）时重建
     if notam_num > 500:
@@ -1594,8 +1619,9 @@ def run_scan(snapshot_path=SNAPSHOT_PATH, fetcher=None, mail_enabled=None,
             pool['NUM'] = len(pool['CODE'])
             pool['CLASSIFY'] = classify_data(pool)
         if send_notifications is notify_notam_changes:
-            sections = build_data_segments(dataDict, _record_keys(current_focused))
-            index_lookup = record_index_lookup(sections) if dataDict.get('MATCH_AVAILABLE') else {}
+            # fetch() already flattened the five CODE-sorted page sections.
+            # Index that row space directly; no need to split/sort/classify again.
+            index_lookup = record_index_lookup((dataDict,)) if dataDict.get('MATCH_AVAILABLE') else {}
             send_notifications(previous_pool, current_pool, mail_enabled=mail_enabled, index_lookup=index_lookup)
         else:
             send_notifications(previous_pool, current_pool, mail_enabled=mail_enabled)
