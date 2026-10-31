@@ -238,10 +238,10 @@ function escapeHtml(text) {
     div.textContent = text || '';
     return div.innerHTML;
 }
-// 可调试的高度变量
-const HELP_AREA_HEIGHT = 320;  // 帮助区域高度
-const EXPORT_AREA_HEIGHT = 230; // 导出区域高度
-const GLOBE_FX_AREA_HEIGHT = 340; // 3D 功能面板的兜底高度（优先量 scrollHeight，见 globeFxAreaHeight()）
+// 无法测量内容时的兜底高度，正常展开优先使用 scrollHeight。
+const HELP_AREA_HEIGHT = 320;
+const EXPORT_AREA_HEIGHT = 230;
+const GLOBE_FX_AREA_HEIGHT = 340;
 
 helpButton.addEventListener('click', () => {
     if (isSatelliteFxExpanded) {
@@ -313,9 +313,29 @@ function panelBottom(isOpen) {
     return isOpen ? '10px' : '40px';
 }
 
-/* 宽屏下面板展开时把按钮抬到面板正上方；窄屏下按钮行不动，返回 0 */
+const PANEL_BUTTON_GAP = 8;
+
+// max-height 是上限，不是实际高度；内容不足或窗口变矮时都按实际可见高度定位。
+function panelAreaHeight(area, fallbackHeight) {
+    const naturalHeight = area.scrollHeight || fallbackHeight;
+    const panelBase = parseFloat(panelBottom(true));
+    const buttonSpace = isNarrowLayout() ? 0 : helpButton.offsetHeight + PANEL_BUTTON_GAP;
+    const availableHeight = Math.max(0, window.innerHeight - panelBase - buttonSpace - 12);
+    return Math.min(naturalHeight, availableHeight);
+}
+
+function layoutOpenPanel(area, fallbackHeight) {
+    const height = panelAreaHeight(area, fallbackHeight);
+    area.style.maxHeight = height + 'px';
+    area.style.bottom = panelBottom(true);
+    setRowLift(height);
+}
+
+/* 宽屏按钮与面板保持 8px 间距；窄屏按钮行不动。 */
 function setRowLift(areaHeight) {
-    const lift = isNarrowLayout() ? 0 : areaHeight;
+    const buttonBase = parseFloat(window.getComputedStyle(helpButton).bottom) || 0;
+    const lift = isNarrowLayout() || !areaHeight ? 0 :
+        Math.max(0, areaHeight + parseFloat(panelBottom(true)) + PANEL_BUTTON_GAP - buttonBase);
     helpButton.style.transform = `translateY(-${lift}px)`;
     exportButton.style.transform = `translateY(-${lift}px)`;
     if (customButton) customButton.style.transform = `translateY(-${lift}px)`;
@@ -328,12 +348,7 @@ function setRowLift(areaHeight) {
 function openHelpArea() {
     isHelpExpanded = true;
     expandableArea.classList.add('is-open');
-    expandableArea.style.maxHeight = HELP_AREA_HEIGHT + 'px';
-    expandableArea.style.bottom = panelBottom(true);
-    // 等待 DOM 更新后获取实际高度
-    setTimeout(() => {
-        setRowLift(HELP_AREA_HEIGHT);
-    }, 10);
+    layoutOpenPanel(expandableArea, HELP_AREA_HEIGHT);
     helpButton.textContent = '收起';
 }
 
@@ -349,12 +364,7 @@ function closeHelpArea() {
 function openExportArea() {
     isExportExpanded = true;
     exportArea.classList.add('is-open');
-    exportArea.style.maxHeight = EXPORT_AREA_HEIGHT + 'px';
-    exportArea.style.bottom = panelBottom(true);
-    // 等待 DOM 更新后获取实际高度
-    setTimeout(() => {
-        setRowLift(EXPORT_AREA_HEIGHT);
-    }, 10);
+    layoutOpenPanel(exportArea, EXPORT_AREA_HEIGHT);
     exportButton.textContent = '收起';
 }
 
@@ -372,27 +382,15 @@ function closeExportArea() {
    同一个 setRowLift()），三块面板互斥。
    注意：开关状态、显示时刻、倍速、状态行文字都不属于这里 —— 它们由 globe.js 的 fx 控制器持有
    （只有它拿得到 Cesium viewer），这里只负责布局，并在展开时叫它同步一次 UI。 */
-function globeFxAreaHeight() {
-    // 面板以后还会加模块，高度会变：优先量真实内容高度（收起时 max-height:0，scrollHeight 仍是内容高度）
-    const measured = globeFxArea ? globeFxArea.scrollHeight : 0;
-    const natural = measured > 0 ? measured : GLOBE_FX_AREA_HEIGHT;
-    // 窗口很矮时封顶，超出部分在面板内部滚动（.globe-fx-area 本身就是 overflow-y: auto）
-    return Math.min(natural, Math.max(160, window.innerHeight - 140));
-}
-
 function openGlobeFxArea() {
     if (!globeFxArea || !globeFxButton) return;
     isGlobeFxExpanded = true;
     globeFxArea.classList.add('is-open');
-    globeFxArea.style.maxHeight = globeFxAreaHeight() + 'px';
-    globeFxArea.style.bottom = panelBottom(true);
-    setTimeout(() => {
-        setRowLift(globeFxAreaHeight());
-    }, 10);
     globeFxButton.textContent = '收起';
     // 展开时把开关 / 时刻输入框 / 状态行同步到实际状态（切过 2D 再回来时尤其需要）
     const fx = window.NotamGlobe && window.NotamGlobe.fx;
     if (fx && typeof fx.syncUi === 'function') fx.syncUi();
+    layoutOpenPanel(globeFxArea, GLOBE_FX_AREA_HEIGHT);
 }
 
 function closeGlobeFxArea() {
@@ -405,11 +403,6 @@ function closeGlobeFxArea() {
     globeFxArea.style.bottom = panelBottom(false);
     setRowLift(0);
     globeFxButton.textContent = '功能';
-}
-
-function satelliteFxAreaHeight() {
-    const measured = satelliteFxArea ? satelliteFxArea.scrollHeight : 0;
-    return Math.min(measured > 0 ? measured : 180, Math.max(150, window.innerHeight - 140));
 }
 
 function syncSatelliteFxUi() {
@@ -427,11 +420,9 @@ function openSatelliteFxArea() {
     if (!satelliteFxArea || !satelliteFxButton) return;
     isSatelliteFxExpanded = true;
     satelliteFxArea.classList.add('is-open');
-    satelliteFxArea.style.maxHeight = satelliteFxAreaHeight() + 'px';
-    satelliteFxArea.style.bottom = panelBottom(true);
-    setTimeout(() => { setRowLift(satelliteFxAreaHeight()); }, 10);
     satelliteFxButton.textContent = '收起';
     syncSatelliteFxUi();
+    layoutOpenPanel(satelliteFxArea, 180);
 }
 
 function closeSatelliteFxArea() {
@@ -493,13 +484,13 @@ window.addEventListener('resize', () => {
     if (satelliteFxArea) satelliteFxArea.style.bottom = panelBottom(isSatelliteFxExpanded);
     // 宽窄屏切换时同步按钮位移（宽屏要抬到面板上方，窄屏归零）
     if (isHelpExpanded) {
-        setRowLift(HELP_AREA_HEIGHT);
+        layoutOpenPanel(expandableArea, HELP_AREA_HEIGHT);
     } else if (isExportExpanded) {
-        setRowLift(EXPORT_AREA_HEIGHT);
+        layoutOpenPanel(exportArea, EXPORT_AREA_HEIGHT);
     } else if (isGlobeFxExpanded) {
-        setRowLift(globeFxAreaHeight());
+        layoutOpenPanel(globeFxArea, GLOBE_FX_AREA_HEIGHT);
     } else if (isSatelliteFxExpanded) {
-        setRowLift(satelliteFxAreaHeight());
+        layoutOpenPanel(satelliteFxArea, 180);
     } else {
         setRowLift(0);
     }

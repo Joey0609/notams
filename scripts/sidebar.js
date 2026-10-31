@@ -46,7 +46,7 @@ function toggleSidebar() {
     }
 
     function onDragStart(e) {
-        if (!isNarrowScreen() || e.target.closest('button')) return;
+        if (!isNarrowScreen() || e.target.closest('button, a')) return;
         
         isDragging = true;
         startY = getClientY(e);

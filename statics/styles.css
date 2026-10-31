@@ -1120,6 +1120,7 @@ body:not(.satellite-active) .satellite-fx-area {display: none !important;}
 #notamSidebarHeader .sidebar-title { flex:1 1 auto; font-size:15px; }
 #notamSidebarHeader .sidebar-tools { gap:4px; }
 #notamSidebarHeader .sidebar-tool { width:28px; height:28px; aspect-ratio:1; display:grid; place-items:center; padding:0; margin:0; border:1px solid rgba(255,255,255,.16); border-radius:10px; background:rgba(255,255,255,.08); color:#edf7ff; cursor:pointer; transition:background .18s,transform .18s; }
+#notamSidebarHeader a.sidebar-tool { box-sizing:border-box; text-decoration:none; }
 #notamSidebarHeader .sidebar-tool svg { width:16px; height:16px; pointer-events:none; }
 #notamSidebarHeader .sidebar-tool:hover { background:rgba(255,255,255,.2); }
 #notamSidebarHeader .sidebar-tool:active { transform:scale(.91); }
