@@ -1,133 +1,5 @@
 [
     {
-        "CODE": "A4703/26",
-        "GEOMETRY": "PATH|M=N230636E1162812|L=N234042E1174425|L=N233012E1174957|L=N225820E1163232|Z",
-        "TIME": "17 SEP 23:30 2026 UNTIL 18 SEP 03:30 2026",
-        "PLATID": "ZGZU_I_ZBBBYNYX_A4703_26",
-        "RAWMESSAGE": "A4703/26 NOTAMN\r\nQ)ZXXX/QRTCA/IV/BO/W/000/999/2536N11651E039\r\nA)ZGZU ZSHA B)2609172330 C)2609180330 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN230636E1162812-N234042E1174425-N233012E1174957-N225820E1163232- \r\nN230636E1162812.\r\nHEIGHT: 35,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 17 SEP 2026 10:17\nSOURCE: ZBBBYNYX",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2026-09.json",
-        "source_index": 20,
-        "classify_key": "c881764708",
-        "Overlapping_Area": 100.0,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A4705/26",
-                "GEOMETRY": "PATH|M=N240013E1174036|L=N235732E1175242|L=N232609E1174457|L=N232853E1173231|Z",
-                "TIME": "17 SEP 23:30 2026 UNTIL 18 SEP 03:30 2026",
-                "PLATID": "ZSHA_I_ZBBBYNYX_A4705_26",
-                "RAWMESSAGE": "A4705/26 NOTAMN\r\nQ)ZSHA/QRTCA/IV/BO/W/000/999/2343N11742E017\r\nA)ZSHA B)2609172330 C)2609180330 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN240013E1174036-N235732E1175242-N232609E1174457-N232853E1173231- \r\nN240013E1174036 .\r\nHEIGHT: 50,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 17 SEP 2026 10:27\nSOURCE: ZBBBYNYX",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2026-09.json",
-                "source_index": 21,
-                "GroupKey": "c881764708",
-                "IsSameGroup": true,
-                "parent_index": 5
-            }
-        ]
-    },
-    {
-        "CODE": "A2743/25",
-        "GEOMETRY": "PATH|M=N230636E1162812|L=N234042E1174425|L=N233012E1174957|L=N225820E1163232|Z",
-        "TIME": "20 AUG 23:00 2025 UNTIL 21 AUG 04:00 2025",
-        "PLATID": "77669952",
-        "RAWMESSAGE": "A2743/25 NOTAMN\nQ) ZXXX/QRTCA/IV/BO/W/000/999/2318N11709E039\nA) ZSHA ZGZU B) 2508202300 C) 2508210400 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\nN230636E1162812-N234042E1174425-N233012E1174957-N225820E1163232,\nBACK TO START.\nVERTICAL LIMITS:SFC-30000M AMSL.\nCIVIL AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) 30000M AMSL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-08.json",
-        "source_index": 23,
-        "classify_key": "c875376986",
-        "Overlapping_Area": 100.0,
-        "Center_Distance": -1.0,
-        "RelatedItems": []
-    },
-    {
-        "CODE": "A5579/26",
-        "GEOMETRY": "PATH|M=N230636E1162812|L=N234042E1174425|L=N233012E1174957|L=N225820E1163232|Z",
-        "TIME": "30 OCT 01:30 2026 UNTIL 30 OCT 02:30 2026",
-        "PLATID": "ZGZU_I_ZBBBYNYX_A5579_26",
-        "RAWMESSAGE": "A5579/26 NOTAMN\r\nQ)ZXXX/QRTCA/IV/BO/W/000/999/2318N11709E039\r\nA)ZGZU ZSHA B)2610300130 C)2610300230 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN230636E1162812-N234042E1174425-N233012E1174957-N225820E1163232- \r\nN230636E1162812 \r\nHEIGHT: 35,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 29 OCT 2026 08:47\nSOURCE: ZBBBYNYX",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2026-10.json",
-        "source_index": 17,
-        "classify_key": "c44061074",
-        "Overlapping_Area": 100.0,
-        "Center_Distance": -1.0,
-        "RelatedItems": []
-    },
-    {
-        "CODE": "A5680/26",
-        "GEOMETRY": "PATH|M=N230636E1162812|L=N234042E1174425|L=N233012E1174957|L=N225820E1163232|Z",
-        "TIME": "03 NOV 01:40 2026 UNTIL 03 NOV 03:00 2026",
-        "PLATID": "ZGZU_I_ZBBBYNYX_A5680_26",
-        "RAWMESSAGE": "A5680/26 NOTAMN\r\nQ)ZXXX/QRTCA/IV/BO/W/000/999/2318N11709E039\r\nA)ZGZU ZSHA B)2611030140 C)2611030300 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN230636E1162812-N234042E1174425-N233012E1174957-N225820E1163232- \r\nN230636E1162812 \r\nHEIGHT: 35,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 02 NOV 2026 13:00\nSOURCE: ZBBBYNYX",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2026-11.json",
-        "source_index": 6,
-        "classify_key": "c294563086",
-        "Overlapping_Area": 100.0,
-        "Center_Distance": -1.0,
-        "RelatedItems": [
-            {
-                "CODE": "A5682/26",
-                "GEOMETRY": "PATH|M=N240013E1174036|L=N235732E1175242|L=N232609E1174457|L=N232853E1173231|Z",
-                "TIME": "03 NOV 01:40 2026 UNTIL 03 NOV 03:00 2026",
-                "PLATID": "ZSHA_I_ZBBBYNYX_A5682_26",
-                "RAWMESSAGE": "A5682/26 NOTAMN\r\nQ)ZSHA/QRTCA/IV/BO/W/000/999/2343N11742E017\r\nA)ZSHA B)2611030140 C)2611030300 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN240013E1174036-N235732E1175242-N232609E1174457-N232853E1173231- \r\nN240013E1174036 \r\nHEIGHT: 50,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 02 NOV 2026 13:05\nSOURCE: ZBBBYNYX",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2026-11.json",
-                "source_index": 7,
-                "GroupKey": "c294563086",
-                "IsSameGroup": true,
-                "parent_index": 5
-            }
-        ]
-    },
-    {
-        "CODE": "A2587/24",
-        "GEOMETRY": "PATH|M=N230800E1162530|L=N225400E1163300|L=N232800E1175035|L=N234055E1174350|Z",
-        "TIME": "28 AUG 00:00 2024 UNTIL 28 AUG 01:30 2024",
-        "PLATID": "73478508",
-        "RAWMESSAGE": "A2587/24 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/2318N11708E040\nA) ZSHA ZGZU B) 2408280000 C) 2408280130 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN230800E1162530-N225400E1163300-N232800E1175035-N234055E1174350-N23\n0800E1162530. VERTICAL LIMITS: BELOW 45000M.\nF) GND G) 45000M AMSL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2024-08.json",
-        "source_index": 13,
-        "classify_key": "c263010786",
-        "Overlapping_Area": 86.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": []
-    },
-    {
-        "CODE": "A2683/24",
-        "GEOMETRY": "PATH|M=N230800E1162530|L=N225400E1163300|L=N232800E1175035|L=N234055E1174350|Z",
-        "TIME": "03 SEP 00:30 2024 UNTIL 03 SEP 02:30 2024",
-        "PLATID": "73539165",
-        "RAWMESSAGE": "A2683/24 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/2318N11708E040\nA) ZSHA ZGZU B) 2409030030 C) 2409030230 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN230800E1162530-N225400E1163300-N232800E1175035-N234055E1174350-N23\n0800E1162530. VERTICAL LIMITS: BELOW 45000M.\nF) GND G) 45000M AMSL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2024-09.json",
-        "source_index": 3,
-        "classify_key": "c640497045",
-        "Overlapping_Area": 86.8,
-        "Center_Distance": -1.0,
-        "RelatedItems": []
-    },
-    {
         "CODE": "A4705/26",
         "GEOMETRY": "PATH|M=N240013E1174036|L=N235732E1175242|L=N232609E1174457|L=N232853E1173231|Z",
         "TIME": "17 SEP 23:30 2026 UNTIL 18 SEP 03:30 2026",
@@ -139,7 +11,7 @@
         "source_file": "2026-09.json",
         "source_index": 21,
         "classify_key": "c881764708",
-        "Overlapping_Area": 7.3,
+        "Overlapping_Area": 100.0,
         "Center_Distance": -1.0,
         "RelatedItems": [
             {
@@ -171,7 +43,7 @@
         "source_file": "2026-11.json",
         "source_index": 7,
         "classify_key": "c294563086",
-        "Overlapping_Area": 7.3,
+        "Overlapping_Area": 100.0,
         "Center_Distance": -1.0,
         "RelatedItems": [
             {
@@ -192,6 +64,134 @@
         ]
     },
     {
+        "CODE": "A4703/26",
+        "GEOMETRY": "PATH|M=N230636E1162812|L=N234042E1174425|L=N233012E1174957|L=N225820E1163232|Z",
+        "TIME": "17 SEP 23:30 2026 UNTIL 18 SEP 03:30 2026",
+        "PLATID": "ZGZU_I_ZBBBYNYX_A4703_26",
+        "RAWMESSAGE": "A4703/26 NOTAMN\r\nQ)ZXXX/QRTCA/IV/BO/W/000/999/2536N11651E039\r\nA)ZGZU ZSHA B)2609172330 C)2609180330 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN230636E1162812-N234042E1174425-N233012E1174957-N225820E1163232- \r\nN230636E1162812.\r\nHEIGHT: 35,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 17 SEP 2026 10:17\nSOURCE: ZBBBYNYX",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-09.json",
+        "source_index": 20,
+        "classify_key": "c881764708",
+        "Overlapping_Area": 7.3,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A4705/26",
+                "GEOMETRY": "PATH|M=N240013E1174036|L=N235732E1175242|L=N232609E1174457|L=N232853E1173231|Z",
+                "TIME": "17 SEP 23:30 2026 UNTIL 18 SEP 03:30 2026",
+                "PLATID": "ZSHA_I_ZBBBYNYX_A4705_26",
+                "RAWMESSAGE": "A4705/26 NOTAMN\r\nQ)ZSHA/QRTCA/IV/BO/W/000/999/2343N11742E017\r\nA)ZSHA B)2609172330 C)2609180330 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN240013E1174036-N235732E1175242-N232609E1174457-N232853E1173231- \r\nN240013E1174036 .\r\nHEIGHT: 50,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 17 SEP 2026 10:27\nSOURCE: ZBBBYNYX",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-09.json",
+                "source_index": 21,
+                "GroupKey": "c881764708",
+                "IsSameGroup": true,
+                "parent_index": 5
+            }
+        ]
+    },
+    {
+        "CODE": "A2743/25",
+        "GEOMETRY": "PATH|M=N230636E1162812|L=N234042E1174425|L=N233012E1174957|L=N225820E1163232|Z",
+        "TIME": "20 AUG 23:00 2025 UNTIL 21 AUG 04:00 2025",
+        "PLATID": "77669952",
+        "RAWMESSAGE": "A2743/25 NOTAMN\nQ) ZXXX/QRTCA/IV/BO/W/000/999/2318N11709E039\nA) ZSHA ZGZU B) 2508202300 C) 2508210400 \nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\nN230636E1162812-N234042E1174425-N233012E1174957-N225820E1163232,\nBACK TO START.\nVERTICAL LIMITS:SFC-30000M AMSL.\nCIVIL AIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) 30000M AMSL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-08.json",
+        "source_index": 23,
+        "classify_key": "c875376986",
+        "Overlapping_Area": 7.3,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A5579/26",
+        "GEOMETRY": "PATH|M=N230636E1162812|L=N234042E1174425|L=N233012E1174957|L=N225820E1163232|Z",
+        "TIME": "30 OCT 01:30 2026 UNTIL 30 OCT 02:30 2026",
+        "PLATID": "ZGZU_I_ZBBBYNYX_A5579_26",
+        "RAWMESSAGE": "A5579/26 NOTAMN\r\nQ)ZXXX/QRTCA/IV/BO/W/000/999/2318N11709E039\r\nA)ZGZU ZSHA B)2610300130 C)2610300230 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN230636E1162812-N234042E1174425-N233012E1174957-N225820E1163232- \r\nN230636E1162812 \r\nHEIGHT: 35,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 29 OCT 2026 08:47\nSOURCE: ZBBBYNYX",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-10.json",
+        "source_index": 17,
+        "classify_key": "c44061074",
+        "Overlapping_Area": 7.3,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A5680/26",
+        "GEOMETRY": "PATH|M=N230636E1162812|L=N234042E1174425|L=N233012E1174957|L=N225820E1163232|Z",
+        "TIME": "03 NOV 01:40 2026 UNTIL 03 NOV 03:00 2026",
+        "PLATID": "ZGZU_I_ZBBBYNYX_A5680_26",
+        "RAWMESSAGE": "A5680/26 NOTAMN\r\nQ)ZXXX/QRTCA/IV/BO/W/000/999/2318N11709E039\r\nA)ZGZU ZSHA B)2611030140 C)2611030300 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN230636E1162812-N234042E1174425-N233012E1174957-N225820E1163232- \r\nN230636E1162812 \r\nHEIGHT: 35,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 02 NOV 2026 13:00\nSOURCE: ZBBBYNYX",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2026-11.json",
+        "source_index": 6,
+        "classify_key": "c294563086",
+        "Overlapping_Area": 7.3,
+        "Center_Distance": -1.0,
+        "RelatedItems": [
+            {
+                "CODE": "A5682/26",
+                "GEOMETRY": "PATH|M=N240013E1174036|L=N235732E1175242|L=N232609E1174457|L=N232853E1173231|Z",
+                "TIME": "03 NOV 01:40 2026 UNTIL 03 NOV 03:00 2026",
+                "PLATID": "ZSHA_I_ZBBBYNYX_A5682_26",
+                "RAWMESSAGE": "A5682/26 NOTAMN\r\nQ)ZSHA/QRTCA/IV/BO/W/000/999/2343N11742E017\r\nA)ZSHA B)2611030140 C)2611030300 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED BOUNDED BY:\r\nN240013E1174036-N235732E1175242-N232609E1174457-N232853E1173231- \r\nN240013E1174036 \r\nHEIGHT: 50,000M AND BELOW.\r\nF)GND G)UNL\n\nCREATED: 02 NOV 2026 13:05\nSOURCE: ZBBBYNYX",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-11.json",
+                "source_index": 7,
+                "GroupKey": "c294563086",
+                "IsSameGroup": true,
+                "parent_index": 5
+            }
+        ]
+    },
+    {
+        "CODE": "A2587/24",
+        "GEOMETRY": "PATH|M=N230800E1162530|L=N225400E1163300|L=N232800E1175035|L=N234055E1174350|Z",
+        "TIME": "28 AUG 00:00 2024 UNTIL 28 AUG 01:30 2024",
+        "PLATID": "73478508",
+        "RAWMESSAGE": "A2587/24 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/2318N11708E040\nA) ZSHA ZGZU B) 2408280000 C) 2408280130 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN230800E1162530-N225400E1163300-N232800E1175035-N234055E1174350-N23\n0800E1162530. VERTICAL LIMITS: BELOW 45000M.\nF) GND G) 45000M AMSL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2024-08.json",
+        "source_index": 13,
+        "classify_key": "c263010786",
+        "Overlapping_Area": 6.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
+        "CODE": "A2683/24",
+        "GEOMETRY": "PATH|M=N230800E1162530|L=N225400E1163300|L=N232800E1175035|L=N234055E1174350|Z",
+        "TIME": "03 SEP 00:30 2024 UNTIL 03 SEP 02:30 2024",
+        "PLATID": "73539165",
+        "RAWMESSAGE": "A2683/24 NOTAMN\nQ) ZXXX/QRDCA/IV/BO/W/000/999/2318N11708E040\nA) ZSHA ZGZU B) 2409030030 C) 2409030230 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN230800E1162530-N225400E1163300-N232800E1175035-N234055E1174350-N23\n0800E1162530. VERTICAL LIMITS: BELOW 45000M.\nF) GND G) 45000M AMSL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2024-09.json",
+        "source_index": 3,
+        "classify_key": "c640497045",
+        "Overlapping_Area": 6.7,
+        "Center_Distance": -1.0,
+        "RelatedItems": []
+    },
+    {
         "CODE": "A6504/22",
         "GEOMETRY": "PATH|M=N213400E1183300|L=N221400E1170400|L=N225400E1172400|L=N221300E1185400|Z",
         "TIME": "24 NOV 22:00 2022 UNTIL 28 NOV 02:00 2022",
@@ -204,7 +204,7 @@
         "source_index": 8,
         "classify_key": "c753804644",
         "Overlapping_Area": 0.0,
-        "Center_Distance": 148.0,
+        "Center_Distance": 168.0,
         "RelatedItems": [
             {
                 "CODE": "A1252/22",
@@ -236,7 +236,7 @@
         "source_index": 16,
         "classify_key": "c547093382",
         "Overlapping_Area": 0.0,
-        "Center_Distance": 148.0,
+        "Center_Distance": 168.0,
         "RelatedItems": []
     },
     {
@@ -252,7 +252,7 @@
         "source_index": 17,
         "classify_key": "c421262059",
         "Overlapping_Area": 0.0,
-        "Center_Distance": 148.0,
+        "Center_Distance": 168.0,
         "RelatedItems": []
     }
 ]
