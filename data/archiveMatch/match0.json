@@ -10,7 +10,7 @@
         "FIR": "",
         "source_file": "2026-11.json",
         "source_index": 0,
-        "classify_key": "c590670213",
+        "classify_key": "c255124787",
         "Overlapping_Area": 100.0,
         "Center_Distance": -1.0,
         "RelatedItems": [
@@ -25,7 +25,7 @@
                 "FIR": "",
                 "source_file": "2026-11.json",
                 "source_index": 4,
-                "GroupKey": "c590670213",
+                "GroupKey": "c255124787",
                 "IsSameGroup": true,
                 "parent_index": 0
             },
@@ -40,22 +40,22 @@
                 "FIR": "",
                 "source_file": "2026-11.json",
                 "source_index": 5,
-                "GroupKey": "c590670213",
+                "GroupKey": "c255124787",
                 "IsSameGroup": true,
                 "parent_index": 0
             },
             {
-                "CODE": "E4059/26",
-                "GEOMETRY": "PATH|M=S082930E0893021|L=S081617E0883700|L=S020000E0895007|L=S020000E0903600|L=S020000E0904500|Z",
+                "CODE": "E4164/26",
+                "GEOMETRY": "PATH|M=S020000E0895007|L=S020000E0903600|L=S020000E0904500|L=S082700E0892800|L=S081700E0883300|Z",
                 "TIME": "06 NOV 23:31 2026 UNTIL 07 NOV 00:10 2026",
-                "PLATID": "YMMM_I_YBBBZEZX_E4059_26",
-                "RAWMESSAGE": "E4059/26 NOTAMN\r\nQ) YMMM/QRDCA/IV/BO/W/000/999/0512S08951E200\r\nA) YMMM\r\nB) 2611062331 C) 2611070010\r\nD) DAILY 2331-0010\r\nE) TEMPO DANGER AREA ACT\r\nDUE CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\r\nFLW RECEIVED FM CIVIL AVIATION ADMINISTRATION OF CHINA:\r\nTHE FLIGHT SAFETY OF ACFT MAY BE AFFECTED IN THE FOLLOWING 'AREA PH'\r\nBOUNDED BY 082930S 0893021E - 081617S 0883700E - 020000S 0895007E -\r\n020000S 0903600E - 020000S 0904500E - 082930S 0893021E TO BEGINNING.\r\nF) SFC G) UNL\n\nCREATED: 02 NOV 2026 05:54\nSOURCE: YBBBZEZX",
+                "PLATID": "YMMM_I_YBBBZEZX_E4164_26",
+                "RAWMESSAGE": "E4164/26 NOTAMN\r\nQ) YMMM/QRDCA/IV/BO/W/000/999/0509S08939E210\r\nA) YMMM\r\nB) 2611062331 C) 2611070010\r\nE) TEMPO DANGER AREA ACT\r\nDUE CHINESE AEROSPACE FLIGHT ACTIVITIES WILL TAKE PLACE\r\nFLW RECEIVED FM CIVIL AVIATION ADMINISTRATION OF CHINA:\r\nTHE FLIGHT SAFETY OF ACFT MAY BE AFFECTED IN THE FOLLOWING 'AREA PH'\r\nBOUNDED BY 020000S 0895007E - 020000S 0903600E - 020000S 0904500E -\r\n082700S 0892800E - 081700S 0883300E TO BEGINNING\r\nF) SFC G) UNL\n\nCREATED: 06 NOV 2026 10:18\nSOURCE: YBBBZEZX",
                 "ALTITUDE": "0 ~ INF 米",
                 "SOURCE": "NOTAM",
                 "FIR": "",
                 "source_file": "2026-11.json",
-                "source_index": 23,
-                "GroupKey": "c590670213",
+                "source_index": 24,
+                "GroupKey": "c255124787",
                 "IsSameGroup": true,
                 "parent_index": 0
             }
