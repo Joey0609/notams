@@ -516,7 +516,6 @@ def build_source_snapshots(batches, previous_payload, focused_batch, fir_candida
             data = merge_source_batches(entry['batches'])
             backfill_fir_from_text(data, fir_candidates)
             harmonize_fir_by_platid(data)
-            filter_expired_records(data, grace_hours=24)
             data['ALTITUDE'] = extract_altitude(data['RAWMESSAGE'])
             focused = entry['focused'] & _record_keys(data)
         else:
@@ -538,6 +537,10 @@ def build_source_snapshots(batches, previous_payload, focused_batch, fir_candida
                 established = any(section_names.get(source) in previous_payload for source in source_types)
                 focused = _record_keys(previous_payload.get('FOCUSED_NOTAM_DATA', {})) & _record_keys(data)
             print(f'[来源冻结] {provider}: 沿用旧数据 {len(data.get("CODE", []))} 条')
+        # A failed request cannot revoke a warning, but its known end time still
+        # applies to cached records. Keep the same 24-hour grace as fresh data.
+        filter_expired_records(data, grace_hours=24)
+        focused.intersection_update(_record_keys(data))
         # Only canonicalize the persisted copy; keep first-seen merge precedence.
         snapshots[provider] = sorted_snapshot_records(data)
         snapshots[provider]['FOCUSED_KEYS'] = [list(key) for key in sorted(focused)]
