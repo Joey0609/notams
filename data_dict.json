@@ -340,7 +340,8 @@
             "NOTMAR 58114",
             "NOTMAR 58116",
             "NOTMAR 58119",
-            "NOTMAR 58120"
+            "NOTMAR 58120",
+            "NOTMAR 58121"
         ],
         "TIME": [
             "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
@@ -353,6 +354,7 @@
             "09 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
+            "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026"
         ],
@@ -368,7 +370,8 @@
             "USCG:58114:1",
             "USCG:58116:1",
             "USCG:58119:1",
-            "USCG:58120:1"
+            "USCG:58120:1",
+            "USCG:58121:1"
         ],
         "RAWMESSAGE": [
             "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
@@ -382,9 +385,11 @@
             "USCG NOTMAR 58114\nA) USCG\nE) Potential for space debris from the reentry of the Starship-Super Heavy Starship | Flight 15 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from November 14, 2026 to November 21, 2026 between 1217-1544 HST (2217-0144 UTC) in an area bounded by the following coordinates:\n09-09N 153-46E, \n10-48N 156-18E, \n14-04N 162-04E, \n16-07N 165-35E, \n20-38N 174-31E, \n22-43N 179-15E, \n24-51N 176-13W, \n25-53N 173-20W, \n26-04N 171-02W, \n28-31N 161-14W, \n30-33N 150-16W, \n29-23N 150-15W, \n26-01N 153-49W, \n24-46N 154-54W, \n25-24N 157-46W, \n24-54N 161-42W, \n23-11N 168-32W, \n22-08N 173-08W, \n20-12N 179-07W, \n19-21N 178-12E, \n18-13N 174-58E, \n17-02N 170-17E, \n15-11N 165-56E, \n11-55N 159-26E, \n08-48N 154-06E",
             "USCG NOTMAR 58116\nA) USCG\nE) Potential for space debris from the reentry of the Starship-Super Heavy Starship | Flight 15 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from November 14, 2026 to November 21, 2026 between 1217-1544 HST (2217-0144 UTC) in an area bounded by the following coordinates:\n09-09N 153-46E, \n10-48N 156-18E, \n14-04N 162-04E, \n16-07N 165-35E, \n20-38N 174-31E, \n22-43N 179-15E, \n24-51N 176-13W, \n25-53N 173-20W, \n26-04N 171-02W, \n28-31N 161-14W, \n30-33N 150-16W, \n29-23N 150-15W, \n26-01N 153-49W, \n24-46N 154-54W, \n25-24N 157-46W, \n24-54N 161-42W, \n23-11N 168-32W, \n22-08N 173-08W, \n20-12N 179-07W, \n19-21N 178-12E, \n18-13N 174-58E, \n17-02N 170-17E, \n15-11N 165-56E, \n11-55N 159-26E, \n08-48N 154-06E",
             "USCG NOTMAR 58119\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 162350 Z NOV and 280335 Z NOV 2026.\nHazardous operation areas are bounded by the following coordinates:  \nHazard Area LOS ANGELES: \n33.783333N, -119.25W\n33.75N, -119.3W\n33.6N, -119.3W\n33.55N, -119.233333W\n33.55N, -119.116667W\n33.616667N, -119.033333W\n33.75N, -119.033333W\n33.783333N, -119.083333W\n33.783333N, -119.25W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
-            "USCG NOTMAR 58120\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 172320Z NOV and 280330Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area OCEANSIDE: \n33.116667N, -117.833333W\n33.083333N, -117.9W\n32.933333N, -117.9W\n32.883333N, -117.833333W\n32.883333N, -117.716667W\n32.95N, -117.633333W\n33.083333N, -117.633333W\n33.116667N, -117.683333W\n33.116667N, -117.833333W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16"
+            "USCG NOTMAR 58120\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 172320Z NOV and 280330Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area OCEANSIDE: \n33.116667N, -117.833333W\n33.083333N, -117.9W\n32.933333N, -117.9W\n32.883333N, -117.833333W\n32.883333N, -117.716667W\n32.95N, -117.633333W\n33.083333N, -117.633333W\n33.116667N, -117.683333W\n33.116667N, -117.833333W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
+            "USCG NOTMAR 58121\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean, will occur between 172315Z NOV and 280335Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area SAN DIEGO: \n32.7N, -117.8W\n32.666667N, -117.85W\n32.516667N, -117.85W\n32.466667N, -117.783333W\n32.466667N, -117.666667W\n32.533333N, -117.583333W\n32.666667N, -117.583333W\n32.7N, -117.633333W\n32.7N, -117.8W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16."
         ],
         "ALTITUDE": [
+            "None",
             "None",
             "None",
             "None",
@@ -410,6 +415,7 @@
             "NOTMAR",
             "NOTMAR",
             "NOTMAR",
+            "NOTMAR",
             "NOTMAR"
         ],
         "FIR": [
@@ -423,6 +429,7 @@
             "8",
             "14",
             "14",
+            "11",
             "11",
             "11"
         ],
@@ -438,7 +445,8 @@
             "PATH|M=N303300W1501600|L=N283100W1611400|L=N260400W1710200|L=N255300W1732000|L=N201200W1790700|L=N220800W1730800|L=N231100W1683200|L=N245400W1614200|L=N252400W1574600|L=N244600W1545400|L=N260100W1534900|L=N292300W1501500|Z",
             "PATH|M=N224300E1791500|L=N203800E1743100|L=N160700E1653500|L=N140400E1620400|L=N104800E1561800|L=N090900E1534600|L=N084800E1540600|L=N115500E1592600|L=N151100E1655600|L=N170200E1701700|L=N181300E1745800|L=N192100E1781200|Z",
             "PATH|M=N334700W1191500|L=N334500W1191800|L=N333600W1191800|L=N333300W1191400|L=N333300W1190700|L=N333700W1190200|L=N334500W1190200|L=N334700W1190500|Z",
-            "PATH|M=N330705W1174103|L=N330705W1175003|L=N330505W1175403|L=N325605W1175403|L=N325305W1175003|L=N325305W1174303|L=N325705W1173803|L=N330505W1173803|Z"
+            "PATH|M=N330705W1174103|L=N330705W1175003|L=N330505W1175403|L=N325605W1175403|L=N325305W1175003|L=N325305W1174303|L=N325705W1173803|L=N330505W1173803|Z",
+            "PATH|M=N324200W1174800|L=N324000W1175100|L=N323100W1175100|L=N322800W1174700|L=N322800W1174000|L=N323200W1173500|L=N324000W1173500|L=N324200W1173800|Z"
         ],
         "CLASSIFY": {
             "c217225490": [
@@ -446,10 +454,6 @@
             ],
             "c217618452": [
                 "NOTMAR 57659"
-            ],
-            "c299797973": [
-                "NOTMAR 58119",
-                "NOTMAR 58120"
             ],
             "c578996250": [
                 "NOTMAR 57714",
@@ -464,12 +468,17 @@
             ],
             "c796038164": [
                 "NOTMAR 40014"
+            ],
+            "c978660508": [
+                "NOTMAR 58119",
+                "NOTMAR 58120",
+                "NOTMAR 58121"
             ]
         },
-        "NUM": 12,
-        "HASH": "f3d2c2fa48c7e81d2181e6a6e49c073f5a66628005192b852193d159e24cee7c"
+        "NUM": 13,
+        "HASH": "2e68e1f575f01ff03e90ed7a8ba5c70061fc3aef1c48b5ef40ef113e7c859e2c"
     },
-    "HASH": "7d5a0939700ef7c91822fba7d35de92c8c621fea3b3a63e46a7d2994d123d94e",
+    "HASH": "0747d57fad2adae3e7faae79e9c98af50395938aa91466ad8c3abfcbe3cb2174",
     "HASH_NOTAM": "2fade19b38d42c1a7cb6e880d9282b37237721ebe8c7bca59109709420b22def",
     "HASH_FOCUSED": "eea2c573d17cea50842995f913874d4b0f53dc70ee3ac81348cfbd823ad3e9c4",
     "FETCH_VALID": true,
@@ -787,7 +796,8 @@
                 "NOTMAR 58114",
                 "NOTMAR 58116",
                 "NOTMAR 58119",
-                "NOTMAR 58120"
+                "NOTMAR 58120",
+                "NOTMAR 58121"
             ],
             "TIME": [
                 "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
@@ -800,6 +810,7 @@
                 "09 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
+                "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026"
             ],
@@ -815,7 +826,8 @@
                 "USCG:58114:1",
                 "USCG:58116:1",
                 "USCG:58119:1",
-                "USCG:58120:1"
+                "USCG:58120:1",
+                "USCG:58121:1"
             ],
             "RAWMESSAGE": [
                 "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
@@ -829,9 +841,11 @@
                 "USCG NOTMAR 58114\nA) USCG\nE) Potential for space debris from the reentry of the Starship-Super Heavy Starship | Flight 15 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from November 14, 2026 to November 21, 2026 between 1217-1544 HST (2217-0144 UTC) in an area bounded by the following coordinates:\n09-09N 153-46E, \n10-48N 156-18E, \n14-04N 162-04E, \n16-07N 165-35E, \n20-38N 174-31E, \n22-43N 179-15E, \n24-51N 176-13W, \n25-53N 173-20W, \n26-04N 171-02W, \n28-31N 161-14W, \n30-33N 150-16W, \n29-23N 150-15W, \n26-01N 153-49W, \n24-46N 154-54W, \n25-24N 157-46W, \n24-54N 161-42W, \n23-11N 168-32W, \n22-08N 173-08W, \n20-12N 179-07W, \n19-21N 178-12E, \n18-13N 174-58E, \n17-02N 170-17E, \n15-11N 165-56E, \n11-55N 159-26E, \n08-48N 154-06E",
                 "USCG NOTMAR 58116\nA) USCG\nE) Potential for space debris from the reentry of the Starship-Super Heavy Starship | Flight 15 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from November 14, 2026 to November 21, 2026 between 1217-1544 HST (2217-0144 UTC) in an area bounded by the following coordinates:\n09-09N 153-46E, \n10-48N 156-18E, \n14-04N 162-04E, \n16-07N 165-35E, \n20-38N 174-31E, \n22-43N 179-15E, \n24-51N 176-13W, \n25-53N 173-20W, \n26-04N 171-02W, \n28-31N 161-14W, \n30-33N 150-16W, \n29-23N 150-15W, \n26-01N 153-49W, \n24-46N 154-54W, \n25-24N 157-46W, \n24-54N 161-42W, \n23-11N 168-32W, \n22-08N 173-08W, \n20-12N 179-07W, \n19-21N 178-12E, \n18-13N 174-58E, \n17-02N 170-17E, \n15-11N 165-56E, \n11-55N 159-26E, \n08-48N 154-06E",
                 "USCG NOTMAR 58119\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 162350 Z NOV and 280335 Z NOV 2026.\nHazardous operation areas are bounded by the following coordinates:  \nHazard Area LOS ANGELES: \n33.783333N, -119.25W\n33.75N, -119.3W\n33.6N, -119.3W\n33.55N, -119.233333W\n33.55N, -119.116667W\n33.616667N, -119.033333W\n33.75N, -119.033333W\n33.783333N, -119.083333W\n33.783333N, -119.25W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
-                "USCG NOTMAR 58120\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 172320Z NOV and 280330Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area OCEANSIDE: \n33.116667N, -117.833333W\n33.083333N, -117.9W\n32.933333N, -117.9W\n32.883333N, -117.833333W\n32.883333N, -117.716667W\n32.95N, -117.633333W\n33.083333N, -117.633333W\n33.116667N, -117.683333W\n33.116667N, -117.833333W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16"
+                "USCG NOTMAR 58120\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 172320Z NOV and 280330Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area OCEANSIDE: \n33.116667N, -117.833333W\n33.083333N, -117.9W\n32.933333N, -117.9W\n32.883333N, -117.833333W\n32.883333N, -117.716667W\n32.95N, -117.633333W\n33.083333N, -117.633333W\n33.116667N, -117.683333W\n33.116667N, -117.833333W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
+                "USCG NOTMAR 58121\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean, will occur between 172315Z NOV and 280335Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area SAN DIEGO: \n32.7N, -117.8W\n32.666667N, -117.85W\n32.516667N, -117.85W\n32.466667N, -117.783333W\n32.466667N, -117.666667W\n32.533333N, -117.583333W\n32.666667N, -117.583333W\n32.7N, -117.633333W\n32.7N, -117.8W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16."
             ],
             "ALTITUDE": [
+                "None",
                 "None",
                 "None",
                 "None",
@@ -857,6 +871,7 @@
                 "NOTMAR",
                 "NOTMAR",
                 "NOTMAR",
+                "NOTMAR",
                 "NOTMAR"
             ],
             "FIR": [
@@ -870,6 +885,7 @@
                 "8",
                 "14",
                 "14",
+                "11",
                 "11",
                 "11"
             ],
@@ -885,12 +901,13 @@
                 "PATH|M=N303300W1501600|L=N283100W1611400|L=N260400W1710200|L=N255300W1732000|L=N201200W1790700|L=N220800W1730800|L=N231100W1683200|L=N245400W1614200|L=N252400W1574600|L=N244600W1545400|L=N260100W1534900|L=N292300W1501500|Z",
                 "PATH|M=N224300E1791500|L=N203800E1743100|L=N160700E1653500|L=N140400E1620400|L=N104800E1561800|L=N090900E1534600|L=N084800E1540600|L=N115500E1592600|L=N151100E1655600|L=N170200E1701700|L=N181300E1745800|L=N192100E1781200|Z",
                 "PATH|M=N334700W1191500|L=N334500W1191800|L=N333600W1191800|L=N333300W1191400|L=N333300W1190700|L=N333700W1190200|L=N334500W1190200|L=N334700W1190500|Z",
-                "PATH|M=N330705W1174103|L=N330705W1175003|L=N330505W1175403|L=N325605W1175403|L=N325305W1175003|L=N325305W1174303|L=N325705W1173803|L=N330505W1173803|Z"
+                "PATH|M=N330705W1174103|L=N330705W1175003|L=N330505W1175403|L=N325605W1175403|L=N325305W1175003|L=N325305W1174303|L=N325705W1173803|L=N330505W1173803|Z",
+                "PATH|M=N324200W1174800|L=N324000W1175100|L=N323100W1175100|L=N322800W1174700|L=N322800W1174000|L=N323200W1173500|L=N324000W1173500|L=N324200W1173800|Z"
             ],
             "FOCUSED_KEYS": [],
             "ESTABLISHED": true
         }
     },
     "MATCH_AVAILABLE": true,
-    "MSA_CACHE_HASH": "7d5a0939700ef7c91822fba7d35de92c8c621fea3b3a63e46a7d2994d123d94e"
+    "MSA_CACHE_HASH": "0747d57fad2adae3e7faae79e9c98af50395938aa91466ad8c3abfcbe3cb2174"
 }
