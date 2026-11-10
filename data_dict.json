@@ -345,7 +345,8 @@
             "NOTMAR 58120",
             "NOTMAR 58121",
             "NOTMAR 58122",
-            "NOTMAR 58123"
+            "NOTMAR 58123",
+            "NOTMAR 58124"
         ],
         "TIME": [
             "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
@@ -362,6 +363,7 @@
             "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 28 NOV 23:59 2026",
+            "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026"
         ],
         "PLATID": [
@@ -379,7 +381,8 @@
             "USCG:58120:1",
             "USCG:58121:1",
             "USCG:58122:1",
-            "USCG:58123:1"
+            "USCG:58123:1",
+            "USCG:58124:1"
         ],
         "RAWMESSAGE": [
             "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
@@ -396,9 +399,11 @@
             "USCG NOTMAR 58120\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 172320Z NOV and 280330Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area OCEANSIDE: \n33.116667N, -117.833333W\n33.083333N, -117.9W\n32.933333N, -117.9W\n32.883333N, -117.833333W\n32.883333N, -117.716667W\n32.95N, -117.633333W\n33.083333N, -117.633333W\n33.116667N, -117.683333W\n33.116667N, -117.833333W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
             "USCG NOTMAR 58121\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean, will occur between 172315Z NOV and 280335Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area SAN DIEGO: \n32.7N, -117.8W\n32.666667N, -117.85W\n32.516667N, -117.85W\n32.466667N, -117.783333W\n32.466667N, -117.666667W\n32.533333N, -117.583333W\n32.666667N, -117.583333W\n32.7N, -117.633333W\n32.7N, -117.8W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
             "USCG NOTMAR 58122\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 162345Z NOV 2026 to 272015Z NOV 2026 Hazardous operation areas are bounded by the following coordinates:\n\nTrunk Hazard Area:\n28.26667N, -124.91667W\n26.65000N, -125.80000W\n23.80000N, -128.58333W\n19.55000N, -132.40000W\n20.60000N, -133.65000W\n24.86667N, -129.85000W\n27.75000N, -127.05000W\n28.65000N, -125.35000W\n28.26667N, -124.91667W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
-            "USCG NOTMAR 58123\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 180700Z NOV 2026 to 280355Z NOV 2026 Hazardous operation areas are bounded by the following coordinates:\n\nTrunk Hazard Area:\n38.31667N, -125.98333W\n38.95000N, -128.08333W\n41.18333N, -132.08333W\n44.11667N, -138.41667W\n45.50000N, -137.35000W\n42.50000N, -130.91667W\n40.21667N, -126.88333W\n38.73333N, -125.56667W\n38.31667N, -125.98333W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16"
+            "USCG NOTMAR 58123\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 180700Z NOV 2026 to 280355Z NOV 2026 Hazardous operation areas are bounded by the following coordinates:\n\nTrunk Hazard Area:\n38.31667N, -125.98333W\n38.95000N, -128.08333W\n41.18333N, -132.08333W\n44.11667N, -138.41667W\n45.50000N, -137.35000W\n42.50000N, -130.91667W\n40.21667N, -126.88333W\n38.73333N, -125.56667W\n38.31667N, -125.98333W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
+            "USCG NOTMAR 58124\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 180700Z NOV 2026 to 280350Z NOV 2026 Hazardous operation areas are bounded by the following coordinates:\nTrunk Hazard Area:\n37.70000N, -124.46667W\n38.36667N, -126.53333W\n40.65000N, -130.48333W\n43.63333N, -136.68333W\n45.00000N, -135.60000W\n41.95000N, -129.31667W\n39.61667N, -125.33333W\n38.13333N, -124.05000W\n37.70000N, -124.46667W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16"
         ],
         "ALTITUDE": [
+            "None",
             "None",
             "None",
             "None",
@@ -430,6 +435,7 @@
             "NOTMAR",
             "NOTMAR",
             "NOTMAR",
+            "NOTMAR",
             "NOTMAR"
         ],
         "FIR": [
@@ -447,6 +453,7 @@
             "11",
             "11",
             "11",
+            "13",
             "13"
         ],
         "GEOMETRY": [
@@ -464,7 +471,8 @@
             "PATH|M=N330705W1174103|L=N330705W1175003|L=N330505W1175403|L=N325605W1175403|L=N325305W1175003|L=N325305W1174303|L=N325705W1173803|L=N330505W1173803|Z",
             "PATH|M=N324200W1174800|L=N324000W1175100|L=N323100W1175100|L=N322800W1174700|L=N322800W1174000|L=N323200W1173500|L=N324000W1173500|L=N324200W1173800|Z",
             "PATH|M=N283900W1252100|L=N274500W1270300|L=N245200W1295100|L=N203600W1333900|L=N193300W1322400|L=N234800W1283500|L=N263900W1254800|L=N281600W1245500|Z",
-            "PATH|M=N453000W1372100|L=N440700W1382500|L=N411100W1320500|L=N385700W1280500|L=N381900W1255900|L=N384400W1253400|L=N401300W1265300|L=N423000W1305500|Z"
+            "PATH|M=N453000W1372100|L=N440700W1382500|L=N411100W1320500|L=N385700W1280500|L=N381900W1255900|L=N384400W1253400|L=N401300W1265300|L=N423000W1305500|Z",
+            "PATH|M=N450000W1353600|L=N433800W1364100|L=N403900W1302900|L=N382200W1263200|L=N382200W1242800|L=N374200W1242800|L=N380800W1240300|L=N393700W1252000|L=N415700W1291900|Z"
         ],
         "CLASSIFY": {
             "c217225490": [
@@ -473,12 +481,13 @@
             "c217618452": [
                 "NOTMAR 57659"
             ],
-            "c462776798": [
+            "c339068214": [
                 "NOTMAR 58119",
                 "NOTMAR 58120",
                 "NOTMAR 58121",
                 "NOTMAR 58122",
-                "NOTMAR 58123"
+                "NOTMAR 58123",
+                "NOTMAR 58124"
             ],
             "c578996250": [
                 "NOTMAR 57714",
@@ -495,10 +504,10 @@
                 "NOTMAR 40014"
             ]
         },
-        "NUM": 15,
-        "HASH": "4c94a545732f7d3bc184c7ecf2b4372ad70b99c04f0ff9d050c6d229b4fe6f73"
+        "NUM": 16,
+        "HASH": "7393a779d12659c8e21b84d51afb0d2831653a38aefed4c8e7bc4ce8611bb3bf"
     },
-    "HASH": "6724ed47ad43a08730cb30d68d93195df161ecbe6905fabf6c6d689ac9f5ebe3",
+    "HASH": "d5334b044680e614f60ef42032662c823066e2d78086fd52cd2a93a2a468dc89",
     "HASH_NOTAM": "19b127e04b2c2d7614c73a819830613dc6fe62bc84a1b593c7dff852b981921b",
     "HASH_FOCUSED": "eea2c573d17cea50842995f913874d4b0f53dc70ee3ac81348cfbd823ad3e9c4",
     "FETCH_VALID": true,
@@ -819,7 +828,8 @@
                 "NOTMAR 58120",
                 "NOTMAR 58121",
                 "NOTMAR 58122",
-                "NOTMAR 58123"
+                "NOTMAR 58123",
+                "NOTMAR 58124"
             ],
             "TIME": [
                 "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
@@ -836,6 +846,7 @@
                 "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 28 NOV 23:59 2026",
+                "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026"
             ],
             "PLATID": [
@@ -853,7 +864,8 @@
                 "USCG:58120:1",
                 "USCG:58121:1",
                 "USCG:58122:1",
-                "USCG:58123:1"
+                "USCG:58123:1",
+                "USCG:58124:1"
             ],
             "RAWMESSAGE": [
                 "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
@@ -870,9 +882,11 @@
                 "USCG NOTMAR 58120\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 172320Z NOV and 280330Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area OCEANSIDE: \n33.116667N, -117.833333W\n33.083333N, -117.9W\n32.933333N, -117.9W\n32.883333N, -117.833333W\n32.883333N, -117.716667W\n32.95N, -117.633333W\n33.083333N, -117.633333W\n33.116667N, -117.683333W\n33.116667N, -117.833333W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
                 "USCG NOTMAR 58121\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean, will occur between 172315Z NOV and 280335Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:  \n\nHazard Area SAN DIEGO: \n32.7N, -117.8W\n32.666667N, -117.85W\n32.516667N, -117.85W\n32.466667N, -117.783333W\n32.466667N, -117.666667W\n32.533333N, -117.583333W\n32.666667N, -117.583333W\n32.7N, -117.633333W\n32.7N, -117.8W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
                 "USCG NOTMAR 58122\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 162345Z NOV 2026 to 272015Z NOV 2026 Hazardous operation areas are bounded by the following coordinates:\n\nTrunk Hazard Area:\n28.26667N, -124.91667W\n26.65000N, -125.80000W\n23.80000N, -128.58333W\n19.55000N, -132.40000W\n20.60000N, -133.65000W\n24.86667N, -129.85000W\n27.75000N, -127.05000W\n28.65000N, -125.35000W\n28.26667N, -124.91667W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
-                "USCG NOTMAR 58123\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 180700Z NOV 2026 to 280355Z NOV 2026 Hazardous operation areas are bounded by the following coordinates:\n\nTrunk Hazard Area:\n38.31667N, -125.98333W\n38.95000N, -128.08333W\n41.18333N, -132.08333W\n44.11667N, -138.41667W\n45.50000N, -137.35000W\n42.50000N, -130.91667W\n40.21667N, -126.88333W\n38.73333N, -125.56667W\n38.31667N, -125.98333W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16"
+                "USCG NOTMAR 58123\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 180700Z NOV 2026 to 280355Z NOV 2026 Hazardous operation areas are bounded by the following coordinates:\n\nTrunk Hazard Area:\n38.31667N, -125.98333W\n38.95000N, -128.08333W\n41.18333N, -132.08333W\n44.11667N, -138.41667W\n45.50000N, -137.35000W\n42.50000N, -130.91667W\n40.21667N, -126.88333W\n38.73333N, -125.56667W\n38.31667N, -125.98333W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
+                "USCG NOTMAR 58124\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 180700Z NOV 2026 to 280350Z NOV 2026 Hazardous operation areas are bounded by the following coordinates:\nTrunk Hazard Area:\n37.70000N, -124.46667W\n38.36667N, -126.53333W\n40.65000N, -130.48333W\n43.63333N, -136.68333W\n45.00000N, -135.60000W\n41.95000N, -129.31667W\n39.61667N, -125.33333W\n38.13333N, -124.05000W\n37.70000N, -124.46667W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16"
             ],
             "ALTITUDE": [
+                "None",
                 "None",
                 "None",
                 "None",
@@ -904,6 +918,7 @@
                 "NOTMAR",
                 "NOTMAR",
                 "NOTMAR",
+                "NOTMAR",
                 "NOTMAR"
             ],
             "FIR": [
@@ -921,6 +936,7 @@
                 "11",
                 "11",
                 "11",
+                "13",
                 "13"
             ],
             "GEOMETRY": [
@@ -938,12 +954,13 @@
                 "PATH|M=N330705W1174103|L=N330705W1175003|L=N330505W1175403|L=N325605W1175403|L=N325305W1175003|L=N325305W1174303|L=N325705W1173803|L=N330505W1173803|Z",
                 "PATH|M=N324200W1174800|L=N324000W1175100|L=N323100W1175100|L=N322800W1174700|L=N322800W1174000|L=N323200W1173500|L=N324000W1173500|L=N324200W1173800|Z",
                 "PATH|M=N283900W1252100|L=N274500W1270300|L=N245200W1295100|L=N203600W1333900|L=N193300W1322400|L=N234800W1283500|L=N263900W1254800|L=N281600W1245500|Z",
-                "PATH|M=N453000W1372100|L=N440700W1382500|L=N411100W1320500|L=N385700W1280500|L=N381900W1255900|L=N384400W1253400|L=N401300W1265300|L=N423000W1305500|Z"
+                "PATH|M=N453000W1372100|L=N440700W1382500|L=N411100W1320500|L=N385700W1280500|L=N381900W1255900|L=N384400W1253400|L=N401300W1265300|L=N423000W1305500|Z",
+                "PATH|M=N450000W1353600|L=N433800W1364100|L=N403900W1302900|L=N382200W1263200|L=N382200W1242800|L=N374200W1242800|L=N380800W1240300|L=N393700W1252000|L=N415700W1291900|Z"
             ],
             "FOCUSED_KEYS": [],
             "ESTABLISHED": true
         }
     },
     "MATCH_AVAILABLE": true,
-    "MSA_CACHE_HASH": "6724ed47ad43a08730cb30d68d93195df161ecbe6905fabf6c6d689ac9f5ebe3"
+    "MSA_CACHE_HASH": "d5334b044680e614f60ef42032662c823066e2d78086fd52cd2a93a2a468dc89"
 }
