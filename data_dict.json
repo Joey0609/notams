@@ -326,17 +326,37 @@
         "HASH": "4c50020359b312483a67a6b7a13bd16008d7fe5b161983601a61872d7afb4476"
     },
     "CHINA_MSA_DATA": {
-        "CODE": [],
-        "TIME": [],
-        "PLATID": [],
-        "RAWMESSAGE": [],
-        "ALTITUDE": [],
-        "SOURCE": [],
-        "FIR": [],
-        "GEOMETRY": [],
-        "CLASSIFY": {},
-        "NUM": 0,
-        "HASH": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        "CODE": [
+            "鲁航警993/26"
+        ],
+        "TIME": [
+            "12 NOV 14:00 2026 UNTIL 12 NOV 21:00 2026"
+        ],
+        "PLATID": [
+            "MSA:鲁航警993/26"
+        ],
+        "RAWMESSAGE": [
+            "黄海火箭残骸—鲁航警993/26\n发布单位: 青岛海事局\n发布时间: 2026-11-11 16:05\n修改时间: 2026-11-11 16:05\n官方原文: https://www.msa.gov.cn/html/cnmsa/hxaq/article/2026/348ed16af1fe4e8891c850d28a630973.html\n\n鲁航警993/26，黄海，青岛，11月12日2200时至13日0500时，预计有火箭残骸落在35-58.38N 122-45.54E、36-18.24N 122-56.10E、36-43.08N 121-44.94E、36-22.86N 121-34.20E四点连线水域，禁止驶入。"
+        ],
+        "ALTITUDE": [
+            "None"
+        ],
+        "SOURCE": [
+            "MSA"
+        ],
+        "FIR": [
+            "UNKNOWN"
+        ],
+        "GEOMETRY": [
+            "PATH|M=N355823E1224532|L=N361814E1225606|L=N364305E1214456|L=N362252E1213412|Z"
+        ],
+        "CLASSIFY": {
+            "c700130885": [
+                "鲁航警993/26"
+            ]
+        },
+        "NUM": 1,
+        "HASH": "cdb76c05c433a0349a0d85c10cec486fc6281df3916feaf6328c2e5ff7c5b01b"
     },
     "USCG_NOTMAR_DATA": {
         "CODE": [
@@ -568,7 +588,7 @@
         "NUM": 22,
         "HASH": "b543f6d49ecd9b6d1fc38a1a500a8f52bd04cba443a770d2c468b85b76241bf8"
     },
-    "HASH": "55d4882f1f16e1838b847a85c5d9efadbdefe5306c21f5e140c91400123a9c5d",
+    "HASH": "4380b63264b00d551d45811569caedf5c7e2cfc808933035120012e036cd9244",
     "HASH_NOTAM": "a8a07dcebcdf30ac9189b385dd43d7e3a592121a686ac01830552ba6694de945",
     "HASH_FOCUSED": "5559bf524979191fe89c4a3564448626db1a9dfdba7338f29999ee61e95ca78f",
     "FETCH_VALID": true,
@@ -870,14 +890,30 @@
             "ESTABLISHED": true
         },
         "msa": {
-            "CODE": [],
-            "TIME": [],
-            "PLATID": [],
-            "RAWMESSAGE": [],
-            "ALTITUDE": [],
-            "SOURCE": [],
-            "FIR": [],
-            "GEOMETRY": [],
+            "CODE": [
+                "鲁航警993/26"
+            ],
+            "TIME": [
+                "12 NOV 14:00 2026 UNTIL 12 NOV 21:00 2026"
+            ],
+            "PLATID": [
+                "MSA:鲁航警993/26"
+            ],
+            "RAWMESSAGE": [
+                "黄海火箭残骸—鲁航警993/26\n发布单位: 青岛海事局\n发布时间: 2026-11-11 16:05\n修改时间: 2026-11-11 16:05\n官方原文: https://www.msa.gov.cn/html/cnmsa/hxaq/article/2026/348ed16af1fe4e8891c850d28a630973.html\n\n鲁航警993/26，黄海，青岛，11月12日2200时至13日0500时，预计有火箭残骸落在35-58.38N 122-45.54E、36-18.24N 122-56.10E、36-43.08N 121-44.94E、36-22.86N 121-34.20E四点连线水域，禁止驶入。"
+            ],
+            "ALTITUDE": [
+                "None"
+            ],
+            "SOURCE": [
+                "MSA"
+            ],
+            "FIR": [
+                "UNKNOWN"
+            ],
+            "GEOMETRY": [
+                "PATH|M=N355823E1224532|L=N361814E1225606|L=N364305E1214456|L=N362252E1213412|Z"
+            ],
             "FOCUSED_KEYS": [],
             "ESTABLISHED": true
         },
@@ -1079,5 +1115,5 @@
         }
     },
     "MATCH_AVAILABLE": true,
-    "MSA_CACHE_HASH": "55d4882f1f16e1838b847a85c5d9efadbdefe5306c21f5e140c91400123a9c5d"
+    "MSA_CACHE_HASH": "4380b63264b00d551d45811569caedf5c7e2cfc808933035120012e036cd9244"
 }
