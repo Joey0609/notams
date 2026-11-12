@@ -10,25 +10,10 @@
         "FIR": "",
         "source_file": "2026-11.json",
         "source_index": 29,
-        "classify_key": "c762530589",
+        "classify_key": "c128684559",
         "Overlapping_Area": 100.0,
         "Center_Distance": -1.0,
         "RelatedItems": [
-            {
-                "CODE": "E4215/26",
-                "GEOMETRY": "PATH|M=S2342E07500|L=S2303E07659|L=S2145E08057|L=S1856E08742|L=S1614E09337|L=S1516E09526|L=S1518E09531|L=S1525E09550|L=S1530E09612|L=S1534E09634|L=S1534E09702|L=S1533E09714|L=S1530E09733|L=S1528E09742|L=S1526E09750|L=S1524E09758|L=S1522E09803|L=S1519E09811|L=S1518E09814|L=S1556E09831|L=S1704E09638|L=S1956E09102|L=S2302E08406|L=S2459E07906|Z",
-                "TIME": "13 NOV 22:53 2026 UNTIL 20 NOV 01:14 2026",
-                "PLATID": "YMMM_I_YBBBZEZX_E4215_26",
-                "RAWMESSAGE": "E4215/26 NOTAMN\r\nQ) YMMM/QRDCA/IV/BO/W/000/999/2009S08749E730\r\nA) YMMM\r\nB) 2611132253 C) 2611200114\r\nD) DAILY 2253-0114\r\n \r\nE) TEMPO DANGER AREA ACT\r\nROCKET LAUNCH WILL TAKE PLACE FLW RECEIVED FM GOVERNMENT OF UNITED\r\nSTATES OF AMERICA: HAZARDOUS OPS WILL BE CONDUCTED FOR ATMOSPHERIC\r\nRE-ENTRY AND SPLASHDOWN OF SPACEX STARSHIP FLT-15 ROCKET STAGE 2 WI\r\nTHE\r\nFOLLOWING AREAS BOUNDED BY 2342S 07500E - 2303S 07659E - 2145S 08057E\r\n- 1856S 08742E - 1614S 09337E - 1516S 09526E - 1518S 09531E - 1525S\r\n09550E - 1530S 09612E - 1534S 09634E - 1534S 09702E - 1533S 09714E -\r\n1530S 09733E - 1528S 09742E - 1526S 09750E - 1524S 09758E - 1522S\r\n09803E - 1519S 09811E - 1518S 09814E - 1556S 09831E - 1704S 09638E -\r\n1956S 09102E - 2302S 08406E - 2459S 07906E - 2342S 07500E\r\nF) SFC G) UNL\n\nCREATED: 10 NOV 2026 07:22\nSOURCE: YBBBZEZX",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2026-11.json",
-                "source_index": 30,
-                "GroupKey": "c762530589",
-                "IsSameGroup": true,
-                "parent_index": 7
-            },
             {
                 "CODE": "P5648/26",
                 "GEOMETRY": "PATH|M=N2356E14437|L=N2327E14449|L=N2824E16500|L=N2927E16500|L=N2746E15636|L=N2609E15114|Z",
@@ -39,8 +24,8 @@
                 "SOURCE": "NOTAM",
                 "FIR": "",
                 "source_file": "2026-11.json",
-                "source_index": 31,
-                "GroupKey": "c762530589",
+                "source_index": 30,
+                "GroupKey": "c128684559",
                 "IsSameGroup": true,
                 "parent_index": 7
             }
