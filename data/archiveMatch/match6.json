@@ -10,10 +10,26 @@
         "FIR": "",
         "source_file": "2026-11.json",
         "source_index": 29,
-        "classify_key": "c844014440",
+        "classify_key": "c271012401",
         "Overlapping_Area": 100.0,
         "Center_Distance": -1.0,
-        "RelatedItems": []
+        "RelatedItems": [
+            {
+                "CODE": "B6122/26",
+                "GEOMETRY": "PATH|M=N075800E1195800|L=N082500E1203300|L=N073300E1211300|L=N072600E1211100|L=N070700E1204500|L=N070600E1203800|Z",
+                "TIME": "20 NOV 11:52 2026 UNTIL 20 NOV 12:28 2026",
+                "PLATID": "RPHI_I_RPLLYNYX_B6122_26",
+                "RAWMESSAGE": "B6122/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/0745N12036E041\r\nA) RPHI B) 2611201152 C) 2611201228\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n075800N 1195800E - \r\n082500N 1203300E - \r\n073300N 1211300E - \r\n072600N 1211100E - \r\n070700N 1204500E -\r\n070600N 1203800E - \r\n075800N 1195800E\r\n(129NM SOUTHEAST OF PUERTO PRINCESA INTL AP).\r\nF) SFC G) UNL\n\nCREATED: 16 NOV 2026 03:50\nSOURCE: EUECYIYN",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2026-11.json",
+                "source_index": 30,
+                "GroupKey": "c271012401",
+                "IsSameGroup": true,
+                "parent_index": 6
+            }
+        ]
     },
     {
         "CODE": "B1921/25",
