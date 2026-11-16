@@ -347,17 +347,37 @@
         "HASH": "4c50020359b312483a67a6b7a13bd16008d7fe5b161983601a61872d7afb4476"
     },
     "CHINA_MSA_DATA": {
-        "CODE": [],
-        "TIME": [],
-        "PLATID": [],
-        "RAWMESSAGE": [],
-        "ALTITUDE": [],
-        "SOURCE": [],
-        "FIR": [],
-        "GEOMETRY": [],
-        "CLASSIFY": {},
-        "NUM": 0,
-        "HASH": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        "CODE": [
+            "琼航警239/26"
+        ],
+        "TIME": [
+            "20 NOV 11:00 2026 UNTIL 20 NOV 13:00 2026;21 NOV 11:00 2026 UNTIL 21 NOV 13:00 2026"
+        ],
+        "PLATID": [
+            "MSA:琼航警239/26"
+        ],
+        "RAWMESSAGE": [
+            "火箭发射—琼航警239/26\n发布单位: 清澜海事局\n发布时间: 2026-11-16 14:46\n修改时间: 2026-11-16 14:46\n官方原文: https://www.msa.gov.cn/html/cnmsa/hxaq/article/2026/f3e2d7a766ea49709a109f28b757c088.html\n\n琼航警239/26，南海，自11月20日至11月21日，每日1900时至2100时，在以19-36.00N 110-55.80E为中心，5.4海里为半径的圆形区域内进行火箭发射，禁止驶入。"
+        ],
+        "ALTITUDE": [
+            "None"
+        ],
+        "SOURCE": [
+            "MSA"
+        ],
+        "FIR": [
+            "UNKNOWN"
+        ],
+        "GEOMETRY": [
+            "CIRCLE|C=N193600E1105548|R=5.4NM"
+        ],
+        "CLASSIFY": {
+            "c926216659": [
+                "琼航警239/26"
+            ]
+        },
+        "NUM": 1,
+        "HASH": "d49641eb686c998ab8c6486ec450ef7d95cf0caee852adcb2cc3a3e54ebab19a"
     },
     "USCG_NOTMAR_DATA": {
         "CODE": [
@@ -625,7 +645,7 @@
         "NUM": 26,
         "HASH": "ca58238267f8dfc030fa274e14fb7d66ffab1497c5839ca408b5df888e479a5f"
     },
-    "HASH": "caf53cbc1d92814fb79d77d8be0c5afa45523b92439d755c0f04eb5cb93c15ec",
+    "HASH": "631d7de3c81a9428ae9fdbb6b2e14a29735b3da674894a8293ce40ce1797c17f",
     "HASH_NOTAM": "c7f26e1c58cd7f2cf6e184e94d0d3f526d18f6a679bc045433b93cd02c0df6f3",
     "HASH_FOCUSED": "274ac9c6aa4561e16c69bc8bfe0bfba2a490f727211e0f606b53d618f1fe6841",
     "FETCH_VALID": true,
@@ -931,14 +951,30 @@
             "ESTABLISHED": true
         },
         "msa": {
-            "CODE": [],
-            "TIME": [],
-            "PLATID": [],
-            "RAWMESSAGE": [],
-            "ALTITUDE": [],
-            "SOURCE": [],
-            "FIR": [],
-            "GEOMETRY": [],
+            "CODE": [
+                "琼航警239/26"
+            ],
+            "TIME": [
+                "20 NOV 11:00 2026 UNTIL 20 NOV 13:00 2026;21 NOV 11:00 2026 UNTIL 21 NOV 13:00 2026"
+            ],
+            "PLATID": [
+                "MSA:琼航警239/26"
+            ],
+            "RAWMESSAGE": [
+                "火箭发射—琼航警239/26\n发布单位: 清澜海事局\n发布时间: 2026-11-16 14:46\n修改时间: 2026-11-16 14:46\n官方原文: https://www.msa.gov.cn/html/cnmsa/hxaq/article/2026/f3e2d7a766ea49709a109f28b757c088.html\n\n琼航警239/26，南海，自11月20日至11月21日，每日1900时至2100时，在以19-36.00N 110-55.80E为中心，5.4海里为半径的圆形区域内进行火箭发射，禁止驶入。"
+            ],
+            "ALTITUDE": [
+                "None"
+            ],
+            "SOURCE": [
+                "MSA"
+            ],
+            "FIR": [
+                "UNKNOWN"
+            ],
+            "GEOMETRY": [
+                "CIRCLE|C=N193600E1105548|R=5.4NM"
+            ],
             "FOCUSED_KEYS": [],
             "ESTABLISHED": true
         },
@@ -1172,5 +1208,5 @@
         }
     },
     "MATCH_AVAILABLE": true,
-    "MSA_CACHE_HASH": "caf53cbc1d92814fb79d77d8be0c5afa45523b92439d755c0f04eb5cb93c15ec"
+    "MSA_CACHE_HASH": "631d7de3c81a9428ae9fdbb6b2e14a29735b3da674894a8293ce40ce1797c17f"
 }
