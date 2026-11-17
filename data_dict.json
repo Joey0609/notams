@@ -129,64 +129,69 @@
         "CODE": [
             "A0106/26",
             "A0635/26",
-            "A1460/26",
             "A1461/26",
             "A1466/26",
+            "A1483/26",
             "A2611/26",
             "A2639/26",
             "A6439/26",
-            "B4160/26",
-            "B4161/26",
             "B4383/26",
+            "B4503/26",
+            "B4504/26",
             "W3979/26",
-            "W3981/26"
+            "W3981/26",
+            "W3987/26"
         ],
         "TIME": [
             "13 NOV 22:53 2026 UNTIL 20 NOV 01:14 2026",
             "13 NOV 22:45 2026 UNTIL 20 NOV 00:45 2026",
-            "18 NOV 18:34 2026 UNTIL 22 NOV 22:36 2026",
             "13 NOV 18:30 2026 UNTIL 24 NOV 08:16 2026",
             "21 NOV 14:14 2026 UNTIL 27 NOV 14:08 2026",
+            "23 NOV 17:49 2026 UNTIL 29 NOV 21:33 2026",
             "11 NOV 11:46 2026 UNTIL 22 NOV 16:00 2026",
             "14 NOV 16:00 2026 UNTIL 21 NOV 16:00 2026",
             "23 NOV 10:12 2026 UNTIL 03 DEC 15:39 2026",
-            "16 NOV 17:07 2026 UNTIL 22 NOV 20:37 2026",
-            "16 NOV 17:07 2026 UNTIL 22 NOV 20:56 2026",
             "18 NOV 03:14 2026 UNTIL 24 NOV 06:34 2026",
+            "23 NOV 16:04 2026 UNTIL 29 NOV 19:34 2026",
+            "23 NOV 16:04 2026 UNTIL 29 NOV 19:53 2026",
             "21 NOV 14:14 2026 UNTIL 27 NOV 14:08 2026",
-            "18 NOV 05:01 2026 UNTIL 24 NOV 08:16 2026"
+            "18 NOV 05:01 2026 UNTIL 24 NOV 08:16 2026",
+            "23 NOV 17:49 2026 UNTIL 29 NOV 21:33 2026"
         ],
         "PLATID": [
             "FIMM_I_FIMPYOYX_A0106_26",
             "TNCF_I_TNCCYNYX_A0635_26",
-            "NTTT_I_NTAAYNYX_A1460_26",
             "NTTT_I_NTAAYNYX_A1461_26",
             "NTTT_I_NTAAYNYX_A1466_26",
+            "NTTT_I_NTAAYNYX_A1483_26",
             "VHHK_I_VHHHYNYX_A2611_26",
             "VHHK_I_VHHHYNYX_A2639_26",
             "LPPO_I_LPPPYNYX_A6439_26",
-            "MMFR_I_MMMXYNYX_B4160_26",
-            "MMFO_I_MMMXYNYX_B4161_26",
             "MMFR_I_MMMXYNYX_B4383_26",
+            "MMFR_I_MMMXYNYX_B4503_26",
+            "MMFO_I_MMMXYNYX_B4504_26",
             "SCIZ_I_SCSCYNYX_W3979_26",
-            "SCIZ_I_SCSCYNYX_W3981_26"
+            "SCIZ_I_SCSCYNYX_W3981_26",
+            "SCIZ_I_SCSCYNYX_W3987_26"
         ],
         "RAWMESSAGE": [
             "A0106/26 NOTAMN\r\nQ) FIMM/QRALW/IV/NBO/AE/000/999/2025S07540E999\r\n A) FIMM B) 2611132253 C) 2611200114 EST\r\n D) 13 2253 - 2359\r\n14 0000 - 0114\r\n14 2253 - 2359\r\n15 0000 - 0114\r\n15 2253 - 2359\r\n16 0000 - 0114\r\n16 2253 - 2359\r\n17 0000 - 0114\r\n17 2253 - 2359\r\n18 0000 - 0114\r\n18 2253 - 2359\r\n19 0000 - 0114\r\n19 2253 - 2359\r\n20 0000 - 0114\r\n E) STATIONARY ALTITUDE RESERVATION FOR HAZARDOUS OPERATIONS FROM SFC\r\nTO UNL FOR ATMOSPHERIC RE-ENTRY AND SPLASHDOWN OF SPACE X STARSHIP\r\nFLT-15 ROCKET WI AN AREA BOUNDED BY FLW COORD: \r\n2458S 07056E\r\n2342S 07500E\r\n2631S 07500E\r\n2729S 07208E TO BEGINNING\r\nPRIMARY RE-ENTRY BTN 2253 ON 13 NOV 2026 AND 0114 ON 14 NOV 2026\r\nBACK UP RE-ENTRY BTN 14 NOV 2026 AND 20 NOV 2026 AS PER FIELD D\r\n F) 000 G) 999\n\nCREATED: 07 NOV 2026 11:04\nSOURCE: FIMPYOYX",
             "A0635/26 NOTAMN\r\nQ) TNCF/QRDCA/IV/BO/W/000/999/1700N07140W250\r\nA) TNCF\r\nB) 2611132245 C) 2611200045\r\nD) 2245-0045\r\nE) DEBRIS RESPONSE AREAS(DRA) WITHIN CUR FIR MAY BE ACTIVATED IF\r\nREQUIRED DUE TO STARSHIP FLT 15 LAUNCH MALFUNCTION. IF\r\nACTIVATED, DRA ESTABLISHED AS TEMPORARY DANGER AREA. DRA\r\nBOUNDED BY: 1700N07140W-1626N07140W-1657N07304W-1700N07300W\r\nAND 1600N07029W-1548N06956W-1524N06830W-1502N06712W-1534N06705W-\r\n1600N06813W. DEPARTURES WITHIN CUR TMA MAY EXPECT GND DELAYS. \r\nACFT WITHIN CUR FIR MAY EXPECT AIRBORNE HOLDING. ATC WILL ADVISE\r\nDRA ACTIVATION AND RESUMPTION OF NORMAL OPS.DRA ACTIVATION, IF\r\nREQUIRED, MAY OCCUR ON 261113. SHOULD THE LAUNCH BE POSTPONED,\r\nDRA MAY BE ACTIVATED, IF REQUIRED, ON ANY OF THE FOLLOWING\r\nBACKUP DATES: 261114, 261115, 261116,261117, 261118 OR 261119.\r\nF) SFC G) UNL\n\nCREATED: 11 NOV 2026 20:10\nSOURCE: TNCCYNYX",
-            "A1460/26 NOTAMN\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2847S13424W130\r\nA) NTTT\r\nB) 2611181834 C) 2611222236\r\nD) 18 1834-2312\r\n19 1825-2303\r\n20 1816-2254\r\n21 1807-2245\r\n22 1758-2236\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nUSSF266-TH3 IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING\r\nPOINTS :\r\n3000S 13551W, 2748S 13613W, 2719S 13310W, 3000S 13235W, 3000S\r\n13551W\r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : NZZO, SCIZ\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2752/26.\r\nF) SFC G) UNL\n\nCREATED: 13 NOV 2026 18:08\nSOURCE: NTAAYNYX",
             "A1461/26 NOTAMR A1456/26\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2858S12112W113\r\nA) NTTT\r\nB) 2611131830 C) 2611240816\r\nD) 18 0501-0939,\r\n19 0447-0925,\r\n20 0433-0911,\r\n21 0419-0857,\r\n22 0405-0843,\r\n23 0547-0830,\r\n24 0533-0816\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nUSSF-317 / R-6 IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING\r\nPOINTS :  \r\n3000S 12153W, 2759S 12244W, 2709S 12043W, 2843S 12000W,\r\n3000S 12000W, 3000S 12153W \r\n\r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : SCIZ \r\n\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2753/26.\r\n\r\nF) SFC G) UNL\n\nCREATED: 13 NOV 2026 18:34\nSOURCE: NTAAYNYX",
             "A1466/26 NOTAMN\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2843S12112W120\r\nA) NTTT\r\nB) 2611211414 C) 2611271408\r\nD) 21 1414-1531, 22 1400-1517, 23 1346-1503, 24 1332-1449, 25\r\n 1319-1436, 26 1305-1422, 27 1251-1408\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nNROL-136 IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING\r\n POINTS:   \r\n3000S 12153W, 2759S 12244W, 2709S 12043W, 2843S 12000W, \r\n3000S 12000W, 3000S 12153W \r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : SCIZ.\r\n\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2764/26\r\nF) SFC G) UNL\n\nCREATED: 13 NOV 2026 21:19\nSOURCE: NTAAYNYX",
+            "A1483/26 NOTAMN\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2847S13424W130\r\nA) NTTT\r\nB) 2611231749 C) 2611292133\r\nD) 23 1749-2227\r\n24 1740-2218\r\n25 1731-2209\r\n26 1722-2200\r\n27 1713-2151\r\n28 1704-2142\r\n29 1655-2133\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nUSSF266-TH3 IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING\r\nPOINTS :\r\n3000S 13551W, 2748S 13613W, 2719S 13310W, 3000S 13235W, \r\n3000S 13551W\r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : NZZO, SCIZ\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2801/26.\r\nF) SFC G) UNL\n\nCREATED: 16 NOV 2026 19:08\nSOURCE: NTAAYNYX",
             "A2611/26 NOTAMN\r\nQ) VHHK/QRTCA/IV/BO /W /000/999/2003N11500E214\r\nA) VHHK B) 2611111146 C) 2611221600\r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED,THE AREA WITHIN A CIRCLE \r\nCENTERED AT N223637E1135758 WITH RADIUS OF 200KM.\r\nVERTICAL LIMITS:SFC-UNL. ALL GENERAL AVIATION FLIGHT ACTIVITIES ARE \r\nPROHIBITED WITHOUT PRIOR APPROVAL.\r\nF) SFC G) UNL\n\nCREATED: 11 NOV 2026 11:46\nSOURCE: VHHHYNYX",
             "A2639/26 NOTAMN\r\nQ) VHHK/QXXXX/IV/NBO/W /000/999/2237N11358E108\r\nA) VHHK B) 2611141600 C) 2611211600\r\nE) A TEMPORARY REPORTING ZONE WILL BE ESTABLISHED.\r\nLATERAL LIMITS: WITHIN A CIRCLE CENTERED AT N223637E1135758 WITH \r\nRADIUS OF 200KM.\r\nVERTICAL LIMITS: SFC-UNL.\r\nAIRCRAFT INTENDED TO TRANSIT OR LAND WITHIN THE REPORTING ZONE SHALL \r\nREPORT ACFT IDENTIFICATION, SQUAWK CODE, ACFT POSITION AND SECURITY \r\nSITUATION AT FIRST CONTACT WITH HONG KONG ATC.\r\nF) SFC G) UNL\n\nCREATED: 13 NOV 2026 16:38\nSOURCE: VHHHYNYX",
             "A6439/26 NOTAMN\r\nQ) LPPO/QWMLW/IV/BO /W /000/999/2844N03232W139\r\nA) LPPO B) 2611231012 C) 2612031539\r\nD) DAILY 1012-1539\r\nE) ROCKET LAUNCH ARIANE 6 VA271 WILL TAKE PLACE AREA BOUNDED BY:\r\n303500N 0310100W - 300200N 0302400W - 265100N 0335700W - 272200N \r\n0343500W - 303500N 0310100W.\r\nF) SFC G) UNL\n\nCREATED: 10 NOV 2026 13:47\nSOURCE: EUECYIYN",
-            "B4160/26 NOTAMN\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFR\r\r\nB) 2611161707\r\r\nC) 2611222037\r\r\nD) 16 1707-2131, 17 1658-2122, 18 1649-2113, 19 1640-2104, 20 1631-2055,\r\r\n   21 1622-2046, 22 1613-2037 \r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX USFF266-TH3 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   2951N 11949W - 3045N 11947W - 3045N 11945W - 2935N 11916W - 2921N\r\r\n   11912W - 2951N 11949W\r\r\n   MMFR\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 09 NOV 2026 20:06\nSOURCE: MMMXYNYX",
-            "B4161/26 NOTAMN\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFO\r\r\nB) 2611161707\r\r\nC) 2611222056\r\r\nD) 16 1707-2150, 17 1658-2141, 18 1649-2132, 19 1640-2123,\r\r\n   20 1631-2114, 21 1622-2105, 22 1613-2056\r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX USSF266-TH3 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   2951N 11949W - 2921N 11912W - 2914N 11911W - 2855N 11846W -\r\r\n   2839N 11843W - 2818N 11904W - 2818N 11912W - 2740N 11915W - \r\r\n   2740N 11917W - 2818N 11923W - 2841N 11953W - 2857N 11955W - \r\r\n   2905N 11947W - 2951N 11949W\r\r\n   (MMFO)\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 09 NOV 2026 20:08\nSOURCE: MMMXYNYX",
             "B4383/26 NOTAMR B4162/26\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFR\r\r\nB) 2611180314\r\r\nC) 2611240634\r\r\nD) 18 0314-0757, 19 0300-0743, 20 0246-0729, 21 0232-0715, 22 0218-0701,\r\r\n   23 0400-0648, 24 0346-0634\r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET USSF317 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   3138N 11903W 3144N 11850W - 2948N 11739W - 2936N 11716W 2850N 11719W\r\r\n   - 2815N 11719W - 2814N 11720W - 2850N 11749W - 2902N 11759W - 2915N\r\r\n   11802W -2924N 11808W- 2935N 11812 - 3138N-11903W\r\r\n   MMFR\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 13 NOV 2026 20:37\nSOURCE: MMMXYNYX",
+            "B4503/26 NOTAMR B4160/26\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFR\r\r\nB) 2611231604\r\r\nC) 2611291934\r\r\nD) 23 1604-2028, 24 1555-2019, 25 1546-2010, 26 1537-2001,\r\r\n   27 1528-1952, 28 1519-1943, 29 1510-1934\r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX USFF266-TH3 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   2951N 11949W - 3045N 11947W - 3045N 11945W - 2935N 11916W - 2921N\r\r\n   11912W - 2951N 11949W\r\r\n   MMFR\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 16 NOV 2026 17:31\nSOURCE: MMMXYNYX",
+            "B4504/26 NOTAMR B4161/26\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFO\r\r\nB) 2611231604\r\r\nC) 2611291953\r\r\nD) 23 1604-2047, 24 1555-2038, 25 1546-2029, 26 1537-2020, \r\r\n   27 1528-2011, 28 1519-2002, 29 1510-1953\r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX USSF266-TH3 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   2951N 11949W - 2921N 11912W - 2914N 11911W - 2855N 11846W -\r\r\n   2839N 11843W - 2818N 11904W - 2818N 11912W - 2740N 11915W - \r\r\n   2740N 11917W - 2818N 11923W - 2841N 11953W - 2857N 11955W - \r\r\n   2905N 11947W - 2951N 11949W\r\r\n   (MMFO)\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 16 NOV 2026 17:37\nSOURCE: MMMXYNYX",
             "W3979/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/BO/W/000/999/4513S11115W999\r\nA)SCIZ B)2611211414 C)2611271408\r\nD)21 1414-1531 22 1400-1517 23 1346-1503 24 1332-1449\r\n25 1319-1436 26 1305-1422 27 1251-1408\r\nE) SPACEX WILL BE CONDUCTING HAZARDOUS OPERATIONS SURFACE TO\r\nUNLIMITED FOR ATMOSPHERIC RE-\r\nENTRY AND SPLASHDOWN OF LAUNCH VEHICLE UPPER STAGE WITHIN THE\r\nFOLLOWING AREA:\r\n3000S 12153W\r\n3000S 12000W\r\n2843S 12000W\r\n3821S 11504W\r\n4909S 10722W\r\n5909S 09534W\r\n5958S 09905W\r\n4434S 11413W TO BEGINNING.\r\nF)SFC G)UNL\n\nCREATED: 14 NOV 2026 14:40\nSOURCE: SCSCYNYX",
-            "W3981/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/BO/W/000/999/4513S11115W999\r\nA)SCIZ B)2611180501 C)2611240816\r\nD)18 0501-0939 19 0447-0925 20 0433-0911 21 0419-0857\r\n22 0405-0843 23 0547-0830 24 0533-0816\r\nE)SPACEX WILL BE CONDUCTING HAZARDOUS OPERATIONS SURFACE TO\r\nUNLIMITED FOR ATMOSPHERIC RE-\r\nENTRY AND SPLASHDOWN OF LAUNCH VEHICLE UPPER STAGE WITHIN THE\r\nFOLLOWING AREA:\r\n3000S 12153W\r\n3000S 12000W\r\n2843S 12000W\r\n3821S 11504W\r\n4909S 10722W\r\n5909S 09534W\r\n5958S 09905W\r\n4434S 11413W\r\n3000S 12153W\r\nCENTRAL POINT: 4513S 11115W\r\nLEN ZNE: 2000NM,WID ZONE:140NM\r\nF)SFC G)UNL\n\nCREATED: 14 NOV 2026 15:18\nSOURCE: SCSCYNYX"
+            "W3981/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/BO/W/000/999/4513S11115W999\r\nA)SCIZ B)2611180501 C)2611240816\r\nD)18 0501-0939 19 0447-0925 20 0433-0911 21 0419-0857\r\n22 0405-0843 23 0547-0830 24 0533-0816\r\nE)SPACEX WILL BE CONDUCTING HAZARDOUS OPERATIONS SURFACE TO\r\nUNLIMITED FOR ATMOSPHERIC RE-\r\nENTRY AND SPLASHDOWN OF LAUNCH VEHICLE UPPER STAGE WITHIN THE\r\nFOLLOWING AREA:\r\n3000S 12153W\r\n3000S 12000W\r\n2843S 12000W\r\n3821S 11504W\r\n4909S 10722W\r\n5909S 09534W\r\n5958S 09905W\r\n4434S 11413W\r\n3000S 12153W\r\nCENTRAL POINT: 4513S 11115W\r\nLEN ZNE: 2000NM,WID ZONE:140NM\r\nF)SFC G)UNL\n\nCREATED: 14 NOV 2026 15:18\nSOURCE: SCSCYNYX",
+            "W3987/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/BO/W/000/999/5114S12750W225\r\nA)SCIZ B)2611231749 C)2611292133\r\nD)23 BTN 1749-2227  24 BTN 1740-2218 25 BTN 1731-2209 26 BTN\r\n1722-2200\r\n27 BTN 1713-2151  28 BTN 1704-2142 29 BTN 1655-2133\r\nE)ZONE ...D... IN WATERS OCEAN PACIFIC DUE TO SPACE VEHICLE RE-ENTRY\r\nAND SPLASHDOWN ACTIVITY. THE AFFECTED AREA IS BOUNDED BY NXT GEO\r\nCOORD:\r\n594200S/1274300W\r\n512600S/1310000W\r\n365700S/1310000W\r\n591300S/1222400W\r\n594200S/1274300W\r\nINSTRUCTIONS SANTIAGO OCEANIC CONTROL 10024KHZ FANS 1A EQUIPPED\r\nINFO PROVIDED BY SPACE X OPS, USA\r\nF)SFC G)UNL\n\nCREATED: 16 NOV 2026 17:31\nSOURCE: SCSCYNYX"
         ],
         "ALTITUDE": [
+            "0 ~ INF 米",
             "0 ~ INF 米",
             "0 ~ INF 米",
             "0 ~ INF 米",
@@ -214,6 +219,7 @@
             "NOTAM",
             "NOTAM",
             "NOTAM",
+            "NOTAM",
             "NOTAM"
         ],
         "FIR": [
@@ -226,25 +232,27 @@
             "VHHK",
             "LPPO",
             "MMFR",
-            "MMFO",
             "MMFR",
+            "MMFO",
+            "SCIZ",
             "SCIZ",
             "SCIZ"
         ],
         "GEOMETRY": [
             "PATH|M=S2458E07056|L=S2342E07500|L=S2631E07500|L=S2729E07208|Z",
             "PATH|M=N1657W07304|L=N1626W07140|L=N1600W07029|L=N1548W06956|L=N1502W06712|L=N1534W06705|L=N1600W06813|L=N1700W07140|L=N1700W07300|Z",
+            "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
+            "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
             "PATH|M=S3000W13551|L=S2748W13613|L=S2719W13310|L=S3000W13235|Z",
-            "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
-            "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
             "CIRCLE|C=N223637E1135758|R=200KM",
             "CIRCLE|C=N223637E1135758|R=200KM",
             "PATH|M=N303500W0310100|L=N300200W0302400|L=N265100W0335700|L=N272200W0343500|Z",
+            "PATH|M=N3138W11903|L=N3144W11850|L=N2948W11739|L=N2936W11716|L=N2850W11719|L=N2815W11719|L=N2814W11720|L=N2850W11749|L=N2902W11759|L=N2915W11802|L=N2924W11808|Z",
             "PATH|M=N2951W11949|L=N3045W11947|L=N3045W11945|L=N2935W11916|L=N2921W11912|Z",
             "PATH|M=N2951W11949|L=N2921W11912|L=N2914W11911|L=N2855W11846|L=N2839W11843|L=N2818W11904|L=N2818W11912|L=N2740W11915|L=N2740W11917|L=N2818W11923|L=N2841W11953|L=N2857W11955|L=N2905W11947|Z",
-            "PATH|M=N3138W11903|L=N3144W11850|L=N2948W11739|L=N2936W11716|L=N2850W11719|L=N2815W11719|L=N2814W11720|L=N2850W11749|L=N2902W11759|L=N2915W11802|L=N2924W11808|Z",
             "PATH|M=S3000W12153|L=S3000W12000|L=S2843W12000|L=S3821W11504|L=S4909W10722|L=S5909W09534|L=S5958W09905|L=S4434W11413|Z",
-            "PATH|M=S3000W12153|L=S4434W11413|L=S5958W09905|L=S5909W09534|L=S2843W12000|Z"
+            "PATH|M=S3000W12153|L=S4434W11413|L=S5958W09905|L=S5909W09534|L=S2843W12000|Z",
+            "PATH|M=S594200W1274300|L=S512600W1310000|L=S365700W1310000|L=S591300W1222400|Z"
         ],
         "CLASSIFY": {
             "c229455276": [
@@ -253,10 +261,6 @@
             "c327464005": [
                 "A1466/26",
                 "W3979/26"
-            ],
-            "c377199": [
-                "B4160/26",
-                "B4161/26"
             ],
             "c404490367": [
                 "A6439/26"
@@ -268,8 +272,11 @@
                 "B4383/26",
                 "W3981/26"
             ],
-            "c78744492": [
-                "A1460/26"
+            "c751044943": [
+                "A1483/26",
+                "B4503/26",
+                "B4504/26",
+                "W3987/26"
             ],
             "c8214255": [
                 "A0106/26",
@@ -279,8 +286,8 @@
                 "A1461/26"
             ]
         },
-        "NUM": 13,
-        "HASH": "3ad213fc21deafb97a6da532cf0243f61f70547faf4e1d48d74dffb39ec6dafa"
+        "NUM": 14,
+        "HASH": "a671efe51ef6aaafbef12e9884cdba0f50d03ca23603d3f6d0cf1d60e313211f"
     },
     "MSI_DATA": {
         "CODE": [
@@ -354,8 +361,6 @@
             "NOTMAR 57714",
             "NOTMAR 57803",
             "NOTMAR 57935",
-            "NOTMAR 58060",
-            "NOTMAR 58067",
             "NOTMAR 58114",
             "NOTMAR 58116",
             "NOTMAR 58119",
@@ -367,23 +372,15 @@
             "NOTMAR 58125",
             "NOTMAR 58126",
             "NOTMAR 58127",
-            "NOTMAR 58204",
             "NOTMAR 58217",
             "NOTMAR 58218",
-            "NOTMAR 58219",
-            "NOTMAR 58224",
-            "NOTMAR 58225",
-            "NOTMAR 58296",
-            "NOTMAR 58298",
-            "NOTMAR 58306"
+            "NOTMAR 58219"
         ],
         "TIME": [
             "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
             "03 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
             "04 NOV 00:00 2026 UNTIL 25 NOV 23:59 2026",
             "05 NOV 00:00 2026 UNTIL 20 NOV 23:59 2026",
-            "09 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
-            "09 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
@@ -395,23 +392,15 @@
             "09 NOV 00:00 2026 UNTIL 28 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
             "09 NOV 00:00 2026 UNTIL 28 NOV 23:59 2026",
-            "10 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
-            "10 NOV 00:00 2026 UNTIL 20 NOV 23:59 2026",
-            "10 NOV 00:00 2026 UNTIL 23 NOV 23:59 2026",
             "10 NOV 00:00 2026 UNTIL 25 NOV 23:59 2026",
-            "11 NOV 00:00 2026 UNTIL 10 MAY 23:59 2027",
-            "11 NOV 00:00 2026 UNTIL 10 MAY 23:59 2027",
-            "12 NOV 00:00 2026 UNTIL 20 NOV 23:59 2026",
-            "12 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
-            "12 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026"
+            "10 NOV 00:00 2026 UNTIL 30 NOV 23:59 2026",
+            "10 NOV 00:00 2026 UNTIL 25 NOV 23:59 2026"
         ],
         "PLATID": [
             "USCG:40014:1",
             "USCG:57714:1",
             "USCG:57803:1",
             "USCG:57935:1",
-            "USCG:58060:1",
-            "USCG:58067:1",
             "USCG:58114:1",
             "USCG:58116:1",
             "USCG:58119:1",
@@ -423,23 +412,15 @@
             "USCG:58125:1",
             "USCG:58126:1",
             "USCG:58127:1",
-            "USCG:58204:1",
             "USCG:58217:1",
             "USCG:58218:1",
-            "USCG:58219:1",
-            "USCG:58224:1",
-            "USCG:58225:1",
-            "USCG:58296:1",
-            "USCG:58298:1",
-            "USCG:58306:1"
+            "USCG:58219:1"
         ],
         "RAWMESSAGE": [
             "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
             "USCG NOTMAR 57714\nA) USCG\nE) The Tillamook UAS Test Range will be conducting operations in W-570 airspace on 17 – 20 Nov 2026.  Operations include the launch and recovery of various unmanned aircraft and flight testing in several locations within area W-570 including an operational area approximately 15 – 30 nautical miles west of Tillamook, centered on 45-23-47.05N, 124-33-32.69 W.  Mariners should use caution when transiting this area.  For more information, mariners can call Chris Strole, Tillamook Test Range Manager at (503) 944-1190 (Office) or (725) 577-2082 (Cell).",
             "USCG NOTMAR 57803\nA) USCG\nE) Chandeleur Sound - Rocket Launching Activities --- From: 2026-11-09 To: 2026-11-24 --- Two suborbital rocket launching operations will be conducted off a vessel in Chandeleur Sound in approximate position 29-55-45N 089-03-46W.  Operations will be weather dependent and will take place from 6:00 a.m. to 8:00 p.m.  Two short-range rockets will be launched on separate days to demonstrate sea-based launch-pad\ncapabilities.  Each launch is expected to last several minutes from ignition through splashdown, with a\nmaximum potential downrange distance of approximately 1,070 meters (0.6 nautical mile).  On-scene vessels will include the M/V ONCE IN A LIFETIME and the F/V SOUTHERN CROSS.  Mariners are requested to maintain a 500 yard closest point of approach from the operating area.  VHF-FM Channel: 16, 18 and 72,  POC: (228) 669-3644",
             "USCG NOTMAR 57935\nA) USCG\nE) Hazardous operations will be conducted for Vandenberg Space Force Base, Western Range Operation W6407. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n34.63333 N, -121.38333 W\n34.63333 N, -120.86667 W\n34.73333 N, -120.58333 W\n34.91667 N, -120.58333 W\n34.93333 N, -120.95000 W\n34.93333 N, -121.36667 W\n34.63333 N, -121.38333 W\n(TO BEGINNING)\n\nHazard Area B:\n34.26667 N, -124.55000 W\n34.61667 N, -124.61667 W\n34.90000 N, -121.98333 W\n34.55000 N, -121.93333 W\n34.26667 N, -124.55000 W\n(TO BEGINNING)\n\nHazard Times:\n180631 Z NOV TO 181337 Z NOV 2026---- DO 6407 (PRIMARY)\n190631 Z NOV TO 191337 Z NOV 2026---- DO 6407 (BACKUP DAY)\n\nSurface vessels are strongly advised to avoid this area defined during specified dates / times. During operations, frontier control will be managing hazardous area surface traffic on VHF CH 16 and CH 6. For more details or comments contact 2 ROPS/DOS via telephone at commercial 805-606-8825 OR DSN 276-8825, or email: 2ROPS.DOS@US.AF.MIL.",
-            "USCG NOTMAR 58060\nA) USCG\nE) Gulf of America - Hazardous Space Operations --- On November 13, 2026, between 2245Z and 0040Z, on November 14, 2026, rocket launching operations are scheduled to take place near Boca Chica, TX.  Back-up launch dates and times include the following: • 142245Z NOV 26 to 150040Z NOV 26 • 152245Z NOV 26 to 160040Z NOV 26 • 162245Z NOV 26 to 170040Z NOV 26 • 172245Z NOV 26 to 180040Z NOV 26 • 182245Z NOV 26 to 190040Z NOV 26 • 192245Z NOV 26 to 200040Z NOV 26 • Navigation hazards from rocket launching activity may include, free falling debris and/or descending vehicles or vehicle components, under various means of control.  Vessels should operate in a heightened state of awareness during the launch time and avoid all waters within rocket flight trajectories originating from the launch site near Boca Chica/Starbase, Texas, and extending across the Gulf of America.  To ensure range clearance, mariners are requested to avoid the high-risk hazard area three hours prior to the launch window.  For additional information regarding the launch, mariners can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143 or access: www.navcen.uscg.gov/msi",
-            "USCG NOTMAR 58067\nA) USCG\nE) Gulf of America - Caribbean Sea --- Space launch operations, which may be hazardous to surface vessels, will be conducted within portions of the following hazard areas for Starship Flight 15:\nHigh Risk Hazard Area:\n25-12-00N 092-58-00W\n25-31-00N 093-52-00W\n25-42-00N 095-24-00W\n26-02-00N 096-32-00W\n26-04-00N 096-49-00W\n26-04-00N 097-04-00W\n26-04-00N 097-10-00W\n26-02-00N 097-13-00W\n25-58-00N 097-13-00W\n25-48-00N 097-05-00W\n25-41-00N 096-47-00W\n25-02-00N 095-05-00W\n24-29-00N 094-08-00W\n24-20-00N 093-32-00W\n24-25-00N 092-52-00W and\n24-45-00N 092-43-00W.\nHazard Area:\n25-58-00N 097-13-00W\n26-02-00N 097-13-00W\n26-04-00N 097-10-00W\n26-06-00N 097-04-00W\n26-06-00N 096-49-00W\n26-01-00N 095-12-00W\n25-41-00N 093-29-00W\n25-11-00N 091-59-00W\n23-32-00N 088-52-00W\n23-21-00N 088-29-00W\n22-31-00N 086-29-00W\n21-41-00N 085-07-00W\n21-38-00N 084-59-00W\n21-33-00N 084-32-00W\n21-26-00N 083-49-00W\n20-59-00N 082-38-00W\n20-43-00N 081-42-00W\n20-31-00N 081-03-00W\n20-12-00N 081-13-00W\n20-36-00N 083-14-00W\n21-06-00N 084-54-00W\n21-43-00N 086-42-00W\n21-59-00N 087-26-00W\n22-16-00N 089-19-00W\n22-16-00N 089-44-00W\n22-16-00N 091-09-00W\n23-16-00N 093-29-00W\n24-36-00N 095-19-00W\n25-38-00N 096-49-00W and\n25-48-00N 097-05-00W.\nPrimary and backup launch day hazard periods include:\n • 13/2245Z Nov 26 to 14/0040Z Nov 26\n • 14/2245Z Nov 26 to 15/0040Z Nov 26\n • 15/2245Z Nov 26 to 16/0040Z Nov 26\n • 16/2245Z Nov 26 to 17/0040Z Nov 26\n • 17/2245Z Nov 26 to 18/0040Z Nov 26\n • 18/2245Z Nov 26 to 19/0040Z Nov 26\n • 19/2245Z Nov 26 to 20/0040Z Nov 26\n•  Navigation hazards within the hazard areas may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners should avoid waters within the defined hazard areas during the scheduled launch window. The high risk hazard area should be avoided three hours prior to the earliest launch to ensure range clearance. For additional information, contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
             "USCG NOTMAR 58114\nA) USCG\nE) Potential for space debris from the reentry of the Starship-Super Heavy Starship | Flight 15 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from November 14, 2026 to November 21, 2026 between 1217-1544 HST (2217-0144 UTC) in an area bounded by the following coordinates:\n09-09N 153-46E, \n10-48N 156-18E, \n14-04N 162-04E, \n16-07N 165-35E, \n20-38N 174-31E, \n22-43N 179-15E, \n24-51N 176-13W, \n25-53N 173-20W, \n26-04N 171-02W, \n28-31N 161-14W, \n30-33N 150-16W, \n29-23N 150-15W, \n26-01N 153-49W, \n24-46N 154-54W, \n25-24N 157-46W, \n24-54N 161-42W, \n23-11N 168-32W, \n22-08N 173-08W, \n20-12N 179-07W, \n19-21N 178-12E, \n18-13N 174-58E, \n17-02N 170-17E, \n15-11N 165-56E, \n11-55N 159-26E, \n08-48N 154-06E",
             "USCG NOTMAR 58116\nA) USCG\nE) Potential for space debris from the reentry of the Starship-Super Heavy Starship | Flight 15 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from November 14, 2026 to November 21, 2026 between 1217-1544 HST (2217-0144 UTC) in an area bounded by the following coordinates:\n09-09N 153-46E, \n10-48N 156-18E, \n14-04N 162-04E, \n16-07N 165-35E, \n20-38N 174-31E, \n22-43N 179-15E, \n24-51N 176-13W, \n25-53N 173-20W, \n26-04N 171-02W, \n28-31N 161-14W, \n30-33N 150-16W, \n29-23N 150-15W, \n26-01N 153-49W, \n24-46N 154-54W, \n25-24N 157-46W, \n24-54N 161-42W, \n23-11N 168-32W, \n22-08N 173-08W, \n20-12N 179-07W, \n19-21N 178-12E, \n18-13N 174-58E, \n17-02N 170-17E, \n15-11N 165-56E, \n11-55N 159-26E, \n08-48N 154-06E",
             "USCG NOTMAR 58119\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 162350 Z NOV and 280335 Z NOV 2026.\nHazardous operation areas are bounded by the following coordinates:  \nHazard Area LOS ANGELES: \n33.783333N, -119.25W\n33.75N, -119.3W\n33.6N, -119.3W\n33.55N, -119.233333W\n33.55N, -119.116667W\n33.616667N, -119.033333W\n33.75N, -119.033333W\n33.783333N, -119.083333W\n33.783333N, -119.25W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
@@ -451,25 +432,11 @@
             "USCG NOTMAR 58125\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 172315Z NOV 2026 to 272005Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:\nTrunk Hazard Area:\n27.55000N, -123.41667W\n25.93333N, -124.28333W\n23.06667N, -127.03333W\n18.80000N, -130.80000W\n19.85000N, -132.05000W\n24.13333N, -128.30000W\n27.03333N, -125.33333W\n27.93333N, -123.85000W\n27.55000N, -123.41667W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
             "USCG NOTMAR 58126\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 180700Z NOV 2026 to 280355Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:\n\nTrunk Hazard Area:\n37.33333N, -124.35000W\n38.00000N, -126.41667W\n40.30000N, -130.31667W\n43.33333N, -136.45000W\n44.70000N, -135.35000W\n41.60000N, -129.13333W\n39.25000N, -125.20000W\n37.75000N, -123.93333W\n37.33333N, -124.35000W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
             "USCG NOTMAR 58127\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 172310Z NOV 2026 to 272000Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:\nTrunk Hazard Area:\n27.11667N, -123.31667W\n25.50000N, -124.16667W\n22.61667N, -126.90000W\n18.35000N, -130.65000W\n19.38333N, -131.90000W\n23.68333N, -128.16667W\n26.58333N, -125.43333W\n27.50000N, -123.75000W\n27.11667N, -123.31667W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
-            "USCG NOTMAR 58204\nA) USCG\nE) Gulf of America - Laguna Madre - Hazardous Space Operations --- Space vehicle reentry operations, which may be hazardous to surface vessels, may take place within portions of the following hazard area for Starship Flight 15:\nA.  Reentry Hazard Area:\n25-56-00N 097-09-00W,\n25-56-00N 097-05-00W,\n25-57-00N 096-28-00W,\n25-59-00N 096-25-00W,\n26-10-00N 096-22-00W,\n26-20-00N 096-52-00W,\n26-46-00N 097-28-00W,\n26-36-00N 097-27-00W,\n26-22-00N 097-13-00W,\n26-14-00N 097-09-00W,\n26-06-00N 097-08-00W,\n26-04-00N 097-09-00W,\n26-03-00N 097-11-00W,\n26-01-00N 097-13-00W and\n25-58-00N 097-12-00W.\nStarship reentry and landing will take place approximately 22.5 hours after the initial Starship Flight 15 launch.  Primary and backup reentry day hazard periods include:\n • 14/2108Z Nov 26 to 15/0014Z Nov 26\n • 15/2108Z Nov 26 to 16/0014Z Nov 26\n • 16/2108Z Nov 26 to 17/0014Z Nov 26\n • 17/2108Z Nov 26 to 18/0014Z Nov 26\n • 18/2108Z Nov 26 to 19/0014Z Nov 26\n • 19/2108Z Nov 26 to 20/0014Z Nov 26\n • 20/2108Z Nov 26 to 21/0014Z Nov 26\n•  The primary Starship vehicle landing area is Starbase Tower 2, located at approximate position 25-59-49.1N 097-09-29.2W.  The alternate landing includes a splashdown within portions of the Reentry Hazard Area.  Navigation hazards within the Reentry Hazard Area may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners should avoid waters within the defined Reentry Hazard Area during the scheduled reentry window.  For additional information, contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
-            "USCG NOTMAR 58217\nA) USCG\nE) Hazardous operations will be conducted for Space X, R-6 Launch Operations. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n32.08333333N, -119.13333333W\n32.5N, -119.3W\n33.25N, -119.63333333W\n34.2N, -120.1W\n34.51666667N, -120.3W\n34.66666667N, -120.63333333W\n34.6N, -120.65W\n34.45N, -120.61666667W\n34.31666667N, -120.56666667W\n32.08333333N, -119.15W (TO BEGINNING)\n             \n130423Z NOV TO 130846Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140832Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150818Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160804Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170751Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180737Z NOV 2026---- (BACKUP DAY) \n190300Z NOV TO 190723Z NOV 2026---- (BACKUP DAY) \n\nHazard Area B:\n30.76666667N, -118.25W\n31.38333333N, -118.78333333W\n30.43333333N, -118.51666667W\n29.58333333N, -118.2W\n29.86666667N, -117.9W\n29.8N, -117.65W (TO BEGINNING)\n            \n130423Z NOV TO 130847Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140833Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150819Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160805Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170752Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180738Z NOV 2026---- (BACKUP DAY) \n190300Z NOV TO 190724Z NOV 2026---- (BACKUP DAY) \n\nHazard Area C:\n29.03333333N, -117.98333333W\n29.25N, -118.03333333W\n29.4N, -118.13333333W\n29.58333333N, -118.2W\n29.86666667N, -117.9W\n29.8N, -117.65W\n29.6N, -117.26666667W\n28.83333333N, -117.31666667W\n28.25N, -117.31666667W\n28.26666667N, -117.35W\n28.83333333N, -117.81666667W (TO BEGINNING)\n\n130423Z NOV TO 130906Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140852Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150838Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160824Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170811Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180757Z NOV 2026---- (BACKUP DAY) \n190300Z NOV TO 190743Z NOV 2026---- (BACKUP DAY) \n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
-            "USCG NOTMAR 58218\nA) USCG\nE) Hazardous operations will be conducted for Space X, TH-3. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n34.46666667N, -120.35W\n34.66666667N, -120.61666667W\n34.63333333N, -120.65W\n34.51666667N, -120.65W\n34.33333333N, -120.63333333W\n33.28333333N, -120.35W\n33.21666667N, -120.26666667W\n32.61666667N, -120.15W\n32.01666667N, -120.03333333W\n32N, -120W\n32.1N, -120W\n33.23333333N, -120.21666667W\n33.96666667N, -120.23333333 W(TO BEGINNING)\n\n161707Z NOV TO 162131Z NOV 2026---- (PRIMARY) \n171658Z NOV TO 172122Z NOV 2026---- (BACKUP DAY) \n181649Z NOV TO 182113Z NOV 2026---- (BACKUP DAY) \n191640Z NOV TO 192104Z NOV 2026---- (BACKUP DAY) \n201631Z NOV TO 202055Z NOV 2026---- (BACKUP DAY) \n211622Z NOV TO 212046Z NOV 2026---- (BACKUP DAY) \n221613Z NOV TO 222037Z NOV 2026---- (BACKUP DAY) \n\nHazard Area B:\n30.61666667N, -119.75W\n29.1N, -119.78333333W\n28.95N, -119.91666667W\n28.68333333N, -119.88333333W\n28.3N, -119.38333333W\n27.71666667N, -119.3W\n27.7N, -119.25W\n28.3N, -119.06666667W\n28.65N, -118.71666667W\n28.91666667N, -118.76666667W\n29.15N, -119.06666667W\n30.55N, -119.66666667W (TO BEGINNING)\n\n161707Z NOV TO 162150Z NOV 2026---- (PRIMARY) \n171658Z NOV TO 172141Z NOV 2026---- (BACKUP DAY) \n181649Z NOV TO 182132Z NOV 2026---- (BACKUP DAY) \n191640Z NOV TO 192123Z NOV 2026---- (BACKUP DAY) \n201631Z NOV TO 202114Z NOV 2026---- (BACKUP DAY) \n211622Z NOV TO 212105Z NOV 2026---- (BACKUP DAY) \n221613Z NOV TO 222056Z NOV 2026---- (BACKUP DAY) \n212250Z OCT TO 220333Z OCT 2026---- (BACKUP DAY) \n\nMariners are strongly advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
-            "USCG NOTMAR 58219\nA) USCG\nE) Hazardous operations will be conducted for launch Operation, INGRID operation areas are bounded by the following coordinates and times:\nHazard Area A:\n36.1166666667N, -123.7666666667W\n36.2500000000N, -123.6666666667W\n36.0666666667N, -123.1333333333W\n35.3166666667N, -122.6333333333W\n35.2166666667N, -122.0333333333W\n35.1666666667N, -120.9833333333W\n34.9500000000N, -120.6500000000W\n34.6666666667N, -120.5666666667W\n34.1500000000N, -120.9166666667W\n34.1666666667N, -121.4166666667W\n33.4666666667N, -121.2833333333W\n33.4166666667N, -121.6500000000W\n34.2833333333N, -122.5166666667W\n\nHazard Times\n221400Z NOV TO 242000Z NOV 2026\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Stratolaunch at RangeOps@stratolaunch.com, 661-584-2365, or on VHF-FM Chan. 06 or 16.",
-            "USCG NOTMAR 58224\nA) USCG\nE) Space Operations/Hazardous Warning Area/Government Supported (Hazardous)\n\n1. SPACE LAUNCH OPERATIONS, WHICH MAY BE HAZARDOUS TO SURFACE VESSELS, WILL\nBE CONDUCTED WITHIN PORTIONS OF THE FOLLOWING HAZARD AREAS FOR VULCAN KV-01:\nA. FROM 28-39-14N/080-37-51W\nTO 29-48-00N/079-53-00W\nTO 31-23-00N/077-58-00W\nTO 34-11-00N/074-12-00W\nTO 36-28-00N/071-03-00W\nTO 36-15-00N/070-54-00W\nTO 34-13-00N/073-38-00W\nTO 32-19-00N/075-54-00W\nTO 29-27-00N/078-38-00W\nTO 28-41-00N/079-36-00W\nTO 28-33-00N/080-04-00W\nTO 28-29-26N/080-32-32W TO BEGINNING\n\n2. HAZARD PERIODS FOR PRIMARY LAUNCH DAY AND BACKUP LAUNCH DAYS (ALL TIMES\nARE REPRESENTED AS ZULU TIME UNLESS OTHERWISE INDICATED):\n13/1754 NOV 26 TO 13/1932 NOV 26.\n14/1732 NOV 26 TO 14/1911 NOV 26.\n15/1711 NOV 26 TO 15/1850 NOV 26.\n16/1650 NOV 26 TO 16/1828 NOV 26.\n17/1628 NOV 26 TO 17/1807 NOV 26.\n18/1607 NOV 26 TO 18/1746 NOV 26.\n19/1546 NOV 26 TO 19/1724 NOV 26.\n\n3. THE U.S. COAST GUARD HAS ESTABLISHED A REGULATED NAVIGATION AREA UNDER 33\nCFR 165.775 TO ENCOMPASS THE WATERS BOUND BY THE COORDINATES:\nA. FROM 28-38-35N/080-37-24W\nTO 28-47-53.9N/080-27-52.3W\nTO 28-42-58.5N/080-24-11.5W\nTO 28-40-32.5N/080-22-20.1W\nTO 28-36-59.9N/080-21-00.6W\nTO 28-34-42.2N/080-20-15.2W\nTO 28-33-16.6N/080-19-29.5W\nTO 28-31-14N/080-33-24W, THEN FOLLOWING THE SHORELINE BACK TO THE POINT OF\nORIGIN.\nB. MARINERS ARE ADVISED THAT THE AREA ENCOMPASSED BY THIS ZONE IS CLOSED TO\nALL VESSELS AND PERSONS EXCEPT AS AUTHORIZED BY THE COMMANDER, COAST GUARD\nDISTRICT SOUTHEAST OR THE CAPTAIN OF THE PORT, JACKSONVILLE, FL BEGINNING 45\nMINUTES PRIOR TO THE SCHEDULED LAUNCH WINDOW IN THIS NOTICE UNTIL REOPENED BY\nTHE CAPTAIN OF THE PORT, JACKSONVILLE, FL VIA BROADCAST ON VHF-FM CHANNEL 16\nAND CANCELLATION OF THIS BROADCAST NOTICE TO MARINERS MESSAGE. DETAILED\nLAUNCH INFORMATION IS AVAILABLE ON THE DAY OF LAUNCH BY CONTACTING THE U.S.\nCOAST GUARD VIA VHF-FM CHANNEL 16 AND 81A OR THROUGH THE U.S. SPACE FORCE\nLAUNCH INFORMATION HOTLINE AT 1-800-470-7232.\n4. THE U.S. SPACE FORCE AND KENNEDY SPACE CENTER MAY CHOOSE TO ENFORCE A\nRESTRICTED AREA AS SPECIFIED IN 33 CFR 334.525 AND 33 CFR 334.595. PRIMARILY\nBEGINNING 2 HOURS PRIOR TO THE SCHEDULED LAUNCH WINDOW OF ANY ROCKET\nLAUNCHES. THE RESTRICTED AREA WOULD REMAIN IN EFFECT UNTIL SUSPENDED BY SPACE\nLAUNCH DELTA 45.\n5. THE U.S. COAST GUARD IS PROVIDING THIS NOTICE TO ADVISE MARINERS OF THESE\nHAZARDOUS AREAS IDENTIFIED BY U.S. SPACE FORCE AND/OR A COMMERCIAL SPACE\nOPERATION, WHICH MAY IMPACT NAVIGATION INTERESTS. NAVIGATION HAZARDS FROM\nROCKET LAUNCH ACTIVITIES MAY INCLUDE FREE FALLING DEBRIS AND/OR DESCENDING\nVEHICLES OR VEHICLE COMPONENTS UNDER VARIOUS MEANS OF CONTROL. MARINERS ARE\nURGED TO AVOID WATERS WITHIN ROCKET FLIGHT TRAJECTORIES/HAZARD AREAS DURING\nLAUNCH WINDOWS AS DETAILED ABOVE.\n6. FOR MORE INFORMATION, MARINERS MAY CONTACT THE U.S. SPACE FORCE LAUNCH\nINFORMATION HOTLINE AT 1-800-470-7232 OR BY VISITING\nWWW.PATRICK.SPACEFORCE.MIL. FOR NAVIGATIONAL SAFETY, MARINERS ARE ADVISED TO\nREFER TO WWW.NAVCEN.USCG.GOV/MSI TO VIEW THE LOCAL NOTICE TO MARINERS (LNM)\nAND THE GEOSPATIAL CHART AT WWW.NAVCEN.USCG.GOV/CHART FOR INFORMATION ON\nSPACE LAUNCH AND RECOVERY OPERATIONS (SOLAR).",
-            "USCG NOTMAR 58225\nA) USCG\nE) Space Operations/Active RNA/Government Supported (RNA)\n\n1. SPACE LAUNCH OPERATIONS, WHICH MAY BE HAZARDOUS TO SURFACE VESSELS, WILL\nBE CONDUCTED WITHIN PORTIONS OF THE FOLLOWING HAZARD AREAS FOR VULCAN KV-01:\nA. FROM 28-39-14N/080-37-51W\nTO 29-48-00N/079-53-00W\nTO 31-23-00N/077-58-00W\nTO 34-11-00N/074-12-00W\nTO 36-28-00N/071-03-00W\nTO 36-15-00N/070-54-00W\nTO 34-13-00N/073-38-00W\nTO 32-19-00N/075-54-00W\nTO 29-27-00N/078-38-00W\nTO 28-41-00N/079-36-00W\nTO 28-33-00N/080-04-00W\nTO 28-29-26N/080-32-32W TO BEGINNING\n\n2. HAZARD PERIODS FOR PRIMARY LAUNCH DAY AND BACKUP LAUNCH DAYS (ALL TIMES\nARE REPRESENTED AS ZULU TIME UNLESS OTHERWISE INDICATED):\n13/1754 NOV 26 TO 13/1932 NOV 26.\n14/1732 NOV 26 TO 14/1911 NOV 26.\n15/1711 NOV 26 TO 15/1850 NOV 26.\n16/1650 NOV 26 TO 16/1828 NOV 26.\n17/1628 NOV 26 TO 17/1807 NOV 26.\n18/1607 NOV 26 TO 18/1746 NOV 26.\n19/1546 NOV 26 TO 19/1724 NOV 26.\n\n3. THE U.S. COAST GUARD HAS ESTABLISHED A REGULATED NAVIGATION AREA UNDER 33\nCFR 165.775 TO ENCOMPASS THE WATERS BOUND BY THE COORDINATES:\nA. FROM 28-38-35N/080-37-24W\nTO 28-47-53.9N/080-27-52.3W\nTO 28-42-58.5N/080-24-11.5W\nTO 28-40-32.5N/080-22-20.1W\nTO 28-36-59.9N/080-21-00.6W\nTO 28-34-42.2N/080-20-15.2W\nTO 28-33-16.6N/080-19-29.5W\nTO 28-31-14N/080-33-24W, THEN FOLLOWING THE SHORELINE BACK TO THE POINT OF\nORIGIN.\nB. MARINERS ARE ADVISED THAT THE AREA ENCOMPASSED BY THIS ZONE IS CLOSED TO\nALL VESSELS AND PERSONS EXCEPT AS AUTHORIZED BY THE COMMANDER, COAST GUARD\nDISTRICT SOUTHEAST OR THE CAPTAIN OF THE PORT, JACKSONVILLE, FL BEGINNING 45\nMINUTES PRIOR TO THE SCHEDULED LAUNCH WINDOW IN THIS NOTICE UNTIL REOPENED BY\nTHE CAPTAIN OF THE PORT, JACKSONVILLE, FL VIA BROADCAST ON VHF-FM CHANNEL 16\nAND CANCELLATION OF THIS BROADCAST NOTICE TO MARINERS MESSAGE. DETAILED\nLAUNCH INFORMATION IS AVAILABLE ON THE DAY OF LAUNCH BY CONTACTING THE U.S.\nCOAST GUARD VIA VHF-FM CHANNEL 16 AND 81A OR THROUGH THE U.S. SPACE FORCE\nLAUNCH INFORMATION HOTLINE AT 1-800-470-7232.\n4. THE U.S. SPACE FORCE AND KENNEDY SPACE CENTER MAY CHOOSE TO ENFORCE A\nRESTRICTED AREA AS SPECIFIED IN 33 CFR 334.525 AND 33 CFR 334.595. PRIMARILY\nBEGINNING 2 HOURS PRIOR TO THE SCHEDULED LAUNCH WINDOW OF ANY ROCKET\nLAUNCHES. THE RESTRICTED AREA WOULD REMAIN IN EFFECT UNTIL SUSPENDED BY SPACE\nLAUNCH DELTA 45.\n5. THE U.S. COAST GUARD IS PROVIDING THIS NOTICE TO ADVISE MARINERS OF THESE\nHAZARDOUS AREAS IDENTIFIED BY U.S. SPACE FORCE AND/OR A COMMERCIAL SPACE\nOPERATION, WHICH MAY IMPACT NAVIGATION INTERESTS. NAVIGATION HAZARDS FROM\nROCKET LAUNCH ACTIVITIES MAY INCLUDE FREE FALLING DEBRIS AND/OR DESCENDING\nVEHICLES OR VEHICLE COMPONENTS UNDER VARIOUS MEANS OF CONTROL. MARINERS ARE\nURGED TO AVOID WATERS WITHIN ROCKET FLIGHT TRAJECTORIES/HAZARD AREAS DURING\nLAUNCH WINDOWS AS DETAILED ABOVE.\n6. FOR MORE INFORMATION, MARINERS MAY CONTACT THE U.S. SPACE FORCE LAUNCH\nINFORMATION HOTLINE AT 1-800-470-7232 OR BY VISITING\nWWW.PATRICK.SPACEFORCE.MIL. FOR NAVIGATIONAL SAFETY, MARINERS ARE ADVISED TO\nREFER TO WWW.NAVCEN.USCG.GOV/MSI TO VIEW THE LOCAL NOTICE TO MARINERS (LNM)\nAND THE GEOSPATIAL CHART AT WWW.NAVCEN.USCG.GOV/CHART FOR INFORMATION ON\nSPACE LAUNCH AND RECOVERY OPERATIONS (SOLAR).",
-            "USCG NOTMAR 58296\nA) USCG\nE) Gulf of America – Safety Zone – Space Launch --- From: 2026-11-13 To: 2026-11-19 --- The U.S. Coast Guard Captain of the Port Corpus Christi is establishing a Safety Zone in the near shore region of the space launch hazard area in the Gulf of America.  The Safety Zone will be active on November 13, 2026, from 2:00 p.m. to 9:00 p.m., local time.  Back-up dates include November 14 - November 19, 2026, from 2:00 p.m. to 9:00 p.m., each day.  The Safety Zone consists of all navigable waters of the Gulf of America, from the surface to bottom, and is bound by the following positions: 26-02-36N 097-09-08W, 26-03-00N 097-07-00W, 26-07-48.0N 096-56-02.2W, then following the 12 nautical mile Territorial Sea Line to the United States of America/Mexico Maritime Boundary Line, following the United States of America/Mexico Maritime Boundary Line to position 25-57-24.2N 097-08-49.0W, and following the coast back to 26-02-36N 097-09-08W.  All vessels are prohibited from entering the Safety Zone, unless granted permission by the U.S. Coast Guard.  Mariners with urgent concerns can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
-            "USCG NOTMAR 58298\nA) USCG\nE) South Bay – Safety Zone – Space Launch --- From: 2026-11-13 To: 2026-11-20 --- The U.S. Coast Guard Captain of the Port Corpus Christi is establishing a Safety Zone in South Bay.  The Safety Zone will be active for the Starship Flight 15 launch on November 13, 2026, from 2:00 p.m. to 9:00 p.m., local time.  Back-up dates include November 14 - November 19, 2026, from 2:00 p.m. to 9:00 p.m., each day.  The reentry and landing of Starship Flight 15 will take place approximately 22.5 hours after the initial launch.  The Safety Zone will be activated again for the Starship Flight 15 reentry/landing operation on November 14, 2026, from 1:00 p.m. to 8:00 p.m.  Back-up dates include November 15 – 20, 2026, from 1:00 p.m. to 8:00 p.m.  The Safety Zone consists of all navigable waters of South Bay, from the surface to bottom, and is bound by the following positions: 26-02-45.0N 097-11-06.3W, 26-02-45.0N 097-10-53.4W, and following the South Bay internal coastline to the point of origin.  All vessels are prohibited from entering the Safety Zone, unless granted permission by the U.S. Coast Guard.  Mariners should monitor all marine radio broadcasts and avoid the area during the specified launch and reentry times.  Mariners with urgent concerns can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
-            "USCG NOTMAR 58306\nA) USCG\nE) Gulf of America - GIWW - Port Mansfield Channel - Laguna Madre - Space Reentry Operation Safety Zone --- From: 2026-11-14 To: 2026-11-20 --- The U.S. Coast Guard Captain of the Port Corpus Christi is establishing a Safety Zone in portions of the Gulf of America, the Port Mansfield Channel, Laguna Madre, and the GIWW.  The reentry and landing of Starship Flight 15 will take place approximately 22.5 hours after the initial launch.  The Safety Zone will be active for the reentry and landing on November 14, 2026, from 1:00 p.m. to 8:00 p.m., local time.  Back-up dates include November 15 - November 20, 2026, from 1:00 p.m. to 8:00 p.m., each day.  The Safety Zone consists of all navigable waters from 26-04-00N 097-09-00W, to 26-06-00N 097-08-00W, to 26-14-00N 097-09-00W, to 26-22-00N 097-13-00W, to 26-36-00N 097-27-00W, then following the shoreline to 26-46-00N 097-28-00W, to 26-28-00N 097-00-00W, then following the 12 nautical mile Territorial Sea Line to the United States of America/Mexico Maritime Boundary Line, and following the United States of America/Mexico Maritime Boundary Line to position 26-02-36N 097-09-08W.  All vessels are prohibited from entering the Safety Zone, unless granted permission by the U.S. Coast Guard.  Mariners should monitor all marine radio broadcasts and avoid the area during the specified reentry times.  Mariners with urgent concerns can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143."
+            "USCG NOTMAR 58217\nA) USCG\nE) Hazardous operations will be conducted for Space X, R-6 Launch Operations. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n32.08333333N, -119.13333333W\n32.5N, -119.3W\n33.25N, -119.63333333W\n34.2N, -120.1W\n34.51666667N, -120.3W\n34.66666667N, -120.63333333W\n34.6N, -120.65W\n34.45N, -120.61666667W\n34.31666667N, -120.56666667W\n32.08333333N, -119.15W (TO BEGINNING)\n             \n130423Z NOV TO 130846Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140832Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150818Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160804Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170751Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180737Z NOV 2026---- (PRIMARY)\n190300Z NOV TO 190723Z NOV 2026---- (BACKUP DAY)\n200246Z NOV TO 200709Z NOV 2026---- (BACKUP DAY)\n210232Z NOV TO 210655Z NOV 2026---- (BACKUP DAY)\n220218Z NOV TO 220641Z NOV 2026---- (BACKUP DAY)\n230400Z NOV TO 230628Z NOV 2026---- (BACKUP DAY)\n240346Z NOV TO 240614Z NOV 2026---- (BACKUP DAY)\n\nHazard Area B:\n30.76666667N, -118.25W\n31.38333333N, -118.78333333W\n30.43333333N, -118.51666667W\n29.58333333N, -118.2W\n29.86666667N, -117.9W\n29.8N, -117.65W (TO BEGINNING)\n            \n130423Z NOV TO 130847Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140833Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150819Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160805Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170752Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180738Z NOV 2026---- (PRIMARY)\n190300Z NOV TO 190724Z NOV 2026---- (BACKUP DAY)\n200246Z NOV TO 200710Z NOV 2026---- (BACKUP DAY)\n210232Z NOV TO 210656Z NOV 2026---- (BACKUP DAY)\n220218Z NOV TO 220642Z NOV 2026---- (BACKUP DAY)\n230400Z NOV TO 230629Z NOV 2026---- (BACKUP DAY)\n240346Z NOV TO 240615Z NOV 2026---- (BACKUP DAY)\n\nHazard Area C:\n29.03333333N, -117.98333333W\n29.25N, -118.03333333W\n29.4N, -118.13333333W\n29.58333333N, -118.2W\n29.86666667N, -117.9W\n29.8N, -117.65W\n29.6N, -117.26666667W\n28.83333333N, -117.31666667W\n28.25N, -117.31666667W\n28.26666667N, -117.35W\n28.83333333N, -117.81666667W (TO BEGINNING)\n\n130423Z NOV TO 130906Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140852Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150838Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160824Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170811Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180757Z NOV 2026---- (PRIMARY)\n190300Z NOV TO 190743Z NOV 2026---- (BACKUP DAY)\n200246Z NOV TO 200729Z NOV 2026---- (BACKUP DAY)\n210232Z NOV TO 210715Z NOV 2026---- (BACKUP DAY)\n220218Z NOV TO 220701Z NOV 2026---- (BACKUP DAY)\n230400Z NOV TO 230648Z NOV 2026---- (BACKUP DAY)\n240346Z NOV TO 240634Z NOV 2026---- (BACKUP DAY)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
+            "USCG NOTMAR 58218\nA) USCG\nE) Hazardous operations will be conducted for Space X, TH-3. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n34.46666667N, -120.35W\n34.66666667N, -120.61666667W\n34.63333333N, -120.65W\n34.51666667N, -120.65W\n34.33333333N, -120.63333333W\n33.28333333N, -120.35W\n33.21666667N, -120.26666667W\n32.61666667N, -120.15W\n32.01666667N, -120.03333333W\n32N, -120W\n32.1N, -120W\n33.23333333N, -120.21666667W\n33.96666667N, -120.23333333 W(TO BEGINNING)\n\n161707Z NOV TO 162131Z NOV 2026---- (PRIMARY) \n171658Z NOV TO 172122Z NOV 2026---- (BACKUP DAY) \n181649Z NOV TO 182113Z NOV 2026---- (BACKUP DAY) \n191640Z NOV TO 192104Z NOV 2026---- (BACKUP DAY) \n201631Z NOV TO 202055Z NOV 2026---- (BACKUP DAY) \n211622Z NOV TO 212046Z NOV 2026---- (BACKUP DAY) \n221613Z NOV TO 222037Z NOV 2026---- (BACKUP DAY) \n231604Z NOV TO 232028Z NOV 2026---- (PRIMARY)\n241555Z NOV TO 242019Z NOV 2026---- (BACKUP DAY)\n251546Z NOV TO 252010Z NOV 2026---- (BACKUP DAY)\n261537Z NOV TO 262001Z NOV 2026---- (BACKUP DAY)\n271528Z NOV TO 271952Z NOV 2026---- (BACKUP DAY)\n281519Z NOV TO 281943Z NOV 2026---- (BACKUP DAY)\n291510Z NOV TO 291934Z NOV 2026---- (BACKUP DAY)\n\nHazard Area B:\n30.61666667N, -119.75W\n29.1N, -119.78333333W\n28.95N, -119.91666667W\n28.68333333N, -119.88333333W\n28.3N, -119.38333333W\n27.71666667N, -119.3W\n27.7N, -119.25W\n28.3N, -119.06666667W\n28.65N, -118.71666667W\n28.91666667N, -118.76666667W\n29.15N, -119.06666667W\n30.55N, -119.66666667W (TO BEGINNING)\n\n161707Z NOV TO 162150Z NOV 2026---- (PRIMARY) \n171658Z NOV TO 172141Z NOV 2026---- (BACKUP DAY) \n181649Z NOV TO 182132Z NOV 2026---- (BACKUP DAY) \n191640Z NOV TO 192123Z NOV 2026---- (BACKUP DAY) \n201631Z NOV TO 202114Z NOV 2026---- (BACKUP DAY) \n211622Z NOV TO 212105Z NOV 2026---- (BACKUP DAY) \n221613Z NOV TO 222056Z NOV 2026---- (BACKUP DAY) \n212250Z OCT TO 220333Z OCT 2026---- (BACKUP DAY) \n231604Z NOV TO 232047Z NOV 2026---- (PRIMARY)\n241555Z NOV TO 242038Z NOV 2026---- (BACKUP DAY)\n251546Z NOV TO 252029Z NOV 2026---- (BACKUP DAY)\n261537Z NOV TO 262020Z NOV 2026---- (BACKUP DAY)\n271528Z NOV TO 272011Z NOV 2026---- (BACKUP DAY)\n281519Z NOV TO 282002Z NOV 2026---- (BACKUP DAY)\n291510Z NOV TO 291953Z NOV 2026---- (BACKUP DAY)\n\nMariners are strongly advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
+            "USCG NOTMAR 58219\nA) USCG\nE) Hazardous operations will be conducted for launch Operation, INGRID operation areas are bounded by the following coordinates and times:\nHazard Area A:\n36.1166666667N, -123.7666666667W\n36.2500000000N, -123.6666666667W\n36.0666666667N, -123.1333333333W\n35.3166666667N, -122.6333333333W\n35.2166666667N, -122.0333333333W\n35.1666666667N, -120.9833333333W\n34.9500000000N, -120.6500000000W\n34.6666666667N, -120.5666666667W\n34.1500000000N, -120.9166666667W\n34.1666666667N, -121.4166666667W\n33.4666666667N, -121.2833333333W\n33.4166666667N, -121.6500000000W\n34.2833333333N, -122.5166666667W\n\nHazard Times\n221400Z NOV TO 242000Z NOV 2026\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Stratolaunch at RangeOps@stratolaunch.com, 661-584-2365, or on VHF-FM Chan. 06 or 16."
         ],
         "ALTITUDE": [
-            "None",
-            "None",
-            "None",
-            "None",
-            "None",
-            "None",
-            "None",
-            "None",
             "None",
             "None",
             "None",
@@ -507,14 +474,6 @@
             "NOTMAR",
             "NOTMAR",
             "NOTMAR",
-            "NOTMAR",
-            "NOTMAR",
-            "NOTMAR",
-            "NOTMAR",
-            "NOTMAR",
-            "NOTMAR",
-            "NOTMAR",
-            "NOTMAR",
             "NOTMAR"
         ],
         "FIR": [
@@ -522,8 +481,6 @@
             "13",
             "8",
             "11",
-            "8",
-            "8",
             "14",
             "14",
             "11",
@@ -535,23 +492,15 @@
             "11",
             "13",
             "11",
-            "8",
             "11",
             "11",
-            "11",
-            "7",
-            "7",
-            "8",
-            "8",
-            "8"
+            "11"
         ],
         "GEOMETRY": [
             "PATH|M=N284334W0804111|L=N284306W0804048|L=N284215W0804005|L=N284127W0803930|L=N284025W0803841|L=N283919W0803753|L=N283813W0803708|L=N283706W0803611|L=N283553W0803504|L=N283517W0803437|L=N283446W0803425|L=N283411W0803412|L=N283345W0803407|L=N283307W0803403|L=N283233W0803355|L=N283201W0803346|L=N283122W0803330|L=N283119W0803330|L=N283035W0803310|L=N283023W0803304|L=N283016W0803258|L=N282922W0803231|L=N282847W0803214|L=N282759W0803147|L=N282758W0803143|L=N282735W0803133|L=N282728W0803132|L=N282712W0803131|L=N282701W0803136|L=N282657W0803144|L=N282650W0803211|L=N282652W0803215|L=N282650W0803226|L=N282616W0803344|L=N282601W0803407|L=N282532W0803436|L=N282500W0803458|L=N282443W0803507|L=N282412W0803326|L=N282453W0803259|L=N282457W0803251|L=N282509W0803226|L=N282522W0803151|L=N282528W0803120|L=N282537W0803053|L=N282542W0803042|L=N282552W0803026|L=N282605W0803015|L=N282617W0803004|L=N282637W0802954|L=N282659W0802948|L=N282721W0802947|L=N282744W0802950|L=N282805W0802954|L=N282832W0803008|L=N282938W0803045|L=N283025W0803109|L=N283121W0803141|L=N283200W0803157|L=N283300W0803213|L=N283444W0803234|L=N283545W0803258|L=N283609W0803312|L=N283643W0803338|L=N283742W0803431|L=N283848W0803531|L=N283951W0803616|L=N284122W0803720|L=N284334W0803907|Z",
             "POINT|C=N452347W1243332",
             "POINT|C=N295545W0890346",
             "PATH|M=N345600W1205700|L=N345600W1212200|L=N345400W1215900|L=N343700W1243700|L=N341600W1243300|L=N343800W1205200|L=N344400W1203500|L=N345500W1203500|Z",
-            "PATH|M=N260400W0964900|L=N260400W0970400|L=N260400W0971000|L=N260200W0971300|L=N255800W0971300|L=N254800W0970500|L=N254100W0964700|L=N250200W0950500|L=N242900W0940800|L=N242000W0933200|L=N242500W0925200|L=N244500W0924300|L=N251200W0925800|L=N253100W0935200|L=N254200W0952400|L=N260200W0963200|Z",
-            "PATH|M=N260600W0964900|L=N260600W0970400|L=N260400W0971000|L=N260200W0971300|L=N255800W0971300|L=N254800W0970500|L=N253800W0964900|L=N243600W0951900|L=N231600W0932900|L=N221600W0910900|L=N221600W0894400|L=N221600W0891900|L=N215900W0872600|L=N214300W0864200|L=N210600W0845400|L=N203600W0831400|L=N201200W0811300|L=N203100W0810300|L=N204300W0814200|L=N205900W0823800|L=N212600W0834900|L=N213300W0843200|L=N213800W0845900|L=N214100W0850700|L=N223100W0862900|L=N232100W0882900|L=N233200W0885200|L=N251100W0915900|L=N254100W0932900|L=N260100W0951200|Z",
             "PATH|M=N303300W1501600|L=N283100W1611400|L=N260400W1710200|L=N255300W1732000|L=N201200W1790700|L=N220800W1730800|L=N231100W1683200|L=N245400W1614200|L=N252400W1574600|L=N244600W1545400|L=N260100W1534900|L=N292300W1501500|Z",
             "PATH|M=N224300E1791500|L=N203800E1743100|L=N160700E1653500|L=N140400E1620400|L=N104800E1561800|L=N090900E1534600|L=N084800E1540600|L=N115500E1592600|L=N151100E1655600|L=N170200E1701700|L=N181300E1745800|L=N192100E1781200|Z",
             "PATH|M=N334700W1191500|L=N334500W1191800|L=N333600W1191800|L=N333300W1191400|L=N333300W1190700|L=N333700W1190200|L=N334500W1190200|L=N334700W1190500|Z",
@@ -563,22 +512,23 @@
             "PATH|M=N275600W1235100|L=N270200W1252000|L=N240800W1281800|L=N195100W1320300|L=N184800W1304800|L=N230400W1270200|L=N255600W1241700|L=N273300W1232500|Z",
             "PATH|M=N444200W1352100|L=N432000W1362700|L=N401800W1301900|L=N380000W1262500|L=N372000W1242100|L=N374500W1235600|L=N391500W1251200|L=N413600W1290800|Z",
             "PATH|M=N273000W1234500|L=N263500W1252600|L=N234100W1281000|L=N192300W1315400|L=N182100W1303900|L=N223700W1265400|L=N253000W1241000|L=N270700W1231900|Z",
-            "PATH|M=N264600W0972800|L=N263600W0972700|L=N262200W0971300|L=N261400W0970900|L=N260600W0970800|L=N260400W0970900|L=N260300W0971100|L=N260100W0971300|L=N255800W0971200|L=N255600W0970900|L=N255600W0970500|L=N255700W0962800|L=N255900W0962500|L=N261000W0962200|L=N262000W0965200|Z",
             "PATH|M=N344000W1203800|L=N343600W1203900|L=N342700W1203700|L=N341900W1203400|L=N290200W1175900|L=N281600W1172100|L=N281500W1171900|L=N293600W1171600|L=N341200W1200600|L=N343100W1201800|Z",
             "PATH|M=N344000W1203700|L=N343800W1203900|L=N343100W1203900|L=N342000W1203800|L=N320100W1200200|L=N320000W1200000|L=N320600W1200000|L=N335800W1201400|L=N342800W1202100|Z",
-            "PATH|M=N361500W1234000|L=N360700W1234600|L=N341700W1223100|L=N332500W1213900|L=N332800W1211700|L=N341000W1212500|L=N340900W1205500|L=N344000W1203400|L=N345700W1203900|L=N351000W1205900|L=N351300W1220200|L=N351900W1223800|L=N360400W1230800|Z",
-            "PATH|M=N362800W0710300|L=N341100W0741200|L=N312300W0775800|L=N294800W0795300|L=N283914W0803751|L=N282926W0803232|L=N283300W0800400|L=N284100W0793600|L=N292700W0783800|L=N321900W0755400|L=N341300W0733800|L=N361500W0705400|Z",
-            "PATH|M=N284754W0802752|L=N283835W0803751|L=N283114W0803324|L=N283317W0801900|L=N283442W0802015|L=N283700W0802101|L=N284032W0802220|L=N284259W0802411|Z",
-            "PATH|M=N260748W0965602|L=N260300W0970700|L=N260236W0970908|L=N255724W0970849|L=N255833W0965524|L=N260102W0965541|L=N260121W0965536|L=N260326W0965519|L=N260512W0965523|L=N260705W0965548|Z",
-            "PATH|M=N260250W0971016|L=N260234W0971044|L=N260245W0971053|L=N260245W0971106|L=N260209W0971143|L=N260129W0971238|L=N260035W0971239|L=N260040W0971123|L=N260100W0971118|L=N260048W0971034|L=N260031W0971035|L=N260042W0971030|L=N260053W0971011|L=N260009W0970926|L=N260017W0970918|Z",
-            "PATH|M=N264600W0972800|L=N263600W0972700|L=N262200W0971300|L=N261400W0970900|L=N260600W0970800|L=N260400W0970900|L=N260224W0970911|L=N255722W0970848|L=N255725W0970807|L=N255735W0970612|L=N255833W0965526|L=N255931W0965534|L=N260055W0965544|L=N260108W0965543|L=N260152W0965532|L=N260254W0965524|L=N260351W0965521|L=N260533W0965529|L=N260657W0965546|L=N260813W0965611|L=N260853W0965629|L=N260928W0965648|L=N261321W0965718|L=N261518W0965732|L=N261712W0965755|L=N262018W0965835|L=N262347W0965927|L=N262554W0965958|L=N262708W0970019|L=N262800W0970000|Z"
+            "PATH|M=N361500W1234000|L=N360700W1234600|L=N341700W1223100|L=N332500W1213900|L=N332800W1211700|L=N341000W1212500|L=N340900W1205500|L=N344000W1203400|L=N345700W1203900|L=N351000W1205900|L=N351300W1220200|L=N351900W1223800|L=N360400W1230800|Z"
         ],
         "CLASSIFY": {
-            "c119919069": [
-                "NOTMAR 58224",
-                "NOTMAR 58225"
+            "c273115632": [
+                "NOTMAR 58114",
+                "NOTMAR 58116",
+                "NOTMAR 58217",
+                "NOTMAR 58219"
             ],
-            "c227577426": [
+            "c578996250": [
+                "NOTMAR 57714",
+                "NOTMAR 57803",
+                "NOTMAR 57935"
+            ],
+            "c65534284": [
                 "NOTMAR 58119",
                 "NOTMAR 58120",
                 "NOTMAR 58121",
@@ -587,35 +537,18 @@
                 "NOTMAR 58124",
                 "NOTMAR 58125",
                 "NOTMAR 58126",
-                "NOTMAR 58127"
-            ],
-            "c378722031": [
-                "NOTMAR 58060",
-                "NOTMAR 58067",
-                "NOTMAR 58114",
-                "NOTMAR 58116",
-                "NOTMAR 58204",
-                "NOTMAR 58217",
-                "NOTMAR 58218",
-                "NOTMAR 58219",
-                "NOTMAR 58296",
-                "NOTMAR 58298",
-                "NOTMAR 58306"
-            ],
-            "c578996250": [
-                "NOTMAR 57714",
-                "NOTMAR 57803",
-                "NOTMAR 57935"
+                "NOTMAR 58127",
+                "NOTMAR 58218"
             ],
             "c796038164": [
                 "NOTMAR 40014"
             ]
         },
-        "NUM": 26,
-        "HASH": "ca58238267f8dfc030fa274e14fb7d66ffab1497c5839ca408b5df888e479a5f"
+        "NUM": 18,
+        "HASH": "9a79408113bfc187e5eb211113c384ef193d95ba1711d34803762dabffd1a5b8"
     },
-    "HASH": "86336af389f12fe8f33086aac18b47bca877bc6bdf133b81750ff2f3585c4355",
-    "HASH_NOTAM": "9c66fa0ee53f79442af19613c37875a343194bbbbcbcc9e56ed372faca191dbb",
+    "HASH": "65a94dc033fc1765015e1d66a13ec3a72fe31666aa7be5197ba53d3d7d2793f7",
+    "HASH_NOTAM": "5d300ededa55fd2c383341a309574d49e0ef29c5769d4c4ecdeabd8d18b10775",
     "HASH_FOCUSED": "274ac9c6aa4561e16c69bc8bfe0bfba2a490f727211e0f606b53d618f1fe6841",
     "FETCH_VALID": true,
     "FAILED_SOURCES": [
@@ -626,9 +559,9 @@
             "CODE": [
                 "A0106/26",
                 "A0635/26",
-                "A1460/26",
                 "A1461/26",
                 "A1466/26",
+                "A1483/26",
                 "A2611/26",
                 "A2639/26",
                 "A5871/26",
@@ -639,21 +572,22 @@
                 "A5992/26",
                 "A5993/26",
                 "A6439/26",
-                "B4160/26",
-                "B4161/26",
                 "B4383/26",
+                "B4503/26",
+                "B4504/26",
                 "B5831/26",
                 "B6120/26",
                 "B6122/26",
                 "W3979/26",
-                "W3981/26"
+                "W3981/26",
+                "W3987/26"
             ],
             "TIME": [
                 "13 NOV 22:53 2026 UNTIL 20 NOV 01:14 2026",
                 "13 NOV 22:45 2026 UNTIL 20 NOV 00:45 2026",
-                "18 NOV 18:34 2026 UNTIL 22 NOV 22:36 2026",
                 "13 NOV 18:30 2026 UNTIL 24 NOV 08:16 2026",
                 "21 NOV 14:14 2026 UNTIL 27 NOV 14:08 2026",
+                "23 NOV 17:49 2026 UNTIL 29 NOV 21:33 2026",
                 "11 NOV 11:46 2026 UNTIL 22 NOV 16:00 2026",
                 "14 NOV 16:00 2026 UNTIL 21 NOV 16:00 2026",
                 "10 NOV 16:00 2026 UNTIL 22 NOV 16:00 2026",
@@ -664,21 +598,22 @@
                 "21 NOV 03:46 2026 UNTIL 21 NOV 04:15 2026",
                 "21 NOV 03:47 2026 UNTIL 21 NOV 04:19 2026",
                 "23 NOV 10:12 2026 UNTIL 03 DEC 15:39 2026",
-                "16 NOV 17:07 2026 UNTIL 22 NOV 20:37 2026",
-                "16 NOV 17:07 2026 UNTIL 22 NOV 20:56 2026",
                 "18 NOV 03:14 2026 UNTIL 24 NOV 06:34 2026",
+                "23 NOV 16:04 2026 UNTIL 29 NOV 19:34 2026",
+                "23 NOV 16:04 2026 UNTIL 29 NOV 19:53 2026",
                 "24 NOV 07:00 2026 UNTIL 27 NOV 10:00 2026",
                 "20 NOV 11:51 2026 UNTIL 20 NOV 12:17 2026",
                 "20 NOV 11:52 2026 UNTIL 20 NOV 12:28 2026",
                 "21 NOV 14:14 2026 UNTIL 27 NOV 14:08 2026",
-                "18 NOV 05:01 2026 UNTIL 24 NOV 08:16 2026"
+                "18 NOV 05:01 2026 UNTIL 24 NOV 08:16 2026",
+                "23 NOV 17:49 2026 UNTIL 29 NOV 21:33 2026"
             ],
             "PLATID": [
                 "FIMM_I_FIMPYOYX_A0106_26",
                 "TNCF_I_TNCCYNYX_A0635_26",
-                "NTTT_I_NTAAYNYX_A1460_26",
                 "NTTT_I_NTAAYNYX_A1461_26",
                 "NTTT_I_NTAAYNYX_A1466_26",
+                "NTTT_I_NTAAYNYX_A1483_26",
                 "VHHK_I_VHHHYNYX_A2611_26",
                 "VHHK_I_VHHHYNYX_A2639_26",
                 "ZGZU_I_ZBBBYNYX_A5871_26",
@@ -689,21 +624,22 @@
                 "ZPKM_I_ZBBBYNYX_A5992_26",
                 "ZPKM_I_ZBBBYNYX_A5993_26",
                 "LPPO_I_LPPPYNYX_A6439_26",
-                "MMFR_I_MMMXYNYX_B4160_26",
-                "MMFO_I_MMMXYNYX_B4161_26",
                 "MMFR_I_MMMXYNYX_B4383_26",
+                "MMFR_I_MMMXYNYX_B4503_26",
+                "MMFO_I_MMMXYNYX_B4504_26",
                 "RPHI_I_RPLLYNYX_B5831_26",
                 "RPHI_I_RPLLYNYX_B6120_26",
                 "RPHI_I_RPLLYNYX_B6122_26",
                 "SCIZ_I_SCSCYNYX_W3979_26",
-                "SCIZ_I_SCSCYNYX_W3981_26"
+                "SCIZ_I_SCSCYNYX_W3981_26",
+                "SCIZ_I_SCSCYNYX_W3987_26"
             ],
             "RAWMESSAGE": [
                 "A0106/26 NOTAMN\r\nQ) FIMM/QRALW/IV/NBO/AE/000/999/2025S07540E999\r\n A) FIMM B) 2611132253 C) 2611200114 EST\r\n D) 13 2253 - 2359\r\n14 0000 - 0114\r\n14 2253 - 2359\r\n15 0000 - 0114\r\n15 2253 - 2359\r\n16 0000 - 0114\r\n16 2253 - 2359\r\n17 0000 - 0114\r\n17 2253 - 2359\r\n18 0000 - 0114\r\n18 2253 - 2359\r\n19 0000 - 0114\r\n19 2253 - 2359\r\n20 0000 - 0114\r\n E) STATIONARY ALTITUDE RESERVATION FOR HAZARDOUS OPERATIONS FROM SFC\r\nTO UNL FOR ATMOSPHERIC RE-ENTRY AND SPLASHDOWN OF SPACE X STARSHIP\r\nFLT-15 ROCKET WI AN AREA BOUNDED BY FLW COORD: \r\n2458S 07056E\r\n2342S 07500E\r\n2631S 07500E\r\n2729S 07208E TO BEGINNING\r\nPRIMARY RE-ENTRY BTN 2253 ON 13 NOV 2026 AND 0114 ON 14 NOV 2026\r\nBACK UP RE-ENTRY BTN 14 NOV 2026 AND 20 NOV 2026 AS PER FIELD D\r\n F) 000 G) 999\n\nCREATED: 07 NOV 2026 11:04\nSOURCE: FIMPYOYX",
                 "A0635/26 NOTAMN\r\nQ) TNCF/QRDCA/IV/BO/W/000/999/1700N07140W250\r\nA) TNCF\r\nB) 2611132245 C) 2611200045\r\nD) 2245-0045\r\nE) DEBRIS RESPONSE AREAS(DRA) WITHIN CUR FIR MAY BE ACTIVATED IF\r\nREQUIRED DUE TO STARSHIP FLT 15 LAUNCH MALFUNCTION. IF\r\nACTIVATED, DRA ESTABLISHED AS TEMPORARY DANGER AREA. DRA\r\nBOUNDED BY: 1700N07140W-1626N07140W-1657N07304W-1700N07300W\r\nAND 1600N07029W-1548N06956W-1524N06830W-1502N06712W-1534N06705W-\r\n1600N06813W. DEPARTURES WITHIN CUR TMA MAY EXPECT GND DELAYS. \r\nACFT WITHIN CUR FIR MAY EXPECT AIRBORNE HOLDING. ATC WILL ADVISE\r\nDRA ACTIVATION AND RESUMPTION OF NORMAL OPS.DRA ACTIVATION, IF\r\nREQUIRED, MAY OCCUR ON 261113. SHOULD THE LAUNCH BE POSTPONED,\r\nDRA MAY BE ACTIVATED, IF REQUIRED, ON ANY OF THE FOLLOWING\r\nBACKUP DATES: 261114, 261115, 261116,261117, 261118 OR 261119.\r\nF) SFC G) UNL\n\nCREATED: 11 NOV 2026 20:10\nSOURCE: TNCCYNYX",
-                "A1460/26 NOTAMN\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2847S13424W130\r\nA) NTTT\r\nB) 2611181834 C) 2611222236\r\nD) 18 1834-2312\r\n19 1825-2303\r\n20 1816-2254\r\n21 1807-2245\r\n22 1758-2236\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nUSSF266-TH3 IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING\r\nPOINTS :\r\n3000S 13551W, 2748S 13613W, 2719S 13310W, 3000S 13235W, 3000S\r\n13551W\r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : NZZO, SCIZ\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2752/26.\r\nF) SFC G) UNL\n\nCREATED: 13 NOV 2026 18:08\nSOURCE: NTAAYNYX",
                 "A1461/26 NOTAMR A1456/26\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2858S12112W113\r\nA) NTTT\r\nB) 2611131830 C) 2611240816\r\nD) 18 0501-0939,\r\n19 0447-0925,\r\n20 0433-0911,\r\n21 0419-0857,\r\n22 0405-0843,\r\n23 0547-0830,\r\n24 0533-0816\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nUSSF-317 / R-6 IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING\r\nPOINTS :  \r\n3000S 12153W, 2759S 12244W, 2709S 12043W, 2843S 12000W,\r\n3000S 12000W, 3000S 12153W \r\n\r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : SCIZ \r\n\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2753/26.\r\n\r\nF) SFC G) UNL\n\nCREATED: 13 NOV 2026 18:34\nSOURCE: NTAAYNYX",
                 "A1466/26 NOTAMN\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2843S12112W120\r\nA) NTTT\r\nB) 2611211414 C) 2611271408\r\nD) 21 1414-1531, 22 1400-1517, 23 1346-1503, 24 1332-1449, 25\r\n 1319-1436, 26 1305-1422, 27 1251-1408\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nNROL-136 IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING\r\n POINTS:   \r\n3000S 12153W, 2759S 12244W, 2709S 12043W, 2843S 12000W, \r\n3000S 12000W, 3000S 12153W \r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : SCIZ.\r\n\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2764/26\r\nF) SFC G) UNL\n\nCREATED: 13 NOV 2026 21:19\nSOURCE: NTAAYNYX",
+                "A1483/26 NOTAMN\r\nQ) NTTT/QRDCA/IV/BO/W/000/999/2847S13424W130\r\nA) NTTT\r\nB) 2611231749 C) 2611292133\r\nD) 23 1749-2227\r\n24 1740-2218\r\n25 1731-2209\r\n26 1722-2200\r\n27 1713-2151\r\n28 1704-2142\r\n29 1655-2133\r\nE) TEMPORARY DANGER AREA DUE TO SPACE DEBRIS RETURN OF SPACEX\r\nUSSF266-TH3 IN TAHITI FIR WITHIN AN AREA BOUNDED BY FOLLOWING\r\nPOINTS :\r\n3000S 13551W, 2748S 13613W, 2719S 13310W, 3000S 13235W, \r\n3000S 13551W\r\nTHIS ACTIVITY ALSO IMPACTS THE FOLLOWING FIR : NZZO, SCIZ\r\nTHE FRENCH VERSION OF THIS NOTAM IS C2801/26.\r\nF) SFC G) UNL\n\nCREATED: 16 NOV 2026 19:08\nSOURCE: NTAAYNYX",
                 "A2611/26 NOTAMN\r\nQ) VHHK/QRTCA/IV/BO /W /000/999/2003N11500E214\r\nA) VHHK B) 2611111146 C) 2611221600\r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED,THE AREA WITHIN A CIRCLE \r\nCENTERED AT N223637E1135758 WITH RADIUS OF 200KM.\r\nVERTICAL LIMITS:SFC-UNL. ALL GENERAL AVIATION FLIGHT ACTIVITIES ARE \r\nPROHIBITED WITHOUT PRIOR APPROVAL.\r\nF) SFC G) UNL\n\nCREATED: 11 NOV 2026 11:46\nSOURCE: VHHHYNYX",
                 "A2639/26 NOTAMN\r\nQ) VHHK/QXXXX/IV/NBO/W /000/999/2237N11358E108\r\nA) VHHK B) 2611141600 C) 2611211600\r\nE) A TEMPORARY REPORTING ZONE WILL BE ESTABLISHED.\r\nLATERAL LIMITS: WITHIN A CIRCLE CENTERED AT N223637E1135758 WITH \r\nRADIUS OF 200KM.\r\nVERTICAL LIMITS: SFC-UNL.\r\nAIRCRAFT INTENDED TO TRANSIT OR LAND WITHIN THE REPORTING ZONE SHALL \r\nREPORT ACFT IDENTIFICATION, SQUAWK CODE, ACFT POSITION AND SECURITY \r\nSITUATION AT FIRST CONTACT WITH HONG KONG ATC.\r\nF) SFC G) UNL\n\nCREATED: 13 NOV 2026 16:38\nSOURCE: VHHHYNYX",
                 "A5871/26 NOTAMN\r\nQ)ZGZU/QRTCA/IV/BO/W/000/999/2237N11358E108\r\nA)ZGZU B)2611101600 C)2611221600 \r\nE) A TEMPORARY RESTRICTED AREA ESTABLISHED,THE AREA WITHIN A CIRCLE \r\nCENTERED AT N223637E1135758 WITH RADIUS OF 200KM.\r\nVERTICAL LIMITS:SFC-UNL.\r\nALL GENERAL AVIATION FLIGHT ACTIVITIES ARE PROHIBITED WITHOUT \r\nPRIOR APPROVAL.\r\nF)SFC G)UNL\n\nCREATED: 10 NOV 2026 10:56\nSOURCE: ZBBBYNYX",
@@ -714,16 +650,18 @@
                 "A5992/26 NOTAMN\r\nQ)ZPKM/QRDCA/IV/BO/W/000/999/2813N10840E016\r\nA)ZPKM B)2611210346 C)2611210415 \r\nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\r\nN282700E1083400-N282400E1085300-N275900E1084700-N280300E1082800, \r\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\r\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\r\nF)SFC G)UNL\n\nCREATED: 16 NOV 2026 06:03\nSOURCE: ZBBBYNYX",
                 "A5993/26 NOTAMN\r\nQ)ZPKM/QRDCA/IV/BO/W/000/999/2734N10831E022\r\nA)ZPKM B)2611210347 C)2611210419 \r\nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\r\nN275600E1082500-N275100E1084700-N271300E1083800-N271700E1081600\r\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\r\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\r\nF)SFC G)UNL\n\nCREATED: 16 NOV 2026 06:03\nSOURCE: ZBBBYNYX",
                 "A6439/26 NOTAMN\r\nQ) LPPO/QWMLW/IV/BO /W /000/999/2844N03232W139\r\nA) LPPO B) 2611231012 C) 2612031539\r\nD) DAILY 1012-1539\r\nE) ROCKET LAUNCH ARIANE 6 VA271 WILL TAKE PLACE AREA BOUNDED BY:\r\n303500N 0310100W - 300200N 0302400W - 265100N 0335700W - 272200N \r\n0343500W - 303500N 0310100W.\r\nF) SFC G) UNL\n\nCREATED: 10 NOV 2026 13:47\nSOURCE: EUECYIYN",
-                "B4160/26 NOTAMN\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFR\r\r\nB) 2611161707\r\r\nC) 2611222037\r\r\nD) 16 1707-2131, 17 1658-2122, 18 1649-2113, 19 1640-2104, 20 1631-2055,\r\r\n   21 1622-2046, 22 1613-2037 \r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX USFF266-TH3 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   2951N 11949W - 3045N 11947W - 3045N 11945W - 2935N 11916W - 2921N\r\r\n   11912W - 2951N 11949W\r\r\n   MMFR\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 09 NOV 2026 20:06\nSOURCE: MMMXYNYX",
-                "B4161/26 NOTAMN\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFO\r\r\nB) 2611161707\r\r\nC) 2611222056\r\r\nD) 16 1707-2150, 17 1658-2141, 18 1649-2132, 19 1640-2123,\r\r\n   20 1631-2114, 21 1622-2105, 22 1613-2056\r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX USSF266-TH3 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   2951N 11949W - 2921N 11912W - 2914N 11911W - 2855N 11846W -\r\r\n   2839N 11843W - 2818N 11904W - 2818N 11912W - 2740N 11915W - \r\r\n   2740N 11917W - 2818N 11923W - 2841N 11953W - 2857N 11955W - \r\r\n   2905N 11947W - 2951N 11949W\r\r\n   (MMFO)\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 09 NOV 2026 20:08\nSOURCE: MMMXYNYX",
                 "B4383/26 NOTAMR B4162/26\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFR\r\r\nB) 2611180314\r\r\nC) 2611240634\r\r\nD) 18 0314-0757, 19 0300-0743, 20 0246-0729, 21 0232-0715, 22 0218-0701,\r\r\n   23 0400-0648, 24 0346-0634\r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET USSF317 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   3138N 11903W 3144N 11850W - 2948N 11739W - 2936N 11716W 2850N 11719W\r\r\n   - 2815N 11719W - 2814N 11720W - 2850N 11749W - 2902N 11759W - 2915N\r\r\n   11802W -2924N 11808W- 2935N 11812 - 3138N-11903W\r\r\n   MMFR\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 13 NOV 2026 20:37\nSOURCE: MMMXYNYX",
+                "B4503/26 NOTAMR B4160/26\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFR\r\r\nB) 2611231604\r\r\nC) 2611291934\r\r\nD) 23 1604-2028, 24 1555-2019, 25 1546-2010, 26 1537-2001,\r\r\n   27 1528-1952, 28 1519-1943, 29 1510-1934\r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX USFF266-TH3 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   2951N 11949W - 3045N 11947W - 3045N 11945W - 2935N 11916W - 2921N\r\r\n   11912W - 2951N 11949W\r\r\n   MMFR\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 16 NOV 2026 17:31\nSOURCE: MMMXYNYX",
+                "B4504/26 NOTAMR B4161/26\r\r\nQ) MMFR/QRDCA/IV/BO/W/000/999/\r\r\nA) MMFO\r\r\nB) 2611231604\r\r\nC) 2611291953\r\r\nD) 23 1604-2047, 24 1555-2038, 25 1546-2029, 26 1537-2020, \r\r\n   27 1528-2011, 28 1519-2002, 29 1510-1953\r\r\nE) DANGEROUS AREA FOR REENTRY OF ROCKET SPACEX USSF266-TH3 STAGE 1 \r\r\n   LATERAL LIMIT AREA FORMED BY THE UNION OF THE FLW POINTS:\r\r\n   2951N 11949W - 2921N 11912W - 2914N 11911W - 2855N 11846W -\r\r\n   2839N 11843W - 2818N 11904W - 2818N 11912W - 2740N 11915W - \r\r\n   2740N 11917W - 2818N 11923W - 2841N 11953W - 2857N 11955W - \r\r\n   2905N 11947W - 2951N 11949W\r\r\n   (MMFO)\r\r\nF) SFC\r\r\nG) UNL\n\nCREATED: 16 NOV 2026 17:37\nSOURCE: MMMXYNYX",
                 "B5831/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/0907N11917E023\r\nA) RPHI B) 2611240700 C) 2611271000\r\nD) 0700-1000\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n091600N 1185700E - \r\n092800N 1191300E -\r\n085700N 1193600E -\r\n084500N 1192000E - \r\n091600N 1185700E\r\n(27NM SOUTHEAST OF PUERTO PRINCESA INTL AP).\r\nF) SFC G) UNL\n\nCREATED: 30 OCT 2026 10:55\nSOURCE: EUECYIYN",
                 "B6120/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/1244N11643E038\r\nA) RPHI B) 2611201151 C) 2611201217\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n125900N 1160900E -\r\n132000N 1163500E -\r\n122800N 1171700E - \r\n120800N 1165000E -\r\n125900N 1160900E\r\n(168NM WEST OF FRANCISCO B. REYES PRINCIPAL AP).\r\nF) SFC G) UNL\n\nCREATED: 16 NOV 2026 03:40\nSOURCE: EUECYIYN",
                 "B6122/26 NOTAMN\r\nQ) RPHI/QWMLW/IV/BO /W /000/999/0745N12036E041\r\nA) RPHI B) 2611201152 C) 2611201228\r\nE) SPECIAL OPS (AEROSPACE FLT ACT) WILL BE CONDUCTED BY CHINA.\r\nEST FALL AREA OF UNBURNED DEBRIS WI:\r\n075800N 1195800E - \r\n082500N 1203300E - \r\n073300N 1211300E - \r\n072600N 1211100E - \r\n070700N 1204500E -\r\n070600N 1203800E - \r\n075800N 1195800E\r\n(129NM SOUTHEAST OF PUERTO PRINCESA INTL AP).\r\nF) SFC G) UNL\n\nCREATED: 16 NOV 2026 03:50\nSOURCE: EUECYIYN",
                 "W3979/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/BO/W/000/999/4513S11115W999\r\nA)SCIZ B)2611211414 C)2611271408\r\nD)21 1414-1531 22 1400-1517 23 1346-1503 24 1332-1449\r\n25 1319-1436 26 1305-1422 27 1251-1408\r\nE) SPACEX WILL BE CONDUCTING HAZARDOUS OPERATIONS SURFACE TO\r\nUNLIMITED FOR ATMOSPHERIC RE-\r\nENTRY AND SPLASHDOWN OF LAUNCH VEHICLE UPPER STAGE WITHIN THE\r\nFOLLOWING AREA:\r\n3000S 12153W\r\n3000S 12000W\r\n2843S 12000W\r\n3821S 11504W\r\n4909S 10722W\r\n5909S 09534W\r\n5958S 09905W\r\n4434S 11413W TO BEGINNING.\r\nF)SFC G)UNL\n\nCREATED: 14 NOV 2026 14:40\nSOURCE: SCSCYNYX",
-                "W3981/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/BO/W/000/999/4513S11115W999\r\nA)SCIZ B)2611180501 C)2611240816\r\nD)18 0501-0939 19 0447-0925 20 0433-0911 21 0419-0857\r\n22 0405-0843 23 0547-0830 24 0533-0816\r\nE)SPACEX WILL BE CONDUCTING HAZARDOUS OPERATIONS SURFACE TO\r\nUNLIMITED FOR ATMOSPHERIC RE-\r\nENTRY AND SPLASHDOWN OF LAUNCH VEHICLE UPPER STAGE WITHIN THE\r\nFOLLOWING AREA:\r\n3000S 12153W\r\n3000S 12000W\r\n2843S 12000W\r\n3821S 11504W\r\n4909S 10722W\r\n5909S 09534W\r\n5958S 09905W\r\n4434S 11413W\r\n3000S 12153W\r\nCENTRAL POINT: 4513S 11115W\r\nLEN ZNE: 2000NM,WID ZONE:140NM\r\nF)SFC G)UNL\n\nCREATED: 14 NOV 2026 15:18\nSOURCE: SCSCYNYX"
+                "W3981/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/BO/W/000/999/4513S11115W999\r\nA)SCIZ B)2611180501 C)2611240816\r\nD)18 0501-0939 19 0447-0925 20 0433-0911 21 0419-0857\r\n22 0405-0843 23 0547-0830 24 0533-0816\r\nE)SPACEX WILL BE CONDUCTING HAZARDOUS OPERATIONS SURFACE TO\r\nUNLIMITED FOR ATMOSPHERIC RE-\r\nENTRY AND SPLASHDOWN OF LAUNCH VEHICLE UPPER STAGE WITHIN THE\r\nFOLLOWING AREA:\r\n3000S 12153W\r\n3000S 12000W\r\n2843S 12000W\r\n3821S 11504W\r\n4909S 10722W\r\n5909S 09534W\r\n5958S 09905W\r\n4434S 11413W\r\n3000S 12153W\r\nCENTRAL POINT: 4513S 11115W\r\nLEN ZNE: 2000NM,WID ZONE:140NM\r\nF)SFC G)UNL\n\nCREATED: 14 NOV 2026 15:18\nSOURCE: SCSCYNYX",
+                "W3987/26 NOTAMN \r\nQ)SCIZ/QXXXX/IV/BO/W/000/999/5114S12750W225\r\nA)SCIZ B)2611231749 C)2611292133\r\nD)23 BTN 1749-2227  24 BTN 1740-2218 25 BTN 1731-2209 26 BTN\r\n1722-2200\r\n27 BTN 1713-2151  28 BTN 1704-2142 29 BTN 1655-2133\r\nE)ZONE ...D... IN WATERS OCEAN PACIFIC DUE TO SPACE VEHICLE RE-ENTRY\r\nAND SPLASHDOWN ACTIVITY. THE AFFECTED AREA IS BOUNDED BY NXT GEO\r\nCOORD:\r\n594200S/1274300W\r\n512600S/1310000W\r\n365700S/1310000W\r\n591300S/1222400W\r\n594200S/1274300W\r\nINSTRUCTIONS SANTIAGO OCEANIC CONTROL 10024KHZ FANS 1A EQUIPPED\r\nINFO PROVIDED BY SPACE X OPS, USA\r\nF)SFC G)UNL\n\nCREATED: 16 NOV 2026 17:31\nSOURCE: SCSCYNYX"
             ],
             "ALTITUDE": [
+                "0 ~ INF 米",
                 "0 ~ INF 米",
                 "0 ~ INF 米",
                 "0 ~ INF 米",
@@ -771,6 +709,7 @@
                 "NOTAM",
                 "NOTAM",
                 "NOTAM",
+                "NOTAM",
                 "NOTAM"
             ],
             "FIR": [
@@ -790,20 +729,21 @@
                 "ZPKM",
                 "LPPO",
                 "MMFR",
-                "MMFO",
                 "MMFR",
+                "MMFO",
                 "RPHI",
                 "RPHI",
                 "RPHI",
+                "SCIZ",
                 "SCIZ",
                 "SCIZ"
             ],
             "GEOMETRY": [
                 "PATH|M=S2458E07056|L=S2342E07500|L=S2631E07500|L=S2729E07208|Z",
                 "PATH|M=N1657W07304|L=N1626W07140|L=N1600W07029|L=N1548W06956|L=N1502W06712|L=N1534W06705|L=N1600W06813|L=N1700W07140|L=N1700W07300|Z",
+                "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
+                "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
                 "PATH|M=S3000W13551|L=S2748W13613|L=S2719W13310|L=S3000W13235|Z",
-                "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
-                "PATH|M=S3000W12153|L=S2759W12244|L=S2709W12043|L=S2843W12000|L=S3000W12000|Z",
                 "CIRCLE|C=N223637E1135758|R=200KM",
                 "CIRCLE|C=N223637E1135758|R=200KM",
                 "CIRCLE|C=N223637E1135758|R=200KM",
@@ -814,14 +754,15 @@
                 "PATH|M=N282700E1083400|L=N282400E1085300|L=N275900E1084700|L=N280300E1082800|Z",
                 "PATH|M=N275600E1082500|L=N275100E1084700|L=N271300E1083800|L=N271700E1081600|Z",
                 "PATH|M=N303500W0310100|L=N300200W0302400|L=N265100W0335700|L=N272200W0343500|Z",
+                "PATH|M=N3138W11903|L=N3144W11850|L=N2948W11739|L=N2936W11716|L=N2850W11719|L=N2815W11719|L=N2814W11720|L=N2850W11749|L=N2902W11759|L=N2915W11802|L=N2924W11808|Z",
                 "PATH|M=N2951W11949|L=N3045W11947|L=N3045W11945|L=N2935W11916|L=N2921W11912|Z",
                 "PATH|M=N2951W11949|L=N2921W11912|L=N2914W11911|L=N2855W11846|L=N2839W11843|L=N2818W11904|L=N2818W11912|L=N2740W11915|L=N2740W11917|L=N2818W11923|L=N2841W11953|L=N2857W11955|L=N2905W11947|Z",
-                "PATH|M=N3138W11903|L=N3144W11850|L=N2948W11739|L=N2936W11716|L=N2850W11719|L=N2815W11719|L=N2814W11720|L=N2850W11749|L=N2902W11759|L=N2915W11802|L=N2924W11808|Z",
                 "PATH|M=N091600E1185700|L=N092800E1191300|L=N085700E1193600|L=N084500E1192000|Z",
                 "PATH|M=N125900E1160900|L=N132000E1163500|L=N122800E1171700|L=N120800E1165000|Z",
                 "PATH|M=N075800E1195800|L=N082500E1203300|L=N073300E1211300|L=N072600E1211100|L=N070700E1204500|L=N070600E1203800|Z",
                 "PATH|M=S3000W12153|L=S3000W12000|L=S2843W12000|L=S3821W11504|L=S4909W10722|L=S5909W09534|L=S5958W09905|L=S4434W11413|Z",
-                "PATH|M=S3000W12153|L=S4434W11413|L=S5958W09905|L=S5909W09534|L=S2843W12000|Z"
+                "PATH|M=S3000W12153|L=S4434W11413|L=S5958W09905|L=S5909W09534|L=S2843W12000|Z",
+                "PATH|M=S594200W1274300|L=S512600W1310000|L=S365700W1310000|L=S591300W1222400|Z"
             ],
             "FOCUSED_KEYS": [
                 [
@@ -929,8 +870,6 @@
                 "NOTMAR 57714",
                 "NOTMAR 57803",
                 "NOTMAR 57935",
-                "NOTMAR 58060",
-                "NOTMAR 58067",
                 "NOTMAR 58114",
                 "NOTMAR 58116",
                 "NOTMAR 58119",
@@ -942,23 +881,15 @@
                 "NOTMAR 58125",
                 "NOTMAR 58126",
                 "NOTMAR 58127",
-                "NOTMAR 58204",
                 "NOTMAR 58217",
                 "NOTMAR 58218",
-                "NOTMAR 58219",
-                "NOTMAR 58224",
-                "NOTMAR 58225",
-                "NOTMAR 58296",
-                "NOTMAR 58298",
-                "NOTMAR 58306"
+                "NOTMAR 58219"
             ],
             "TIME": [
                 "26 MAR 00:00 2026 UNTIL 31 DEC 23:59 2027",
                 "03 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
                 "04 NOV 00:00 2026 UNTIL 25 NOV 23:59 2026",
                 "05 NOV 00:00 2026 UNTIL 20 NOV 23:59 2026",
-                "09 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
-                "09 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
@@ -970,23 +901,15 @@
                 "09 NOV 00:00 2026 UNTIL 28 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 29 NOV 23:59 2026",
                 "09 NOV 00:00 2026 UNTIL 28 NOV 23:59 2026",
-                "10 NOV 00:00 2026 UNTIL 22 NOV 23:59 2026",
-                "10 NOV 00:00 2026 UNTIL 20 NOV 23:59 2026",
-                "10 NOV 00:00 2026 UNTIL 23 NOV 23:59 2026",
                 "10 NOV 00:00 2026 UNTIL 25 NOV 23:59 2026",
-                "11 NOV 00:00 2026 UNTIL 10 MAY 23:59 2027",
-                "11 NOV 00:00 2026 UNTIL 10 MAY 23:59 2027",
-                "12 NOV 00:00 2026 UNTIL 20 NOV 23:59 2026",
-                "12 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026",
-                "12 NOV 00:00 2026 UNTIL 21 NOV 23:59 2026"
+                "10 NOV 00:00 2026 UNTIL 30 NOV 23:59 2026",
+                "10 NOV 00:00 2026 UNTIL 25 NOV 23:59 2026"
             ],
             "PLATID": [
                 "USCG:40014:1",
                 "USCG:57714:1",
                 "USCG:57803:1",
                 "USCG:57935:1",
-                "USCG:58060:1",
-                "USCG:58067:1",
                 "USCG:58114:1",
                 "USCG:58116:1",
                 "USCG:58119:1",
@@ -998,23 +921,15 @@
                 "USCG:58125:1",
                 "USCG:58126:1",
                 "USCG:58127:1",
-                "USCG:58204:1",
                 "USCG:58217:1",
                 "USCG:58218:1",
-                "USCG:58219:1",
-                "USCG:58224:1",
-                "USCG:58225:1",
-                "USCG:58296:1",
-                "USCG:58298:1",
-                "USCG:58306:1"
+                "USCG:58219:1"
             ],
             "RAWMESSAGE": [
                 "USCG NOTMAR 40014\nA) USCG\nE) General/MSIB\n\n400014\n\nThe U.S. Space Force and Kennedy Space Center may choose to enforce a restricted area as specified in 33 CFR 334.525 and 33 CFR 334.595. Primarily beginning 2 hours prior to the scheduled launch window of any rocket launches. The restricted area would remain in effect until suspended by Space Launch Delta 45.",
                 "USCG NOTMAR 57714\nA) USCG\nE) The Tillamook UAS Test Range will be conducting operations in W-570 airspace on 17 – 20 Nov 2026.  Operations include the launch and recovery of various unmanned aircraft and flight testing in several locations within area W-570 including an operational area approximately 15 – 30 nautical miles west of Tillamook, centered on 45-23-47.05N, 124-33-32.69 W.  Mariners should use caution when transiting this area.  For more information, mariners can call Chris Strole, Tillamook Test Range Manager at (503) 944-1190 (Office) or (725) 577-2082 (Cell).",
                 "USCG NOTMAR 57803\nA) USCG\nE) Chandeleur Sound - Rocket Launching Activities --- From: 2026-11-09 To: 2026-11-24 --- Two suborbital rocket launching operations will be conducted off a vessel in Chandeleur Sound in approximate position 29-55-45N 089-03-46W.  Operations will be weather dependent and will take place from 6:00 a.m. to 8:00 p.m.  Two short-range rockets will be launched on separate days to demonstrate sea-based launch-pad\ncapabilities.  Each launch is expected to last several minutes from ignition through splashdown, with a\nmaximum potential downrange distance of approximately 1,070 meters (0.6 nautical mile).  On-scene vessels will include the M/V ONCE IN A LIFETIME and the F/V SOUTHERN CROSS.  Mariners are requested to maintain a 500 yard closest point of approach from the operating area.  VHF-FM Channel: 16, 18 and 72,  POC: (228) 669-3644",
                 "USCG NOTMAR 57935\nA) USCG\nE) Hazardous operations will be conducted for Vandenberg Space Force Base, Western Range Operation W6407. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n34.63333 N, -121.38333 W\n34.63333 N, -120.86667 W\n34.73333 N, -120.58333 W\n34.91667 N, -120.58333 W\n34.93333 N, -120.95000 W\n34.93333 N, -121.36667 W\n34.63333 N, -121.38333 W\n(TO BEGINNING)\n\nHazard Area B:\n34.26667 N, -124.55000 W\n34.61667 N, -124.61667 W\n34.90000 N, -121.98333 W\n34.55000 N, -121.93333 W\n34.26667 N, -124.55000 W\n(TO BEGINNING)\n\nHazard Times:\n180631 Z NOV TO 181337 Z NOV 2026---- DO 6407 (PRIMARY)\n190631 Z NOV TO 191337 Z NOV 2026---- DO 6407 (BACKUP DAY)\n\nSurface vessels are strongly advised to avoid this area defined during specified dates / times. During operations, frontier control will be managing hazardous area surface traffic on VHF CH 16 and CH 6. For more details or comments contact 2 ROPS/DOS via telephone at commercial 805-606-8825 OR DSN 276-8825, or email: 2ROPS.DOS@US.AF.MIL.",
-                "USCG NOTMAR 58060\nA) USCG\nE) Gulf of America - Hazardous Space Operations --- On November 13, 2026, between 2245Z and 0040Z, on November 14, 2026, rocket launching operations are scheduled to take place near Boca Chica, TX.  Back-up launch dates and times include the following: • 142245Z NOV 26 to 150040Z NOV 26 • 152245Z NOV 26 to 160040Z NOV 26 • 162245Z NOV 26 to 170040Z NOV 26 • 172245Z NOV 26 to 180040Z NOV 26 • 182245Z NOV 26 to 190040Z NOV 26 • 192245Z NOV 26 to 200040Z NOV 26 • Navigation hazards from rocket launching activity may include, free falling debris and/or descending vehicles or vehicle components, under various means of control.  Vessels should operate in a heightened state of awareness during the launch time and avoid all waters within rocket flight trajectories originating from the launch site near Boca Chica/Starbase, Texas, and extending across the Gulf of America.  To ensure range clearance, mariners are requested to avoid the high-risk hazard area three hours prior to the launch window.  For additional information regarding the launch, mariners can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143 or access: www.navcen.uscg.gov/msi",
-                "USCG NOTMAR 58067\nA) USCG\nE) Gulf of America - Caribbean Sea --- Space launch operations, which may be hazardous to surface vessels, will be conducted within portions of the following hazard areas for Starship Flight 15:\nHigh Risk Hazard Area:\n25-12-00N 092-58-00W\n25-31-00N 093-52-00W\n25-42-00N 095-24-00W\n26-02-00N 096-32-00W\n26-04-00N 096-49-00W\n26-04-00N 097-04-00W\n26-04-00N 097-10-00W\n26-02-00N 097-13-00W\n25-58-00N 097-13-00W\n25-48-00N 097-05-00W\n25-41-00N 096-47-00W\n25-02-00N 095-05-00W\n24-29-00N 094-08-00W\n24-20-00N 093-32-00W\n24-25-00N 092-52-00W and\n24-45-00N 092-43-00W.\nHazard Area:\n25-58-00N 097-13-00W\n26-02-00N 097-13-00W\n26-04-00N 097-10-00W\n26-06-00N 097-04-00W\n26-06-00N 096-49-00W\n26-01-00N 095-12-00W\n25-41-00N 093-29-00W\n25-11-00N 091-59-00W\n23-32-00N 088-52-00W\n23-21-00N 088-29-00W\n22-31-00N 086-29-00W\n21-41-00N 085-07-00W\n21-38-00N 084-59-00W\n21-33-00N 084-32-00W\n21-26-00N 083-49-00W\n20-59-00N 082-38-00W\n20-43-00N 081-42-00W\n20-31-00N 081-03-00W\n20-12-00N 081-13-00W\n20-36-00N 083-14-00W\n21-06-00N 084-54-00W\n21-43-00N 086-42-00W\n21-59-00N 087-26-00W\n22-16-00N 089-19-00W\n22-16-00N 089-44-00W\n22-16-00N 091-09-00W\n23-16-00N 093-29-00W\n24-36-00N 095-19-00W\n25-38-00N 096-49-00W and\n25-48-00N 097-05-00W.\nPrimary and backup launch day hazard periods include:\n • 13/2245Z Nov 26 to 14/0040Z Nov 26\n • 14/2245Z Nov 26 to 15/0040Z Nov 26\n • 15/2245Z Nov 26 to 16/0040Z Nov 26\n • 16/2245Z Nov 26 to 17/0040Z Nov 26\n • 17/2245Z Nov 26 to 18/0040Z Nov 26\n • 18/2245Z Nov 26 to 19/0040Z Nov 26\n • 19/2245Z Nov 26 to 20/0040Z Nov 26\n•  Navigation hazards within the hazard areas may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners should avoid waters within the defined hazard areas during the scheduled launch window. The high risk hazard area should be avoided three hours prior to the earliest launch to ensure range clearance. For additional information, contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
                 "USCG NOTMAR 58114\nA) USCG\nE) Potential for space debris from the reentry of the Starship-Super Heavy Starship | Flight 15 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from November 14, 2026 to November 21, 2026 between 1217-1544 HST (2217-0144 UTC) in an area bounded by the following coordinates:\n09-09N 153-46E, \n10-48N 156-18E, \n14-04N 162-04E, \n16-07N 165-35E, \n20-38N 174-31E, \n22-43N 179-15E, \n24-51N 176-13W, \n25-53N 173-20W, \n26-04N 171-02W, \n28-31N 161-14W, \n30-33N 150-16W, \n29-23N 150-15W, \n26-01N 153-49W, \n24-46N 154-54W, \n25-24N 157-46W, \n24-54N 161-42W, \n23-11N 168-32W, \n22-08N 173-08W, \n20-12N 179-07W, \n19-21N 178-12E, \n18-13N 174-58E, \n17-02N 170-17E, \n15-11N 165-56E, \n11-55N 159-26E, \n08-48N 154-06E",
                 "USCG NOTMAR 58116\nA) USCG\nE) Potential for space debris from the reentry of the Starship-Super Heavy Starship | Flight 15 | Starlink g31-1 Stage 2.\n\nHazardous operations space debris daily from November 14, 2026 to November 21, 2026 between 1217-1544 HST (2217-0144 UTC) in an area bounded by the following coordinates:\n09-09N 153-46E, \n10-48N 156-18E, \n14-04N 162-04E, \n16-07N 165-35E, \n20-38N 174-31E, \n22-43N 179-15E, \n24-51N 176-13W, \n25-53N 173-20W, \n26-04N 171-02W, \n28-31N 161-14W, \n30-33N 150-16W, \n29-23N 150-15W, \n26-01N 153-49W, \n24-46N 154-54W, \n25-24N 157-46W, \n24-54N 161-42W, \n23-11N 168-32W, \n22-08N 173-08W, \n20-12N 179-07W, \n19-21N 178-12E, \n18-13N 174-58E, \n17-02N 170-17E, \n15-11N 165-56E, \n11-55N 159-26E, \n08-48N 154-06E",
                 "USCG NOTMAR 58119\nA) USCG\nE) Hazardous operations for Space X CRS-35 reentry, including splashdown in the Pacific Ocean. Will occur between 162350 Z NOV and 280335 Z NOV 2026.\nHazardous operation areas are bounded by the following coordinates:  \nHazard Area LOS ANGELES: \n33.783333N, -119.25W\n33.75N, -119.3W\n33.6N, -119.3W\n33.55N, -119.233333W\n33.55N, -119.116667W\n33.616667N, -119.033333W\n33.75N, -119.033333W\n33.783333N, -119.083333W\n33.783333N, -119.25W (TO BEGINNING)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
@@ -1026,25 +941,11 @@
                 "USCG NOTMAR 58125\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 172315Z NOV 2026 to 272005Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:\nTrunk Hazard Area:\n27.55000N, -123.41667W\n25.93333N, -124.28333W\n23.06667N, -127.03333W\n18.80000N, -130.80000W\n19.85000N, -132.05000W\n24.13333N, -128.30000W\n27.03333N, -125.33333W\n27.93333N, -123.85000W\n27.55000N, -123.41667W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
                 "USCG NOTMAR 58126\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 180700Z NOV 2026 to 280355Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:\n\nTrunk Hazard Area:\n37.33333N, -124.35000W\n38.00000N, -126.41667W\n40.30000N, -130.31667W\n43.33333N, -136.45000W\n44.70000N, -135.35000W\n41.60000N, -129.13333W\n39.25000N, -125.20000W\n37.75000N, -123.93333W\n37.33333N, -124.35000W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
                 "USCG NOTMAR 58127\nA) USCG\nE) Hazardous operations, including the trunk hazard ascending, will be conducted for SpaceX CRS- 35 reentry with a splashdown in the Pacific Ocean from 172310Z NOV 2026 to 272000Z NOV 2026. Hazardous operation areas are bounded by the following coordinates:\nTrunk Hazard Area:\n27.11667N, -123.31667W\n25.50000N, -124.16667W\n22.61667N, -126.90000W\n18.35000N, -130.65000W\n19.38333N, -131.90000W\n23.68333N, -128.16667W\n26.58333N, -125.43333W\n27.50000N, -123.75000W\n27.11667N, -123.31667W (TO BEGINNING)\n\nThe identified locations above are designated a hazardous warning area(s) for space vehicle reentry. A space vehicle may reenter within this/these area(s) between the dates and times listed. The U.S. Coast guard is establishing this/these hazardous warning area(s) to protect vessels and waterway users from the potential hazards created by reentry vehicle splashdowns and recovery operations. The U.S. Coast guard is providing this notice to advise mariners of this/these hazardous area(s) which may impact navigation interests. Navigations hazards from space capsule reentry activities may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners are urged to avoid the reentry sites during reentry windows as detailed above.  For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16",
-                "USCG NOTMAR 58204\nA) USCG\nE) Gulf of America - Laguna Madre - Hazardous Space Operations --- Space vehicle reentry operations, which may be hazardous to surface vessels, may take place within portions of the following hazard area for Starship Flight 15:\nA.  Reentry Hazard Area:\n25-56-00N 097-09-00W,\n25-56-00N 097-05-00W,\n25-57-00N 096-28-00W,\n25-59-00N 096-25-00W,\n26-10-00N 096-22-00W,\n26-20-00N 096-52-00W,\n26-46-00N 097-28-00W,\n26-36-00N 097-27-00W,\n26-22-00N 097-13-00W,\n26-14-00N 097-09-00W,\n26-06-00N 097-08-00W,\n26-04-00N 097-09-00W,\n26-03-00N 097-11-00W,\n26-01-00N 097-13-00W and\n25-58-00N 097-12-00W.\nStarship reentry and landing will take place approximately 22.5 hours after the initial Starship Flight 15 launch.  Primary and backup reentry day hazard periods include:\n • 14/2108Z Nov 26 to 15/0014Z Nov 26\n • 15/2108Z Nov 26 to 16/0014Z Nov 26\n • 16/2108Z Nov 26 to 17/0014Z Nov 26\n • 17/2108Z Nov 26 to 18/0014Z Nov 26\n • 18/2108Z Nov 26 to 19/0014Z Nov 26\n • 19/2108Z Nov 26 to 20/0014Z Nov 26\n • 20/2108Z Nov 26 to 21/0014Z Nov 26\n•  The primary Starship vehicle landing area is Starbase Tower 2, located at approximate position 25-59-49.1N 097-09-29.2W.  The alternate landing includes a splashdown within portions of the Reentry Hazard Area.  Navigation hazards within the Reentry Hazard Area may include free falling debris and/or descending vehicles or vehicle components under various means of control. Mariners should avoid waters within the defined Reentry Hazard Area during the scheduled reentry window.  For additional information, contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
-                "USCG NOTMAR 58217\nA) USCG\nE) Hazardous operations will be conducted for Space X, R-6 Launch Operations. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n32.08333333N, -119.13333333W\n32.5N, -119.3W\n33.25N, -119.63333333W\n34.2N, -120.1W\n34.51666667N, -120.3W\n34.66666667N, -120.63333333W\n34.6N, -120.65W\n34.45N, -120.61666667W\n34.31666667N, -120.56666667W\n32.08333333N, -119.15W (TO BEGINNING)\n             \n130423Z NOV TO 130846Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140832Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150818Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160804Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170751Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180737Z NOV 2026---- (BACKUP DAY) \n190300Z NOV TO 190723Z NOV 2026---- (BACKUP DAY) \n\nHazard Area B:\n30.76666667N, -118.25W\n31.38333333N, -118.78333333W\n30.43333333N, -118.51666667W\n29.58333333N, -118.2W\n29.86666667N, -117.9W\n29.8N, -117.65W (TO BEGINNING)\n            \n130423Z NOV TO 130847Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140833Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150819Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160805Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170752Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180738Z NOV 2026---- (BACKUP DAY) \n190300Z NOV TO 190724Z NOV 2026---- (BACKUP DAY) \n\nHazard Area C:\n29.03333333N, -117.98333333W\n29.25N, -118.03333333W\n29.4N, -118.13333333W\n29.58333333N, -118.2W\n29.86666667N, -117.9W\n29.8N, -117.65W\n29.6N, -117.26666667W\n28.83333333N, -117.31666667W\n28.25N, -117.31666667W\n28.26666667N, -117.35W\n28.83333333N, -117.81666667W (TO BEGINNING)\n\n130423Z NOV TO 130906Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140852Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150838Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160824Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170811Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180757Z NOV 2026---- (BACKUP DAY) \n190300Z NOV TO 190743Z NOV 2026---- (BACKUP DAY) \n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
-                "USCG NOTMAR 58218\nA) USCG\nE) Hazardous operations will be conducted for Space X, TH-3. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n34.46666667N, -120.35W\n34.66666667N, -120.61666667W\n34.63333333N, -120.65W\n34.51666667N, -120.65W\n34.33333333N, -120.63333333W\n33.28333333N, -120.35W\n33.21666667N, -120.26666667W\n32.61666667N, -120.15W\n32.01666667N, -120.03333333W\n32N, -120W\n32.1N, -120W\n33.23333333N, -120.21666667W\n33.96666667N, -120.23333333 W(TO BEGINNING)\n\n161707Z NOV TO 162131Z NOV 2026---- (PRIMARY) \n171658Z NOV TO 172122Z NOV 2026---- (BACKUP DAY) \n181649Z NOV TO 182113Z NOV 2026---- (BACKUP DAY) \n191640Z NOV TO 192104Z NOV 2026---- (BACKUP DAY) \n201631Z NOV TO 202055Z NOV 2026---- (BACKUP DAY) \n211622Z NOV TO 212046Z NOV 2026---- (BACKUP DAY) \n221613Z NOV TO 222037Z NOV 2026---- (BACKUP DAY) \n\nHazard Area B:\n30.61666667N, -119.75W\n29.1N, -119.78333333W\n28.95N, -119.91666667W\n28.68333333N, -119.88333333W\n28.3N, -119.38333333W\n27.71666667N, -119.3W\n27.7N, -119.25W\n28.3N, -119.06666667W\n28.65N, -118.71666667W\n28.91666667N, -118.76666667W\n29.15N, -119.06666667W\n30.55N, -119.66666667W (TO BEGINNING)\n\n161707Z NOV TO 162150Z NOV 2026---- (PRIMARY) \n171658Z NOV TO 172141Z NOV 2026---- (BACKUP DAY) \n181649Z NOV TO 182132Z NOV 2026---- (BACKUP DAY) \n191640Z NOV TO 192123Z NOV 2026---- (BACKUP DAY) \n201631Z NOV TO 202114Z NOV 2026---- (BACKUP DAY) \n211622Z NOV TO 212105Z NOV 2026---- (BACKUP DAY) \n221613Z NOV TO 222056Z NOV 2026---- (BACKUP DAY) \n212250Z OCT TO 220333Z OCT 2026---- (BACKUP DAY) \n\nMariners are strongly advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
-                "USCG NOTMAR 58219\nA) USCG\nE) Hazardous operations will be conducted for launch Operation, INGRID operation areas are bounded by the following coordinates and times:\nHazard Area A:\n36.1166666667N, -123.7666666667W\n36.2500000000N, -123.6666666667W\n36.0666666667N, -123.1333333333W\n35.3166666667N, -122.6333333333W\n35.2166666667N, -122.0333333333W\n35.1666666667N, -120.9833333333W\n34.9500000000N, -120.6500000000W\n34.6666666667N, -120.5666666667W\n34.1500000000N, -120.9166666667W\n34.1666666667N, -121.4166666667W\n33.4666666667N, -121.2833333333W\n33.4166666667N, -121.6500000000W\n34.2833333333N, -122.5166666667W\n\nHazard Times\n221400Z NOV TO 242000Z NOV 2026\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Stratolaunch at RangeOps@stratolaunch.com, 661-584-2365, or on VHF-FM Chan. 06 or 16.",
-                "USCG NOTMAR 58224\nA) USCG\nE) Space Operations/Hazardous Warning Area/Government Supported (Hazardous)\n\n1. SPACE LAUNCH OPERATIONS, WHICH MAY BE HAZARDOUS TO SURFACE VESSELS, WILL\nBE CONDUCTED WITHIN PORTIONS OF THE FOLLOWING HAZARD AREAS FOR VULCAN KV-01:\nA. FROM 28-39-14N/080-37-51W\nTO 29-48-00N/079-53-00W\nTO 31-23-00N/077-58-00W\nTO 34-11-00N/074-12-00W\nTO 36-28-00N/071-03-00W\nTO 36-15-00N/070-54-00W\nTO 34-13-00N/073-38-00W\nTO 32-19-00N/075-54-00W\nTO 29-27-00N/078-38-00W\nTO 28-41-00N/079-36-00W\nTO 28-33-00N/080-04-00W\nTO 28-29-26N/080-32-32W TO BEGINNING\n\n2. HAZARD PERIODS FOR PRIMARY LAUNCH DAY AND BACKUP LAUNCH DAYS (ALL TIMES\nARE REPRESENTED AS ZULU TIME UNLESS OTHERWISE INDICATED):\n13/1754 NOV 26 TO 13/1932 NOV 26.\n14/1732 NOV 26 TO 14/1911 NOV 26.\n15/1711 NOV 26 TO 15/1850 NOV 26.\n16/1650 NOV 26 TO 16/1828 NOV 26.\n17/1628 NOV 26 TO 17/1807 NOV 26.\n18/1607 NOV 26 TO 18/1746 NOV 26.\n19/1546 NOV 26 TO 19/1724 NOV 26.\n\n3. THE U.S. COAST GUARD HAS ESTABLISHED A REGULATED NAVIGATION AREA UNDER 33\nCFR 165.775 TO ENCOMPASS THE WATERS BOUND BY THE COORDINATES:\nA. FROM 28-38-35N/080-37-24W\nTO 28-47-53.9N/080-27-52.3W\nTO 28-42-58.5N/080-24-11.5W\nTO 28-40-32.5N/080-22-20.1W\nTO 28-36-59.9N/080-21-00.6W\nTO 28-34-42.2N/080-20-15.2W\nTO 28-33-16.6N/080-19-29.5W\nTO 28-31-14N/080-33-24W, THEN FOLLOWING THE SHORELINE BACK TO THE POINT OF\nORIGIN.\nB. MARINERS ARE ADVISED THAT THE AREA ENCOMPASSED BY THIS ZONE IS CLOSED TO\nALL VESSELS AND PERSONS EXCEPT AS AUTHORIZED BY THE COMMANDER, COAST GUARD\nDISTRICT SOUTHEAST OR THE CAPTAIN OF THE PORT, JACKSONVILLE, FL BEGINNING 45\nMINUTES PRIOR TO THE SCHEDULED LAUNCH WINDOW IN THIS NOTICE UNTIL REOPENED BY\nTHE CAPTAIN OF THE PORT, JACKSONVILLE, FL VIA BROADCAST ON VHF-FM CHANNEL 16\nAND CANCELLATION OF THIS BROADCAST NOTICE TO MARINERS MESSAGE. DETAILED\nLAUNCH INFORMATION IS AVAILABLE ON THE DAY OF LAUNCH BY CONTACTING THE U.S.\nCOAST GUARD VIA VHF-FM CHANNEL 16 AND 81A OR THROUGH THE U.S. SPACE FORCE\nLAUNCH INFORMATION HOTLINE AT 1-800-470-7232.\n4. THE U.S. SPACE FORCE AND KENNEDY SPACE CENTER MAY CHOOSE TO ENFORCE A\nRESTRICTED AREA AS SPECIFIED IN 33 CFR 334.525 AND 33 CFR 334.595. PRIMARILY\nBEGINNING 2 HOURS PRIOR TO THE SCHEDULED LAUNCH WINDOW OF ANY ROCKET\nLAUNCHES. THE RESTRICTED AREA WOULD REMAIN IN EFFECT UNTIL SUSPENDED BY SPACE\nLAUNCH DELTA 45.\n5. THE U.S. COAST GUARD IS PROVIDING THIS NOTICE TO ADVISE MARINERS OF THESE\nHAZARDOUS AREAS IDENTIFIED BY U.S. SPACE FORCE AND/OR A COMMERCIAL SPACE\nOPERATION, WHICH MAY IMPACT NAVIGATION INTERESTS. NAVIGATION HAZARDS FROM\nROCKET LAUNCH ACTIVITIES MAY INCLUDE FREE FALLING DEBRIS AND/OR DESCENDING\nVEHICLES OR VEHICLE COMPONENTS UNDER VARIOUS MEANS OF CONTROL. MARINERS ARE\nURGED TO AVOID WATERS WITHIN ROCKET FLIGHT TRAJECTORIES/HAZARD AREAS DURING\nLAUNCH WINDOWS AS DETAILED ABOVE.\n6. FOR MORE INFORMATION, MARINERS MAY CONTACT THE U.S. SPACE FORCE LAUNCH\nINFORMATION HOTLINE AT 1-800-470-7232 OR BY VISITING\nWWW.PATRICK.SPACEFORCE.MIL. FOR NAVIGATIONAL SAFETY, MARINERS ARE ADVISED TO\nREFER TO WWW.NAVCEN.USCG.GOV/MSI TO VIEW THE LOCAL NOTICE TO MARINERS (LNM)\nAND THE GEOSPATIAL CHART AT WWW.NAVCEN.USCG.GOV/CHART FOR INFORMATION ON\nSPACE LAUNCH AND RECOVERY OPERATIONS (SOLAR).",
-                "USCG NOTMAR 58225\nA) USCG\nE) Space Operations/Active RNA/Government Supported (RNA)\n\n1. SPACE LAUNCH OPERATIONS, WHICH MAY BE HAZARDOUS TO SURFACE VESSELS, WILL\nBE CONDUCTED WITHIN PORTIONS OF THE FOLLOWING HAZARD AREAS FOR VULCAN KV-01:\nA. FROM 28-39-14N/080-37-51W\nTO 29-48-00N/079-53-00W\nTO 31-23-00N/077-58-00W\nTO 34-11-00N/074-12-00W\nTO 36-28-00N/071-03-00W\nTO 36-15-00N/070-54-00W\nTO 34-13-00N/073-38-00W\nTO 32-19-00N/075-54-00W\nTO 29-27-00N/078-38-00W\nTO 28-41-00N/079-36-00W\nTO 28-33-00N/080-04-00W\nTO 28-29-26N/080-32-32W TO BEGINNING\n\n2. HAZARD PERIODS FOR PRIMARY LAUNCH DAY AND BACKUP LAUNCH DAYS (ALL TIMES\nARE REPRESENTED AS ZULU TIME UNLESS OTHERWISE INDICATED):\n13/1754 NOV 26 TO 13/1932 NOV 26.\n14/1732 NOV 26 TO 14/1911 NOV 26.\n15/1711 NOV 26 TO 15/1850 NOV 26.\n16/1650 NOV 26 TO 16/1828 NOV 26.\n17/1628 NOV 26 TO 17/1807 NOV 26.\n18/1607 NOV 26 TO 18/1746 NOV 26.\n19/1546 NOV 26 TO 19/1724 NOV 26.\n\n3. THE U.S. COAST GUARD HAS ESTABLISHED A REGULATED NAVIGATION AREA UNDER 33\nCFR 165.775 TO ENCOMPASS THE WATERS BOUND BY THE COORDINATES:\nA. FROM 28-38-35N/080-37-24W\nTO 28-47-53.9N/080-27-52.3W\nTO 28-42-58.5N/080-24-11.5W\nTO 28-40-32.5N/080-22-20.1W\nTO 28-36-59.9N/080-21-00.6W\nTO 28-34-42.2N/080-20-15.2W\nTO 28-33-16.6N/080-19-29.5W\nTO 28-31-14N/080-33-24W, THEN FOLLOWING THE SHORELINE BACK TO THE POINT OF\nORIGIN.\nB. MARINERS ARE ADVISED THAT THE AREA ENCOMPASSED BY THIS ZONE IS CLOSED TO\nALL VESSELS AND PERSONS EXCEPT AS AUTHORIZED BY THE COMMANDER, COAST GUARD\nDISTRICT SOUTHEAST OR THE CAPTAIN OF THE PORT, JACKSONVILLE, FL BEGINNING 45\nMINUTES PRIOR TO THE SCHEDULED LAUNCH WINDOW IN THIS NOTICE UNTIL REOPENED BY\nTHE CAPTAIN OF THE PORT, JACKSONVILLE, FL VIA BROADCAST ON VHF-FM CHANNEL 16\nAND CANCELLATION OF THIS BROADCAST NOTICE TO MARINERS MESSAGE. DETAILED\nLAUNCH INFORMATION IS AVAILABLE ON THE DAY OF LAUNCH BY CONTACTING THE U.S.\nCOAST GUARD VIA VHF-FM CHANNEL 16 AND 81A OR THROUGH THE U.S. SPACE FORCE\nLAUNCH INFORMATION HOTLINE AT 1-800-470-7232.\n4. THE U.S. SPACE FORCE AND KENNEDY SPACE CENTER MAY CHOOSE TO ENFORCE A\nRESTRICTED AREA AS SPECIFIED IN 33 CFR 334.525 AND 33 CFR 334.595. PRIMARILY\nBEGINNING 2 HOURS PRIOR TO THE SCHEDULED LAUNCH WINDOW OF ANY ROCKET\nLAUNCHES. THE RESTRICTED AREA WOULD REMAIN IN EFFECT UNTIL SUSPENDED BY SPACE\nLAUNCH DELTA 45.\n5. THE U.S. COAST GUARD IS PROVIDING THIS NOTICE TO ADVISE MARINERS OF THESE\nHAZARDOUS AREAS IDENTIFIED BY U.S. SPACE FORCE AND/OR A COMMERCIAL SPACE\nOPERATION, WHICH MAY IMPACT NAVIGATION INTERESTS. NAVIGATION HAZARDS FROM\nROCKET LAUNCH ACTIVITIES MAY INCLUDE FREE FALLING DEBRIS AND/OR DESCENDING\nVEHICLES OR VEHICLE COMPONENTS UNDER VARIOUS MEANS OF CONTROL. MARINERS ARE\nURGED TO AVOID WATERS WITHIN ROCKET FLIGHT TRAJECTORIES/HAZARD AREAS DURING\nLAUNCH WINDOWS AS DETAILED ABOVE.\n6. FOR MORE INFORMATION, MARINERS MAY CONTACT THE U.S. SPACE FORCE LAUNCH\nINFORMATION HOTLINE AT 1-800-470-7232 OR BY VISITING\nWWW.PATRICK.SPACEFORCE.MIL. FOR NAVIGATIONAL SAFETY, MARINERS ARE ADVISED TO\nREFER TO WWW.NAVCEN.USCG.GOV/MSI TO VIEW THE LOCAL NOTICE TO MARINERS (LNM)\nAND THE GEOSPATIAL CHART AT WWW.NAVCEN.USCG.GOV/CHART FOR INFORMATION ON\nSPACE LAUNCH AND RECOVERY OPERATIONS (SOLAR).",
-                "USCG NOTMAR 58296\nA) USCG\nE) Gulf of America – Safety Zone – Space Launch --- From: 2026-11-13 To: 2026-11-19 --- The U.S. Coast Guard Captain of the Port Corpus Christi is establishing a Safety Zone in the near shore region of the space launch hazard area in the Gulf of America.  The Safety Zone will be active on November 13, 2026, from 2:00 p.m. to 9:00 p.m., local time.  Back-up dates include November 14 - November 19, 2026, from 2:00 p.m. to 9:00 p.m., each day.  The Safety Zone consists of all navigable waters of the Gulf of America, from the surface to bottom, and is bound by the following positions: 26-02-36N 097-09-08W, 26-03-00N 097-07-00W, 26-07-48.0N 096-56-02.2W, then following the 12 nautical mile Territorial Sea Line to the United States of America/Mexico Maritime Boundary Line, following the United States of America/Mexico Maritime Boundary Line to position 25-57-24.2N 097-08-49.0W, and following the coast back to 26-02-36N 097-09-08W.  All vessels are prohibited from entering the Safety Zone, unless granted permission by the U.S. Coast Guard.  Mariners with urgent concerns can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
-                "USCG NOTMAR 58298\nA) USCG\nE) South Bay – Safety Zone – Space Launch --- From: 2026-11-13 To: 2026-11-20 --- The U.S. Coast Guard Captain of the Port Corpus Christi is establishing a Safety Zone in South Bay.  The Safety Zone will be active for the Starship Flight 15 launch on November 13, 2026, from 2:00 p.m. to 9:00 p.m., local time.  Back-up dates include November 14 - November 19, 2026, from 2:00 p.m. to 9:00 p.m., each day.  The reentry and landing of Starship Flight 15 will take place approximately 22.5 hours after the initial launch.  The Safety Zone will be activated again for the Starship Flight 15 reentry/landing operation on November 14, 2026, from 1:00 p.m. to 8:00 p.m.  Back-up dates include November 15 – 20, 2026, from 1:00 p.m. to 8:00 p.m.  The Safety Zone consists of all navigable waters of South Bay, from the surface to bottom, and is bound by the following positions: 26-02-45.0N 097-11-06.3W, 26-02-45.0N 097-10-53.4W, and following the South Bay internal coastline to the point of origin.  All vessels are prohibited from entering the Safety Zone, unless granted permission by the U.S. Coast Guard.  Mariners should monitor all marine radio broadcasts and avoid the area during the specified launch and reentry times.  Mariners with urgent concerns can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143.",
-                "USCG NOTMAR 58306\nA) USCG\nE) Gulf of America - GIWW - Port Mansfield Channel - Laguna Madre - Space Reentry Operation Safety Zone --- From: 2026-11-14 To: 2026-11-20 --- The U.S. Coast Guard Captain of the Port Corpus Christi is establishing a Safety Zone in portions of the Gulf of America, the Port Mansfield Channel, Laguna Madre, and the GIWW.  The reentry and landing of Starship Flight 15 will take place approximately 22.5 hours after the initial launch.  The Safety Zone will be active for the reentry and landing on November 14, 2026, from 1:00 p.m. to 8:00 p.m., local time.  Back-up dates include November 15 - November 20, 2026, from 1:00 p.m. to 8:00 p.m., each day.  The Safety Zone consists of all navigable waters from 26-04-00N 097-09-00W, to 26-06-00N 097-08-00W, to 26-14-00N 097-09-00W, to 26-22-00N 097-13-00W, to 26-36-00N 097-27-00W, then following the shoreline to 26-46-00N 097-28-00W, to 26-28-00N 097-00-00W, then following the 12 nautical mile Territorial Sea Line to the United States of America/Mexico Maritime Boundary Line, and following the United States of America/Mexico Maritime Boundary Line to position 26-02-36N 097-09-08W.  All vessels are prohibited from entering the Safety Zone, unless granted permission by the U.S. Coast Guard.  Mariners should monitor all marine radio broadcasts and avoid the area during the specified reentry times.  Mariners with urgent concerns can contact the U.S. Coast Guard Sector Corpus Christi Command Center at (800) 874-2143."
+                "USCG NOTMAR 58217\nA) USCG\nE) Hazardous operations will be conducted for Space X, R-6 Launch Operations. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n32.08333333N, -119.13333333W\n32.5N, -119.3W\n33.25N, -119.63333333W\n34.2N, -120.1W\n34.51666667N, -120.3W\n34.66666667N, -120.63333333W\n34.6N, -120.65W\n34.45N, -120.61666667W\n34.31666667N, -120.56666667W\n32.08333333N, -119.15W (TO BEGINNING)\n             \n130423Z NOV TO 130846Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140832Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150818Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160804Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170751Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180737Z NOV 2026---- (PRIMARY)\n190300Z NOV TO 190723Z NOV 2026---- (BACKUP DAY)\n200246Z NOV TO 200709Z NOV 2026---- (BACKUP DAY)\n210232Z NOV TO 210655Z NOV 2026---- (BACKUP DAY)\n220218Z NOV TO 220641Z NOV 2026---- (BACKUP DAY)\n230400Z NOV TO 230628Z NOV 2026---- (BACKUP DAY)\n240346Z NOV TO 240614Z NOV 2026---- (BACKUP DAY)\n\nHazard Area B:\n30.76666667N, -118.25W\n31.38333333N, -118.78333333W\n30.43333333N, -118.51666667W\n29.58333333N, -118.2W\n29.86666667N, -117.9W\n29.8N, -117.65W (TO BEGINNING)\n            \n130423Z NOV TO 130847Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140833Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150819Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160805Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170752Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180738Z NOV 2026---- (PRIMARY)\n190300Z NOV TO 190724Z NOV 2026---- (BACKUP DAY)\n200246Z NOV TO 200710Z NOV 2026---- (BACKUP DAY)\n210232Z NOV TO 210656Z NOV 2026---- (BACKUP DAY)\n220218Z NOV TO 220642Z NOV 2026---- (BACKUP DAY)\n230400Z NOV TO 230629Z NOV 2026---- (BACKUP DAY)\n240346Z NOV TO 240615Z NOV 2026---- (BACKUP DAY)\n\nHazard Area C:\n29.03333333N, -117.98333333W\n29.25N, -118.03333333W\n29.4N, -118.13333333W\n29.58333333N, -118.2W\n29.86666667N, -117.9W\n29.8N, -117.65W\n29.6N, -117.26666667W\n28.83333333N, -117.31666667W\n28.25N, -117.31666667W\n28.26666667N, -117.35W\n28.83333333N, -117.81666667W (TO BEGINNING)\n\n130423Z NOV TO 130906Z NOV 2026---- (PRIMARY) \n140409Z NOV TO 140852Z NOV 2026---- (BACKUP DAY) \n150355Z NOV TO 150838Z NOV 2026---- (BACKUP DAY) \n160341Z NOV TO 160824Z NOV 2026---- (BACKUP DAY) \n170328Z NOV TO 170811Z NOV 2026---- (BACKUP DAY) \n180314Z NOV TO 180757Z NOV 2026---- (PRIMARY)\n190300Z NOV TO 190743Z NOV 2026---- (BACKUP DAY)\n200246Z NOV TO 200729Z NOV 2026---- (BACKUP DAY)\n210232Z NOV TO 210715Z NOV 2026---- (BACKUP DAY)\n220218Z NOV TO 220701Z NOV 2026---- (BACKUP DAY)\n230400Z NOV TO 230648Z NOV 2026---- (BACKUP DAY)\n240346Z NOV TO 240634Z NOV 2026---- (BACKUP DAY)\n\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
+                "USCG NOTMAR 58218\nA) USCG\nE) Hazardous operations will be conducted for Space X, TH-3. Hazardous operation areas are bounded by the following coordinates and times:\nHazard Area A: \n34.46666667N, -120.35W\n34.66666667N, -120.61666667W\n34.63333333N, -120.65W\n34.51666667N, -120.65W\n34.33333333N, -120.63333333W\n33.28333333N, -120.35W\n33.21666667N, -120.26666667W\n32.61666667N, -120.15W\n32.01666667N, -120.03333333W\n32N, -120W\n32.1N, -120W\n33.23333333N, -120.21666667W\n33.96666667N, -120.23333333 W(TO BEGINNING)\n\n161707Z NOV TO 162131Z NOV 2026---- (PRIMARY) \n171658Z NOV TO 172122Z NOV 2026---- (BACKUP DAY) \n181649Z NOV TO 182113Z NOV 2026---- (BACKUP DAY) \n191640Z NOV TO 192104Z NOV 2026---- (BACKUP DAY) \n201631Z NOV TO 202055Z NOV 2026---- (BACKUP DAY) \n211622Z NOV TO 212046Z NOV 2026---- (BACKUP DAY) \n221613Z NOV TO 222037Z NOV 2026---- (BACKUP DAY) \n231604Z NOV TO 232028Z NOV 2026---- (PRIMARY)\n241555Z NOV TO 242019Z NOV 2026---- (BACKUP DAY)\n251546Z NOV TO 252010Z NOV 2026---- (BACKUP DAY)\n261537Z NOV TO 262001Z NOV 2026---- (BACKUP DAY)\n271528Z NOV TO 271952Z NOV 2026---- (BACKUP DAY)\n281519Z NOV TO 281943Z NOV 2026---- (BACKUP DAY)\n291510Z NOV TO 291934Z NOV 2026---- (BACKUP DAY)\n\nHazard Area B:\n30.61666667N, -119.75W\n29.1N, -119.78333333W\n28.95N, -119.91666667W\n28.68333333N, -119.88333333W\n28.3N, -119.38333333W\n27.71666667N, -119.3W\n27.7N, -119.25W\n28.3N, -119.06666667W\n28.65N, -118.71666667W\n28.91666667N, -118.76666667W\n29.15N, -119.06666667W\n30.55N, -119.66666667W (TO BEGINNING)\n\n161707Z NOV TO 162150Z NOV 2026---- (PRIMARY) \n171658Z NOV TO 172141Z NOV 2026---- (BACKUP DAY) \n181649Z NOV TO 182132Z NOV 2026---- (BACKUP DAY) \n191640Z NOV TO 192123Z NOV 2026---- (BACKUP DAY) \n201631Z NOV TO 202114Z NOV 2026---- (BACKUP DAY) \n211622Z NOV TO 212105Z NOV 2026---- (BACKUP DAY) \n221613Z NOV TO 222056Z NOV 2026---- (BACKUP DAY) \n212250Z OCT TO 220333Z OCT 2026---- (BACKUP DAY) \n231604Z NOV TO 232047Z NOV 2026---- (PRIMARY)\n241555Z NOV TO 242038Z NOV 2026---- (BACKUP DAY)\n251546Z NOV TO 252029Z NOV 2026---- (BACKUP DAY)\n261537Z NOV TO 262020Z NOV 2026---- (BACKUP DAY)\n271528Z NOV TO 272011Z NOV 2026---- (BACKUP DAY)\n281519Z NOV TO 282002Z NOV 2026---- (BACKUP DAY)\n291510Z NOV TO 291953Z NOV 2026---- (BACKUP DAY)\n\nMariners are strongly advised to remain clear of these areas for the duration of operations. For more details or comments contact Space X at regulatory@spacex.com or on VHF-FM Chan. 05, 06 or 16.",
+                "USCG NOTMAR 58219\nA) USCG\nE) Hazardous operations will be conducted for launch Operation, INGRID operation areas are bounded by the following coordinates and times:\nHazard Area A:\n36.1166666667N, -123.7666666667W\n36.2500000000N, -123.6666666667W\n36.0666666667N, -123.1333333333W\n35.3166666667N, -122.6333333333W\n35.2166666667N, -122.0333333333W\n35.1666666667N, -120.9833333333W\n34.9500000000N, -120.6500000000W\n34.6666666667N, -120.5666666667W\n34.1500000000N, -120.9166666667W\n34.1666666667N, -121.4166666667W\n33.4666666667N, -121.2833333333W\n33.4166666667N, -121.6500000000W\n34.2833333333N, -122.5166666667W\n\nHazard Times\n221400Z NOV TO 242000Z NOV 2026\nMariners are advised to remain clear of these areas for the duration of operations. For more details or comments contact Stratolaunch at RangeOps@stratolaunch.com, 661-584-2365, or on VHF-FM Chan. 06 or 16."
             ],
             "ALTITUDE": [
-                "None",
-                "None",
-                "None",
-                "None",
-                "None",
-                "None",
-                "None",
-                "None",
                 "None",
                 "None",
                 "None",
@@ -1082,14 +983,6 @@
                 "NOTMAR",
                 "NOTMAR",
                 "NOTMAR",
-                "NOTMAR",
-                "NOTMAR",
-                "NOTMAR",
-                "NOTMAR",
-                "NOTMAR",
-                "NOTMAR",
-                "NOTMAR",
-                "NOTMAR",
                 "NOTMAR"
             ],
             "FIR": [
@@ -1097,8 +990,6 @@
                 "13",
                 "8",
                 "11",
-                "8",
-                "8",
                 "14",
                 "14",
                 "11",
@@ -1110,23 +1001,15 @@
                 "11",
                 "13",
                 "11",
-                "8",
                 "11",
                 "11",
-                "11",
-                "7",
-                "7",
-                "8",
-                "8",
-                "8"
+                "11"
             ],
             "GEOMETRY": [
                 "PATH|M=N284334W0804111|L=N284306W0804048|L=N284215W0804005|L=N284127W0803930|L=N284025W0803841|L=N283919W0803753|L=N283813W0803708|L=N283706W0803611|L=N283553W0803504|L=N283517W0803437|L=N283446W0803425|L=N283411W0803412|L=N283345W0803407|L=N283307W0803403|L=N283233W0803355|L=N283201W0803346|L=N283122W0803330|L=N283119W0803330|L=N283035W0803310|L=N283023W0803304|L=N283016W0803258|L=N282922W0803231|L=N282847W0803214|L=N282759W0803147|L=N282758W0803143|L=N282735W0803133|L=N282728W0803132|L=N282712W0803131|L=N282701W0803136|L=N282657W0803144|L=N282650W0803211|L=N282652W0803215|L=N282650W0803226|L=N282616W0803344|L=N282601W0803407|L=N282532W0803436|L=N282500W0803458|L=N282443W0803507|L=N282412W0803326|L=N282453W0803259|L=N282457W0803251|L=N282509W0803226|L=N282522W0803151|L=N282528W0803120|L=N282537W0803053|L=N282542W0803042|L=N282552W0803026|L=N282605W0803015|L=N282617W0803004|L=N282637W0802954|L=N282659W0802948|L=N282721W0802947|L=N282744W0802950|L=N282805W0802954|L=N282832W0803008|L=N282938W0803045|L=N283025W0803109|L=N283121W0803141|L=N283200W0803157|L=N283300W0803213|L=N283444W0803234|L=N283545W0803258|L=N283609W0803312|L=N283643W0803338|L=N283742W0803431|L=N283848W0803531|L=N283951W0803616|L=N284122W0803720|L=N284334W0803907|Z",
                 "POINT|C=N452347W1243332",
                 "POINT|C=N295545W0890346",
                 "PATH|M=N345600W1205700|L=N345600W1212200|L=N345400W1215900|L=N343700W1243700|L=N341600W1243300|L=N343800W1205200|L=N344400W1203500|L=N345500W1203500|Z",
-                "PATH|M=N260400W0964900|L=N260400W0970400|L=N260400W0971000|L=N260200W0971300|L=N255800W0971300|L=N254800W0970500|L=N254100W0964700|L=N250200W0950500|L=N242900W0940800|L=N242000W0933200|L=N242500W0925200|L=N244500W0924300|L=N251200W0925800|L=N253100W0935200|L=N254200W0952400|L=N260200W0963200|Z",
-                "PATH|M=N260600W0964900|L=N260600W0970400|L=N260400W0971000|L=N260200W0971300|L=N255800W0971300|L=N254800W0970500|L=N253800W0964900|L=N243600W0951900|L=N231600W0932900|L=N221600W0910900|L=N221600W0894400|L=N221600W0891900|L=N215900W0872600|L=N214300W0864200|L=N210600W0845400|L=N203600W0831400|L=N201200W0811300|L=N203100W0810300|L=N204300W0814200|L=N205900W0823800|L=N212600W0834900|L=N213300W0843200|L=N213800W0845900|L=N214100W0850700|L=N223100W0862900|L=N232100W0882900|L=N233200W0885200|L=N251100W0915900|L=N254100W0932900|L=N260100W0951200|Z",
                 "PATH|M=N303300W1501600|L=N283100W1611400|L=N260400W1710200|L=N255300W1732000|L=N201200W1790700|L=N220800W1730800|L=N231100W1683200|L=N245400W1614200|L=N252400W1574600|L=N244600W1545400|L=N260100W1534900|L=N292300W1501500|Z",
                 "PATH|M=N224300E1791500|L=N203800E1743100|L=N160700E1653500|L=N140400E1620400|L=N104800E1561800|L=N090900E1534600|L=N084800E1540600|L=N115500E1592600|L=N151100E1655600|L=N170200E1701700|L=N181300E1745800|L=N192100E1781200|Z",
                 "PATH|M=N334700W1191500|L=N334500W1191800|L=N333600W1191800|L=N333300W1191400|L=N333300W1190700|L=N333700W1190200|L=N334500W1190200|L=N334700W1190500|Z",
@@ -1138,20 +1021,14 @@
                 "PATH|M=N275600W1235100|L=N270200W1252000|L=N240800W1281800|L=N195100W1320300|L=N184800W1304800|L=N230400W1270200|L=N255600W1241700|L=N273300W1232500|Z",
                 "PATH|M=N444200W1352100|L=N432000W1362700|L=N401800W1301900|L=N380000W1262500|L=N372000W1242100|L=N374500W1235600|L=N391500W1251200|L=N413600W1290800|Z",
                 "PATH|M=N273000W1234500|L=N263500W1252600|L=N234100W1281000|L=N192300W1315400|L=N182100W1303900|L=N223700W1265400|L=N253000W1241000|L=N270700W1231900|Z",
-                "PATH|M=N264600W0972800|L=N263600W0972700|L=N262200W0971300|L=N261400W0970900|L=N260600W0970800|L=N260400W0970900|L=N260300W0971100|L=N260100W0971300|L=N255800W0971200|L=N255600W0970900|L=N255600W0970500|L=N255700W0962800|L=N255900W0962500|L=N261000W0962200|L=N262000W0965200|Z",
                 "PATH|M=N344000W1203800|L=N343600W1203900|L=N342700W1203700|L=N341900W1203400|L=N290200W1175900|L=N281600W1172100|L=N281500W1171900|L=N293600W1171600|L=N341200W1200600|L=N343100W1201800|Z",
                 "PATH|M=N344000W1203700|L=N343800W1203900|L=N343100W1203900|L=N342000W1203800|L=N320100W1200200|L=N320000W1200000|L=N320600W1200000|L=N335800W1201400|L=N342800W1202100|Z",
-                "PATH|M=N361500W1234000|L=N360700W1234600|L=N341700W1223100|L=N332500W1213900|L=N332800W1211700|L=N341000W1212500|L=N340900W1205500|L=N344000W1203400|L=N345700W1203900|L=N351000W1205900|L=N351300W1220200|L=N351900W1223800|L=N360400W1230800|Z",
-                "PATH|M=N362800W0710300|L=N341100W0741200|L=N312300W0775800|L=N294800W0795300|L=N283914W0803751|L=N282926W0803232|L=N283300W0800400|L=N284100W0793600|L=N292700W0783800|L=N321900W0755400|L=N341300W0733800|L=N361500W0705400|Z",
-                "PATH|M=N284754W0802752|L=N283835W0803751|L=N283114W0803324|L=N283317W0801900|L=N283442W0802015|L=N283700W0802101|L=N284032W0802220|L=N284259W0802411|Z",
-                "PATH|M=N260748W0965602|L=N260300W0970700|L=N260236W0970908|L=N255724W0970849|L=N255833W0965524|L=N260102W0965541|L=N260121W0965536|L=N260326W0965519|L=N260512W0965523|L=N260705W0965548|Z",
-                "PATH|M=N260250W0971016|L=N260234W0971044|L=N260245W0971053|L=N260245W0971106|L=N260209W0971143|L=N260129W0971238|L=N260035W0971239|L=N260040W0971123|L=N260100W0971118|L=N260048W0971034|L=N260031W0971035|L=N260042W0971030|L=N260053W0971011|L=N260009W0970926|L=N260017W0970918|Z",
-                "PATH|M=N264600W0972800|L=N263600W0972700|L=N262200W0971300|L=N261400W0970900|L=N260600W0970800|L=N260400W0970900|L=N260224W0970911|L=N255722W0970848|L=N255725W0970807|L=N255735W0970612|L=N255833W0965526|L=N255931W0965534|L=N260055W0965544|L=N260108W0965543|L=N260152W0965532|L=N260254W0965524|L=N260351W0965521|L=N260533W0965529|L=N260657W0965546|L=N260813W0965611|L=N260853W0965629|L=N260928W0965648|L=N261321W0965718|L=N261518W0965732|L=N261712W0965755|L=N262018W0965835|L=N262347W0965927|L=N262554W0965958|L=N262708W0970019|L=N262800W0970000|Z"
+                "PATH|M=N361500W1234000|L=N360700W1234600|L=N341700W1223100|L=N332500W1213900|L=N332800W1211700|L=N341000W1212500|L=N340900W1205500|L=N344000W1203400|L=N345700W1203900|L=N351000W1205900|L=N351300W1220200|L=N351900W1223800|L=N360400W1230800|Z"
             ],
             "FOCUSED_KEYS": [],
             "ESTABLISHED": true
         }
     },
     "MATCH_AVAILABLE": true,
-    "MSA_CACHE_HASH": "86336af389f12fe8f33086aac18b47bca877bc6bdf133b81750ff2f3585c4355"
+    "MSA_CACHE_HASH": "65a94dc033fc1765015e1d66a13ec3a72fe31666aa7be5197ba53d3d7d2793f7"
 }
