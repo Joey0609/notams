@@ -227,6 +227,10 @@ def match_two_notams(notam1, notam2):
 ARCHIVE_MATCH_DIR = os.path.join('data', 'archiveMatch')
 
 
+def _notice_id(platid):
+    return re.sub(r':AREA:\d+$', '', str(platid or '').strip())
+
+
 def _write_match_file(path, matches):
     """Persist one match file; the frontend loads them by global row number."""
     with open(path, 'w', encoding='utf-8') as file:
@@ -345,8 +349,11 @@ def notam_match_archive(dataDict, match_indices=None):
             continue
         
         # 4. 匹配历史航警
+        current_notice_id = _notice_id(current_notam['PLATID'])
         matches = []
         for hist in history_notams:
+            if current_notice_id and current_notice_id == _notice_id(hist['PLATID']):
+                continue
             overlap_ratio, center_distance = match_two_notams(current_notam, hist)
             
             # 检查是否匹配
@@ -366,6 +373,8 @@ def notam_match_archive(dataDict, match_indices=None):
                 if hist_group_key and group_candidates:
                     for rel_hist in group_candidates:
                         if rel_hist.get('source_index') == hist.get('source_index'):
+                            continue
+                        if current_notice_id and current_notice_id == _notice_id(rel_hist['PLATID']):
                             continue
                         related_items.append({
                             'CODE': rel_hist['CODE'],

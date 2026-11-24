@@ -229,6 +229,10 @@ def is_relevant_aerospace_area(message: str, *, require_full_altitude: bool) -> 
         or ('CHINA' in text and 'DNG ZONE' in text and 'AERIAL' in text)
         or ('SPACE VEHICLE' in text and 'RE-ENTRY' in text)
         or ('SPACE VEHICLE' in text and 'REENTRY' in text)
+        or ('SPACE VEHICLE' in text and 'RETURN' in text)
+        or ('SPACE DEBRIS' in text  and 'REENTRY' in text)
+        or ('SPACE DEBRIS' in text  and 'RE-ENTRY' in text)
+        or ('SPACE DEBRIS' in text  and 'RETURN' in text)
         or ('SPACE' in text and 'LAUNCH' in text)
         or ('SPACE' in text and 'SPLASHDOWN' in text)
         or ('ROCKET' in text and 'LAUNCH' in text)
@@ -250,7 +254,6 @@ def is_relevant_aerospace_area(message: str, *, require_full_altitude: bool) -> 
     )
     not_relevant = (
         ('MISSILE' in text)
-        # or ('SPACE DEBRIS' in text)
         or ('TRACEX' in text or 'TORPEX' in text or 'GUNEX' in text or 'LASEX' in text)
     )
     if require_full_altitude:
