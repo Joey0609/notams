@@ -32,6 +32,22 @@
         ]
     },
     {
+        "CODE": "A0104/25",
+        "GEOMETRY": "PATH|M=N355900E0982200|L=N355600E0983600|L=N353400E0982900|L=N353700E0981500|Z",
+        "TIME": "17 JAN 03:59 2025 UNTIL 17 JAN 04:21 2025",
+        "PLATID": "75000721",
+        "RAWMESSAGE": "A0104/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3547N09826E013\nA) ZLHW B) 2501170359 C) 2501170421 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-01.json",
+        "source_index": 5,
+        "classify_key": "c976610848",
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 156.1,
+        "RelatedItems": []
+    },
+    {
         "CODE": "A1167/25",
         "GEOMETRY": "PATH|M=N355900E0982200|L=N355600E0983600|L=N353400E0982900|L=N353700E0981500|Z",
         "TIME": "13 MAY 04:03 2025 UNTIL 13 MAY 05:21 2025",
@@ -59,22 +75,6 @@
         "source_file": "2025-05.json",
         "source_index": 11,
         "classify_key": "c632394831",
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 156.1,
-        "RelatedItems": []
-    },
-    {
-        "CODE": "A0104/25",
-        "GEOMETRY": "PATH|M=N355900E0982200|L=N355600E0983600|L=N353400E0982900|L=N353700E0981500|Z",
-        "TIME": "17 JAN 03:59 2025 UNTIL 17 JAN 04:21 2025",
-        "PLATID": "75000721",
-        "RAWMESSAGE": "A0104/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3547N09826E013\nA) ZLHW B) 2501170359 C) 2501170421 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N355900E0982200-N355600E0983600-N353400E0982900-N353700E0981500,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-01.json",
-        "source_index": 5,
-        "classify_key": "c976610848",
         "Overlapping_Area": 0.0,
         "Center_Distance": 156.1,
         "RelatedItems": []
@@ -413,22 +413,6 @@
         ]
     },
     {
-        "CODE": "A3264/25",
-        "GEOMETRY": "PATH|M=N354100E0981200|L=N353800E0982600|L=N351600E0981900|L=N351900E0980500|Z",
-        "TIME": "26 SEP 19:15 2025 UNTIL 26 SEP 19:44 2025",
-        "PLATID": "77987736",
-        "RAWMESSAGE": "A3264/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3528N09815E013\nA) ZLHW B) 2509261915 C) 2509261944 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N354100E0981200-N353800E0982600-N351600E0981900-N351900E0980500,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-09.json",
-        "source_index": 14,
-        "classify_key": "c287897954",
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 170.8,
-        "RelatedItems": []
-    },
-    {
         "CODE": "A5085/26",
         "GEOMETRY": "PATH|M=N354100E0981200|L=N353800E0982600|L=N351600E0981900|L=N351900E0980500|Z",
         "TIME": "14 OCT 11:33 2026 UNTIL 14 OCT 12:19 2026",
@@ -461,6 +445,22 @@
         ]
     },
     {
+        "CODE": "A3264/25",
+        "GEOMETRY": "PATH|M=N354100E0981200|L=N353800E0982600|L=N351600E0981900|L=N351900E0980500|Z",
+        "TIME": "26 SEP 19:15 2025 UNTIL 26 SEP 19:44 2025",
+        "PLATID": "77987736",
+        "RAWMESSAGE": "A3264/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3528N09815E013\nA) ZLHW B) 2509261915 C) 2509261944 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED \nBY:N354100E0981200-N353800E0982600-N351600E0981900-N351900E0980500,\nBACK TO START.VERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-09.json",
+        "source_index": 14,
+        "classify_key": "c287897954",
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 170.8,
+        "RelatedItems": []
+    },
+    {
         "CODE": "A2950/21",
         "GEOMETRY": "PATH|M=N352013E0982450|L=N352302E0981204|L=N354359E0981858|L=N354106E0983144|Z",
         "TIME": "22 NOV 23:37 2021 UNTIL 23 NOV 00:04 2021",
@@ -475,6 +475,38 @@
         "Overlapping_Area": 0.0,
         "Center_Distance": 171.6,
         "RelatedItems": []
+    },
+    {
+        "CODE": "A0488/23",
+        "GEOMETRY": "PATH|M=N3552E09903|L=N3557E09839|L=N3621E09845|L=N3617E09909|Z",
+        "TIME": "13 MAR 03:53 2023 UNTIL 13 MAR 04:17 2023",
+        "PLATID": "67736793",
+        "RAWMESSAGE": "A0488/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3606N09854E016\nA) ZLHW B) 2303130353 C) 2303130417 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3552E09903-N3557E09839-N3621E09845-N3617E09909 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2023-03.json",
+        "source_index": 3,
+        "classify_key": "c706504855",
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 172.2,
+        "RelatedItems": [
+            {
+                "CODE": "A0489/23",
+                "GEOMETRY": "PATH|M=N3209E09820|L=N3218E09726|L=N3302E09737|L=N3252E09831|Z",
+                "TIME": "13 MAR 03:54 2023 UNTIL 13 MAR 04:25 2023",
+                "PLATID": "67736798",
+                "RAWMESSAGE": "A0489/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3234N09758E033\nA) ZLHW B) 2303130354 C) 2303130425 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3209E09820-N3218E09726-N3302E09737-N3252E09831 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2023-03.json",
+                "source_index": 4,
+                "GroupKey": "c706504855",
+                "IsSameGroup": true,
+                "parent_index": 7
+            }
+        ]
     },
     {
         "CODE": "A0114/26",
@@ -567,38 +599,6 @@
                 "source_file": "2023-12.json",
                 "source_index": 11,
                 "GroupKey": "c480566927",
-                "IsSameGroup": true,
-                "parent_index": 7
-            }
-        ]
-    },
-    {
-        "CODE": "A0488/23",
-        "GEOMETRY": "PATH|M=N3552E09903|L=N3557E09839|L=N3621E09845|L=N3617E09909|Z",
-        "TIME": "13 MAR 03:53 2023 UNTIL 13 MAR 04:17 2023",
-        "PLATID": "67736793",
-        "RAWMESSAGE": "A0488/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3606N09854E016\nA) ZLHW B) 2303130353 C) 2303130417 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3552E09903-N3557E09839-N3621E09845-N3617E09909 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2023-03.json",
-        "source_index": 3,
-        "classify_key": "c706504855",
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 172.2,
-        "RelatedItems": [
-            {
-                "CODE": "A0489/23",
-                "GEOMETRY": "PATH|M=N3209E09820|L=N3218E09726|L=N3302E09737|L=N3252E09831|Z",
-                "TIME": "13 MAR 03:54 2023 UNTIL 13 MAR 04:25 2023",
-                "PLATID": "67736798",
-                "RAWMESSAGE": "A0489/23 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/3234N09758E033\nA) ZLHW B) 2303130354 C) 2303130425 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN3209E09820-N3218E09726-N3302E09737-N3252E09831 BACK TO START. \nVERTICAL LIMITS:SFC-UNL.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2023-03.json",
-                "source_index": 4,
-                "GroupKey": "c706504855",
                 "IsSameGroup": true,
                 "parent_index": 7
             }

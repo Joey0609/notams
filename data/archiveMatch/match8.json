@@ -632,38 +632,6 @@
         "RelatedItems": []
     },
     {
-        "CODE": "A2995/25",
-        "GEOMETRY": "PATH|M=N390443E0871305|L=N381527E0870956|L=N381401E0880423|L=N390132E0881016|Z",
-        "TIME": "11 SEP 08:38 2025 UNTIL 11 SEP 09:59 2025",
-        "PLATID": "77875261",
-        "RAWMESSAGE": "A2995/25 NOTAMN\nQ) ZWUQ/QRDCA/IV/BO/W/000/999/3838N08740E034\nA) ZWUQ B) 2509110838 C) 2509110959 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN390443E0871305-N381527E0870956-N381401E0880423-N390132E0881016,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-        "ALTITUDE": "0 ~ INF 米",
-        "SOURCE": "NOTAM",
-        "FIR": "",
-        "source_file": "2025-09.json",
-        "source_index": 7,
-        "classify_key": "c755774615",
-        "Overlapping_Area": 0.0,
-        "Center_Distance": 103.8,
-        "RelatedItems": [
-            {
-                "CODE": "A2994/25",
-                "GEOMETRY": "PATH|M=N395432E1055148|L=N403709E1015950|L=N401208E1014838|L=N392742E1054258|Z",
-                "TIME": "11 SEP 08:38 2025 UNTIL 11 SEP 09:59 2025",
-                "PLATID": "77875252",
-                "RAWMESSAGE": "A2994/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/4003N10350E094\nA) ZLHW B) 2509110838 C) 2509110959 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN395432E1055148-N403709E1015950-N401208E1014838-N392742E1054258,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
-                "ALTITUDE": "0 ~ INF 米",
-                "SOURCE": "NOTAM",
-                "FIR": "",
-                "source_file": "2025-09.json",
-                "source_index": 6,
-                "GroupKey": "c755774615",
-                "IsSameGroup": true,
-                "parent_index": 8
-            }
-        ]
-    },
-    {
         "CODE": "A1601/26",
         "GEOMETRY": "PATH|M=N390443E0871305|L=N381527E0870956|L=N381401E0880423|L=N390132E0881016|Z",
         "TIME": "19 MAY 08:50 2026 UNTIL 19 MAY 10:10 2026",
@@ -722,6 +690,38 @@
                 "source_file": "2026-05.json",
                 "source_index": 19,
                 "GroupKey": "c950700009",
+                "IsSameGroup": true,
+                "parent_index": 8
+            }
+        ]
+    },
+    {
+        "CODE": "A2995/25",
+        "GEOMETRY": "PATH|M=N390443E0871305|L=N381527E0870956|L=N381401E0880423|L=N390132E0881016|Z",
+        "TIME": "11 SEP 08:38 2025 UNTIL 11 SEP 09:59 2025",
+        "PLATID": "77875261",
+        "RAWMESSAGE": "A2995/25 NOTAMN\nQ) ZWUQ/QRDCA/IV/BO/W/000/999/3838N08740E034\nA) ZWUQ B) 2509110838 C) 2509110959 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN390443E0871305-N381527E0870956-N381401E0880423-N390132E0881016,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+        "ALTITUDE": "0 ~ INF 米",
+        "SOURCE": "NOTAM",
+        "FIR": "",
+        "source_file": "2025-09.json",
+        "source_index": 7,
+        "classify_key": "c755774615",
+        "Overlapping_Area": 0.0,
+        "Center_Distance": 103.8,
+        "RelatedItems": [
+            {
+                "CODE": "A2994/25",
+                "GEOMETRY": "PATH|M=N395432E1055148|L=N403709E1015950|L=N401208E1014838|L=N392742E1054258|Z",
+                "TIME": "11 SEP 08:38 2025 UNTIL 11 SEP 09:59 2025",
+                "PLATID": "77875252",
+                "RAWMESSAGE": "A2994/25 NOTAMN\nQ) ZLHW/QRDCA/IV/BO/W/000/999/4003N10350E094\nA) ZLHW B) 2509110838 C) 2509110959 \nE) A TEMPORARY DANGER AREA ESTABLISHED BOUNDED BY:\nN395432E1055148-N403709E1015950-N401208E1014838-N392742E1054258,BAC\nK TO START.VERTICAL LIMITS:SFC-UNL.\nAIRCRAFT ARE FORBIDDEN TO FLY INTO THE AREA.\nF) SFC G) UNL",
+                "ALTITUDE": "0 ~ INF 米",
+                "SOURCE": "NOTAM",
+                "FIR": "",
+                "source_file": "2025-09.json",
+                "source_index": 6,
+                "GroupKey": "c755774615",
                 "IsSameGroup": true,
                 "parent_index": 8
             }
